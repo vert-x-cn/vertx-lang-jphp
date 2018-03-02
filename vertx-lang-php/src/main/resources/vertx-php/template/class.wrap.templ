@@ -1,0 +1,26 @@
+package @{type.raw.translatePackageName("php")};\n
+\n
+import com.google.gson.JsonElement;\n
+import io.vertx.core.json.JsonObject;\n
+import io.vertx.lang.php.VertxExtension;\n
+import php.runtime.Memory;\n
+import php.runtime.env.Environment;\n
+import php.runtime.lang.BaseWrapper;\n
+import php.runtime.memory.ObjectMemory;\n
+import php.runtime.reflection.ClassEntity;\n
+import php.runtime.annotation.Reflection.*;\n
+
+
+//@{type.kind.name}\n
+\n
+@SuppressWarnings("unused")\n
+@Name("@{type.raw.translatePackageName("php").replace(".", "\\\\")}\\${type.simpleName}")\n
+public class @{type.simpleName} extends BaseWrapper<@{type.name}>{\n
+    public ${type.simpleName}(Environment env, @{type.name} wrappedObject) {\n
+        super(env, wrappedObject);\n
+    }\n
+\n
+    public ${type.simpleName}(Environment env, ClassEntity clazz) {\n
+        super(env, clazz);\n
+    }\n
+}\n
