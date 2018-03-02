@@ -6,7 +6,7 @@
     "templateFileName": "vertx-php/template/dataobject.templ"
   },{
     "kind": "dataObject",
-    "fileName": "'java/' + module.translateQualifiedName(fqn, 'php').replace('.', '/') + '.java'",
+    "fileName": "'generated/' + module.translateQualifiedName(fqn, 'php').replace('.', '/') + '.java'",
     "templateFileName": "vertx-php/template/dataobject.wrap.templ"
   },{
     "kind": "class",
@@ -14,7 +14,7 @@
     "templateFileName": "vertx-php/template/class.templ"
   },{
     "kind": "class",
-    "fileName": "'java/' + module.translateQualifiedName(fqn, 'php').replace('.', '/') + '.java'",
+    "fileName": "'generated/' + module.translateQualifiedName(fqn, 'php').replace('.', '/') + '.java'",
     "templateFileName": "vertx-php/template/class.wrap.templ"
   }]
 }

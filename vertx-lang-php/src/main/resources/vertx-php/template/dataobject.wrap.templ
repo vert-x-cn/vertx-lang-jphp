@@ -13,7 +13,6 @@ package @{type.raw.translatePackageName("php")};\n
     var importClassSet = new HashSet();
 
     if(!abs) {
-        importClassSet.add("com.google.gson.JsonElement");
         importClassSet.add("io.vertx.core.json.JsonObject");
         importClassSet.add("org.develnext.jphp.zend.ext.json.JsonFunctions");
         importClassSet.add("php.runtime.Memory");
@@ -52,7 +51,6 @@ package @{type.raw.translatePackageName("php")};\n
     }
 
 }
-//@{importClassSet.size()}\n
 @foreach{im : importClassSet}
 import ${im};\n
 @end{}

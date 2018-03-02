@@ -1,2 +1,17 @@
 <?php \n
 namespace @{type.raw.translatePackageName("php").replace(".", "\\")};\n
+
+class @{type.simpleName}\n
+{\n
+    @if{concrete}
+    \n
+    public function __construct($memory) {\n
+    \n
+    }\n
+    @end{}
+
+    @foreach{method:methods}
+
+    @end{}
+\n
+}\n
