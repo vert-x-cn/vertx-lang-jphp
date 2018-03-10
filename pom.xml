@@ -17,8 +17,7 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>vertx-lang-php-jphp
-        </module>
+        <module>vertx-lang-php-jphp</module>
         <module>vertx-lang-php-compiler-jphp</module>
     </modules>
 
