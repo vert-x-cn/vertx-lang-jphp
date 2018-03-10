@@ -2,151 +2,170 @@
 namespace io\vertx\php\core\net;
 class NetSocket
 {
-        
-    public function __construct($memory) 
+    
+    private function __construct()
     {
-    
+
     }
-    //28
-            
-        public function end() 
-        {
-            
-        }
-            
-        public function writeQueueFull() 
-        {
-            
-        }
-            
-        public function exceptionHandler() 
-        {
-            
-        }
-            
-        public function handler() 
-        {
-            
-        }
-            
-        public function pause() 
-        {
-            
-        }
-            
-        public function resume() 
-        {
-            
-        }
-            
-        public function endHandler() 
-        {
-            
-        }
-            
-        public function write() 
-        {
-            
-        }
-            
-        public function setWriteQueueMaxSize() 
-        {
-            
-        }
-            
-        public function drainHandler() 
-        {
-            
-        }
-            
-        public function writeHandlerID() 
-        {
-            
-        }
-            
-        public function write() 
-        {
-            
-        }
-            
-        public function write() 
-        {
-            
-        }
-            
-        public function sendFile() 
-        {
-            
-        }
-            
-        public function sendFile() 
-        {
-            
-        }
-            
-        public function sendFile() 
-        {
-            
-        }
-            
-        public function sendFile() 
-        {
-            
-        }
-            
-        public function sendFile() 
-        {
-            
-        }
-            
-        public function sendFile() 
-        {
-            
-        }
-            
-        public function remoteAddress() 
-        {
-            
-        }
-            
-        public function localAddress() 
-        {
-            
-        }
-            
-        public function end() 
-        {
-            
-        }
-            
-        public function close() 
-        {
-            
-        }
-            
-        public function closeHandler() 
-        {
-            
-        }
-            
-        public function upgradeToSsl() 
-        {
-            
-        }
-            
-        public function upgradeToSsl() 
-        {
-            
-        }
-            
-        public function isSsl() 
-        {
-            
-        }
-            
-        public function indicatedServerName() 
-        {
-            
-        }
-    
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function close()
+    {
+
+    }
+    /*
+     * (Handler<Void> handler)
+     * methodSize : 1
+     */
+    public function closeHandler()
+    {
+
+    }
+    /*
+     * (Handler<Void> handler)
+     * methodSize : 1
+     */
+    public function drainHandler()
+    {
+
+    }
+    /*
+     * (Buffer t)
+     * ()
+     * methodSize : 2
+     */
+    public function end()
+    {
+
+    }
+    /*
+     * (Handler<Void> endHandler)
+     * methodSize : 1
+     */
+    public function endHandler()
+    {
+
+    }
+    /*
+     * (Handler<Throwable> handler)
+     * methodSize : 1
+     */
+    public function exceptionHandler()
+    {
+
+    }
+    /*
+     * (Handler<Buffer> handler)
+     * methodSize : 1
+     */
+    public function handler()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function indicatedServerName()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function isSsl()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function localAddress()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function pause()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function remoteAddress()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function resume()
+    {
+
+    }
+    /*
+     * (String filename)
+     * (String filename, long offset)
+     * (String filename, Handler<AsyncResult<Void>> resultHandler)
+     * (String filename, long offset, long length)
+     * (String filename, long offset, Handler<AsyncResult<Void>> resultHandler)
+     * (String filename, long offset, long length, Handler<AsyncResult<Void>> resultHandler)
+     * methodSize : 6
+     */
+    public function sendFile()
+    {
+
+    }
+    /*
+     * (int maxSize)
+     * methodSize : 1
+     */
+    public function setWriteQueueMaxSize()
+    {
+
+    }
+    /*
+     * (Handler<Void> handler)
+     * (String serverName, Handler<Void> handler)
+     * methodSize : 2
+     */
+    public function upgradeToSsl()
+    {
+
+    }
+    /*
+     * (Buffer data)
+     * (String str)
+     * (String str, String enc)
+     * methodSize : 3
+     */
+    public function write()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function writeHandlerID()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function writeQueueFull()
+    {
+
+    }
 }

@@ -45,4 +45,15 @@
         </dependency>
     </dependencies>
 
+    <build>
+        <resources>
+            <resource>
+                <directory>${project.basedir}/src/main/php</directory>
+            </resource>
+            <resource>
+                <directory>${project.basedir}/src/test/php</directory>
+            </resource>
+        </resources>
+    </build>
+
 </project>

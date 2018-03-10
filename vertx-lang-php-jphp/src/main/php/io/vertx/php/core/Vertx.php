@@ -1,240 +1,257 @@
 <?php 
 namespace io\vertx\php\core;
-use io\vertx\php\core\DeploymentOptions;
-use io\vertx\php\core\VertxOptions;
-use io\vertx\php\core\datagram\DatagramSocketOptions;
-use io\vertx\php\core\dns\DnsClientOptions;
-use io\vertx\php\core\http\HttpClientOptions;
-use io\vertx\php\core\http\HttpServerOptions;
-use io\vertx\php\core\net\NetClientOptions;
-use io\vertx\php\core\net\NetServerOptions;
 class Vertx
 {
-        
-    public function __construct($memory) 
+    
+    private function __construct()
     {
-    
+
     }
-    //44
-            
-        public function isMetricsEnabled() 
-        {
-            
-        }
-            
-        public function vertx() 
-        {
-            
-        }
-            
-        public function vertx() 
-        {
-            
-        }
-            
-        public function clusteredVertx() 
-        {
-            
-        }
-            
-        public function currentContext() 
-        {
-            
-        }
-            
-        public function getOrCreateContext() 
-        {
-            
-        }
-            
-        public function createNetServer() 
-        {
-            
-        }
-            
-        public function createNetServer() 
-        {
-            
-        }
-            
-        public function createNetClient() 
-        {
-            
-        }
-            
-        public function createNetClient() 
-        {
-            
-        }
-            
-        public function createHttpServer() 
-        {
-            
-        }
-            
-        public function createHttpServer() 
-        {
-            
-        }
-            
-        public function createHttpClient() 
-        {
-            
-        }
-            
-        public function createHttpClient() 
-        {
-            
-        }
-            
-        public function createDatagramSocket() 
-        {
-            
-        }
-            
-        public function createDatagramSocket() 
-        {
-            
-        }
-            
-        public function fileSystem() 
-        {
-            
-        }
-            
-        public function eventBus() 
-        {
-            
-        }
-            
-        public function createDnsClient() 
-        {
-            
-        }
-            
-        public function createDnsClient() 
-        {
-            
-        }
-            
-        public function sharedData() 
-        {
-            
-        }
-            
-        public function setTimer() 
-        {
-            
-        }
-            
-        public function timerStream() 
-        {
-            
-        }
-            
-        public function setPeriodic() 
-        {
-            
-        }
-            
-        public function periodicStream() 
-        {
-            
-        }
-            
-        public function cancelTimer() 
-        {
-            
-        }
-            
-        public function runOnContext() 
-        {
-            
-        }
-            
-        public function close() 
-        {
-            
-        }
-            
-        public function close() 
-        {
-            
-        }
-            
-        public function deployVerticle() 
-        {
-            
-        }
-            
-        public function deployVerticle() 
-        {
-            
-        }
-            
-        public function deployVerticle() 
-        {
-            
-        }
-            
-        public function deployVerticle() 
-        {
-            
-        }
-            
-        public function undeploy() 
-        {
-            
-        }
-            
-        public function undeploy() 
-        {
-            
-        }
-            
-        public function deploymentIDs() 
-        {
-            
-        }
-            
-        public function isClustered() 
-        {
-            
-        }
-            
-        public function executeBlocking() 
-        {
-            
-        }
-            
-        public function executeBlocking() 
-        {
-            
-        }
-            
-        public function createSharedWorkerExecutor() 
-        {
-            
-        }
-            
-        public function createSharedWorkerExecutor() 
-        {
-            
-        }
-            
-        public function createSharedWorkerExecutor() 
-        {
-            
-        }
-            
-        public function isNativeTransportEnabled() 
-        {
-            
-        }
-            
-        public function exceptionHandler() 
-        {
-            
-        }
-    
+    /*
+     * (long id)
+     * methodSize : 1
+     */
+    public function cancelTimer()
+    {
+
+    }
+    /*
+     * ()
+     * (Handler<AsyncResult<Void>> completionHandler)
+     * methodSize : 2
+     */
+    public function close()
+    {
+
+    }
+    /*
+     * (VertxOptions options, Handler<AsyncResult<Vertx>> resultHandler)
+     * methodSize : 1
+     */
+    public function clusteredVertx()
+    {
+
+    }
+    /*
+     * (DatagramSocketOptions options)
+     * ()
+     * methodSize : 2
+     */
+    public function createDatagramSocket()
+    {
+
+    }
+    /*
+     * (int port, String host)
+     * (DnsClientOptions options)
+     * methodSize : 2
+     */
+    public function createDnsClient()
+    {
+
+    }
+    /*
+     * (HttpClientOptions options)
+     * ()
+     * methodSize : 2
+     */
+    public function createHttpClient()
+    {
+
+    }
+    /*
+     * (HttpServerOptions options)
+     * ()
+     * methodSize : 2
+     */
+    public function createHttpServer()
+    {
+
+    }
+    /*
+     * (NetClientOptions options)
+     * ()
+     * methodSize : 2
+     */
+    public function createNetClient()
+    {
+
+    }
+    /*
+     * (NetServerOptions options)
+     * ()
+     * methodSize : 2
+     */
+    public function createNetServer()
+    {
+
+    }
+    /*
+     * (String name)
+     * (String name, int poolSize)
+     * (String name, int poolSize, long maxExecuteTime)
+     * methodSize : 3
+     */
+    public function createSharedWorkerExecutor()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function currentContext()
+    {
+
+    }
+    /*
+     * (String name)
+     * (String name, Handler<AsyncResult<String>> completionHandler)
+     * (String name, DeploymentOptions options)
+     * (String name, DeploymentOptions options, Handler<AsyncResult<String>> completionHandler)
+     * methodSize : 4
+     */
+    public function deployVerticle()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function deploymentIDs()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function eventBus()
+    {
+
+    }
+    /*
+     * (Handler<Throwable> handler)
+     * methodSize : 1
+     */
+    public function exceptionHandler()
+    {
+
+    }
+    /*
+     * (Handler<Future<T>> blockingCodeHandler, boolean ordered, Handler<AsyncResult<T>> resultHandler)
+     * (Handler<Future<T>> blockingCodeHandler, Handler<AsyncResult<T>> resultHandler)
+     * methodSize : 2
+     */
+    public function executeBlocking()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function fileSystem()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function getOrCreateContext()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function isClustered()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function isMetricsEnabled()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function isNativeTransportEnabled()
+    {
+
+    }
+    /*
+     * (long delay)
+     * methodSize : 1
+     */
+    public function periodicStream()
+    {
+
+    }
+    /*
+     * (Handler<Void> action)
+     * methodSize : 1
+     */
+    public function runOnContext()
+    {
+
+    }
+    /*
+     * (long delay, Handler<Long> handler)
+     * methodSize : 1
+     */
+    public function setPeriodic()
+    {
+
+    }
+    /*
+     * (long delay, Handler<Long> handler)
+     * methodSize : 1
+     */
+    public function setTimer()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function sharedData()
+    {
+
+    }
+    /*
+     * (long delay)
+     * methodSize : 1
+     */
+    public function timerStream()
+    {
+
+    }
+    /*
+     * (String deploymentID)
+     * (String deploymentID, Handler<AsyncResult<Void>> completionHandler)
+     * methodSize : 2
+     */
+    public function undeploy()
+    {
+
+    }
+    /*
+     * ()
+     * (VertxOptions options)
+     * methodSize : 2
+     */
+    public function vertx()
+    {
+
+    }
 }

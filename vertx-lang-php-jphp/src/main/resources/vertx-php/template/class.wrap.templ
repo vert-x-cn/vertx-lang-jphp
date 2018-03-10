@@ -1,69 +1,15 @@
-@includeNamed{'methods.templ'}
-@includeNamed{'class-methods.templ'}
+@code{var lang = "java";}
+@includeNamed{'commons.templ';}
 
 package @{type.raw.translatePackageName("php")};\n
 
-@foreach{importClass : importClassSet}
-import @{importClass};\n
-@end{}
-@Name("@{className}")\n
-@Namespace("@{type.raw.translatePackageName("php").replace(".", "\\\\")}")\n
-public class @{className} extends BaseWrapper<@{wrapperName}> {\n
-    \n
-    public @{className}(Environment env, @{wrapperName} wrappedObject) {\n
-        super(env, wrappedObject);\n
-    }\n
-    \n
-    public @{className}(Environment env, ClassEntity clazz) {\n
-        super(env, clazz);\n
-    }\n
-    \n
-    public @{wrapperName} getWrappedObject(){\n
-        return this.__wrappedObject;\n
-    }\n
 
-@foreach{methodName : methodsMap.keySet()}
-@foreach{method:methodsMap[methodName]}
-@code{
-    var isStatic = method.isStaticMethod;
-    var paramSize = method.params.size();
-}   
-\n
-    @Signature\n
-    //@{method.isDefaultMethod}\n
-    public@if{isStatic} static@end{}@comment{'@{parseTypeParams(method.typeParams, false)}'} @{getReturnType(type, method)} @{methodName}(@if{isStatic}Environment __env__@if{paramSize > 0}, @end{}@end{}@{getJavaParamInfos(method)}){\n
-        @includeNamed{'methodBody';method:method}
-    }\n
-@end{}
-@end{}
-@if{type.name == "io.vertx.core.Future"}
-    public void handle(Memory event) {\n
-        Future future = null;\n
-        io.vertx.core.AsyncResult<Memory> e = null;\n
-        try {\n
-            future = (Future) MemoryOperation.get(Future.class, Future.class).convert(__env__, null, event);\n
-        } catch (Throwable t) {\n
-\n
-        }\n
-        if (future == null) {\n
-            AsyncResult asyncResult = null;\n
-            try {\n
-                asyncResult = (AsyncResult) MemoryOperation.get(Future.class, Future.class).convert(__env__, null, event);\n
-            } catch (Throwable t) {\n
-\n
-            }\n
-            if (asyncResult != null) {\n
-                e = asyncResult.getWrappedObject();\n
-            }\n
-        } else {\n
-            e = future.getWrappedObject();\n
-        }\n
-        if (e != null) {\n
-            this.getWrappedObject().handle(e);\n
-        } else {\n
-            __env__.forwardThrow(new RuntimeException("event is not a async result"));\n
-        }\n
-    }
-@end{}
+import php.runtime.annotation.Reflection.Name;\n
+import php.runtime.annotation.Reflection.Namespace;\n
+import php.runtime.annotation.Reflection.Signature;\n
+
+@Name("@{className}")\n
+@Namespace("@{namespace}")\n
+public class @{className} {\n
 \n
 }\n

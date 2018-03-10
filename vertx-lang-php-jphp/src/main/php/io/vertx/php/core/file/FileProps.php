@@ -2,51 +2,73 @@
 namespace io\vertx\php\core\file;
 class FileProps
 {
-        
-    public function __construct($memory) 
+    
+    private function __construct()
     {
-    
+
     }
-    //8
-            
-        public function creationTime() 
-        {
-            
-        }
-            
-        public function lastAccessTime() 
-        {
-            
-        }
-            
-        public function lastModifiedTime() 
-        {
-            
-        }
-            
-        public function isDirectory() 
-        {
-            
-        }
-            
-        public function isOther() 
-        {
-            
-        }
-            
-        public function isRegularFile() 
-        {
-            
-        }
-            
-        public function isSymbolicLink() 
-        {
-            
-        }
-            
-        public function size() 
-        {
-            
-        }
-    
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function creationTime()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function isDirectory()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function isOther()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function isRegularFile()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function isSymbolicLink()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function lastAccessTime()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function lastModifiedTime()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function size()
+    {
+
+    }
 }

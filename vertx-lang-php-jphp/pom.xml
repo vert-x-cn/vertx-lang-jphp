@@ -162,7 +162,7 @@
                         <configuration>
                             <sources>
                                 <source>src/main/generated</source>
-                                <source>src/main/data</source>
+                                <!--<source>src/main/data</source>-->
                                 <source>src/main/api</source>
                             </sources>
                         </configuration>

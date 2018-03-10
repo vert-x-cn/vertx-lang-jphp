@@ -2,31 +2,49 @@
 namespace io\vertx\php\core\streams;
 class ReadStream
 {
-    //5
-            
-        public function exceptionHandler() 
-        {
-            
-        }
-            
-        public function handler() 
-        {
-            
-        }
-            
-        public function pause() 
-        {
-            
-        }
-            
-        public function resume() 
-        {
-            
-        }
-            
-        public function endHandler() 
-        {
-            
-        }
     
+    private function __construct()
+    {
+
+    }
+    /*
+     * (Handler<Void> endHandler)
+     * methodSize : 1
+     */
+    public function endHandler()
+    {
+
+    }
+    /*
+     * (Handler<Throwable> handler)
+     * methodSize : 1
+     */
+    public function exceptionHandler()
+    {
+
+    }
+    /*
+     * (Handler<T> handler)
+     * methodSize : 1
+     */
+    public function handler()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function pause()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function resume()
+    {
+
+    }
 }

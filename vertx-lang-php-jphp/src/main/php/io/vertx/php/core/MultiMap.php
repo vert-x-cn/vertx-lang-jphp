@@ -2,76 +2,113 @@
 namespace io\vertx\php\core;
 class MultiMap
 {
-        
-    public function __construct($memory) 
+    
+    private function __construct()
     {
-    
+
     }
-    //13
-            
-        public function caseInsensitiveMultiMap() 
-        {
-            
-        }
-            
-        public function get() 
-        {
-            
-        }
-            
-        public function getAll() 
-        {
-            
-        }
-            
-        public function contains() 
-        {
-            
-        }
-            
-        public function isEmpty() 
-        {
-            
-        }
-            
-        public function names() 
-        {
-            
-        }
-            
-        public function add() 
-        {
-            
-        }
-            
-        public function addAll() 
-        {
-            
-        }
-            
-        public function set() 
-        {
-            
-        }
-            
-        public function setAll() 
-        {
-            
-        }
-            
-        public function remove() 
-        {
-            
-        }
-            
-        public function clear() 
-        {
-            
-        }
-            
-        public function size() 
-        {
-            
-        }
-    
+    /*
+     * (String name, String value)
+     * methodSize : 1
+     */
+    public function add()
+    {
+
+    }
+    /*
+     * (MultiMap map)
+     * methodSize : 1
+     */
+    public function addAll()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function caseInsensitiveMultiMap()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function clear()
+    {
+
+    }
+    /*
+     * (String name)
+     * methodSize : 1
+     */
+    public function contains()
+    {
+
+    }
+    /*
+     * (String name)
+     * methodSize : 1
+     */
+    public function get()
+    {
+
+    }
+    /*
+     * (String name)
+     * methodSize : 1
+     */
+    public function getAll()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function isEmpty()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function names()
+    {
+
+    }
+    /*
+     * (String name)
+     * methodSize : 1
+     */
+    public function remove()
+    {
+
+    }
+    /*
+     * (String name, String value)
+     * methodSize : 1
+     */
+    public function set()
+    {
+
+    }
+    /*
+     * (MultiMap map)
+     * methodSize : 1
+     */
+    public function setAll()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function size()
+    {
+
+    }
 }

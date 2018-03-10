@@ -2,81 +2,114 @@
 namespace io\vertx\php\core\parsetools;
 class JsonParser
 {
-        
-    public function __construct($memory) 
+    
+    private function __construct()
     {
-    
+
     }
-    //14
-            
-        public function handle() 
-        {
-            
-        }
-            
-        public function newParser() 
-        {
-            
-        }
-            
-        public function newParser() 
-        {
-            
-        }
-            
-        public function write() 
-        {
-            
-        }
-            
-        public function end() 
-        {
-            
-        }
-            
-        public function objectEventMode() 
-        {
-            
-        }
-            
-        public function objectValueMode() 
-        {
-            
-        }
-            
-        public function arrayEventMode() 
-        {
-            
-        }
-            
-        public function arrayValueMode() 
-        {
-            
-        }
-            
-        public function pause() 
-        {
-            
-        }
-            
-        public function resume() 
-        {
-            
-        }
-            
-        public function endHandler() 
-        {
-            
-        }
-            
-        public function handler() 
-        {
-            
-        }
-            
-        public function exceptionHandler() 
-        {
-            
-        }
-    
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function arrayEventMode()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function arrayValueMode()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function end()
+    {
+
+    }
+    /*
+     * (Handler<Void> endHandler)
+     * methodSize : 1
+     */
+    public function endHandler()
+    {
+
+    }
+    /*
+     * (Handler<Throwable> handler)
+     * methodSize : 1
+     */
+    public function exceptionHandler()
+    {
+
+    }
+    /*
+     * (Buffer event)
+     * methodSize : 1
+     */
+    public function handle()
+    {
+
+    }
+    /*
+     * (Handler<JsonEvent> handler)
+     * methodSize : 1
+     */
+    public function handler()
+    {
+
+    }
+    /*
+     * ()
+     * (ReadStream<Buffer> stream)
+     * methodSize : 2
+     */
+    public function newParser()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function objectEventMode()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function objectValueMode()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function pause()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function resume()
+    {
+
+    }
+    /*
+     * (Buffer buffer)
+     * methodSize : 1
+     */
+    public function write()
+    {
+
+    }
 }

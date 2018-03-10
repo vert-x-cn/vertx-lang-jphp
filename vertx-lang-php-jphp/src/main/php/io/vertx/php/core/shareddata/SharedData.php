@@ -2,36 +2,49 @@
 namespace io\vertx\php\core\shareddata;
 class SharedData
 {
-        
-    public function __construct($memory) 
+    
+    private function __construct()
     {
-    
+
     }
-    //5
-            
-        public function getClusterWideMap() 
-        {
-            
-        }
-            
-        public function getLock() 
-        {
-            
-        }
-            
-        public function getLockWithTimeout() 
-        {
-            
-        }
-            
-        public function getCounter() 
-        {
-            
-        }
-            
-        public function getLocalMap() 
-        {
-            
-        }
-    
+    /*
+     * (String name, Handler<AsyncResult<AsyncMap<K,V>>> resultHandler)
+     * methodSize : 1
+     */
+    public function getClusterWideMap()
+    {
+
+    }
+    /*
+     * (String name, Handler<AsyncResult<Counter>> resultHandler)
+     * methodSize : 1
+     */
+    public function getCounter()
+    {
+
+    }
+    /*
+     * (String name)
+     * methodSize : 1
+     */
+    public function getLocalMap()
+    {
+
+    }
+    /*
+     * (String name, Handler<AsyncResult<Lock>> resultHandler)
+     * methodSize : 1
+     */
+    public function getLock()
+    {
+
+    }
+    /*
+     * (String name, long timeout, Handler<AsyncResult<Lock>> resultHandler)
+     * methodSize : 1
+     */
+    public function getLockWithTimeout()
+    {
+
+    }
 }

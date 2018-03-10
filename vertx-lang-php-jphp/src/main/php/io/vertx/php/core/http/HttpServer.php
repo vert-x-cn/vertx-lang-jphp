@@ -2,91 +2,95 @@
 namespace io\vertx\php\core\http;
 class HttpServer
 {
-        
-    public function __construct($memory) 
+    
+    private function __construct()
     {
-    
+
     }
-    //16
-            
-        public function isMetricsEnabled() 
-        {
-            
-        }
-            
-        public function requestStream() 
-        {
-            
-        }
-            
-        public function requestHandler() 
-        {
-            
-        }
-            
-        public function connectionHandler() 
-        {
-            
-        }
-            
-        public function exceptionHandler() 
-        {
-            
-        }
-            
-        public function websocketStream() 
-        {
-            
-        }
-            
-        public function websocketHandler() 
-        {
-            
-        }
-            
-        public function listen() 
-        {
-            
-        }
-            
-        public function listen() 
-        {
-            
-        }
-            
-        public function listen() 
-        {
-            
-        }
-            
-        public function listen() 
-        {
-            
-        }
-            
-        public function listen() 
-        {
-            
-        }
-            
-        public function listen() 
-        {
-            
-        }
-            
-        public function close() 
-        {
-            
-        }
-            
-        public function close() 
-        {
-            
-        }
-            
-        public function actualPort() 
-        {
-            
-        }
-    
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function actualPort()
+    {
+
+    }
+    /*
+     * ()
+     * (Handler<AsyncResult<Void>> completionHandler)
+     * methodSize : 2
+     */
+    public function close()
+    {
+
+    }
+    /*
+     * (Handler<HttpConnection> handler)
+     * methodSize : 1
+     */
+    public function connectionHandler()
+    {
+
+    }
+    /*
+     * (Handler<Throwable> handler)
+     * methodSize : 1
+     */
+    public function exceptionHandler()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function isMetricsEnabled()
+    {
+
+    }
+    /*
+     * ()
+     * (int port, String host)
+     * (int port, Handler<AsyncResult<HttpServer>> listenHandler)
+     * (int port, String host, Handler<AsyncResult<HttpServer>> listenHandler)
+     * (int port)
+     * (Handler<AsyncResult<HttpServer>> listenHandler)
+     * methodSize : 6
+     */
+    public function listen()
+    {
+
+    }
+    /*
+     * (Handler<HttpServerRequest> handler)
+     * methodSize : 1
+     */
+    public function requestHandler()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function requestStream()
+    {
+
+    }
+    /*
+     * (Handler<ServerWebSocket> handler)
+     * methodSize : 1
+     */
+    public function websocketHandler()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function websocketStream()
+    {
+
+    }
 }

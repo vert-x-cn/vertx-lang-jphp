@@ -2,21 +2,25 @@
 namespace io\vertx\php\core\datagram;
 class DatagramPacket
 {
-        
-    public function __construct($memory) 
+    
+    private function __construct()
     {
-    
+
     }
-    //2
-            
-        public function sender() 
-        {
-            
-        }
-            
-        public function data() 
-        {
-            
-        }
-    
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function data()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function sender()
+    {
+
+    }
 }

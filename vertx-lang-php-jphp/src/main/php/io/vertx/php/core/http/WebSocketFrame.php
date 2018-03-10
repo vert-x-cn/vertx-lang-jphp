@@ -2,66 +2,97 @@
 namespace io\vertx\php\core\http;
 class WebSocketFrame
 {
-        
-    public function __construct($memory) 
+    
+    private function __construct()
     {
-    
+
     }
-    //11
-            
-        public function binaryFrame() 
-        {
-            
-        }
-            
-        public function textFrame() 
-        {
-            
-        }
-            
-        public function pingFrame() 
-        {
-            
-        }
-            
-        public function pongFrame() 
-        {
-            
-        }
-            
-        public function continuationFrame() 
-        {
-            
-        }
-            
-        public function isText() 
-        {
-            
-        }
-            
-        public function isBinary() 
-        {
-            
-        }
-            
-        public function isContinuation() 
-        {
-            
-        }
-            
-        public function textData() 
-        {
-            
-        }
-            
-        public function binaryData() 
-        {
-            
-        }
-            
-        public function isFinal() 
-        {
-            
-        }
-    
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function binaryData()
+    {
+
+    }
+    /*
+     * (Buffer data, boolean isFinal)
+     * methodSize : 1
+     */
+    public function binaryFrame()
+    {
+
+    }
+    /*
+     * (Buffer data, boolean isFinal)
+     * methodSize : 1
+     */
+    public function continuationFrame()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function isBinary()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function isContinuation()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function isFinal()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function isText()
+    {
+
+    }
+    /*
+     * (Buffer data)
+     * methodSize : 1
+     */
+    public function pingFrame()
+    {
+
+    }
+    /*
+     * (Buffer data)
+     * methodSize : 1
+     */
+    public function pongFrame()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function textData()
+    {
+
+    }
+    /*
+     * (String str, boolean isFinal)
+     * methodSize : 1
+     */
+    public function textFrame()
+    {
+
+    }
 }

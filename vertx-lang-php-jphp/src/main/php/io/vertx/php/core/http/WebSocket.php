@@ -2,161 +2,242 @@
 namespace io\vertx\php\core\http;
 class WebSocket
 {
-        
-    public function __construct($memory) 
+    
+    private function __construct()
     {
-    
+
     }
-    //30
-            
-        public function end() 
-        {
-            
-        }
-            
-        public function writeQueueFull() 
-        {
-            
-        }
-            
-        public function binaryHandlerID() 
-        {
-            
-        }
-            
-        public function textHandlerID() 
-        {
-            
-        }
-            
-        public function subProtocol() 
-        {
-            
-        }
-            
-        public function writePing() 
-        {
-            
-        }
-            
-        public function writePong() 
-        {
-            
-        }
-            
-        public function textMessageHandler() 
-        {
-            
-        }
-            
-        public function binaryMessageHandler() 
-        {
-            
-        }
-            
-        public function pongHandler() 
-        {
-            
-        }
-            
-        public function end() 
-        {
-            
-        }
-            
-        public function close() 
-        {
-            
-        }
-            
-        public function remoteAddress() 
-        {
-            
-        }
-            
-        public function localAddress() 
-        {
-            
-        }
-            
-        public function isSsl() 
-        {
-            
-        }
-            
-        public function exceptionHandler() 
-        {
-            
-        }
-            
-        public function handler() 
-        {
-            
-        }
-            
-        public function pause() 
-        {
-            
-        }
-            
-        public function resume() 
-        {
-            
-        }
-            
-        public function endHandler() 
-        {
-            
-        }
-            
-        public function write() 
-        {
-            
-        }
-            
-        public function setWriteQueueMaxSize() 
-        {
-            
-        }
-            
-        public function drainHandler() 
-        {
-            
-        }
-            
-        public function writeFrame() 
-        {
-            
-        }
-            
-        public function writeFinalTextFrame() 
-        {
-            
-        }
-            
-        public function writeFinalBinaryFrame() 
-        {
-            
-        }
-            
-        public function writeBinaryMessage() 
-        {
-            
-        }
-            
-        public function writeTextMessage() 
-        {
-            
-        }
-            
-        public function closeHandler() 
-        {
-            
-        }
-            
-        public function frameHandler() 
-        {
-            
-        }
-    
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function binaryHandlerID()
+    {
+
+    }
+    /*
+     * (Handler<Buffer> handler)
+     * methodSize : 1
+     */
+    public function binaryMessageHandler()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function close()
+    {
+
+    }
+    /*
+     * (Handler<Void> handler)
+     * methodSize : 1
+     */
+    public function closeHandler()
+    {
+
+    }
+    /*
+     * (Handler<Void> handler)
+     * methodSize : 1
+     */
+    public function drainHandler()
+    {
+
+    }
+    /*
+     * (Buffer t)
+     * ()
+     * methodSize : 2
+     */
+    public function end()
+    {
+
+    }
+    /*
+     * (Handler<Void> endHandler)
+     * methodSize : 1
+     */
+    public function endHandler()
+    {
+
+    }
+    /*
+     * (Handler<Throwable> handler)
+     * methodSize : 1
+     */
+    public function exceptionHandler()
+    {
+
+    }
+    /*
+     * (Handler<WebSocketFrame> handler)
+     * methodSize : 1
+     */
+    public function frameHandler()
+    {
+
+    }
+    /*
+     * (Handler<Buffer> handler)
+     * methodSize : 1
+     */
+    public function handler()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function isSsl()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function localAddress()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function pause()
+    {
+
+    }
+    /*
+     * (Handler<Buffer> handler)
+     * methodSize : 1
+     */
+    public function pongHandler()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function remoteAddress()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function resume()
+    {
+
+    }
+    /*
+     * (int maxSize)
+     * methodSize : 1
+     */
+    public function setWriteQueueMaxSize()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function subProtocol()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function textHandlerID()
+    {
+
+    }
+    /*
+     * (Handler<String> handler)
+     * methodSize : 1
+     */
+    public function textMessageHandler()
+    {
+
+    }
+    /*
+     * (Buffer data)
+     * methodSize : 1
+     */
+    public function write()
+    {
+
+    }
+    /*
+     * (Buffer data)
+     * methodSize : 1
+     */
+    public function writeBinaryMessage()
+    {
+
+    }
+    /*
+     * (Buffer data)
+     * methodSize : 1
+     */
+    public function writeFinalBinaryFrame()
+    {
+
+    }
+    /*
+     * (String text)
+     * methodSize : 1
+     */
+    public function writeFinalTextFrame()
+    {
+
+    }
+    /*
+     * (WebSocketFrame frame)
+     * methodSize : 1
+     */
+    public function writeFrame()
+    {
+
+    }
+    /*
+     * (Buffer data)
+     * methodSize : 1
+     */
+    public function writePing()
+    {
+
+    }
+    /*
+     * (Buffer data)
+     * methodSize : 1
+     */
+    public function writePong()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function writeQueueFull()
+    {
+
+    }
+    /*
+     * (String text)
+     * methodSize : 1
+     */
+    public function writeTextMessage()
+    {
+
+    }
 }

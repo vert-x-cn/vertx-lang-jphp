@@ -2,11 +2,17 @@
 namespace io\vertx\php\core\streams;
 class StreamBase
 {
-    //1
-            
-        public function exceptionHandler() 
-        {
-            
-        }
     
+    private function __construct()
+    {
+
+    }
+    /*
+     * (Handler<Throwable> handler)
+     * methodSize : 1
+     */
+    public function exceptionHandler()
+    {
+
+    }
 }

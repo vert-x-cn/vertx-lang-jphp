@@ -2,16 +2,17 @@
 namespace io\vertx\php\core\shareddata;
 class Lock
 {
-        
-    public function __construct($memory) 
+    
+    private function __construct()
     {
-    
+
     }
-    //1
-            
-        public function release() 
-        {
-            
-        }
-    
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function release()
+    {
+
+    }
 }

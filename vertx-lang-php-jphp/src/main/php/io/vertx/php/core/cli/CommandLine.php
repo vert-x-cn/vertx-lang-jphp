@@ -1,104 +1,147 @@
 <?php 
 namespace io\vertx\php\core\cli;
-use io\vertx\php\core\cli\Argument;
-use io\vertx\php\core\cli\Option;
 class CommandLine
 {
-        
-    public function __construct($memory) 
+    
+    private function __construct()
     {
-    
+
     }
-    //18
-            
-        public function create() 
-        {
-            
-        }
-            
-        public function cli() 
-        {
-            
-        }
-            
-        public function allArguments() 
-        {
-            
-        }
-            
-        public function getOptionValue() 
-        {
-            
-        }
-            
-        public function getArgumentValue() 
-        {
-            
-        }
-            
-        public function getArgumentValue() 
-        {
-            
-        }
-            
-        public function isFlagEnabled() 
-        {
-            
-        }
-            
-        public function isOptionAssigned() 
-        {
-            
-        }
-            
-        public function getRawValues() 
-        {
-            
-        }
-            
-        public function getRawValuesForOption() 
-        {
-            
-        }
-            
-        public function getRawValuesForArgument() 
-        {
-            
-        }
-            
-        public function getRawValueForOption() 
-        {
-            
-        }
-            
-        public function acceptMoreValues() 
-        {
-            
-        }
-            
-        public function getRawValueForArgument() 
-        {
-            
-        }
-            
-        public function isArgumentAssigned() 
-        {
-            
-        }
-            
-        public function isSeenInCommandLine() 
-        {
-            
-        }
-            
-        public function isValid() 
-        {
-            
-        }
-            
-        public function isAskingForHelp() 
-        {
-            
-        }
-    
+    /*
+     * (Option option)
+     * methodSize : 1
+     */
+    public function acceptMoreValues()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function allArguments()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function cli()
+    {
+
+    }
+    /*
+     * (CLI cli)
+     * methodSize : 1
+     */
+    public function create()
+    {
+
+    }
+    /*
+     * (String name)
+     * (int index)
+     * methodSize : 2
+     */
+    public function getArgumentValue()
+    {
+
+    }
+    /*
+     * (String name)
+     * methodSize : 1
+     */
+    public function getOptionValue()
+    {
+
+    }
+    /*
+     * (Argument arg)
+     * methodSize : 1
+     */
+    public function getRawValueForArgument()
+    {
+
+    }
+    /*
+     * (Option option)
+     * methodSize : 1
+     */
+    public function getRawValueForOption()
+    {
+
+    }
+    /*
+     * (Option option)
+     * methodSize : 1
+     */
+    public function getRawValues()
+    {
+
+    }
+    /*
+     * (Argument argument)
+     * methodSize : 1
+     */
+    public function getRawValuesForArgument()
+    {
+
+    }
+    /*
+     * (Option option)
+     * methodSize : 1
+     */
+    public function getRawValuesForOption()
+    {
+
+    }
+    /*
+     * (Argument arg)
+     * methodSize : 1
+     */
+    public function isArgumentAssigned()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function isAskingForHelp()
+    {
+
+    }
+    /*
+     * (String name)
+     * methodSize : 1
+     */
+    public function isFlagEnabled()
+    {
+
+    }
+    /*
+     * (Option option)
+     * methodSize : 1
+     */
+    public function isOptionAssigned()
+    {
+
+    }
+    /*
+     * (Option option)
+     * methodSize : 1
+     */
+    public function isSeenInCommandLine()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function isValid()
+    {
+
+    }
 }

@@ -1,5 +1,6 @@
 package php.runtime.env;
 
+import io.vertx.lang.php.ClasspathFileResolver;
 import php.runtime.Information;
 import php.runtime.Memory;
 import php.runtime.common.*;
@@ -1291,6 +1292,8 @@ public class Environment {
 
     private Memory __import(String path, ArrayMemory locals, TraceInfo trace, String funcName, boolean once, Callback<Void, Void> callback)
             throws Throwable {
+        path = ClasspathFileResolver.resolveFilename(path);
+        System.out.println("--" + path);
         synchronized (moduleManager) {
             if (once && moduleManager.hasModule(path)) {
                 return Memory.TRUE;

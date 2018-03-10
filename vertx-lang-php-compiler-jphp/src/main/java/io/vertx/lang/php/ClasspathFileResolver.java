@@ -3,6 +3,7 @@ package io.vertx.lang.php;
 
 import io.vertx.core.Vertx;
 import io.vertx.core.VertxException;
+import io.vertx.core.impl.FileResolver;
 
 import java.io.File;
 import java.io.InputStream;
@@ -25,7 +26,10 @@ public class ClasspathFileResolver {
     private static List<String> sourceDirs = Arrays.asList("src/main/resources", "src/test/resources", "src/php");
     private static List<File> sourceDirFiles;
     private static boolean enabled;
-    private static File DEBUG_PHP_SOURCE_DIR = new File(".vertx/debug-php");
+
+    private static final String DEFAULT_CACHE_DIR_BASE = ".vertx";
+    private static final String CACHE_DIR_BASE = System.getProperty(FileResolver.CACHE_DIR_BASE_PROP_NAME, DEFAULT_CACHE_DIR_BASE);
+    private static File DEBUG_PHP_SOURCE_DIR = new File(CACHE_DIR_BASE, "debug-php");
 
     public static void init() {
         sourceDirFiles = new ArrayList<>(sourceDirs.size());

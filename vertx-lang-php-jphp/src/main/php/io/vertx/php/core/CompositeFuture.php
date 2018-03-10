@@ -2,201 +2,180 @@
 namespace io\vertx\php\core;
 class CompositeFuture
 {
-        
-    public function __construct($memory) 
+    
+    private function __construct()
     {
-    
+
     }
-    //38
-            
-        public function complete() 
-        {
-            
-        }
-            
-        public function tryComplete() 
-        {
-            
-        }
-            
-        public function result() 
-        {
-            
-        }
-            
-        public function compose() 
-        {
-            
-        }
-            
-        public function compose() 
-        {
-            
-        }
-            
-        public function map() 
-        {
-            
-        }
-            
-        public function completer() 
-        {
-            
-        }
-            
-        public function recover() 
-        {
-            
-        }
-            
-        public function otherwise() 
-        {
-            
-        }
-            
-        public function otherwise() 
-        {
-            
-        }
-            
-        public function otherwiseEmpty() 
-        {
-            
-        }
-            
-        public function all() 
-        {
-            
-        }
-            
-        public function all() 
-        {
-            
-        }
-            
-        public function all() 
-        {
-            
-        }
-            
-        public function all() 
-        {
-            
-        }
-            
-        public function all() 
-        {
-            
-        }
-            
-        public function all() 
-        {
-            
-        }
-            
-        public function any() 
-        {
-            
-        }
-            
-        public function any() 
-        {
-            
-        }
-            
-        public function any() 
-        {
-            
-        }
-            
-        public function any() 
-        {
-            
-        }
-            
-        public function any() 
-        {
-            
-        }
-            
-        public function any() 
-        {
-            
-        }
-            
-        public function join() 
-        {
-            
-        }
-            
-        public function join() 
-        {
-            
-        }
-            
-        public function join() 
-        {
-            
-        }
-            
-        public function join() 
-        {
-            
-        }
-            
-        public function join() 
-        {
-            
-        }
-            
-        public function join() 
-        {
-            
-        }
-            
-        public function setHandler() 
-        {
-            
-        }
-            
-        public function complete() 
-        {
-            
-        }
-            
-        public function tryComplete() 
-        {
-            
-        }
-            
-        public function cause() 
-        {
-            
-        }
-            
-        public function succeeded() 
-        {
-            
-        }
-            
-        public function failed() 
-        {
-            
-        }
-            
-        public function isComplete() 
-        {
-            
-        }
-            
-        public function resultAt() 
-        {
-            
-        }
-            
-        public function size() 
-        {
-            
-        }
-    
+    /*
+     * (Future<T1> f1, Future<T2> f2)
+     * (Future<T1> f1, Future<T2> f2, Future<T3> f3)
+     * (Future<T1> f1, Future<T2> f2, Future<T3> f3, Future<T4> f4)
+     * (Future<T1> f1, Future<T2> f2, Future<T3> f3, Future<T4> f4, Future<T5> f5)
+     * (Future<T1> f1, Future<T2> f2, Future<T3> f3, Future<T4> f4, Future<T5> f5, Future<T6> f6)
+     * (List<Future> futures)
+     * methodSize : 6
+     */
+    public function all()
+    {
+
+    }
+    /*
+     * (Future<T1> f1, Future<T2> f2)
+     * (Future<T1> f1, Future<T2> f2, Future<T3> f3)
+     * (Future<T1> f1, Future<T2> f2, Future<T3> f3, Future<T4> f4)
+     * (Future<T1> f1, Future<T2> f2, Future<T3> f3, Future<T4> f4, Future<T5> f5)
+     * (Future<T1> f1, Future<T2> f2, Future<T3> f3, Future<T4> f4, Future<T5> f5, Future<T6> f6)
+     * (List<Future> futures)
+     * methodSize : 6
+     */
+    public function any()
+    {
+
+    }
+    /*
+     * (int index)
+     * methodSize : 1
+     */
+    public function cause()
+    {
+
+    }
+    /*
+     * (CompositeFuture result)
+     * ()
+     * methodSize : 2
+     */
+    public function complete()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function completer()
+    {
+
+    }
+    /*
+     * (Handler<CompositeFuture> handler, Future<U> next)
+     * (Function<CompositeFuture,Future<U>> mapper)
+     * methodSize : 2
+     */
+    public function compose()
+    {
+
+    }
+    /*
+     * (int index)
+     * methodSize : 1
+     */
+    public function failed()
+    {
+
+    }
+    /*
+     * (int index)
+     * methodSize : 1
+     */
+    public function isComplete()
+    {
+
+    }
+    /*
+     * (Future<T1> f1, Future<T2> f2)
+     * (Future<T1> f1, Future<T2> f2, Future<T3> f3)
+     * (Future<T1> f1, Future<T2> f2, Future<T3> f3, Future<T4> f4)
+     * (Future<T1> f1, Future<T2> f2, Future<T3> f3, Future<T4> f4, Future<T5> f5)
+     * (Future<T1> f1, Future<T2> f2, Future<T3> f3, Future<T4> f4, Future<T5> f5, Future<T6> f6)
+     * (List<Future> futures)
+     * methodSize : 6
+     */
+    public function join()
+    {
+
+    }
+    /*
+     * (Function<CompositeFuture,U> mapper)
+     * methodSize : 1
+     */
+    public function map()
+    {
+
+    }
+    /*
+     * (Function<Throwable,CompositeFuture> mapper)
+     * (CompositeFuture value)
+     * methodSize : 2
+     */
+    public function otherwise()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function otherwiseEmpty()
+    {
+
+    }
+    /*
+     * (Function<Throwable,Future<CompositeFuture>> mapper)
+     * methodSize : 1
+     */
+    public function recover()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function result()
+    {
+
+    }
+    /*
+     * (int index)
+     * methodSize : 1
+     */
+    public function resultAt()
+    {
+
+    }
+    /*
+     * (Handler<AsyncResult<CompositeFuture>> handler)
+     * methodSize : 1
+     */
+    public function setHandler()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function size()
+    {
+
+    }
+    /*
+     * (int index)
+     * methodSize : 1
+     */
+    public function succeeded()
+    {
+
+    }
+    /*
+     * (CompositeFuture result)
+     * ()
+     * methodSize : 2
+     */
+    public function tryComplete()
+    {
+
+    }
 }

@@ -2,11 +2,17 @@
 namespace io\vertx\php\core\metrics;
 class Measured
 {
-    //1
-            
-        public function isMetricsEnabled() 
-        {
-            
-        }
     
+    private function __construct()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function isMetricsEnabled()
+    {
+
+    }
 }

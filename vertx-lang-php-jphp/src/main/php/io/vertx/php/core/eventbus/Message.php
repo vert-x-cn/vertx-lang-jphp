@@ -1,63 +1,69 @@
 <?php 
 namespace io\vertx\php\core\eventbus;
-use io\vertx\php\core\eventbus\DeliveryOptions;
 class Message
 {
-        
-    public function __construct($memory) 
+    
+    private function __construct()
     {
-    
+
     }
-    //10
-            
-        public function address() 
-        {
-            
-        }
-            
-        public function headers() 
-        {
-            
-        }
-            
-        public function body() 
-        {
-            
-        }
-            
-        public function replyAddress() 
-        {
-            
-        }
-            
-        public function isSend() 
-        {
-            
-        }
-            
-        public function reply() 
-        {
-            
-        }
-            
-        public function reply() 
-        {
-            
-        }
-            
-        public function reply() 
-        {
-            
-        }
-            
-        public function reply() 
-        {
-            
-        }
-            
-        public function fail() 
-        {
-            
-        }
-    
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function address()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function body()
+    {
+
+    }
+    /*
+     * (int failureCode, String message)
+     * methodSize : 1
+     */
+    public function fail()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function headers()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function isSend()
+    {
+
+    }
+    /*
+     * (Object message)
+     * (Object message, Handler<AsyncResult<Message<R>>> replyHandler)
+     * (Object message, DeliveryOptions options)
+     * (Object message, DeliveryOptions options, Handler<AsyncResult<Message<R>>> replyHandler)
+     * methodSize : 4
+     */
+    public function reply()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function replyAddress()
+    {
+
+    }
 }

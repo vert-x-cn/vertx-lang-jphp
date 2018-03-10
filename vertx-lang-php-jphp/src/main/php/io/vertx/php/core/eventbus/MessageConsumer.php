@@ -2,76 +2,106 @@
 namespace io\vertx\php\core\eventbus;
 class MessageConsumer
 {
-        
-    public function __construct($memory) 
+    
+    private function __construct()
     {
-    
+
     }
-    //13
-            
-        public function exceptionHandler() 
-        {
-            
-        }
-            
-        public function handler() 
-        {
-            
-        }
-            
-        public function pause() 
-        {
-            
-        }
-            
-        public function resume() 
-        {
-            
-        }
-            
-        public function endHandler() 
-        {
-            
-        }
-            
-        public function bodyStream() 
-        {
-            
-        }
-            
-        public function isRegistered() 
-        {
-            
-        }
-            
-        public function address() 
-        {
-            
-        }
-            
-        public function setMaxBufferedMessages() 
-        {
-            
-        }
-            
-        public function getMaxBufferedMessages() 
-        {
-            
-        }
-            
-        public function completionHandler() 
-        {
-            
-        }
-            
-        public function unregister() 
-        {
-            
-        }
-            
-        public function unregister() 
-        {
-            
-        }
-    
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function address()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function bodyStream()
+    {
+
+    }
+    /*
+     * (Handler<AsyncResult<Void>> completionHandler)
+     * methodSize : 1
+     */
+    public function completionHandler()
+    {
+
+    }
+    /*
+     * (Handler<Void> endHandler)
+     * methodSize : 1
+     */
+    public function endHandler()
+    {
+
+    }
+    /*
+     * (Handler<Throwable> handler)
+     * methodSize : 1
+     */
+    public function exceptionHandler()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function getMaxBufferedMessages()
+    {
+
+    }
+    /*
+     * (Handler<Message<T>> handler)
+     * methodSize : 1
+     */
+    public function handler()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function isRegistered()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function pause()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function resume()
+    {
+
+    }
+    /*
+     * (int maxBufferedMessages)
+     * methodSize : 1
+     */
+    public function setMaxBufferedMessages()
+    {
+
+    }
+    /*
+     * ()
+     * (Handler<AsyncResult<Void>> completionHandler)
+     * methodSize : 2
+     */
+    public function unregister()
+    {
+
+    }
 }

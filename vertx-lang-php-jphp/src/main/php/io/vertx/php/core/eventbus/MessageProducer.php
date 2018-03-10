@@ -1,73 +1,92 @@
 <?php 
 namespace io\vertx\php\core\eventbus;
-use io\vertx\php\core\eventbus\DeliveryOptions;
 class MessageProducer
 {
-        
-    public function __construct($memory) 
+    
+    private function __construct()
     {
-    
+
     }
-    //12
-            
-        public function end() 
-        {
-            
-        }
-            
-        public function writeQueueFull() 
-        {
-            
-        }
-            
-        public function send() 
-        {
-            
-        }
-            
-        public function send() 
-        {
-            
-        }
-            
-        public function exceptionHandler() 
-        {
-            
-        }
-            
-        public function write() 
-        {
-            
-        }
-            
-        public function setWriteQueueMaxSize() 
-        {
-            
-        }
-            
-        public function drainHandler() 
-        {
-            
-        }
-            
-        public function deliveryOptions() 
-        {
-            
-        }
-            
-        public function address() 
-        {
-            
-        }
-            
-        public function end() 
-        {
-            
-        }
-            
-        public function close() 
-        {
-            
-        }
-    
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function address()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function close()
+    {
+
+    }
+    /*
+     * (DeliveryOptions options)
+     * methodSize : 1
+     */
+    public function deliveryOptions()
+    {
+
+    }
+    /*
+     * (Handler<Void> handler)
+     * methodSize : 1
+     */
+    public function drainHandler()
+    {
+
+    }
+    /*
+     * (T t)
+     * ()
+     * methodSize : 2
+     */
+    public function end()
+    {
+
+    }
+    /*
+     * (Handler<Throwable> handler)
+     * methodSize : 1
+     */
+    public function exceptionHandler()
+    {
+
+    }
+    /*
+     * (T message)
+     * (T message, Handler<AsyncResult<Message<R>>> replyHandler)
+     * methodSize : 2
+     */
+    public function send()
+    {
+
+    }
+    /*
+     * (int maxSize)
+     * methodSize : 1
+     */
+    public function setWriteQueueMaxSize()
+    {
+
+    }
+    /*
+     * (T data)
+     * methodSize : 1
+     */
+    public function write()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function writeQueueFull()
+    {
+
+    }
 }

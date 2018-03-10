@@ -2,26 +2,33 @@
 namespace io\vertx\php\core\file;
 class FileSystemProps
 {
-        
-    public function __construct($memory) 
+    
+    private function __construct()
     {
-    
+
     }
-    //3
-            
-        public function totalSpace() 
-        {
-            
-        }
-            
-        public function unallocatedSpace() 
-        {
-            
-        }
-            
-        public function usableSpace() 
-        {
-            
-        }
-    
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function totalSpace()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function unallocatedSpace()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function usableSpace()
+    {
+
+    }
 }

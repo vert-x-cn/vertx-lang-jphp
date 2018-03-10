@@ -1,98 +1,90 @@
 <?php 
 namespace io\vertx\php\core\eventbus;
-use io\vertx\php\core\eventbus\DeliveryOptions;
 class EventBus
 {
-        
-    public function __construct($memory) 
+    
+    private function __construct()
     {
-    
+
     }
-    //17
-            
-        public function isMetricsEnabled() 
-        {
-            
-        }
-            
-        public function send() 
-        {
-            
-        }
-            
-        public function send() 
-        {
-            
-        }
-            
-        public function send() 
-        {
-            
-        }
-            
-        public function send() 
-        {
-            
-        }
-            
-        public function publish() 
-        {
-            
-        }
-            
-        public function publish() 
-        {
-            
-        }
-            
-        public function consumer() 
-        {
-            
-        }
-            
-        public function consumer() 
-        {
-            
-        }
-            
-        public function localConsumer() 
-        {
-            
-        }
-            
-        public function localConsumer() 
-        {
-            
-        }
-            
-        public function sender() 
-        {
-            
-        }
-            
-        public function sender() 
-        {
-            
-        }
-            
-        public function publisher() 
-        {
-            
-        }
-            
-        public function publisher() 
-        {
-            
-        }
-            
-        public function addInterceptor() 
-        {
-            
-        }
-            
-        public function removeInterceptor() 
-        {
-            
-        }
-    
+    /*
+     * (Handler<SendContext> interceptor)
+     * methodSize : 1
+     */
+    public function addInterceptor()
+    {
+
+    }
+    /*
+     * (String address)
+     * (String address, Handler<Message<T>> handler)
+     * methodSize : 2
+     */
+    public function consumer()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function isMetricsEnabled()
+    {
+
+    }
+    /*
+     * (String address)
+     * (String address, Handler<Message<T>> handler)
+     * methodSize : 2
+     */
+    public function localConsumer()
+    {
+
+    }
+    /*
+     * (String address, Object message)
+     * (String address, Object message, DeliveryOptions options)
+     * methodSize : 2
+     */
+    public function publish()
+    {
+
+    }
+    /*
+     * (String address)
+     * (String address, DeliveryOptions options)
+     * methodSize : 2
+     */
+    public function publisher()
+    {
+
+    }
+    /*
+     * (Handler<SendContext> interceptor)
+     * methodSize : 1
+     */
+    public function removeInterceptor()
+    {
+
+    }
+    /*
+     * (String address, Object message)
+     * (String address, Object message, Handler<AsyncResult<Message<T>>> replyHandler)
+     * (String address, Object message, DeliveryOptions options)
+     * (String address, Object message, DeliveryOptions options, Handler<AsyncResult<Message<T>>> replyHandler)
+     * methodSize : 4
+     */
+    public function send()
+    {
+
+    }
+    /*
+     * (String address)
+     * (String address, DeliveryOptions options)
+     * methodSize : 2
+     */
+    public function sender()
+    {
+
+    }
 }

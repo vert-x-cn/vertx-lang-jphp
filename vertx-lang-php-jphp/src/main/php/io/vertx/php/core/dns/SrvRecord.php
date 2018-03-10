@@ -2,46 +2,65 @@
 namespace io\vertx\php\core\dns;
 class SrvRecord
 {
-        
-    public function __construct($memory) 
+    
+    private function __construct()
     {
-    
+
     }
-    //7
-            
-        public function priority() 
-        {
-            
-        }
-            
-        public function weight() 
-        {
-            
-        }
-            
-        public function port() 
-        {
-            
-        }
-            
-        public function name() 
-        {
-            
-        }
-            
-        public function protocol() 
-        {
-            
-        }
-            
-        public function service() 
-        {
-            
-        }
-            
-        public function target() 
-        {
-            
-        }
-    
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function name()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function port()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function priority()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function protocol()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function service()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function target()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function weight()
+    {
+
+    }
 }

@@ -2,36 +2,49 @@
 namespace io\vertx\php\core\net;
 class SocketAddress
 {
-        
-    public function __construct($memory) 
+    
+    private function __construct()
     {
-    
+
     }
-    //5
-            
-        public function inetSocketAddress() 
-        {
-            
-        }
-            
-        public function domainSocketAddress() 
-        {
-            
-        }
-            
-        public function host() 
-        {
-            
-        }
-            
-        public function port() 
-        {
-            
-        }
-            
-        public function path() 
-        {
-            
-        }
-    
+    /*
+     * (String path)
+     * methodSize : 1
+     */
+    public function domainSocketAddress()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function host()
+    {
+
+    }
+    /*
+     * (int port, String host)
+     * methodSize : 1
+     */
+    public function inetSocketAddress()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function path()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function port()
+    {
+
+    }
 }

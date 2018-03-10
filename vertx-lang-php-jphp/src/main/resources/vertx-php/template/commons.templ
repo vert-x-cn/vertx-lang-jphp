@@ -1,0 +1,137 @@
+@code{
+    import java.util.HashMap;
+    import java.util.TreeMap;
+    import java.util.TreeSet;
+
+    var java = "java";
+    var php = "php";
+    var className = type.simpleName;
+    var namespace = type.raw.translatePackageName("php").replace(".", lang == java ? "\\\\" : "\\");
+
+    var importClassSet = new TreeSet();
+    def addImport(typeInfo){
+        
+    }
+
+    var methodsMap = new TreeMap();
+    var paramsMap = new HashMap();
+    var sameParamSizeMethod = new HashMap();
+    foreach(method : methods) {
+        var methodName = method.name;
+        var methodParams = method.params;
+        var paramSize = methodParams.size();
+        var paramKey = methodName + "-" + paramSize;
+        if(paramsMap[paramKey] != null) {
+            sameParamSizeMethod[paramKey].add(method);
+            var srcParams = paramsMap[paramKey];
+            for(int i = 0; i < paramSize; i++) {
+                var curParam = methodParams.get(i);
+                var sameType = false;
+                var curSrcParams = srcParams.get(i);
+                for(int j = 0; j < curSrcParams.size(); j++) {
+                    var param = curSrcParams.get(j);
+                    if(curParam.type.name == param.type.name) {
+                        sameType = true;
+                    } else {
+                        if(lang == java || curParam.type.kind == CLASS_API) {
+                            addImport(curParam.type)
+                        }
+                        if(lang == java) {
+                            importClassSet.add("php.runtime.Memory");
+                        }
+                    }
+                }
+                if(!sameType) {
+                    curSrcParams.add(curParam);
+                }
+            }
+        } else {
+            var ms = methodsMap[methodName];
+            if(ms == null) {
+                methodsMap[methodName] = [method];
+            } else {
+                ms.add(method);
+            }
+            var params = [];
+            foreach(param : methodParams) {
+                params.add([param]);
+                if(lang == java || param.type.kind == CLASS_API) {
+                    addImport(param.type)
+                }
+            }
+            paramsMap[paramKey] = params;
+            sameParamSizeMethod[paramKey] = [method];
+        }
+    }
+
+
+    def getParamInfos(method, withType){
+        var methods = methodsMap[method.name];
+
+    }
+    def getPhpParamInfos(methodName){
+        var methods = methodsMap[methodName];
+    }
+
+    def getParamName(num){
+        var res = '';
+        for(int k = 0; k < num; k++) {
+            if(res != '') {
+                res += ", ";
+            }
+            res += "$arg" + k;
+        }
+        return res;
+    }
+
+    def wrapSimpleType(typeInfo){
+        var typeKind = typeInfo.kind;
+        if(typeKind == CLASS_STRING) {
+            return lang == java ? "String" : "string";
+        } else if(typeKind == CLASS_BOXED_PRIMITIVE) {
+            return lang == java ? "Memory(BOXED)" : "array";
+        } else if(typeKind == CLASS_PRIMITIVE) {
+            var typeName = typeInfo.name;
+            return lang == java ? typeName : wrapPrimitiveToPhp(typeName);
+        } else if(typeKind == CLASS_ENUM) {
+            return lang == java ? "String" : "string";
+        } else if(typeKind == CLASS_JSON_OBJECT) {
+            return lang == java ? "String" : "string";
+        } else if(typeKind == CLASS_JSON_ARRAY) {
+            return lang == java ? "String" : "string";
+        } else if(typeKind == CLASS_THROWABLE) {
+            return lang == java ? "String" : "string";
+        } else if(typeKind == CLASS_VOID) {
+            return lang == java ? "String" : "string";
+        } else if(typeKind == CLASS_OBJECT) {
+            return lang == java ? "String" : "string";
+        } else if(typeKind == CLASS_LIST) {
+            return lang == java ? "String" : "string";
+        } else if(typeKind == CLASS_SET) {
+            return lang == java ? "String" : "string";
+        } else if(typeKind == CLASS_MAP) {
+            return lang == java ? "String" : "string";
+        } else if(typeKind == CLASS_API) {
+            return lang == java ? "String" : "string";
+        } else if(typeKind == CLASS_DATA_OBJECT) {
+            return lang == java ? "String" : "string";
+        } else if(typeKind == CLASS_HANDLER) {
+            return lang == java ? "String" : "string";
+        } else if(typeKind == CLASS_FUNCTION) {
+            return lang == java ? "String" : "string";
+        } else if(typeKind == CLASS_ASYNC_RESULT) {
+            return lang == java ? "String" : "string";
+        } else if(typeKind == CLASS_CLASS_TYPE) {
+            return lang == java ? "String" : "string";
+        } else if(typeKind == CLASS_OTHER) {
+            return lang == java ? "String" : "string";
+        }
+    }
+
+    def wrapPrimitiveToPhp(typeName){
+        if (typeName == "boolean") {
+            return "bool";
+        }
+    }
+
+}

@@ -2,216 +2,281 @@
 namespace io\vertx\php\core\http;
 class HttpClientRequest
 {
-        
-    public function __construct($memory) 
+    
+    private function __construct()
     {
-    
+
     }
-    //41
-            
-        public function writeQueueFull() 
-        {
-            
-        }
-            
-        public function exceptionHandler() 
-        {
-            
-        }
-            
-        public function write() 
-        {
-            
-        }
-            
-        public function setWriteQueueMaxSize() 
-        {
-            
-        }
-            
-        public function drainHandler() 
-        {
-            
-        }
-            
-        public function handler() 
-        {
-            
-        }
-            
-        public function pause() 
-        {
-            
-        }
-            
-        public function resume() 
-        {
-            
-        }
-            
-        public function endHandler() 
-        {
-            
-        }
-            
-        public function setFollowRedirects() 
-        {
-            
-        }
-            
-        public function setChunked() 
-        {
-            
-        }
-            
-        public function isChunked() 
-        {
-            
-        }
-            
-        public function method() 
-        {
-            
-        }
-            
-        public function getRawMethod() 
-        {
-            
-        }
-            
-        public function setRawMethod() 
-        {
-            
-        }
-            
-        public function absoluteURI() 
-        {
-            
-        }
-            
-        public function uri() 
-        {
-            
-        }
-            
-        public function path() 
-        {
-            
-        }
-            
-        public function query() 
-        {
-            
-        }
-            
-        public function setHost() 
-        {
-            
-        }
-            
-        public function getHost() 
-        {
-            
-        }
-            
-        public function headers() 
-        {
-            
-        }
-            
-        public function putHeader() 
-        {
-            
-        }
-            
-        public function write() 
-        {
-            
-        }
-            
-        public function write() 
-        {
-            
-        }
-            
-        public function continueHandler() 
-        {
-            
-        }
-            
-        public function sendHead() 
-        {
-            
-        }
-            
-        public function sendHead() 
-        {
-            
-        }
-            
-        public function end() 
-        {
-            
-        }
-            
-        public function end() 
-        {
-            
-        }
-            
-        public function end() 
-        {
-            
-        }
-            
-        public function end() 
-        {
-            
-        }
-            
-        public function setTimeout() 
-        {
-            
-        }
-            
-        public function pushHandler() 
-        {
-            
-        }
-            
-        public function reset() 
-        {
-            
-        }
-            
-        public function reset() 
-        {
-            
-        }
-            
-        public function connection() 
-        {
-            
-        }
-            
-        public function connectionHandler() 
-        {
-            
-        }
-            
-        public function writeCustomFrame() 
-        {
-            
-        }
-            
-        public function streamId() 
-        {
-            
-        }
-            
-        public function writeCustomFrame() 
-        {
-            
-        }
-    
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function absoluteURI()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function connection()
+    {
+
+    }
+    /*
+     * (Handler<HttpConnection> handler)
+     * methodSize : 1
+     */
+    public function connectionHandler()
+    {
+
+    }
+    /*
+     * (Handler<Void> handler)
+     * methodSize : 1
+     */
+    public function continueHandler()
+    {
+
+    }
+    /*
+     * (Handler<Void> handler)
+     * methodSize : 1
+     */
+    public function drainHandler()
+    {
+
+    }
+    /*
+     * (String chunk)
+     * (Buffer chunk)
+     * (String chunk, String enc)
+     * ()
+     * methodSize : 4
+     */
+    public function end()
+    {
+
+    }
+    /*
+     * (Handler<Void> endHandler)
+     * methodSize : 1
+     */
+    public function endHandler()
+    {
+
+    }
+    /*
+     * (Handler<Throwable> handler)
+     * methodSize : 1
+     */
+    public function exceptionHandler()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function getHost()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function getRawMethod()
+    {
+
+    }
+    /*
+     * (Handler<HttpClientResponse> handler)
+     * methodSize : 1
+     */
+    public function handler()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function headers()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function isChunked()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function method()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function path()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function pause()
+    {
+
+    }
+    /*
+     * (Handler<HttpClientRequest> handler)
+     * methodSize : 1
+     */
+    public function pushHandler()
+    {
+
+    }
+    /*
+     * (String name, String value)
+     * methodSize : 1
+     */
+    public function putHeader()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function query()
+    {
+
+    }
+    /*
+     * ()
+     * (long code)
+     * methodSize : 2
+     */
+    public function reset()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function resume()
+    {
+
+    }
+    /*
+     * ()
+     * (Handler<HttpVersion> completionHandler)
+     * methodSize : 2
+     */
+    public function sendHead()
+    {
+
+    }
+    /*
+     * (boolean chunked)
+     * methodSize : 1
+     */
+    public function setChunked()
+    {
+
+    }
+    /*
+     * (boolean followRedirects)
+     * methodSize : 1
+     */
+    public function setFollowRedirects()
+    {
+
+    }
+    /*
+     * (String host)
+     * methodSize : 1
+     */
+    public function setHost()
+    {
+
+    }
+    /*
+     * (String method)
+     * methodSize : 1
+     */
+    public function setRawMethod()
+    {
+
+    }
+    /*
+     * (long timeoutMs)
+     * methodSize : 1
+     */
+    public function setTimeout()
+    {
+
+    }
+    /*
+     * (int maxSize)
+     * methodSize : 1
+     */
+    public function setWriteQueueMaxSize()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function streamId()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function uri()
+    {
+
+    }
+    /*
+     * (Buffer data)
+     * (String chunk)
+     * (String chunk, String enc)
+     * methodSize : 3
+     */
+    public function write()
+    {
+
+    }
+    /*
+     * (int type, int flags, Buffer payload)
+     * (HttpFrame frame)
+     * methodSize : 2
+     */
+    public function writeCustomFrame()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function writeQueueFull()
+    {
+
+    }
 }

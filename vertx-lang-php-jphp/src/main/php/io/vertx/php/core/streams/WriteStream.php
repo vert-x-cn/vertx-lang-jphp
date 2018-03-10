@@ -2,41 +2,58 @@
 namespace io\vertx\php\core\streams;
 class WriteStream
 {
-    //7
-            
-        public function exceptionHandler() 
-        {
-            
-        }
-            
-        public function write() 
-        {
-            
-        }
-            
-        public function end() 
-        {
-            
-        }
-            
-        public function end() 
-        {
-            
-        }
-            
-        public function setWriteQueueMaxSize() 
-        {
-            
-        }
-            
-        public function writeQueueFull() 
-        {
-            
-        }
-            
-        public function drainHandler() 
-        {
-            
-        }
     
+    private function __construct()
+    {
+
+    }
+    /*
+     * (Handler<Void> handler)
+     * methodSize : 1
+     */
+    public function drainHandler()
+    {
+
+    }
+    /*
+     * ()
+     * (T t)
+     * methodSize : 2
+     */
+    public function end()
+    {
+
+    }
+    /*
+     * (Handler<Throwable> handler)
+     * methodSize : 1
+     */
+    public function exceptionHandler()
+    {
+
+    }
+    /*
+     * (int maxSize)
+     * methodSize : 1
+     */
+    public function setWriteQueueMaxSize()
+    {
+
+    }
+    /*
+     * (T data)
+     * methodSize : 1
+     */
+    public function write()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function writeQueueFull()
+    {
+
+    }
 }

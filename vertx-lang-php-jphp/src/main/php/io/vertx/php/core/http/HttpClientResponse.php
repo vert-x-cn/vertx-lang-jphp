@@ -2,96 +2,145 @@
 namespace io\vertx\php\core\http;
 class HttpClientResponse
 {
-        
-    public function __construct($memory) 
+    
+    private function __construct()
     {
-    
+
     }
-    //17
-            
-        public function resume() 
-        {
-            
-        }
-            
-        public function exceptionHandler() 
-        {
-            
-        }
-            
-        public function handler() 
-        {
-            
-        }
-            
-        public function pause() 
-        {
-            
-        }
-            
-        public function endHandler() 
-        {
-            
-        }
-            
-        public function version() 
-        {
-            
-        }
-            
-        public function statusCode() 
-        {
-            
-        }
-            
-        public function statusMessage() 
-        {
-            
-        }
-            
-        public function headers() 
-        {
-            
-        }
-            
-        public function getHeader() 
-        {
-            
-        }
-            
-        public function getTrailer() 
-        {
-            
-        }
-            
-        public function trailers() 
-        {
-            
-        }
-            
-        public function cookies() 
-        {
-            
-        }
-            
-        public function bodyHandler() 
-        {
-            
-        }
-            
-        public function customFrameHandler() 
-        {
-            
-        }
-            
-        public function netSocket() 
-        {
-            
-        }
-            
-        public function request() 
-        {
-            
-        }
-    
+    /*
+     * (Handler<Buffer> bodyHandler)
+     * methodSize : 1
+     */
+    public function bodyHandler()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function cookies()
+    {
+
+    }
+    /*
+     * (Handler<HttpFrame> handler)
+     * methodSize : 1
+     */
+    public function customFrameHandler()
+    {
+
+    }
+    /*
+     * (Handler<Void> endHandler)
+     * methodSize : 1
+     */
+    public function endHandler()
+    {
+
+    }
+    /*
+     * (Handler<Throwable> handler)
+     * methodSize : 1
+     */
+    public function exceptionHandler()
+    {
+
+    }
+    /*
+     * (String headerName)
+     * methodSize : 1
+     */
+    public function getHeader()
+    {
+
+    }
+    /*
+     * (String trailerName)
+     * methodSize : 1
+     */
+    public function getTrailer()
+    {
+
+    }
+    /*
+     * (Handler<Buffer> handler)
+     * methodSize : 1
+     */
+    public function handler()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function headers()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function netSocket()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function pause()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function request()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function resume()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function statusCode()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function statusMessage()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function trailers()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function version()
+    {
+
+    }
 }

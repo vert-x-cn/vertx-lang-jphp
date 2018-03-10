@@ -2,76 +2,113 @@
 namespace io\vertx\php\core\http;
 class HttpServerFileUpload
 {
-        
-    public function __construct($memory) 
+    
+    private function __construct()
     {
-    
+
     }
-    //13
-            
-        public function exceptionHandler() 
-        {
-            
-        }
-            
-        public function handler() 
-        {
-            
-        }
-            
-        public function endHandler() 
-        {
-            
-        }
-            
-        public function pause() 
-        {
-            
-        }
-            
-        public function resume() 
-        {
-            
-        }
-            
-        public function streamToFileSystem() 
-        {
-            
-        }
-            
-        public function filename() 
-        {
-            
-        }
-            
-        public function name() 
-        {
-            
-        }
-            
-        public function contentType() 
-        {
-            
-        }
-            
-        public function contentTransferEncoding() 
-        {
-            
-        }
-            
-        public function charset() 
-        {
-            
-        }
-            
-        public function size() 
-        {
-            
-        }
-            
-        public function isSizeAvailable() 
-        {
-            
-        }
-    
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function charset()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function contentTransferEncoding()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function contentType()
+    {
+
+    }
+    /*
+     * (Handler<Void> endHandler)
+     * methodSize : 1
+     */
+    public function endHandler()
+    {
+
+    }
+    /*
+     * (Handler<Throwable> handler)
+     * methodSize : 1
+     */
+    public function exceptionHandler()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function filename()
+    {
+
+    }
+    /*
+     * (Handler<Buffer> handler)
+     * methodSize : 1
+     */
+    public function handler()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function isSizeAvailable()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function name()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function pause()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function resume()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function size()
+    {
+
+    }
+    /*
+     * (String filename)
+     * methodSize : 1
+     */
+    public function streamToFileSystem()
+    {
+
+    }
 }

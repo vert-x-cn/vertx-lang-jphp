@@ -2,31 +2,41 @@
 namespace io\vertx\php\core\eventbus;
 class SendContext
 {
-        
-    public function __construct($memory) 
+    
+    private function __construct()
     {
-    
+
     }
-    //4
-            
-        public function message() 
-        {
-            
-        }
-            
-        public function next() 
-        {
-            
-        }
-            
-        public function send() 
-        {
-            
-        }
-            
-        public function sentBody() 
-        {
-            
-        }
-    
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function message()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function next()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function send()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function sentBody()
+    {
+
+    }
 }

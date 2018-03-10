@@ -2,46 +2,58 @@
 namespace io\vertx\php\core\net;
 class SelfSignedCertificate
 {
-        
-    public function __construct($memory) 
+    
+    private function __construct()
     {
-    
+
     }
-    //7
-            
-        public function keyCertOptions() 
-        {
-            
-        }
-            
-        public function trustOptions() 
-        {
-            
-        }
-            
-        public function privateKeyPath() 
-        {
-            
-        }
-            
-        public function certificatePath() 
-        {
-            
-        }
-            
-        public function delete() 
-        {
-            
-        }
-            
-        public function create() 
-        {
-            
-        }
-            
-        public function create() 
-        {
-            
-        }
-    
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function certificatePath()
+    {
+
+    }
+    /*
+     * ()
+     * (String fqdn)
+     * methodSize : 2
+     */
+    public function create()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function delete()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function keyCertOptions()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function privateKeyPath()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function trustOptions()
+    {
+
+    }
 }

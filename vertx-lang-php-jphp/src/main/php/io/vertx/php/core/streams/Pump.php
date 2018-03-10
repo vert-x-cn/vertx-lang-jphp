@@ -2,41 +2,50 @@
 namespace io\vertx\php\core\streams;
 class Pump
 {
-        
-    public function __construct($memory) 
+    
+    private function __construct()
     {
-    
+
     }
-    //6
-            
-        public function pump() 
-        {
-            
-        }
-            
-        public function pump() 
-        {
-            
-        }
-            
-        public function setWriteQueueMaxSize() 
-        {
-            
-        }
-            
-        public function start() 
-        {
-            
-        }
-            
-        public function stop() 
-        {
-            
-        }
-            
-        public function numberPumped() 
-        {
-            
-        }
-    
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function numberPumped()
+    {
+
+    }
+    /*
+     * (ReadStream<T> rs, WriteStream<T> ws)
+     * (ReadStream<T> rs, WriteStream<T> ws, int writeQueueMaxSize)
+     * methodSize : 2
+     */
+    public function pump()
+    {
+
+    }
+    /*
+     * (int maxSize)
+     * methodSize : 1
+     */
+    public function setWriteQueueMaxSize()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function start()
+    {
+
+    }
+    /*
+     * ()
+     * methodSize : 1
+     */
+    public function stop()
+    {
+
+    }
 }
