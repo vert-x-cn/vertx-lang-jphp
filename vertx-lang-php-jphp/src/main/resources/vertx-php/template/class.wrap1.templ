@@ -1,0 +1,189 @@
+@includeNamed{'php-methods.templ'}
+package @{type.raw.translatePackageName("php")};\n
+
+@code{
+    import java.util.TreeSet;
+
+    var importClassSet = new TreeSet();
+    importClassSet.add("com.google.gson.JsonElement");
+    /*importClassSet.add("io.vertx.core.json.JsonObject");*/
+    importClassSet.add("io.vertx.lang.php.VertxExtension");
+    importClassSet.add("php.runtime.Memory");
+    importClassSet.add("php.runtime.env.Environment");
+    importClassSet.add("php.runtime.lang.BaseWrapper");
+    importClassSet.add("php.runtime.memory.ObjectMemory");
+    importClassSet.add("php.runtime.reflection.ClassEntity");
+    importClassSet.add("php.runtime.annotation.Reflection.*");
+    importClassSet.add("php.runtime.lang.Closure");
+    importClassSet.add("java.util.*");
+    importClassSet.add("php.runtime.ext.java.JavaException");
+
+    def addImport(addType){
+        /*if(addType.kind != CLASS_PRIMITIVE && addType.raw.packageName == "io.vertx") {
+            importClassSet.add("java.lang.String");
+            importClassSet.add(addType.name);
+        }*/
+        /*if(addType.kind != CLASS_PRIMITIVE && !addType.void && addType.kind != CLASS_OBJECT && addType.raw.packageName != type.raw.packageName) {*/
+        if((addType.kind == CLASS_DATA_OBJECT || addType.kind == CLASS_API)) {
+            if(addType.raw.packageName != type.raw.packageName) {
+                importClassSet.add(translateClassName(addType));
+            }
+        } else if(addType.kind != CLASS_PRIMITIVE && !addType.void && addType.kind != CLASS_OBJECT){
+            importClassSet.add(addType.raw.packageName + "." + addType.raw.simpleName);
+            /*
+            if(addType.kind == CLASS_HANDLER) {
+                foreach(argType : addType.args) {
+                    addImport(argType);
+                }
+            }*/
+        } else if(addType.kind == CLASS_ASYNC_RESULT){
+            addImport("io.vertx.lang.php.wrapper.AsyncResult");
+        }
+        if(addType.isParameterized) {
+            foreach(arg : addType.args) {
+                addImport(arg);
+            }
+        }
+    }
+
+    if(!typeParams.isEmpty || !concrete) {
+        importClassSet.add("php.runtime.lang.IObject");
+    }
+
+    foreach(method : methods) {
+        addImport(method.returnType);
+        foreach(param : method.params) {
+            addImport(param.type);
+        }
+        if(!method.typeParams.isEmpty) {
+            importClassSet.add("php.runtime.lang.IObject");
+        }
+    }
+    var superClass = null;
+    foreach(superType : superTypes) {
+        addImport(superType);
+        if(superType.raw.concrete) {
+            superClass = superType.simpleName;
+        }
+    }
+}
+
+@declare{'methodBody'}
+@code{var first = true;}
+ @if{!method.isStaticMethod}this.getWrappedObject()@else{}@{type.name}@end{}.@{assembleTypeParams(method.typeParams, false)}@{method.name}(
+    @foreach{param:method.params}
+        @code{
+            var paramType = param.type;
+            var paramTypeKind = paramType.kind;
+            var paramName = param.name;
+        }
+        @if{!first}, @else{}@code{first=false}@end{}
+        @if{paramTypeKind == CLASS_STRING || paramTypeKind == CLASS_PRIMITIVE}
+            @{paramName}
+        @else{paramTypeKind == CLASS_API || paramTypeKind == CLASS_DATA_OBJECT}
+            @{paramName}.getWrappedObject()
+        @else{paramTypeKind == CLASS_JSON_OBJECT}
+            new JsonObject(JsonFunctions.json_encode(@{paramName}))
+        @else{paramTypeKind == CLASS_HANDLER}
+            e -> {\n
+                try{\n
+                    @code{var handleType = paramType.args[0];}
+                    //@{paramType.args}\n
+                    @{paramName}.__invoke(__env__, @if{handleType.kind == CLASS_API || handleType.kind == CLASS_DATA_OBJECT}ObjectMemory.valueOf(new @{handleType.raw.simpleName}@if{handleType.isParameterized}<>@end{}(__env__, e))
+                    @else{handleType.kind == CLASS_ASYNC_RESULT}
+
+                    @else{}
+                    e
+                    @end{});\n
+                } catch(Throwable throwable) {\n
+                    throwable.printStackTrace();\n
+                }\n
+            }
+        @else{paramTypeKind == CLASS_FUNCTION}
+            funciton111
+        @else{paramTypeKind == CLASS_ASYNC_RESULT}
+            asyncResult222
+        @else{paramTypeKind == CLASS_THROWABLE}
+            @{paramName}.getThrowable()
+        @else{paramTypeKind == CLASS_CLASS_TYPE}
+            @{paramName}.class444
+        @else{}
+            other333@{paramTypeKind}
+        @end{}
+    @end{}
+);
+@end{}
+
+@foreach{importClass : importClassSet}
+import @{importClass};\n
+@end{}
+
+\n
+@if{!concrete}
+public interface @{type.simpleName} @{assembleTypeParams(typeParams, true)} extends IObject { \n
+@else{}
+@SuppressWarnings("unused")\n
+@Name("@{type.raw.translatePackageName("php").replace(".", "\\\\")}\\${type.simpleName}")\n
+public class @{type.simpleName}@{assembleTypeParams(typeParams, true)} extends @if{superClass == null}BaseWrapper<@{type.name}@{assembleTypeParams(typeParams, false)}>@else{}@{superClass}@end{}{\n
+    public ${type.simpleName}(Environment env, @{type.name}@{assembleTypeParams(typeParams, false)} wrappedObject) {\n
+        super(env, wrappedObject);\n
+    }\n
+\n
+    public ${type.simpleName}(Environment env, ClassEntity clazz) {\n
+        super(env, clazz);\n
+    }\n
+
+@end{}
+    \n
+    public @{type.name}@{assembleTypeParams(typeParams, false)} getWrappedObject(){\n
+        return @if{superClass != null}(@{type.name}@{assembleTypeParams(typeParams, false)})@end{}__wrappedObject;\n
+    }\n
+@foreach{method:methods}
+@code{
+    var returnType = method.returnType;
+    if(returnType.name.startsWith("io.vertx.core.Future")) {
+        System.err.println("-----------" + type.simpleName + "." + method.name + "----------------------" + returnType.args);
+    }
+    var returnTypeName = "";
+    if(method.fluent){
+        returnTypeName = type.simpleName + assembleTypeParams(typeParams, false);
+    } else if(returnType.kind == CLASS_API || returnType.kind == CLASS_DATA_OBJECT) {
+        if(returnType.raw.packageName != type.raw.packageName) {
+            returnTypeName = translateClassName(returnType);
+        } else {
+            returnTypeName = returnType.raw.simpleName;
+        }
+        if(returnType.isParameterized) {
+            returnTypeName += assembleTypeArgs(returnType.args, false);
+        }
+    } else if(returnType.kind == CLASS_VOID || returnType.name.equals("void")){
+        returnTypeName = "void";
+    } else {
+        returnTypeName = returnType.simpleName;
+    }
+    var methodTypeParams = method.typeParams;
+    var hasParams = !method.params.isEmpty();
+    var lastParam = hasParams?method.params.get(method.params.size() - 1) : null;
+}
+
+    \n
+    //@{method.typeParams.size()} ${method.returnType.kind} @if{method.returnType.kind == CLASS_API && method.returnType.raw.handlerArg != null}==AA==@end{}\n
+    @if{concrete}public@end{} @if{method.staticMethod}static @end{}@{assembleTypeParams(method.typeParams, true)} @{returnTypeName} @{method.name}(@if{method.isStaticMethod}Environment __env__@if{!method.params.isEmpty}, @end{}@end{}
+@foreach{param : method.params}@{wrapParamType(param)} @{param.name}@if{param != lastParam}, @end{}@end{}
+)@if{!concrete};@else{} { \n
+        @if{method.returnType.name != "void"}@comment{'@{returnTypeName}'}Object result =@end{}@includeNamed{'methodBody';method:method}
+        @comment{'this.getWrappedObject().@{method.name}(@{assembleMethodParams(method)});'}
+
+        @if{method.fluent}
+            return this;\n
+        @else{method.returnType.name == "void"}
+        @else{method.returnType.name == "boolean"}
+            return false;\n
+        @else{method.returnType.kind == CLASS_PRIMITIVE}
+            return 1;\n
+        @else{}
+            return null;\n
+        @end{}
+    }\n@end{}
+@end{}
+}\n

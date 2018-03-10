@@ -1,0 +1,112 @@
+<?php \n
+namespace @{type.raw.translatePackageName("php").replace(".", "\\")};\n
+@code{
+    var abs = type.abstract;
+    var superClass = superType == null ? null : superType.raw.translatePackageName("php").replace(".", "\\") + "\\" + superType.simpleName;
+    var use = superType != null && !superType.raw.packageName.equals(type.raw.packageName);
+}
+
+@if{superClass!=null && use}
+use ${superClass};\n
+@end{}
+\n
+@if{abs}abstract @end{}class ${type.simpleName} @if{superClass != null}extends @{superType.simpleName}@end{} \n
+{ \n
+    public function __construct($$${type.getSimpleName(CASE_LOWER_CAMEL)})\n
+    { \n
+        \n
+    }\n
+@code{
+    def getReturnType(propertyType){
+       if(propertyType.startsWith("java.util")) {
+           return "array";
+       } else if(propertyType.equals("java.lang.String")){
+           return "String";
+       } else if(propertyType.equals("boolean")){
+           return "bool";
+       } else if(propertyType.equals("double") || propertyType.equals("float")){
+           return "float";
+       } else if(propertyType.equals("io.vertx.core.json.JsonObject")){
+           return "array json";
+       }else {
+           return "int";
+       }
+    }
+
+    def getReturnValue(propertyType){
+        if(propertyType.startsWith("java.util")) {
+            return "[]";
+        } else if(propertyType.equals("java.lang.String")){
+            return "\"\"";
+        } else if(propertyType.equals("boolean")){
+            return "false";
+        } else if(propertyType.equals("io.vertx.core.json.JsonObject")) {
+            return [];
+        }
+        else {
+            return "1";
+        }
+    }
+}
+@foreach{property:properties}
+@code{
+    var propertyType = "";
+    var kindName = property.kind.name;
+    if(kindName == "VALUE") {
+        propertyType = property.type.name;
+    } else if(kindName == "LIST"){
+        propertyType = "java.util.List<" + property.type.name + ">";
+    } else if(kindName == "SET"){
+        propertyType = "java.util.Set<" + property.type.name + ">";
+    } else if(kindName == "MAP"){
+        propertyType = "java.util.Map<" + property.type.name + ">";
+    }
+}
+@if{property.adderMethod != null}
+    @if{kindName == "MAP"}
+    \n
+    /**\n
+     * @param $$key String \n
+     * @param $$value String\n
+     * @return $this\n
+     */\n
+    public function ${property.adderMethod}($$key, $$value) \n
+    {\n
+        return $this;\n
+    }\n
+    @else{}
+    \n
+    /**\n
+     * @param $$${property.name} ${getReturnType(property.type.name)} \n
+     * @return $this\n
+     */\n
+    public function ${property.adderMethod}($$${property.name}) \n
+    {\n
+        return $this;\n
+    }\n
+    @end{}
+@end{}
+@if{property.getterMethod != null}
+    \n
+    /**\n
+     * @return ${getReturnType(propertyType)} \n
+     */\n
+    public function ${property.getterMethod}()\n
+    { \n
+        return @{getReturnValue(propertyType)};\n
+    }\n
+@end{}
+@if{property.setterMethod != null}
+    \n
+    /**\n
+     * @param $$${property.name} ${getReturnType(propertyType)} \n
+     * @return $this\n
+     */\n
+    public function ${property.setterMethod}($$${property.name})\n
+    { \n
+        return $this;\n
+    }\n
+@end{}
+@end{}
+
+}\n
