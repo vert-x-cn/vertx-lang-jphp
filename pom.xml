@@ -17,7 +17,9 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>vertx-lang-php</module>
+        <module>vertx-lang-php-jphp
+        </module>
+        <module>vertx-lang-php-compiler-jphp</module>
     </modules>
 
     <!--release to com.w2v4-->
@@ -86,16 +88,6 @@
     </dependencyManagement>
 
     <dependencies>
-        <dependency>
-            <groupId>org.develnext.jphp</groupId>
-            <artifactId>jphp-runtime</artifactId>
-            <version>0.9.2</version>
-        </dependency>
-        <dependency>
-            <groupId>org.develnext.jphp</groupId>
-            <artifactId>jphp-scripting</artifactId>
-            <version>0.9.2</version>
-        </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
