@@ -2,21 +2,33 @@
 @includeNamed{'commons.templ';}
 
 package @{type.raw.translatePackageName("php")};\n
-
-
+\n
 import php.runtime.annotation.Reflection.Name;\n
 import php.runtime.annotation.Reflection.Namespace;\n
 import php.runtime.annotation.Reflection.Signature;\n
 import php.runtime.Memory;\n
+import php.runtime.lang.BaseWrapper;\n
+import php.runtime.env.Environment;\n
+\n
+
+@declare{'methodBody'}
+        return null;\n
+@end{}
 
 @foreach{importClass : importClassSet}
 import @{importClass};\n
 @end{}
 
+@code{
+    var wrapperType = type.raw.packageName + "." + type.raw.simpleName;
+}
 @Name("@{className}")\n
 @Namespace("@{namespace}")\n
-public class @{className} {\n
-
+public class @{className} extends BaseWrapper<@{wrapperType}>{\n
+\n
+    public @{className}(Environment env, @{wrapperType} wrappedObject) {\n
+        super(env, wrappedObject);\n
+    }\n
 
 @foreach{methodName:methodsMap.keySet()}
 @foreach{method:methodsMap[methodName]}
@@ -24,6 +36,7 @@ public class @{className} {\n
     var paramSize = method.params.size();
     var paramKey = methodName + "-" + paramSize;
     var methods = sameParamSizeMethod[paramKey];
+    var isStatic = method.isStaticMethod;
 }
 \n
     /**\n
@@ -32,8 +45,8 @@ public class @{className} {\n
 @end{}
      */\n
     @Signature\n
-    public @{getReturnType(method)} @{methodName}(@{getParamInfos(method)}){\n
-        return null;\n
+    public @if{isStatic}static @end{}@{getReturnType(method)} @{methodName}(@{getParamInfos(method)}){\n
+@includeNamed{'methodBody';method:method}
     }\n
 @end{}
 @end{}

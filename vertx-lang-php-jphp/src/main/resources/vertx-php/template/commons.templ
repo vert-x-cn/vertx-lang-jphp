@@ -10,6 +10,9 @@
 
     var importClassSet = new TreeSet();
     def addImport(typeInfo){
+        addImport1(typeInfo, false);
+    }
+    def addImport1(typeInfo, wrapPhp){
         if(typeInfo.isVariable) {
             return;
         }
@@ -34,7 +37,9 @@
         } else if(typeKind == CLASS_VOID) {
         } else if(typeKind == CLASS_OBJECT) {
             var objectType = typeInfo;
-            importClassSet.add(objectType.raw.packageName + "." + objectType.raw.simpleName);
+            if(!objectType.raw.packageName.startsWith("java.lang")) {
+                importClassSet.add(objectType.raw.packageName + "." + objectType.raw.simpleName);
+            }
         } else if(typeKind == CLASS_LIST) {
             importClassSet.add("java.util.List");
         } else if(typeKind == CLASS_SET) {
@@ -69,7 +74,7 @@
         }
         if(typeInfo.isParameterized) {
             foreach(arg : typeInfo.args) {
-                addImport(arg);
+                addImport1(arg, wrapPhp);
             }
         }
     }
@@ -119,7 +124,7 @@
             paramsMap[paramKey] = params;
             sameParamSizeMethod[paramKey] = [method];
         }
-        addImport(method.returnType);
+        addImport1(method.returnType, true);
     }
 
 
@@ -155,20 +160,22 @@
         }
         return res;
     }
-
     def wrapSimpleType(typeInfo){
+        return wrapSimpleType1(typeInfo, false);
+    }
+    def wrapSimpleType1(typeInfo, forPhp){
         if(typeInfo.isVariable) {
             /*return typeInfo.name + " extends Memory";*/
             return "Memory";
         }
         var typeParamsInfo = "";
-        if(typeInfo.isParameterized) {
+        if(typeInfo.isParameterized && !forPhp) {
             typeParamsInfo += "<";
             foreach(arg:typeInfo.args) {
                 if(typeParamsInfo != "<") {
                     typeParamsInfo += ", ";
                 }
-                typeParamsInfo += wrapSimpleType(arg);
+                typeParamsInfo += wrapSimpleType1(arg, forPhp);
             }
             typeParamsInfo += ">";
         }
@@ -184,9 +191,9 @@
             var wrapEnumType = typeInfo;
             return lang == java ? wrapEnumType.raw.simpleName : "enum";
         } else if(typeKind == CLASS_JSON_OBJECT) {
-            return lang == java ? "JsonObject" : "object";
+            return lang == java ? (forPhp ? "Memory" : "JsonObject") : "object";
         } else if(typeKind == CLASS_JSON_ARRAY) {
-            return lang == java ? "JsonArray" : "array";
+            return lang == java ? (forPhp ? "Memory" : "JsonArray") : "array";
         } else if(typeKind == CLASS_THROWABLE) {
             return lang == java ? "Throwable" : "Throwable";
         } else if(typeKind == CLASS_VOID) {
@@ -250,7 +257,7 @@
                 return "Memory";
             }
         }
-        return wrapSimpleType(prevReturnType);
+        return wrapSimpleType1(prevReturnType, true);
     }
 
 }
