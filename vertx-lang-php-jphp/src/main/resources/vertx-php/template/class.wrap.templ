@@ -12,7 +12,29 @@ import php.runtime.env.Environment;\n
 \n
 
 @declare{'methodBody'}
-        return null;\n
+        @if{method.returnType.name != "void" && !method.isFluent}
+return
+@end{}
+@if{isStatic}
+@{wrapperClassType}
+@else{}
+this.getWrappedObject()
+@end{}
+.@{method.name}(
+@code{
+    var first = true;
+}
+@foreach{param : method.params}
+@code{
+    var paramName = methodSize == 1? param.name : param.name + "$$$";
+    var paramKind = param.type.kind;
+}
+@if{!first}, @else{}@code{first = false}@end{}
+@if{}
+@{paramName}
+@end{}
+@end{}
+);\n
 @end{}
 
 @foreach{importClass : importClassSet}
@@ -20,7 +42,8 @@ import @{importClass};\n
 @end{}
 
 @code{
-    var wrapperType = type.raw.packageName + "." + type.raw.simpleName;
+    var wrapperClassType = type.raw.packageName + "." + type.raw.simpleName;
+    var wrapperType = wrapperClassType;
 }
 @Name("@{className}")\n
 @Namespace("@{namespace}")\n
@@ -36,17 +59,28 @@ public class @{className} extends BaseWrapper<@{wrapperType}>{\n
     var paramSize = method.params.size();
     var paramKey = methodName + "-" + paramSize;
     var methods = sameParamSizeMethod[paramKey];
+    var methodSize = methods.size();
     var isStatic = method.isStaticMethod;
+    var returnTypes = getReturnTypes(method);
+    var returnTypeName = returnTypes.size() == 1 ? wrapSimpleType1(returnTypes.get(0), true) : "Memory";
 }
 \n
     /**\n
 @foreach{m:methods}
-     * (@code{var first = true;}@foreach{param:m.params}@if{!first}, @else{}@code{first = false;}@end{}@{wrapSimpleType(param.type)} @{param.name}@end{})\n
+     * @{wrapSimpleType(m.returnType)} (@code{var first = true;}@foreach{param:m.params}@if{!first}, @else{}@code{first = false;}@end{}@{wrapSimpleType(param.type)} @{param.name}@end{})\n
 @end{}
+     * methodSize : @{methodSize}\n
      */\n
     @Signature\n
-    public @if{isStatic}static @end{}@{getReturnType(method)} @{methodName}(@{getParamInfos(method)}){\n
-@includeNamed{'methodBody';method:method}
+    public @if{isStatic}static @end{}@{returnTypeName} @{methodName}(@{getParamInfos(method)}){\n
+@if{methods.size() == 1}
+@includeNamed{"methodBody"}
+@else{}
+        return null;\n
+@end{}
+@if{method.isFluent}
+        //return this;\n
+@end{}
     }\n
 @end{}
 @end{}

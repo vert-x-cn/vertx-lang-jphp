@@ -2,6 +2,8 @@
     import java.util.HashMap;
     import java.util.TreeMap;
     import java.util.TreeSet;
+    import java.util.HashSet;
+    import java.util.ArrayList;
 
     var java = "java";
     var php = "php";
@@ -241,23 +243,38 @@
             return "num";
         }
     }
-
+    /*delete*/
     def getReturnType(method){
+        if(lang == php) {
+            System.err.println("php templ cannot invoke this method!");
+            return "php templ cannot invoke this method!";
+        }
+
+        var prevReturnType = null;
+        foreach(method : methods){
+            if(prevReturnType == null) {
+                prevReturnType = method.returnType;
+            } else if(prevReturnType.name != method.returnType.name) {
+                return "Memory/**/";
+            }
+        }
+        return wrapSimpleType1(prevReturnType, true);
+    }
+    def getReturnTypes(method) {
         if(lang == php) {
             System.err.println("php templ cannot invoke this method!");
             return "php templ cannot invoke this method!";
         }
         var paramKey222 = method.name + "-" + method.params.size();
         var methods = sameParamSizeMethod[paramKey222];
-        var prevReturnType = null;
+        var result = new ArrayList();
+        var types = new HashSet();
         foreach(method : methods){
-            if(prevReturnType == null) {
-                prevReturnType = method.returnType;
-            } else if(prevReturnType.name != method.returnType.name) {
-                return "Memory";
+            if(types.add(wrapSimpleType1(method.returnType, true))) {
+                result.add(method.returnType);
             }
         }
-        return wrapSimpleType1(prevReturnType, true);
+        return result;
     }
 
 }

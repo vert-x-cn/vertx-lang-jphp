@@ -7,12 +7,18 @@ import io.vertx.lang.php.wrapper.JavaThrowable;
 import php.runtime.Memory;
 import php.runtime.env.Environment;
 import php.runtime.invoke.Invoker;
+import php.runtime.lang.BaseWrapper;
 import php.runtime.lang.Closure;
 import php.runtime.memory.ObjectMemory;
 
 import java.util.function.Function;
 
 public class Wrapper {
+
+    public static <T> T convParamWrapper(BaseWrapper<T> wrapper){
+        return wrapper.getWrappedObject();
+    }
+
     public static Handler wrapperHandler(Environment env, Memory handler){
         Invoker invoker = handler.toInvoker(env);
         if (invoker != null) {
