@@ -7,174 +7,212 @@ class CompositeFuture
     {
 
     }
-    /*
-     * (Future<T1> f1, Future<T2> f2)
-     * (Future<T1> f1, Future<T2> f2, Future<T3> f3)
-     * (Future<T1> f1, Future<T2> f2, Future<T3> f3, Future<T4> f4)
-     * (Future<T1> f1, Future<T2> f2, Future<T3> f3, Future<T4> f4, Future<T5> f5)
-     * (Future<T1> f1, Future<T2> f2, Future<T3> f3, Future<T4> f4, Future<T5> f5, Future<T6> f6)
-     * (List<Future> futures)
+    /**
+     * (Future f1, Future f2)
+     * @return CompositeFuture
+     * (Future f1, Future f2, Future f3)
+     * @return CompositeFuture
+     * (Future f1, Future f2, Future f3, Future f4)
+     * @return CompositeFuture
+     * (Future f1, Future f2, Future f3, Future f4, Future f5)
+     * @return CompositeFuture
+     * (Future f1, Future f2, Future f3, Future f4, Future f5, Future f6)
+     * @return CompositeFuture
+     * (string futures)
+     * @return CompositeFuture
      * methodSize : 6
      */
-    public function all()
+    public function all(/*6*/$arg0, $arg1, $arg2, $arg3, $arg4, $arg5)
     {
 
     }
-    /*
-     * (Future<T1> f1, Future<T2> f2)
-     * (Future<T1> f1, Future<T2> f2, Future<T3> f3)
-     * (Future<T1> f1, Future<T2> f2, Future<T3> f3, Future<T4> f4)
-     * (Future<T1> f1, Future<T2> f2, Future<T3> f3, Future<T4> f4, Future<T5> f5)
-     * (Future<T1> f1, Future<T2> f2, Future<T3> f3, Future<T4> f4, Future<T5> f5, Future<T6> f6)
-     * (List<Future> futures)
+    /**
+     * (Future f1, Future f2)
+     * @return CompositeFuture
+     * (Future f1, Future f2, Future f3)
+     * @return CompositeFuture
+     * (Future f1, Future f2, Future f3, Future f4)
+     * @return CompositeFuture
+     * (Future f1, Future f2, Future f3, Future f4, Future f5)
+     * @return CompositeFuture
+     * (Future f1, Future f2, Future f3, Future f4, Future f5, Future f6)
+     * @return CompositeFuture
+     * (string futures)
+     * @return CompositeFuture
      * methodSize : 6
      */
-    public function any()
+    public function any(/*6*/$arg0, $arg1, $arg2, $arg3, $arg4, $arg5)
     {
 
     }
-    /*
+    /**
      * (int index)
+     * @return Throwable
      * methodSize : 1
      */
-    public function cause()
+    public function cause(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * (CompositeFuture result)
+     * @return Void
      * ()
+     * @return Void
      * methodSize : 2
      */
-    public function complete()
+    public function complete(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return callable
      * methodSize : 1
      */
-    public function completer()
+    public function completer(/*0*/)
     {
 
     }
-    /*
-     * (Handler<CompositeFuture> handler, Future<U> next)
-     * (Function<CompositeFuture,Future<U>> mapper)
+    /**
+     * (callable handler, Future next)
+     * @return Future
+     * (callable mapper)
+     * @return Future
      * methodSize : 2
      */
-    public function compose()
+    public function compose(/*2*/$arg0, $arg1)
     {
 
     }
-    /*
+    /**
      * (int index)
+     * @return bool
      * methodSize : 1
      */
-    public function failed()
+    public function failed(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * (int index)
+     * @return bool
      * methodSize : 1
      */
-    public function isComplete()
+    public function isComplete(/*1*/$arg0)
     {
 
     }
-    /*
-     * (Future<T1> f1, Future<T2> f2)
-     * (Future<T1> f1, Future<T2> f2, Future<T3> f3)
-     * (Future<T1> f1, Future<T2> f2, Future<T3> f3, Future<T4> f4)
-     * (Future<T1> f1, Future<T2> f2, Future<T3> f3, Future<T4> f4, Future<T5> f5)
-     * (Future<T1> f1, Future<T2> f2, Future<T3> f3, Future<T4> f4, Future<T5> f5, Future<T6> f6)
-     * (List<Future> futures)
+    /**
+     * (Future f1, Future f2)
+     * @return CompositeFuture
+     * (Future f1, Future f2, Future f3)
+     * @return CompositeFuture
+     * (Future f1, Future f2, Future f3, Future f4)
+     * @return CompositeFuture
+     * (Future f1, Future f2, Future f3, Future f4, Future f5)
+     * @return CompositeFuture
+     * (Future f1, Future f2, Future f3, Future f4, Future f5, Future f6)
+     * @return CompositeFuture
+     * (string futures)
+     * @return CompositeFuture
      * methodSize : 6
      */
-    public function join()
+    public function join(/*6*/$arg0, $arg1, $arg2, $arg3, $arg4, $arg5)
     {
 
     }
-    /*
-     * (Function<CompositeFuture,U> mapper)
+    /**
+     * (callable mapper)
+     * @return Future
      * methodSize : 1
      */
-    public function map()
+    public function map(/*1*/$arg0)
     {
 
     }
-    /*
-     * (Function<Throwable,CompositeFuture> mapper)
+    /**
+     * (callable mapper)
+     * @return Future
      * (CompositeFuture value)
+     * @return Future
      * methodSize : 2
      */
-    public function otherwise()
+    public function otherwise(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return Future
      * methodSize : 1
      */
-    public function otherwiseEmpty()
+    public function otherwiseEmpty(/*0*/)
     {
 
     }
-    /*
-     * (Function<Throwable,Future<CompositeFuture>> mapper)
+    /**
+     * (callable mapper)
+     * @return Future
      * methodSize : 1
      */
-    public function recover()
+    public function recover(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return CompositeFuture
      * methodSize : 1
      */
-    public function result()
+    public function result(/*0*/)
     {
 
     }
-    /*
+    /**
      * (int index)
+     * @return Memory
      * methodSize : 1
      */
-    public function resultAt()
+    public function resultAt(/*1*/$arg0)
     {
 
     }
-    /*
-     * (Handler<AsyncResult<CompositeFuture>> handler)
+    /**
+     * (callable handler)
+     * @return CompositeFuture
      * methodSize : 1
      */
-    public function setHandler()
+    public function setHandler(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return int
      * methodSize : 1
      */
-    public function size()
+    public function size(/*0*/)
     {
 
     }
-    /*
+    /**
      * (int index)
+     * @return bool
      * methodSize : 1
      */
-    public function succeeded()
+    public function succeeded(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * (CompositeFuture result)
+     * @return bool
      * ()
+     * @return bool
      * methodSize : 2
      */
-    public function tryComplete()
+    public function tryComplete(/*1*/$arg0)
     {
 
     }

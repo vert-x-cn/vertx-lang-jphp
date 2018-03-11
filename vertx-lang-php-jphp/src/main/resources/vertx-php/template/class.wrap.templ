@@ -7,9 +7,35 @@ package @{type.raw.translatePackageName("php")};\n
 import php.runtime.annotation.Reflection.Name;\n
 import php.runtime.annotation.Reflection.Namespace;\n
 import php.runtime.annotation.Reflection.Signature;\n
+import php.runtime.Memory;\n
+
+@foreach{importClass : importClassSet}
+import @{importClass};\n
+@end{}
 
 @Name("@{className}")\n
 @Namespace("@{namespace}")\n
 public class @{className} {\n
+
+
+@foreach{methodName:methodsMap.keySet()}
+@foreach{method:methodsMap[methodName]}
+@code{
+    var paramSize = method.params.size();
+    var paramKey = methodName + "-" + paramSize;
+    var methods = sameParamSizeMethod[paramKey];
+}
+\n
+    /**\n
+@foreach{m:methods}
+     * (@code{var first = true;}@foreach{param:m.params}@if{!first}, @else{}@code{first = false;}@end{}@{wrapSimpleType(param.type)} @{param.name}@end{})\n
+@end{}
+     */\n
+    @Signature\n
+    public @{getReturnType(method)} @{methodName}(@{getParamInfos(method)}){\n
+        return null;\n
+    }\n
+@end{}
+@end{}
 \n
 }\n

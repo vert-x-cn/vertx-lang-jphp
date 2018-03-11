@@ -7,43 +7,48 @@ class SocketAddress
     {
 
     }
-    /*
-     * (String path)
+    /**
+     * (string path)
+     * @return SocketAddress
      * methodSize : 1
      */
-    public function domainSocketAddress()
+    public function domainSocketAddress(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return string
      * methodSize : 1
      */
-    public function host()
+    public function host(/*0*/)
     {
 
     }
-    /*
-     * (int port, String host)
+    /**
+     * (int port, string host)
+     * @return SocketAddress
      * methodSize : 1
      */
-    public function inetSocketAddress()
+    public function inetSocketAddress(/*2*/$arg0, $arg1)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return string
      * methodSize : 1
      */
-    public function path()
+    public function path(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return int
      * methodSize : 1
      */
-    public function port()
+    public function port(/*0*/)
     {
 
     }

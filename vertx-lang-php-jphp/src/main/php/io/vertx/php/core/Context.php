@@ -7,140 +7,158 @@ class Context
     {
 
     }
-    /*
+    /**
      * ()
+     * @return object
      * methodSize : 1
      */
-    public function config()
+    public function config(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return string
      * methodSize : 1
      */
-    public function deploymentID()
+    public function deploymentID(/*0*/)
     {
 
     }
-    /*
-     * (Handler<Throwable> handler)
+    /**
+     * (callable handler)
+     * @return Context
      * methodSize : 1
      */
-    public function exceptionHandler()
+    public function exceptionHandler(/*1*/$arg0)
     {
 
     }
-    /*
-     * (Handler<Future<T>> blockingCodeHandler, boolean ordered, Handler<AsyncResult<T>> resultHandler)
-     * (Handler<Future<T>> blockingCodeHandler, Handler<AsyncResult<T>> resultHandler)
+    /**
+     * (callable blockingCodeHandler, bool ordered, callable resultHandler)
+     * @return Void
+     * (callable blockingCodeHandler, callable resultHandler)
+     * @return Void
      * methodSize : 2
      */
-    public function executeBlocking()
+    public function executeBlocking(/*3*/$arg0, $arg1, $arg2)
     {
 
     }
-    /*
-     * (String key)
+    /**
+     * (string key)
+     * @return Memory
      * methodSize : 1
      */
-    public function get()
+    public function get(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return int
      * methodSize : 1
      */
-    public function getInstanceCount()
+    public function getInstanceCount(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return bool
      * methodSize : 1
      */
-    public function isEventLoopContext()
+    public function isEventLoopContext(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return bool
      * methodSize : 1
      */
-    public function isMultiThreadedWorkerContext()
+    public function isMultiThreadedWorkerContext(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return bool
      * methodSize : 1
      */
-    public function isOnEventLoopThread()
+    public function isOnEventLoopThread(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return bool
      * methodSize : 1
      */
-    public function isOnVertxThread()
+    public function isOnVertxThread(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return bool
      * methodSize : 1
      */
-    public function isOnWorkerThread()
+    public function isOnWorkerThread(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return bool
      * methodSize : 1
      */
-    public function isWorkerContext()
+    public function isWorkerContext(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return Vertx
      * methodSize : 1
      */
-    public function owner()
+    public function owner(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return string
      * methodSize : 1
      */
-    public function processArgs()
+    public function processArgs(/*0*/)
     {
 
     }
-    /*
-     * (String key, Object value)
+    /**
+     * (string key, object value)
+     * @return Void
      * methodSize : 1
      */
-    public function put()
+    public function put(/*2*/$arg0, $arg1)
     {
 
     }
-    /*
-     * (String key)
+    /**
+     * (string key)
+     * @return bool
      * methodSize : 1
      */
-    public function remove()
+    public function remove(/*1*/$arg0)
     {
 
     }
-    /*
-     * (Handler<Void> action)
+    /**
+     * (callable action)
+     * @return Void
      * methodSize : 1
      */
-    public function runOnContext()
+    public function runOnContext(/*1*/$arg0)
     {
 
     }

@@ -7,27 +7,30 @@ class FileSystemProps
     {
 
     }
-    /*
+    /**
      * ()
+     * @return num
      * methodSize : 1
      */
-    public function totalSpace()
+    public function totalSpace(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return num
      * methodSize : 1
      */
-    public function unallocatedSpace()
+    public function unallocatedSpace(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return num
      * methodSize : 1
      */
-    public function usableSpace()
+    public function usableSpace(/*0*/)
     {
 
     }

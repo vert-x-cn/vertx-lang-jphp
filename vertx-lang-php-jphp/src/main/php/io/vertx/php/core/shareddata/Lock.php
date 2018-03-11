@@ -7,11 +7,12 @@ class Lock
     {
 
     }
-    /*
+    /**
      * ()
+     * @return Void
      * methodSize : 1
      */
-    public function release()
+    public function release(/*0*/)
     {
 
     }

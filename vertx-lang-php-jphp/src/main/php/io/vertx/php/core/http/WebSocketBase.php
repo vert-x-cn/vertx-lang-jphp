@@ -1,5 +1,7 @@
 <?php 
 namespace io\vertx\php\core\http;
+use io\vertx\php\core\buffer\Buffer;
+use io\vertx\php\core\net\SocketAddress;
 class WebSocketBase
 {
     
@@ -7,236 +9,266 @@ class WebSocketBase
     {
 
     }
-    /*
+    /**
      * ()
+     * @return string
      * methodSize : 1
      */
-    public function binaryHandlerID()
+    public function binaryHandlerID(/*0*/)
     {
 
     }
-    /*
-     * (Handler<Buffer> handler)
+    /**
+     * (callable handler)
+     * @return WebSocketBase
      * methodSize : 1
      */
-    public function binaryMessageHandler()
+    public function binaryMessageHandler(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return Void
      * methodSize : 1
      */
-    public function close()
+    public function close(/*0*/)
     {
 
     }
-    /*
-     * (Handler<Void> handler)
+    /**
+     * (callable handler)
+     * @return WebSocketBase
      * methodSize : 1
      */
-    public function closeHandler()
+    public function closeHandler(/*1*/$arg0)
     {
 
     }
-    /*
-     * (Handler<Void> handler)
+    /**
+     * (callable handler)
+     * @return WebSocketBase
      * methodSize : 1
      */
-    public function drainHandler()
+    public function drainHandler(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * (Buffer t)
+     * @return Void
      * ()
+     * @return Void
      * methodSize : 2
      */
-    public function end()
+    public function end(/*1*/$arg0)
     {
 
     }
-    /*
-     * (Handler<Void> endHandler)
+    /**
+     * (callable endHandler)
+     * @return WebSocketBase
      * methodSize : 1
      */
-    public function endHandler()
+    public function endHandler(/*1*/$arg0)
     {
 
     }
-    /*
-     * (Handler<Throwable> handler)
+    /**
+     * (callable handler)
+     * @return WebSocketBase
      * methodSize : 1
      */
-    public function exceptionHandler()
+    public function exceptionHandler(/*1*/$arg0)
     {
 
     }
-    /*
-     * (Handler<WebSocketFrame> handler)
+    /**
+     * (callable handler)
+     * @return WebSocketBase
      * methodSize : 1
      */
-    public function frameHandler()
+    public function frameHandler(/*1*/$arg0)
     {
 
     }
-    /*
-     * (Handler<Buffer> handler)
+    /**
+     * (callable handler)
+     * @return WebSocketBase
      * methodSize : 1
      */
-    public function handler()
+    public function handler(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return bool
      * methodSize : 1
      */
-    public function isSsl()
+    public function isSsl(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return SocketAddress
      * methodSize : 1
      */
-    public function localAddress()
+    public function localAddress(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return WebSocketBase
      * methodSize : 1
      */
-    public function pause()
+    public function pause(/*0*/)
     {
 
     }
-    /*
-     * (Handler<Buffer> handler)
+    /**
+     * (callable handler)
+     * @return WebSocketBase
      * methodSize : 1
      */
-    public function pongHandler()
+    public function pongHandler(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return SocketAddress
      * methodSize : 1
      */
-    public function remoteAddress()
+    public function remoteAddress(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return WebSocketBase
      * methodSize : 1
      */
-    public function resume()
+    public function resume(/*0*/)
     {
 
     }
-    /*
+    /**
      * (int maxSize)
+     * @return WebSocketBase
      * methodSize : 1
      */
-    public function setWriteQueueMaxSize()
+    public function setWriteQueueMaxSize(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return string
      * methodSize : 1
      */
-    public function subProtocol()
+    public function subProtocol(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return string
      * methodSize : 1
      */
-    public function textHandlerID()
+    public function textHandlerID(/*0*/)
     {
 
     }
-    /*
-     * (Handler<String> handler)
+    /**
+     * (callable handler)
+     * @return WebSocketBase
      * methodSize : 1
      */
-    public function textMessageHandler()
+    public function textMessageHandler(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * (Buffer data)
+     * @return WebSocketBase
      * methodSize : 1
      */
-    public function write()
+    public function write(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * (Buffer data)
+     * @return WebSocketBase
      * methodSize : 1
      */
-    public function writeBinaryMessage()
+    public function writeBinaryMessage(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * (Buffer data)
+     * @return WebSocketBase
      * methodSize : 1
      */
-    public function writeFinalBinaryFrame()
+    public function writeFinalBinaryFrame(/*1*/$arg0)
     {
 
     }
-    /*
-     * (String text)
+    /**
+     * (string text)
+     * @return WebSocketBase
      * methodSize : 1
      */
-    public function writeFinalTextFrame()
+    public function writeFinalTextFrame(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * (WebSocketFrame frame)
+     * @return WebSocketBase
      * methodSize : 1
      */
-    public function writeFrame()
+    public function writeFrame(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * (Buffer data)
+     * @return WebSocketBase
      * methodSize : 1
      */
-    public function writePing()
+    public function writePing(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * (Buffer data)
+     * @return WebSocketBase
      * methodSize : 1
      */
-    public function writePong()
+    public function writePong(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return bool
      * methodSize : 1
      */
-    public function writeQueueFull()
+    public function writeQueueFull(/*0*/)
     {
 
     }
-    /*
-     * (String text)
+    /**
+     * (string text)
+     * @return WebSocketBase
      * methodSize : 1
      */
-    public function writeTextMessage()
+    public function writeTextMessage(/*1*/$arg0)
     {
 
     }

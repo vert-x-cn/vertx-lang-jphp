@@ -7,28 +7,32 @@ class WorkerExecutor
     {
 
     }
-    /*
+    /**
      * ()
+     * @return Void
      * methodSize : 1
      */
-    public function close()
+    public function close(/*0*/)
     {
 
     }
-    /*
-     * (Handler<Future<T>> blockingCodeHandler, boolean ordered, Handler<AsyncResult<T>> resultHandler)
-     * (Handler<Future<T>> blockingCodeHandler, Handler<AsyncResult<T>> resultHandler)
+    /**
+     * (callable blockingCodeHandler, bool ordered, callable resultHandler)
+     * @return Void
+     * (callable blockingCodeHandler, callable resultHandler)
+     * @return Void
      * methodSize : 2
      */
-    public function executeBlocking()
+    public function executeBlocking(/*3*/$arg0, $arg1, $arg2)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return bool
      * methodSize : 1
      */
-    public function isMetricsEnabled()
+    public function isMetricsEnabled(/*0*/)
     {
 
     }

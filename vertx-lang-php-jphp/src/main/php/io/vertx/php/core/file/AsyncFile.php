@@ -1,5 +1,6 @@
 <?php 
 namespace io\vertx\php\core\file;
+use io\vertx\php\core\buffer\Buffer;
 class AsyncFile
 {
     
@@ -7,135 +8,155 @@ class AsyncFile
     {
 
     }
-    /*
+    /**
      * ()
-     * (Handler<AsyncResult<Void>> handler)
+     * @return Void
+     * (callable handler)
+     * @return Void
      * methodSize : 2
      */
-    public function close()
+    public function close(/*1*/$arg0)
     {
 
     }
-    /*
-     * (Handler<Void> handler)
+    /**
+     * (callable handler)
+     * @return AsyncFile
      * methodSize : 1
      */
-    public function drainHandler()
+    public function drainHandler(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * (Buffer t)
+     * @return Void
      * ()
+     * @return Void
      * methodSize : 2
      */
-    public function end()
+    public function end(/*1*/$arg0)
     {
 
     }
-    /*
-     * (Handler<Void> endHandler)
+    /**
+     * (callable endHandler)
+     * @return AsyncFile
      * methodSize : 1
      */
-    public function endHandler()
+    public function endHandler(/*1*/$arg0)
     {
 
     }
-    /*
-     * (Handler<Throwable> handler)
+    /**
+     * (callable handler)
+     * @return AsyncFile
      * methodSize : 1
      */
-    public function exceptionHandler()
+    public function exceptionHandler(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * ()
-     * (Handler<AsyncResult<Void>> handler)
+     * @return AsyncFile
+     * (callable handler)
+     * @return AsyncFile
      * methodSize : 2
      */
-    public function flush()
+    public function flush(/*1*/$arg0)
     {
 
     }
-    /*
-     * (Handler<Buffer> handler)
+    /**
+     * (callable handler)
+     * @return AsyncFile
      * methodSize : 1
      */
-    public function handler()
+    public function handler(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return AsyncFile
      * methodSize : 1
      */
-    public function pause()
+    public function pause(/*0*/)
     {
 
     }
-    /*
-     * (Buffer buffer, int offset, long position, int length, Handler<AsyncResult<Buffer>> handler)
+    /**
+     * (Buffer buffer, int offset, num position, int length, callable handler)
+     * @return AsyncFile
      * methodSize : 1
      */
-    public function read()
+    public function read(/*5*/$arg0, $arg1, $arg2, $arg3, $arg4)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return AsyncFile
      * methodSize : 1
      */
-    public function resume()
+    public function resume(/*0*/)
     {
 
     }
-    /*
+    /**
      * (int readBufferSize)
+     * @return AsyncFile
      * methodSize : 1
      */
-    public function setReadBufferSize()
+    public function setReadBufferSize(/*1*/$arg0)
     {
 
     }
-    /*
-     * (long readPos)
+    /**
+     * (num readPos)
+     * @return AsyncFile
      * methodSize : 1
      */
-    public function setReadPos()
+    public function setReadPos(/*1*/$arg0)
     {
 
     }
-    /*
-     * (long writePos)
+    /**
+     * (num writePos)
+     * @return AsyncFile
      * methodSize : 1
      */
-    public function setWritePos()
+    public function setWritePos(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * (int maxSize)
+     * @return AsyncFile
      * methodSize : 1
      */
-    public function setWriteQueueMaxSize()
+    public function setWriteQueueMaxSize(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * (Buffer data)
-     * (Buffer buffer, long position, Handler<AsyncResult<Void>> handler)
+     * @return AsyncFile
+     * (Buffer buffer, num position, callable handler)
+     * @return AsyncFile
      * methodSize : 2
      */
-    public function write()
+    public function write(/*3*/$arg0, $arg1, $arg2)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return bool
      * methodSize : 1
      */
-    public function writeQueueFull()
+    public function writeQueueFull(/*0*/)
     {
 
     }

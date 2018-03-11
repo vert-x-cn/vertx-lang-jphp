@@ -1,5 +1,6 @@
 <?php 
 namespace io\vertx\php\core\http;
+use io\vertx\php\core\buffer\Buffer;
 class WebSocketFrame
 {
     
@@ -7,91 +8,102 @@ class WebSocketFrame
     {
 
     }
-    /*
+    /**
      * ()
+     * @return Buffer
      * methodSize : 1
      */
-    public function binaryData()
+    public function binaryData(/*0*/)
     {
 
     }
-    /*
-     * (Buffer data, boolean isFinal)
+    /**
+     * (Buffer data, bool isFinal)
+     * @return WebSocketFrame
      * methodSize : 1
      */
-    public function binaryFrame()
+    public function binaryFrame(/*2*/$arg0, $arg1)
     {
 
     }
-    /*
-     * (Buffer data, boolean isFinal)
+    /**
+     * (Buffer data, bool isFinal)
+     * @return WebSocketFrame
      * methodSize : 1
      */
-    public function continuationFrame()
+    public function continuationFrame(/*2*/$arg0, $arg1)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return bool
      * methodSize : 1
      */
-    public function isBinary()
+    public function isBinary(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return bool
      * methodSize : 1
      */
-    public function isContinuation()
+    public function isContinuation(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return bool
      * methodSize : 1
      */
-    public function isFinal()
+    public function isFinal(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return bool
      * methodSize : 1
      */
-    public function isText()
+    public function isText(/*0*/)
     {
 
     }
-    /*
+    /**
      * (Buffer data)
+     * @return WebSocketFrame
      * methodSize : 1
      */
-    public function pingFrame()
+    public function pingFrame(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * (Buffer data)
+     * @return WebSocketFrame
      * methodSize : 1
      */
-    public function pongFrame()
+    public function pongFrame(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return string
      * methodSize : 1
      */
-    public function textData()
+    public function textData(/*0*/)
     {
 
     }
-    /*
-     * (String str, boolean isFinal)
+    /**
+     * (string str, bool isFinal)
+     * @return WebSocketFrame
      * methodSize : 1
      */
-    public function textFrame()
+    public function textFrame(/*2*/$arg0, $arg1)
     {
 
     }

@@ -7,99 +7,111 @@ class DnsClient
     {
 
     }
-    /*
-     * (String name, Handler<AsyncResult<String>> handler)
+    /**
+     * (string name, callable handler)
+     * @return DnsClient
      * methodSize : 1
      */
-    public function lookup()
+    public function lookup(/*2*/$arg0, $arg1)
     {
 
     }
-    /*
-     * (String name, Handler<AsyncResult<String>> handler)
+    /**
+     * (string name, callable handler)
+     * @return DnsClient
      * methodSize : 1
      */
-    public function lookup4()
+    public function lookup4(/*2*/$arg0, $arg1)
     {
 
     }
-    /*
-     * (String name, Handler<AsyncResult<String>> handler)
+    /**
+     * (string name, callable handler)
+     * @return DnsClient
      * methodSize : 1
      */
-    public function lookup6()
+    public function lookup6(/*2*/$arg0, $arg1)
     {
 
     }
-    /*
-     * (String name, Handler<AsyncResult<List<String>>> handler)
+    /**
+     * (string name, callable handler)
+     * @return DnsClient
      * methodSize : 1
      */
-    public function resolveA()
+    public function resolveA(/*2*/$arg0, $arg1)
     {
 
     }
-    /*
-     * (String name, Handler<AsyncResult<List<String>>> handler)
+    /**
+     * (string name, callable handler)
+     * @return DnsClient
      * methodSize : 1
      */
-    public function resolveAAAA()
+    public function resolveAAAA(/*2*/$arg0, $arg1)
     {
 
     }
-    /*
-     * (String name, Handler<AsyncResult<List<String>>> handler)
+    /**
+     * (string name, callable handler)
+     * @return DnsClient
      * methodSize : 1
      */
-    public function resolveCNAME()
+    public function resolveCNAME(/*2*/$arg0, $arg1)
     {
 
     }
-    /*
-     * (String name, Handler<AsyncResult<List<MxRecord>>> handler)
+    /**
+     * (string name, callable handler)
+     * @return DnsClient
      * methodSize : 1
      */
-    public function resolveMX()
+    public function resolveMX(/*2*/$arg0, $arg1)
     {
 
     }
-    /*
-     * (String name, Handler<AsyncResult<List<String>>> handler)
+    /**
+     * (string name, callable handler)
+     * @return DnsClient
      * methodSize : 1
      */
-    public function resolveNS()
+    public function resolveNS(/*2*/$arg0, $arg1)
     {
 
     }
-    /*
-     * (String name, Handler<AsyncResult<String>> handler)
+    /**
+     * (string name, callable handler)
+     * @return DnsClient
      * methodSize : 1
      */
-    public function resolvePTR()
+    public function resolvePTR(/*2*/$arg0, $arg1)
     {
 
     }
-    /*
-     * (String name, Handler<AsyncResult<List<SrvRecord>>> handler)
+    /**
+     * (string name, callable handler)
+     * @return DnsClient
      * methodSize : 1
      */
-    public function resolveSRV()
+    public function resolveSRV(/*2*/$arg0, $arg1)
     {
 
     }
-    /*
-     * (String name, Handler<AsyncResult<List<String>>> handler)
+    /**
+     * (string name, callable handler)
+     * @return DnsClient
      * methodSize : 1
      */
-    public function resolveTXT()
+    public function resolveTXT(/*2*/$arg0, $arg1)
     {
 
     }
-    /*
-     * (String ipaddress, Handler<AsyncResult<String>> handler)
+    /**
+     * (string ipaddress, callable handler)
+     * @return DnsClient
      * methodSize : 1
      */
-    public function reverseLookup()
+    public function reverseLookup(/*2*/$arg0, $arg1)
     {
 
     }

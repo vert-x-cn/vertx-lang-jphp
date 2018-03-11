@@ -7,43 +7,48 @@ class SharedData
     {
 
     }
-    /*
-     * (String name, Handler<AsyncResult<AsyncMap<K,V>>> resultHandler)
+    /**
+     * (string name, callable resultHandler)
+     * @return Void
      * methodSize : 1
      */
-    public function getClusterWideMap()
+    public function getClusterWideMap(/*2*/$arg0, $arg1)
     {
 
     }
-    /*
-     * (String name, Handler<AsyncResult<Counter>> resultHandler)
+    /**
+     * (string name, callable resultHandler)
+     * @return Void
      * methodSize : 1
      */
-    public function getCounter()
+    public function getCounter(/*2*/$arg0, $arg1)
     {
 
     }
-    /*
-     * (String name)
+    /**
+     * (string name)
+     * @return LocalMap
      * methodSize : 1
      */
-    public function getLocalMap()
+    public function getLocalMap(/*1*/$arg0)
     {
 
     }
-    /*
-     * (String name, Handler<AsyncResult<Lock>> resultHandler)
+    /**
+     * (string name, callable resultHandler)
+     * @return Void
      * methodSize : 1
      */
-    public function getLock()
+    public function getLock(/*2*/$arg0, $arg1)
     {
 
     }
-    /*
-     * (String name, long timeout, Handler<AsyncResult<Lock>> resultHandler)
+    /**
+     * (string name, num timeout, callable resultHandler)
+     * @return Void
      * methodSize : 1
      */
-    public function getLockWithTimeout()
+    public function getLockWithTimeout(/*3*/$arg0, $arg1, $arg2)
     {
 
     }

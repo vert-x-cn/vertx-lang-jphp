@@ -7,67 +7,75 @@ class FileProps
     {
 
     }
-    /*
+    /**
      * ()
+     * @return num
      * methodSize : 1
      */
-    public function creationTime()
+    public function creationTime(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return bool
      * methodSize : 1
      */
-    public function isDirectory()
+    public function isDirectory(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return bool
      * methodSize : 1
      */
-    public function isOther()
+    public function isOther(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return bool
      * methodSize : 1
      */
-    public function isRegularFile()
+    public function isRegularFile(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return bool
      * methodSize : 1
      */
-    public function isSymbolicLink()
+    public function isSymbolicLink(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return num
      * methodSize : 1
      */
-    public function lastAccessTime()
+    public function lastAccessTime(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return num
      * methodSize : 1
      */
-    public function lastModifiedTime()
+    public function lastModifiedTime(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return num
      * methodSize : 1
      */
-    public function size()
+    public function size(/*0*/)
     {
 
     }

@@ -3,6 +3,10 @@
 <?php \n
 namespace @{namespace};\n
 
+@foreach{importClass : importClassSet}
+use @{importClass.replace(".", "\\")};\n
+@end{}
+
 class @{className}\n
 {\n
     \n
@@ -12,7 +16,7 @@ class @{className}\n
     }\n
 
 @foreach{methodName : methodsMap.keySet()}
-    /*\n
+    /**\n
 @code{
     var methodNum = 0;
     var maxParamSize = 0;
@@ -21,7 +25,7 @@ class @{className}\n
 @code{
     var paramSize = m.params.size();
     var paramKey = methodName + "-" + paramSize;
-    var methods = sameParamSizeMethod[paramKey]
+    var methods = sameParamSizeMethod[paramKey];
     if(paramSize > maxParamSize) {
         maxParamSize = paramSize;
     }
@@ -31,11 +35,12 @@ class @{className}\n
     methodNum += 1;
 }
      * (@code{var first = true;}@foreach{param:method.params}@if{!first}, @else{}@code{first = false;}@end{}@{wrapSimpleType(param.type)} @{param.name}@end{})\n
+     * @return @{wrapSimpleType(method.returnType)}\n
 @end{}
 @end{}
      * methodSize : @{methodNum}\n
      */\n
-    public function @{methodName}(@{getParamName(maxParamSize)})\n
+    public function @{methodName}(/*@{maxParamSize}*/@{getParamName(maxParamSize)})\n
     {\n
 \n
     }\n

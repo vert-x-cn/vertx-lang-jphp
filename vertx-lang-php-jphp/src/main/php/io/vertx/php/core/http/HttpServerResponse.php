@@ -1,5 +1,7 @@
 <?php 
 namespace io\vertx\php\core\http;
+use io\vertx\php\core\MultiMap;
+use io\vertx\php\core\buffer\Buffer;
 class HttpServerResponse
 {
     
@@ -7,266 +9,312 @@ class HttpServerResponse
     {
 
     }
-    /*
-     * (Handler<Void> handler)
+    /**
+     * (callable handler)
+     * @return HttpServerResponse
      * methodSize : 1
      */
-    public function bodyEndHandler()
+    public function bodyEndHandler(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return num
      * methodSize : 1
      */
-    public function bytesWritten()
+    public function bytesWritten(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return Void
      * methodSize : 1
      */
-    public function close()
+    public function close(/*0*/)
     {
 
     }
-    /*
-     * (Handler<Void> handler)
+    /**
+     * (callable handler)
+     * @return HttpServerResponse
      * methodSize : 1
      */
-    public function closeHandler()
+    public function closeHandler(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return bool
      * methodSize : 1
      */
-    public function closed()
+    public function closed(/*0*/)
     {
 
     }
-    /*
-     * (Handler<Void> handler)
+    /**
+     * (callable handler)
+     * @return HttpServerResponse
      * methodSize : 1
      */
-    public function drainHandler()
+    public function drainHandler(/*1*/$arg0)
     {
 
     }
-    /*
-     * (String chunk)
+    /**
+     * (string chunk)
+     * @return Void
      * (Buffer chunk)
-     * (String chunk, String enc)
+     * @return Void
+     * (string chunk, string enc)
+     * @return Void
      * ()
+     * @return Void
      * methodSize : 4
      */
-    public function end()
+    public function end(/*2*/$arg0, $arg1)
     {
 
     }
-    /*
-     * (Handler<Void> handler)
+    /**
+     * (callable handler)
+     * @return HttpServerResponse
      * methodSize : 1
      */
-    public function endHandler()
+    public function endHandler(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return bool
      * methodSize : 1
      */
-    public function ended()
+    public function ended(/*0*/)
     {
 
     }
-    /*
-     * (Handler<Throwable> handler)
+    /**
+     * (callable handler)
+     * @return HttpServerResponse
      * methodSize : 1
      */
-    public function exceptionHandler()
+    public function exceptionHandler(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return int
      * methodSize : 1
      */
-    public function getStatusCode()
+    public function getStatusCode(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return string
      * methodSize : 1
      */
-    public function getStatusMessage()
+    public function getStatusMessage(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return bool
      * methodSize : 1
      */
-    public function headWritten()
+    public function headWritten(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return MultiMap
      * methodSize : 1
      */
-    public function headers()
+    public function headers(/*0*/)
     {
 
     }
-    /*
-     * (Handler<Void> handler)
+    /**
+     * (callable handler)
+     * @return HttpServerResponse
      * methodSize : 1
      */
-    public function headersEndHandler()
+    public function headersEndHandler(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return bool
      * methodSize : 1
      */
-    public function isChunked()
+    public function isChunked(/*0*/)
     {
 
     }
-    /*
-     * (HttpMethod method, String host, String path, Handler<AsyncResult<HttpServerResponse>> handler)
-     * (HttpMethod method, String path, MultiMap headers, Handler<AsyncResult<HttpServerResponse>> handler)
-     * (HttpMethod method, String path, Handler<AsyncResult<HttpServerResponse>> handler)
-     * (HttpMethod method, String host, String path, MultiMap headers, Handler<AsyncResult<HttpServerResponse>> handler)
+    /**
+     * (enum method, string host, string path, callable handler)
+     * @return HttpServerResponse
+     * (enum method, string path, MultiMap headers, callable handler)
+     * @return HttpServerResponse
+     * (enum method, string path, callable handler)
+     * @return HttpServerResponse
+     * (enum method, string host, string path, MultiMap headers, callable handler)
+     * @return HttpServerResponse
      * methodSize : 4
      */
-    public function push()
+    public function push(/*5*/$arg0, $arg1, $arg2, $arg3, $arg4)
     {
 
     }
-    /*
-     * (String name, String value)
+    /**
+     * (string name, string value)
+     * @return HttpServerResponse
      * methodSize : 1
      */
-    public function putHeader()
+    public function putHeader(/*2*/$arg0, $arg1)
     {
 
     }
-    /*
-     * (String name, String value)
+    /**
+     * (string name, string value)
+     * @return HttpServerResponse
      * methodSize : 1
      */
-    public function putTrailer()
+    public function putTrailer(/*2*/$arg0, $arg1)
     {
 
     }
-    /*
+    /**
      * ()
-     * (long code)
+     * @return Void
+     * (num code)
+     * @return Void
      * methodSize : 2
      */
-    public function reset()
+    public function reset(/*1*/$arg0)
     {
 
     }
-    /*
-     * (String filename)
-     * (String filename, long offset)
-     * (String filename, Handler<AsyncResult<Void>> resultHandler)
-     * (String filename, long offset, long length)
-     * (String filename, long offset, Handler<AsyncResult<Void>> resultHandler)
-     * (String filename, long offset, long length, Handler<AsyncResult<Void>> resultHandler)
+    /**
+     * (string filename)
+     * @return HttpServerResponse
+     * (string filename, num offset)
+     * @return HttpServerResponse
+     * (string filename, callable resultHandler)
+     * @return HttpServerResponse
+     * (string filename, num offset, num length)
+     * @return HttpServerResponse
+     * (string filename, num offset, callable resultHandler)
+     * @return HttpServerResponse
+     * (string filename, num offset, num length, callable resultHandler)
+     * @return HttpServerResponse
      * methodSize : 6
      */
-    public function sendFile()
+    public function sendFile(/*4*/$arg0, $arg1, $arg2, $arg3)
     {
 
     }
-    /*
-     * (boolean chunked)
+    /**
+     * (bool chunked)
+     * @return HttpServerResponse
      * methodSize : 1
      */
-    public function setChunked()
+    public function setChunked(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * (int statusCode)
+     * @return HttpServerResponse
      * methodSize : 1
      */
-    public function setStatusCode()
+    public function setStatusCode(/*1*/$arg0)
     {
 
     }
-    /*
-     * (String statusMessage)
+    /**
+     * (string statusMessage)
+     * @return HttpServerResponse
      * methodSize : 1
      */
-    public function setStatusMessage()
+    public function setStatusMessage(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * (int maxSize)
+     * @return HttpServerResponse
      * methodSize : 1
      */
-    public function setWriteQueueMaxSize()
+    public function setWriteQueueMaxSize(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return int
      * methodSize : 1
      */
-    public function streamId()
+    public function streamId(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return MultiMap
      * methodSize : 1
      */
-    public function trailers()
+    public function trailers(/*0*/)
     {
 
     }
-    /*
+    /**
      * (Buffer data)
-     * (String chunk)
-     * (String chunk, String enc)
+     * @return HttpServerResponse
+     * (string chunk)
+     * @return HttpServerResponse
+     * (string chunk, string enc)
+     * @return HttpServerResponse
      * methodSize : 3
      */
-    public function write()
+    public function write(/*2*/$arg0, $arg1)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return HttpServerResponse
      * methodSize : 1
      */
-    public function writeContinue()
+    public function writeContinue(/*0*/)
     {
 
     }
-    /*
+    /**
      * (int type, int flags, Buffer payload)
+     * @return HttpServerResponse
      * (HttpFrame frame)
+     * @return HttpServerResponse
      * methodSize : 2
      */
-    public function writeCustomFrame()
+    public function writeCustomFrame(/*3*/$arg0, $arg1, $arg2)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return bool
      * methodSize : 1
      */
-    public function writeQueueFull()
+    public function writeQueueFull(/*0*/)
     {
 
     }

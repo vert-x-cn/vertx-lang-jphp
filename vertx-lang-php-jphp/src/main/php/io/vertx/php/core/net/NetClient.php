@@ -7,30 +7,36 @@ class NetClient
     {
 
     }
-    /*
+    /**
      * ()
+     * @return Void
      * methodSize : 1
      */
-    public function close()
+    public function close(/*0*/)
     {
 
     }
-    /*
-     * (int port, String host, Handler<AsyncResult<NetSocket>> connectHandler)
-     * (SocketAddress remoteAddress, String serverName, Handler<AsyncResult<NetSocket>> connectHandler)
-     * (int port, String host, String serverName, Handler<AsyncResult<NetSocket>> connectHandler)
-     * (SocketAddress remoteAddress, Handler<AsyncResult<NetSocket>> connectHandler)
+    /**
+     * (int port, string host, callable connectHandler)
+     * @return NetClient
+     * (SocketAddress remoteAddress, string serverName, callable connectHandler)
+     * @return NetClient
+     * (int port, string host, string serverName, callable connectHandler)
+     * @return NetClient
+     * (SocketAddress remoteAddress, callable connectHandler)
+     * @return NetClient
      * methodSize : 4
      */
-    public function connect()
+    public function connect(/*4*/$arg0, $arg1, $arg2, $arg3)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return bool
      * methodSize : 1
      */
-    public function isMetricsEnabled()
+    public function isMetricsEnabled(/*0*/)
     {
 
     }

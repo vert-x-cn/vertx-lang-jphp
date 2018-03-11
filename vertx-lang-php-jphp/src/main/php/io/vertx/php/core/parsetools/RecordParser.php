@@ -1,5 +1,7 @@
 <?php 
 namespace io\vertx\php\core\parsetools;
+use io\vertx\php\core\buffer\Buffer;
+use io\vertx\php\core\streams\ReadStream;
 class RecordParser
 {
     
@@ -7,99 +9,118 @@ class RecordParser
     {
 
     }
-    /*
-     * (String delim)
+    /**
+     * (string delim)
+     * @return Void
      * (Buffer delim)
+     * @return Void
      * methodSize : 2
      */
-    public function delimitedMode()
+    public function delimitedMode(/*1*/$arg0)
     {
 
     }
-    /*
-     * (Handler<Void> endHandler)
+    /**
+     * (callable endHandler)
+     * @return RecordParser
      * methodSize : 1
      */
-    public function endHandler()
+    public function endHandler(/*1*/$arg0)
     {
 
     }
-    /*
-     * (Handler<Throwable> handler)
+    /**
+     * (callable handler)
+     * @return RecordParser
      * methodSize : 1
      */
-    public function exceptionHandler()
+    public function exceptionHandler(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * (int size)
+     * @return Void
      * methodSize : 1
      */
-    public function fixedSizeMode()
+    public function fixedSizeMode(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * (Buffer buffer)
+     * @return Void
      * methodSize : 1
      */
-    public function handle()
+    public function handle(/*1*/$arg0)
     {
 
     }
-    /*
-     * (Handler<Buffer> handler)
+    /**
+     * (callable handler)
+     * @return RecordParser
      * methodSize : 1
      */
-    public function handler()
+    public function handler(/*1*/$arg0)
     {
 
     }
-    /*
-     * (String delim, Handler<Buffer> output)
-     * (String delim, ReadStream<Buffer> stream)
-     * (Buffer delim, Handler<Buffer> output)
-     * (Buffer delim, ReadStream<Buffer> stream)
-     * (String delim)
+    /**
+     * (string delim, callable output)
+     * @return RecordParser
+     * (string delim, ReadStream stream)
+     * @return RecordParser
+     * (Buffer delim, callable output)
+     * @return RecordParser
+     * (Buffer delim, ReadStream stream)
+     * @return RecordParser
+     * (string delim)
+     * @return RecordParser
      * (Buffer delim)
+     * @return RecordParser
      * methodSize : 6
      */
-    public function newDelimited()
+    public function newDelimited(/*2*/$arg0, $arg1)
     {
 
     }
-    /*
+    /**
      * (int size)
-     * (int size, Handler<Buffer> output)
-     * (int size, ReadStream<Buffer> stream)
+     * @return RecordParser
+     * (int size, callable output)
+     * @return RecordParser
+     * (int size, ReadStream stream)
+     * @return RecordParser
      * methodSize : 3
      */
-    public function newFixed()
+    public function newFixed(/*2*/$arg0, $arg1)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return RecordParser
      * methodSize : 1
      */
-    public function pause()
+    public function pause(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return RecordParser
      * methodSize : 1
      */
-    public function resume()
+    public function resume(/*0*/)
     {
 
     }
-    /*
-     * (Handler<Buffer> output)
+    /**
+     * (callable output)
+     * @return Void
      * methodSize : 1
      */
-    public function setOutput()
+    public function setOutput(/*1*/$arg0)
     {
 
     }

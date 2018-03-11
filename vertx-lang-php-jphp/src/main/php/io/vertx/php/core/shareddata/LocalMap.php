@@ -7,115 +7,129 @@ class LocalMap
     {
 
     }
-    /*
+    /**
      * ()
+     * @return Void
      * methodSize : 1
      */
-    public function clear()
+    public function clear(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return Void
      * methodSize : 1
      */
-    public function close()
+    public function close(/*0*/)
     {
 
     }
-    /*
-     * (Object key)
+    /**
+     * (object key)
+     * @return bool
      * methodSize : 1
      */
-    public function containsKey()
+    public function containsKey(/*1*/$arg0)
     {
 
     }
-    /*
-     * (Object value)
+    /**
+     * (object value)
+     * @return bool
      * methodSize : 1
      */
-    public function containsValue()
+    public function containsValue(/*1*/$arg0)
     {
 
     }
-    /*
-     * (Object key)
+    /**
+     * (object key)
+     * @return Memory
      * methodSize : 1
      */
-    public function get()
+    public function get(/*1*/$arg0)
     {
 
     }
-    /*
-     * (Object key, V defaultValue)
+    /**
+     * (object key, Memory defaultValue)
+     * @return Memory
      * methodSize : 1
      */
-    public function getOrDefault()
+    public function getOrDefault(/*2*/$arg0, $arg1)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return bool
      * methodSize : 1
      */
-    public function isEmpty()
+    public function isEmpty(/*0*/)
     {
 
     }
-    /*
-     * (K key, V value)
+    /**
+     * (Memory key, Memory value)
+     * @return Memory
      * methodSize : 1
      */
-    public function put()
+    public function put(/*2*/$arg0, $arg1)
     {
 
     }
-    /*
-     * (K key, V value)
+    /**
+     * (Memory key, Memory value)
+     * @return Memory
      * methodSize : 1
      */
-    public function putIfAbsent()
+    public function putIfAbsent(/*2*/$arg0, $arg1)
     {
 
     }
-    /*
-     * (Object key)
+    /**
+     * (object key)
+     * @return Memory
      * methodSize : 1
      */
-    public function remove()
+    public function remove(/*1*/$arg0)
     {
 
     }
-    /*
-     * (K key, V value)
+    /**
+     * (Memory key, Memory value)
+     * @return bool
      * methodSize : 1
      */
-    public function removeIfPresent()
+    public function removeIfPresent(/*2*/$arg0, $arg1)
     {
 
     }
-    /*
-     * (K key, V value)
+    /**
+     * (Memory key, Memory value)
+     * @return Memory
      * methodSize : 1
      */
-    public function replace()
+    public function replace(/*2*/$arg0, $arg1)
     {
 
     }
-    /*
-     * (K key, V oldValue, V newValue)
+    /**
+     * (Memory key, Memory oldValue, Memory newValue)
+     * @return bool
      * methodSize : 1
      */
-    public function replaceIfPresent()
+    public function replaceIfPresent(/*3*/$arg0, $arg1, $arg2)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return int
      * methodSize : 1
      */
-    public function size()
+    public function size(/*0*/)
     {
 
     }

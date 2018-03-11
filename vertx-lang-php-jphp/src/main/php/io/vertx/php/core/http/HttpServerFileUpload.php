@@ -7,107 +7,120 @@ class HttpServerFileUpload
     {
 
     }
-    /*
+    /**
      * ()
+     * @return string
      * methodSize : 1
      */
-    public function charset()
+    public function charset(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return string
      * methodSize : 1
      */
-    public function contentTransferEncoding()
+    public function contentTransferEncoding(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return string
      * methodSize : 1
      */
-    public function contentType()
+    public function contentType(/*0*/)
     {
 
     }
-    /*
-     * (Handler<Void> endHandler)
+    /**
+     * (callable endHandler)
+     * @return HttpServerFileUpload
      * methodSize : 1
      */
-    public function endHandler()
+    public function endHandler(/*1*/$arg0)
     {
 
     }
-    /*
-     * (Handler<Throwable> handler)
+    /**
+     * (callable handler)
+     * @return HttpServerFileUpload
      * methodSize : 1
      */
-    public function exceptionHandler()
+    public function exceptionHandler(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return string
      * methodSize : 1
      */
-    public function filename()
+    public function filename(/*0*/)
     {
 
     }
-    /*
-     * (Handler<Buffer> handler)
+    /**
+     * (callable handler)
+     * @return HttpServerFileUpload
      * methodSize : 1
      */
-    public function handler()
+    public function handler(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return bool
      * methodSize : 1
      */
-    public function isSizeAvailable()
+    public function isSizeAvailable(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return string
      * methodSize : 1
      */
-    public function name()
+    public function name(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return HttpServerFileUpload
      * methodSize : 1
      */
-    public function pause()
+    public function pause(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return HttpServerFileUpload
      * methodSize : 1
      */
-    public function resume()
+    public function resume(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return num
      * methodSize : 1
      */
-    public function size()
+    public function size(/*0*/)
     {
 
     }
-    /*
-     * (String filename)
+    /**
+     * (string filename)
+     * @return HttpServerFileUpload
      * methodSize : 1
      */
-    public function streamToFileSystem()
+    public function streamToFileSystem(/*1*/$arg0)
     {
 
     }

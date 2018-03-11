@@ -1,5 +1,6 @@
 <?php 
 namespace io\vertx\php\core\eventbus;
+use io\vertx\php\core\MultiMap;
 class Message
 {
     
@@ -7,62 +8,72 @@ class Message
     {
 
     }
-    /*
+    /**
      * ()
+     * @return string
      * methodSize : 1
      */
-    public function address()
+    public function address(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return Memory
      * methodSize : 1
      */
-    public function body()
+    public function body(/*0*/)
     {
 
     }
-    /*
-     * (int failureCode, String message)
+    /**
+     * (int failureCode, string message)
+     * @return Void
      * methodSize : 1
      */
-    public function fail()
+    public function fail(/*2*/$arg0, $arg1)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return MultiMap
      * methodSize : 1
      */
-    public function headers()
+    public function headers(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return bool
      * methodSize : 1
      */
-    public function isSend()
+    public function isSend(/*0*/)
     {
 
     }
-    /*
-     * (Object message)
-     * (Object message, Handler<AsyncResult<Message<R>>> replyHandler)
-     * (Object message, DeliveryOptions options)
-     * (Object message, DeliveryOptions options, Handler<AsyncResult<Message<R>>> replyHandler)
+    /**
+     * (object message)
+     * @return Void
+     * (object message, callable replyHandler)
+     * @return Void
+     * (object message, DeliveryOptions options)
+     * @return Void
+     * (object message, DeliveryOptions options, callable replyHandler)
+     * @return Void
      * methodSize : 4
      */
-    public function reply()
+    public function reply(/*3*/$arg0, $arg1, $arg2)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return string
      * methodSize : 1
      */
-    public function replyAddress()
+    public function replyAddress(/*0*/)
     {
 
     }

@@ -1,5 +1,6 @@
 <?php 
 namespace io\vertx\php\core\net;
+use io\vertx\php\core\streams\ReadStream;
 class NetServer
 {
     
@@ -7,67 +8,82 @@ class NetServer
     {
 
     }
-    /*
+    /**
      * ()
+     * @return int
      * methodSize : 1
      */
-    public function actualPort()
+    public function actualPort(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
-     * (Handler<AsyncResult<Void>> completionHandler)
+     * @return Void
+     * (callable completionHandler)
+     * @return Void
      * methodSize : 2
      */
-    public function close()
+    public function close(/*1*/$arg0)
     {
 
     }
-    /*
-     * (Handler<NetSocket> handler)
+    /**
+     * (callable handler)
+     * @return NetServer
      * methodSize : 1
      */
-    public function connectHandler()
+    public function connectHandler(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return ReadStream
      * methodSize : 1
      */
-    public function connectStream()
+    public function connectStream(/*0*/)
     {
 
     }
-    /*
-     * (Handler<Throwable> handler)
+    /**
+     * (callable handler)
+     * @return NetServer
      * methodSize : 1
      */
-    public function exceptionHandler()
+    public function exceptionHandler(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return bool
      * methodSize : 1
      */
-    public function isMetricsEnabled()
+    public function isMetricsEnabled(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
-     * (Handler<AsyncResult<NetServer>> listenHandler)
+     * @return NetServer
+     * (callable listenHandler)
+     * @return NetServer
      * (int port)
+     * @return NetServer
      * (SocketAddress localAddress)
-     * (int port, String host)
-     * (int port, Handler<AsyncResult<NetServer>> listenHandler)
-     * (SocketAddress localAddress, Handler<AsyncResult<NetServer>> listenHandler)
-     * (int port, String host, Handler<AsyncResult<NetServer>> listenHandler)
+     * @return NetServer
+     * (int port, string host)
+     * @return NetServer
+     * (int port, callable listenHandler)
+     * @return NetServer
+     * (SocketAddress localAddress, callable listenHandler)
+     * @return NetServer
+     * (int port, string host, callable listenHandler)
+     * @return NetServer
      * methodSize : 8
      */
-    public function listen()
+    public function listen(/*3*/$arg0, $arg1, $arg2)
     {
 
     }

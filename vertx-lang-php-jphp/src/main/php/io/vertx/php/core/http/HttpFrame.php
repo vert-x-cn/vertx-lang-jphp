@@ -1,5 +1,6 @@
 <?php 
 namespace io\vertx\php\core\http;
+use io\vertx\php\core\buffer\Buffer;
 class HttpFrame
 {
     
@@ -7,27 +8,30 @@ class HttpFrame
     {
 
     }
-    /*
+    /**
      * ()
+     * @return int
      * methodSize : 1
      */
-    public function flags()
+    public function flags(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return Buffer
      * methodSize : 1
      */
-    public function payload()
+    public function payload(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return int
      * methodSize : 1
      */
-    public function type()
+    public function type(/*0*/)
     {
 
     }

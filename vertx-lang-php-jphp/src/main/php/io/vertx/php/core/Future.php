@@ -7,173 +7,203 @@ class Future
     {
 
     }
-    /*
+    /**
      * ()
+     * @return Throwable
      * methodSize : 1
      */
-    public function cause()
+    public function cause(/*0*/)
     {
 
     }
-    /*
-     * (T result)
+    /**
+     * (Memory result)
+     * @return Void
      * ()
+     * @return Void
      * methodSize : 2
      */
-    public function complete()
+    public function complete(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return callable
      * methodSize : 1
      */
-    public function completer()
+    public function completer(/*0*/)
     {
 
     }
-    /*
-     * (Handler<T> handler, Future<U> next)
-     * (Function<T,Future<U>> mapper)
+    /**
+     * (callable handler, Future next)
+     * @return Future
+     * (callable mapper)
+     * @return Future
      * methodSize : 2
      */
-    public function compose()
+    public function compose(/*2*/$arg0, $arg1)
     {
 
     }
-    /*
+    /**
      * (Throwable cause)
-     * (String failureMessage)
+     * @return Void
+     * (string failureMessage)
+     * @return Void
      * methodSize : 2
      */
-    public function fail()
+    public function fail(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return bool
      * methodSize : 1
      */
-    public function failed()
+    public function failed(/*0*/)
     {
 
     }
-    /*
+    /**
      * (Throwable t)
-     * (String failureMessage)
+     * @return Future
+     * (string failureMessage)
+     * @return Future
      * methodSize : 2
      */
-    public function failedFuture()
+    public function failedFuture(/*1*/$arg0)
     {
 
     }
-    /*
-     * (Handler<Future<T>> handler)
+    /**
+     * (callable handler)
+     * @return Future
      * ()
+     * @return Future
      * methodSize : 2
      */
-    public function future()
+    public function future(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return bool
      * methodSize : 1
      */
-    public function isComplete()
+    public function isComplete(/*0*/)
     {
 
     }
-    /*
-     * (Function<T,U> mapper)
-     * (V value)
+    /**
+     * (callable mapper)
+     * @return Future
+     * (Memory value)
+     * @return Future
      * methodSize : 2
      */
-    public function map()
+    public function map(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return Future
      * methodSize : 1
      */
-    public function mapEmpty()
+    public function mapEmpty(/*0*/)
     {
 
     }
-    /*
-     * (Function<Throwable,T> mapper)
-     * (T value)
+    /**
+     * (callable mapper)
+     * @return Future
+     * (Memory value)
+     * @return Future
      * methodSize : 2
      */
-    public function otherwise()
+    public function otherwise(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return Future
      * methodSize : 1
      */
-    public function otherwiseEmpty()
+    public function otherwiseEmpty(/*0*/)
     {
 
     }
-    /*
-     * (Function<Throwable,Future<T>> mapper)
+    /**
+     * (callable mapper)
+     * @return Future
      * methodSize : 1
      */
-    public function recover()
+    public function recover(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return Memory
      * methodSize : 1
      */
-    public function result()
+    public function result(/*0*/)
     {
 
     }
-    /*
-     * (Handler<AsyncResult<T>> handler)
+    /**
+     * (callable handler)
+     * @return Future
      * methodSize : 1
      */
-    public function setHandler()
+    public function setHandler(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return bool
      * methodSize : 1
      */
-    public function succeeded()
+    public function succeeded(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
-     * (T result)
+     * @return Future
+     * (Memory result)
+     * @return Future
      * methodSize : 2
      */
-    public function succeededFuture()
+    public function succeededFuture(/*1*/$arg0)
     {
 
     }
-    /*
-     * (T result)
+    /**
+     * (Memory result)
+     * @return bool
      * ()
+     * @return bool
      * methodSize : 2
      */
-    public function tryComplete()
+    public function tryComplete(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * (Throwable cause)
-     * (String failureMessage)
+     * @return bool
+     * (string failureMessage)
+     * @return bool
      * methodSize : 2
      */
-    public function tryFail()
+    public function tryFail(/*1*/$arg0)
     {
 
     }

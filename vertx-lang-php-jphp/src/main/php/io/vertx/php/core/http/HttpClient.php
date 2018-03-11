@@ -1,5 +1,7 @@
 <?php 
 namespace io\vertx\php\core\http;
+use io\vertx\php\core\MultiMap;
+use io\vertx\php\core\streams\ReadStream;
 class HttpClient
 {
     
@@ -7,306 +9,441 @@ class HttpClient
     {
 
     }
-    /*
+    /**
      * ()
+     * @return Void
      * methodSize : 1
      */
-    public function close()
+    public function close(/*0*/)
     {
 
     }
-    /*
+    /**
      * (RequestOptions options)
-     * (String requestURI)
-     * (int port, String host, String requestURI)
-     * (String host, String requestURI, Handler<HttpClientResponse> responseHandler)
-     * (String host, String requestURI)
-     * (RequestOptions options, Handler<HttpClientResponse> responseHandler)
-     * (String requestURI, Handler<HttpClientResponse> responseHandler)
-     * (int port, String host, String requestURI, Handler<HttpClientResponse> responseHandler)
+     * @return HttpClientRequest
+     * (string requestURI)
+     * @return HttpClientRequest
+     * (int port, string host, string requestURI)
+     * @return HttpClientRequest
+     * (string host, string requestURI, callable responseHandler)
+     * @return HttpClientRequest
+     * (string host, string requestURI)
+     * @return HttpClientRequest
+     * (RequestOptions options, callable responseHandler)
+     * @return HttpClientRequest
+     * (string requestURI, callable responseHandler)
+     * @return HttpClientRequest
+     * (int port, string host, string requestURI, callable responseHandler)
+     * @return HttpClientRequest
      * methodSize : 8
      */
-    public function delete()
+    public function delete(/*4*/$arg0, $arg1, $arg2, $arg3)
     {
 
     }
-    /*
-     * (String absoluteURI)
-     * (String absoluteURI, Handler<HttpClientResponse> responseHandler)
+    /**
+     * (string absoluteURI)
+     * @return HttpClientRequest
+     * (string absoluteURI, callable responseHandler)
+     * @return HttpClientRequest
      * methodSize : 2
      */
-    public function deleteAbs()
+    public function deleteAbs(/*2*/$arg0, $arg1)
     {
 
     }
-    /*
+    /**
      * (RequestOptions options)
-     * (String requestURI)
-     * (int port, String host, String requestURI)
-     * (String host, String requestURI, Handler<HttpClientResponse> responseHandler)
-     * (String host, String requestURI)
-     * (RequestOptions options, Handler<HttpClientResponse> responseHandler)
-     * (String requestURI, Handler<HttpClientResponse> responseHandler)
-     * (int port, String host, String requestURI, Handler<HttpClientResponse> responseHandler)
+     * @return HttpClientRequest
+     * (string requestURI)
+     * @return HttpClientRequest
+     * (int port, string host, string requestURI)
+     * @return HttpClientRequest
+     * (string host, string requestURI, callable responseHandler)
+     * @return HttpClientRequest
+     * (string host, string requestURI)
+     * @return HttpClientRequest
+     * (RequestOptions options, callable responseHandler)
+     * @return HttpClientRequest
+     * (string requestURI, callable responseHandler)
+     * @return HttpClientRequest
+     * (int port, string host, string requestURI, callable responseHandler)
+     * @return HttpClientRequest
      * methodSize : 8
      */
-    public function get()
+    public function get(/*4*/$arg0, $arg1, $arg2, $arg3)
     {
 
     }
-    /*
-     * (String absoluteURI)
-     * (String absoluteURI, Handler<HttpClientResponse> responseHandler)
+    /**
+     * (string absoluteURI)
+     * @return HttpClientRequest
+     * (string absoluteURI, callable responseHandler)
+     * @return HttpClientRequest
      * methodSize : 2
      */
-    public function getAbs()
+    public function getAbs(/*2*/$arg0, $arg1)
     {
 
     }
-    /*
-     * (RequestOptions options, Handler<HttpClientResponse> responseHandler)
-     * (String requestURI, Handler<HttpClientResponse> responseHandler)
-     * (int port, String host, String requestURI, Handler<HttpClientResponse> responseHandler)
-     * (String host, String requestURI, Handler<HttpClientResponse> responseHandler)
+    /**
+     * (RequestOptions options, callable responseHandler)
+     * @return HttpClient
+     * (string requestURI, callable responseHandler)
+     * @return HttpClient
+     * (int port, string host, string requestURI, callable responseHandler)
+     * @return HttpClient
+     * (string host, string requestURI, callable responseHandler)
+     * @return HttpClient
      * methodSize : 4
      */
-    public function getNow()
+    public function getNow(/*4*/$arg0, $arg1, $arg2, $arg3)
     {
 
     }
-    /*
+    /**
      * (RequestOptions options)
-     * (String requestURI)
-     * (int port, String host, String requestURI)
-     * (String host, String requestURI, Handler<HttpClientResponse> responseHandler)
-     * (String host, String requestURI)
-     * (RequestOptions options, Handler<HttpClientResponse> responseHandler)
-     * (String requestURI, Handler<HttpClientResponse> responseHandler)
-     * (int port, String host, String requestURI, Handler<HttpClientResponse> responseHandler)
+     * @return HttpClientRequest
+     * (string requestURI)
+     * @return HttpClientRequest
+     * (int port, string host, string requestURI)
+     * @return HttpClientRequest
+     * (string host, string requestURI, callable responseHandler)
+     * @return HttpClientRequest
+     * (string host, string requestURI)
+     * @return HttpClientRequest
+     * (RequestOptions options, callable responseHandler)
+     * @return HttpClientRequest
+     * (string requestURI, callable responseHandler)
+     * @return HttpClientRequest
+     * (int port, string host, string requestURI, callable responseHandler)
+     * @return HttpClientRequest
      * methodSize : 8
      */
-    public function head()
+    public function head(/*4*/$arg0, $arg1, $arg2, $arg3)
     {
 
     }
-    /*
-     * (String absoluteURI)
-     * (String absoluteURI, Handler<HttpClientResponse> responseHandler)
+    /**
+     * (string absoluteURI)
+     * @return HttpClientRequest
+     * (string absoluteURI, callable responseHandler)
+     * @return HttpClientRequest
      * methodSize : 2
      */
-    public function headAbs()
+    public function headAbs(/*2*/$arg0, $arg1)
     {
 
     }
-    /*
-     * (RequestOptions options, Handler<HttpClientResponse> responseHandler)
-     * (String requestURI, Handler<HttpClientResponse> responseHandler)
-     * (int port, String host, String requestURI, Handler<HttpClientResponse> responseHandler)
-     * (String host, String requestURI, Handler<HttpClientResponse> responseHandler)
+    /**
+     * (RequestOptions options, callable responseHandler)
+     * @return HttpClient
+     * (string requestURI, callable responseHandler)
+     * @return HttpClient
+     * (int port, string host, string requestURI, callable responseHandler)
+     * @return HttpClient
+     * (string host, string requestURI, callable responseHandler)
+     * @return HttpClient
      * methodSize : 4
      */
-    public function headNow()
+    public function headNow(/*4*/$arg0, $arg1, $arg2, $arg3)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return bool
      * methodSize : 1
      */
-    public function isMetricsEnabled()
+    public function isMetricsEnabled(/*0*/)
     {
 
     }
-    /*
+    /**
      * (RequestOptions options)
-     * (String requestURI)
-     * (int port, String host, String requestURI)
-     * (String host, String requestURI, Handler<HttpClientResponse> responseHandler)
-     * (String host, String requestURI)
-     * (RequestOptions options, Handler<HttpClientResponse> responseHandler)
-     * (String requestURI, Handler<HttpClientResponse> responseHandler)
-     * (int port, String host, String requestURI, Handler<HttpClientResponse> responseHandler)
+     * @return HttpClientRequest
+     * (string requestURI)
+     * @return HttpClientRequest
+     * (int port, string host, string requestURI)
+     * @return HttpClientRequest
+     * (string host, string requestURI, callable responseHandler)
+     * @return HttpClientRequest
+     * (string host, string requestURI)
+     * @return HttpClientRequest
+     * (RequestOptions options, callable responseHandler)
+     * @return HttpClientRequest
+     * (string requestURI, callable responseHandler)
+     * @return HttpClientRequest
+     * (int port, string host, string requestURI, callable responseHandler)
+     * @return HttpClientRequest
      * methodSize : 8
      */
-    public function options()
+    public function options(/*4*/$arg0, $arg1, $arg2, $arg3)
     {
 
     }
-    /*
-     * (String absoluteURI)
-     * (String absoluteURI, Handler<HttpClientResponse> responseHandler)
+    /**
+     * (string absoluteURI)
+     * @return HttpClientRequest
+     * (string absoluteURI, callable responseHandler)
+     * @return HttpClientRequest
      * methodSize : 2
      */
-    public function optionsAbs()
+    public function optionsAbs(/*2*/$arg0, $arg1)
     {
 
     }
-    /*
-     * (RequestOptions options, Handler<HttpClientResponse> responseHandler)
-     * (String requestURI, Handler<HttpClientResponse> responseHandler)
-     * (int port, String host, String requestURI, Handler<HttpClientResponse> responseHandler)
-     * (String host, String requestURI, Handler<HttpClientResponse> responseHandler)
+    /**
+     * (RequestOptions options, callable responseHandler)
+     * @return HttpClient
+     * (string requestURI, callable responseHandler)
+     * @return HttpClient
+     * (int port, string host, string requestURI, callable responseHandler)
+     * @return HttpClient
+     * (string host, string requestURI, callable responseHandler)
+     * @return HttpClient
      * methodSize : 4
      */
-    public function optionsNow()
+    public function optionsNow(/*4*/$arg0, $arg1, $arg2, $arg3)
     {
 
     }
-    /*
+    /**
      * (RequestOptions options)
-     * (String requestURI)
-     * (int port, String host, String requestURI)
-     * (String host, String requestURI, Handler<HttpClientResponse> responseHandler)
-     * (String host, String requestURI)
-     * (RequestOptions options, Handler<HttpClientResponse> responseHandler)
-     * (String requestURI, Handler<HttpClientResponse> responseHandler)
-     * (int port, String host, String requestURI, Handler<HttpClientResponse> responseHandler)
+     * @return HttpClientRequest
+     * (string requestURI)
+     * @return HttpClientRequest
+     * (int port, string host, string requestURI)
+     * @return HttpClientRequest
+     * (string host, string requestURI, callable responseHandler)
+     * @return HttpClientRequest
+     * (string host, string requestURI)
+     * @return HttpClientRequest
+     * (RequestOptions options, callable responseHandler)
+     * @return HttpClientRequest
+     * (string requestURI, callable responseHandler)
+     * @return HttpClientRequest
+     * (int port, string host, string requestURI, callable responseHandler)
+     * @return HttpClientRequest
      * methodSize : 8
      */
-    public function post()
+    public function post(/*4*/$arg0, $arg1, $arg2, $arg3)
     {
 
     }
-    /*
-     * (String absoluteURI)
-     * (String absoluteURI, Handler<HttpClientResponse> responseHandler)
+    /**
+     * (string absoluteURI)
+     * @return HttpClientRequest
+     * (string absoluteURI, callable responseHandler)
+     * @return HttpClientRequest
      * methodSize : 2
      */
-    public function postAbs()
+    public function postAbs(/*2*/$arg0, $arg1)
     {
 
     }
-    /*
+    /**
      * (RequestOptions options)
-     * (String requestURI)
-     * (int port, String host, String requestURI)
-     * (String host, String requestURI, Handler<HttpClientResponse> responseHandler)
-     * (String host, String requestURI)
-     * (RequestOptions options, Handler<HttpClientResponse> responseHandler)
-     * (String requestURI, Handler<HttpClientResponse> responseHandler)
-     * (int port, String host, String requestURI, Handler<HttpClientResponse> responseHandler)
+     * @return HttpClientRequest
+     * (string requestURI)
+     * @return HttpClientRequest
+     * (int port, string host, string requestURI)
+     * @return HttpClientRequest
+     * (string host, string requestURI, callable responseHandler)
+     * @return HttpClientRequest
+     * (string host, string requestURI)
+     * @return HttpClientRequest
+     * (RequestOptions options, callable responseHandler)
+     * @return HttpClientRequest
+     * (string requestURI, callable responseHandler)
+     * @return HttpClientRequest
+     * (int port, string host, string requestURI, callable responseHandler)
+     * @return HttpClientRequest
      * methodSize : 8
      */
-    public function put()
+    public function put(/*4*/$arg0, $arg1, $arg2, $arg3)
     {
 
     }
-    /*
-     * (String absoluteURI)
-     * (String absoluteURI, Handler<HttpClientResponse> responseHandler)
+    /**
+     * (string absoluteURI)
+     * @return HttpClientRequest
+     * (string absoluteURI, callable responseHandler)
+     * @return HttpClientRequest
      * methodSize : 2
      */
-    public function putAbs()
+    public function putAbs(/*2*/$arg0, $arg1)
     {
 
     }
-    /*
-     * (Function<HttpClientResponse,Future<HttpClientRequest>> handler)
+    /**
+     * (callable handler)
+     * @return HttpClient
      * methodSize : 1
      */
-    public function redirectHandler()
+    public function redirectHandler(/*1*/$arg0)
     {
 
     }
-    /*
-     * (HttpMethod method, RequestOptions options)
-     * (HttpMethod method, String requestURI)
-     * (HttpMethod method, int port, String host, String requestURI)
-     * (HttpMethod method, String host, String requestURI, Handler<HttpClientResponse> responseHandler)
-     * (HttpMethod method, String host, String requestURI)
-     * (HttpMethod method, RequestOptions options, Handler<HttpClientResponse> responseHandler)
-     * (HttpMethod method, String requestURI, Handler<HttpClientResponse> responseHandler)
-     * (HttpMethod method, int port, String host, String requestURI, Handler<HttpClientResponse> responseHandler)
+    /**
+     * (enum method, RequestOptions options)
+     * @return HttpClientRequest
+     * (enum method, string requestURI)
+     * @return HttpClientRequest
+     * (enum method, int port, string host, string requestURI)
+     * @return HttpClientRequest
+     * (enum method, string host, string requestURI, callable responseHandler)
+     * @return HttpClientRequest
+     * (enum method, string host, string requestURI)
+     * @return HttpClientRequest
+     * (enum method, RequestOptions options, callable responseHandler)
+     * @return HttpClientRequest
+     * (enum method, string requestURI, callable responseHandler)
+     * @return HttpClientRequest
+     * (enum method, int port, string host, string requestURI, callable responseHandler)
+     * @return HttpClientRequest
      * methodSize : 8
      */
-    public function request()
+    public function request(/*5*/$arg0, $arg1, $arg2, $arg3, $arg4)
     {
 
     }
-    /*
-     * (HttpMethod method, String absoluteURI)
-     * (HttpMethod method, String absoluteURI, Handler<HttpClientResponse> responseHandler)
+    /**
+     * (enum method, string absoluteURI)
+     * @return HttpClientRequest
+     * (enum method, string absoluteURI, callable responseHandler)
+     * @return HttpClientRequest
      * methodSize : 2
      */
-    public function requestAbs()
+    public function requestAbs(/*3*/$arg0, $arg1, $arg2)
     {
 
     }
-    /*
-     * (RequestOptions options, Handler<WebSocket> wsConnect)
-     * (String requestURI, Handler<WebSocket> wsConnect)
-     * (int port, String host, String requestURI, Handler<WebSocket> wsConnect)
-     * (String host, String requestURI, Handler<WebSocket> wsConnect, Handler<Throwable> failureHandler)
-     * (RequestOptions options, MultiMap headers, Handler<WebSocket> wsConnect, Handler<Throwable> failureHandler)
-     * (String host, String requestURI, MultiMap headers, Handler<WebSocket> wsConnect)
-     * (RequestOptions options, MultiMap headers, WebsocketVersion version, Handler<WebSocket> wsConnect)
-     * (String requestURI, MultiMap headers, Handler<WebSocket> wsConnect, Handler<Throwable> failureHandler)
-     * (String requestURI, MultiMap headers, WebsocketVersion version, Handler<WebSocket> wsConnect)
-     * (RequestOptions options, Handler<WebSocket> wsConnect, Handler<Throwable> failureHandler)
-     * (String host, String requestURI, Handler<WebSocket> wsConnect)
-     * (RequestOptions options, MultiMap headers, Handler<WebSocket> wsConnect)
-     * (String requestURI, Handler<WebSocket> wsConnect, Handler<Throwable> failureHandler)
-     * (String requestURI, MultiMap headers, Handler<WebSocket> wsConnect)
-     * (int port, String host, String requestURI, Handler<WebSocket> wsConnect, Handler<Throwable> failureHandler)
-     * (int port, String host, String requestURI, MultiMap headers, Handler<WebSocket> wsConnect)
-     * (String host, String requestURI, MultiMap headers, Handler<WebSocket> wsConnect, Handler<Throwable> failureHandler)
-     * (RequestOptions options, MultiMap headers, WebsocketVersion version, Handler<WebSocket> wsConnect, Handler<Throwable> failureHandler)
-     * (String host, String requestURI, MultiMap headers, WebsocketVersion version, Handler<WebSocket> wsConnect)
-     * (RequestOptions options, MultiMap headers, WebsocketVersion version, String subProtocols, Handler<WebSocket> wsConnect)
-     * (String requestURI, MultiMap headers, WebsocketVersion version, Handler<WebSocket> wsConnect, Handler<Throwable> failureHandler)
-     * (String requestURI, MultiMap headers, WebsocketVersion version, String subProtocols, Handler<WebSocket> wsConnect)
-     * (int port, String host, String requestURI, MultiMap headers, Handler<WebSocket> wsConnect, Handler<Throwable> failureHandler)
-     * (int port, String host, String requestURI, MultiMap headers, WebsocketVersion version, Handler<WebSocket> wsConnect)
-     * (String host, String requestURI, MultiMap headers, WebsocketVersion version, Handler<WebSocket> wsConnect, Handler<Throwable> failureHandler)
-     * (RequestOptions options, MultiMap headers, WebsocketVersion version, String subProtocols, Handler<WebSocket> wsConnect, Handler<Throwable> failureHandler)
-     * (String host, String requestURI, MultiMap headers, WebsocketVersion version, String subProtocols, Handler<WebSocket> wsConnect)
-     * (String requestURI, MultiMap headers, WebsocketVersion version, String subProtocols, Handler<WebSocket> wsConnect, Handler<Throwable> failureHandler)
-     * (int port, String host, String requestURI, MultiMap headers, WebsocketVersion version, Handler<WebSocket> wsConnect, Handler<Throwable> failureHandler)
-     * (int port, String host, String requestURI, MultiMap headers, WebsocketVersion version, String subProtocols, Handler<WebSocket> wsConnect)
-     * (String host, String requestURI, MultiMap headers, WebsocketVersion version, String subProtocols, Handler<WebSocket> wsConnect, Handler<Throwable> failureHandler)
-     * (int port, String host, String requestURI, MultiMap headers, WebsocketVersion version, String subProtocols, Handler<WebSocket> wsConnect, Handler<Throwable> failureHandler)
+    /**
+     * (RequestOptions options, callable wsConnect)
+     * @return HttpClient
+     * (string requestURI, callable wsConnect)
+     * @return HttpClient
+     * (int port, string host, string requestURI, callable wsConnect)
+     * @return HttpClient
+     * (string host, string requestURI, callable wsConnect, callable failureHandler)
+     * @return HttpClient
+     * (RequestOptions options, MultiMap headers, callable wsConnect, callable failureHandler)
+     * @return HttpClient
+     * (string host, string requestURI, MultiMap headers, callable wsConnect)
+     * @return HttpClient
+     * (RequestOptions options, MultiMap headers, enum version, callable wsConnect)
+     * @return HttpClient
+     * (string requestURI, MultiMap headers, callable wsConnect, callable failureHandler)
+     * @return HttpClient
+     * (string requestURI, MultiMap headers, enum version, callable wsConnect)
+     * @return HttpClient
+     * (RequestOptions options, callable wsConnect, callable failureHandler)
+     * @return HttpClient
+     * (string host, string requestURI, callable wsConnect)
+     * @return HttpClient
+     * (RequestOptions options, MultiMap headers, callable wsConnect)
+     * @return HttpClient
+     * (string requestURI, callable wsConnect, callable failureHandler)
+     * @return HttpClient
+     * (string requestURI, MultiMap headers, callable wsConnect)
+     * @return HttpClient
+     * (int port, string host, string requestURI, callable wsConnect, callable failureHandler)
+     * @return HttpClient
+     * (int port, string host, string requestURI, MultiMap headers, callable wsConnect)
+     * @return HttpClient
+     * (string host, string requestURI, MultiMap headers, callable wsConnect, callable failureHandler)
+     * @return HttpClient
+     * (RequestOptions options, MultiMap headers, enum version, callable wsConnect, callable failureHandler)
+     * @return HttpClient
+     * (string host, string requestURI, MultiMap headers, enum version, callable wsConnect)
+     * @return HttpClient
+     * (RequestOptions options, MultiMap headers, enum version, string subProtocols, callable wsConnect)
+     * @return HttpClient
+     * (string requestURI, MultiMap headers, enum version, callable wsConnect, callable failureHandler)
+     * @return HttpClient
+     * (string requestURI, MultiMap headers, enum version, string subProtocols, callable wsConnect)
+     * @return HttpClient
+     * (int port, string host, string requestURI, MultiMap headers, callable wsConnect, callable failureHandler)
+     * @return HttpClient
+     * (int port, string host, string requestURI, MultiMap headers, enum version, callable wsConnect)
+     * @return HttpClient
+     * (string host, string requestURI, MultiMap headers, enum version, callable wsConnect, callable failureHandler)
+     * @return HttpClient
+     * (RequestOptions options, MultiMap headers, enum version, string subProtocols, callable wsConnect, callable failureHandler)
+     * @return HttpClient
+     * (string host, string requestURI, MultiMap headers, enum version, string subProtocols, callable wsConnect)
+     * @return HttpClient
+     * (string requestURI, MultiMap headers, enum version, string subProtocols, callable wsConnect, callable failureHandler)
+     * @return HttpClient
+     * (int port, string host, string requestURI, MultiMap headers, enum version, callable wsConnect, callable failureHandler)
+     * @return HttpClient
+     * (int port, string host, string requestURI, MultiMap headers, enum version, string subProtocols, callable wsConnect)
+     * @return HttpClient
+     * (string host, string requestURI, MultiMap headers, enum version, string subProtocols, callable wsConnect, callable failureHandler)
+     * @return HttpClient
+     * (int port, string host, string requestURI, MultiMap headers, enum version, string subProtocols, callable wsConnect, callable failureHandler)
+     * @return HttpClient
      * methodSize : 32
      */
-    public function websocket()
+    public function websocket(/*8*/$arg0, $arg1, $arg2, $arg3, $arg4, $arg5, $arg6, $arg7)
     {
 
     }
-    /*
-     * (String url, MultiMap headers, WebsocketVersion version, String subProtocols, Handler<WebSocket> wsConnect, Handler<Throwable> failureHandler)
+    /**
+     * (string url, MultiMap headers, enum version, string subProtocols, callable wsConnect, callable failureHandler)
+     * @return HttpClient
      * methodSize : 1
      */
-    public function websocketAbs()
+    public function websocketAbs(/*6*/$arg0, $arg1, $arg2, $arg3, $arg4, $arg5)
     {
 
     }
-    /*
+    /**
      * (RequestOptions options)
-     * (String requestURI)
-     * (int port, String host, String requestURI)
-     * (String host, String requestURI, MultiMap headers)
-     * (RequestOptions options, MultiMap headers, WebsocketVersion version)
-     * (String requestURI, MultiMap headers, WebsocketVersion version)
-     * (String host, String requestURI)
+     * @return ReadStream
+     * (string requestURI)
+     * @return ReadStream
+     * (int port, string host, string requestURI)
+     * @return ReadStream
+     * (string host, string requestURI, MultiMap headers)
+     * @return ReadStream
+     * (RequestOptions options, MultiMap headers, enum version)
+     * @return ReadStream
+     * (string requestURI, MultiMap headers, enum version)
+     * @return ReadStream
+     * (string host, string requestURI)
+     * @return ReadStream
      * (RequestOptions options, MultiMap headers)
-     * (String requestURI, MultiMap headers)
-     * (int port, String host, String requestURI, MultiMap headers)
-     * (String host, String requestURI, MultiMap headers, WebsocketVersion version)
-     * (RequestOptions options, MultiMap headers, WebsocketVersion version, String subProtocols)
-     * (String requestURI, MultiMap headers, WebsocketVersion version, String subProtocols)
-     * (int port, String host, String requestURI, MultiMap headers, WebsocketVersion version)
-     * (String host, String requestURI, MultiMap headers, WebsocketVersion version, String subProtocols)
-     * (int port, String host, String requestURI, MultiMap headers, WebsocketVersion version, String subProtocols)
+     * @return ReadStream
+     * (string requestURI, MultiMap headers)
+     * @return ReadStream
+     * (int port, string host, string requestURI, MultiMap headers)
+     * @return ReadStream
+     * (string host, string requestURI, MultiMap headers, enum version)
+     * @return ReadStream
+     * (RequestOptions options, MultiMap headers, enum version, string subProtocols)
+     * @return ReadStream
+     * (string requestURI, MultiMap headers, enum version, string subProtocols)
+     * @return ReadStream
+     * (int port, string host, string requestURI, MultiMap headers, enum version)
+     * @return ReadStream
+     * (string host, string requestURI, MultiMap headers, enum version, string subProtocols)
+     * @return ReadStream
+     * (int port, string host, string requestURI, MultiMap headers, enum version, string subProtocols)
+     * @return ReadStream
      * methodSize : 16
      */
-    public function websocketStream()
+    public function websocketStream(/*6*/$arg0, $arg1, $arg2, $arg3, $arg4, $arg5)
     {
 
     }
-    /*
-     * (String url, MultiMap headers, WebsocketVersion version, String subProtocols)
+    /**
+     * (string url, MultiMap headers, enum version, string subProtocols)
+     * @return ReadStream
      * methodSize : 1
      */
-    public function websocketStreamAbs()
+    public function websocketStreamAbs(/*4*/$arg0, $arg1, $arg2, $arg3)
     {
 
     }

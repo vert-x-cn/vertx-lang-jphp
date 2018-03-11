@@ -7,44 +7,50 @@ class Pump
     {
 
     }
-    /*
+    /**
      * ()
+     * @return int
      * methodSize : 1
      */
-    public function numberPumped()
+    public function numberPumped(/*0*/)
     {
 
     }
-    /*
-     * (ReadStream<T> rs, WriteStream<T> ws)
-     * (ReadStream<T> rs, WriteStream<T> ws, int writeQueueMaxSize)
+    /**
+     * (ReadStream rs, WriteStream ws)
+     * @return Pump
+     * (ReadStream rs, WriteStream ws, int writeQueueMaxSize)
+     * @return Pump
      * methodSize : 2
      */
-    public function pump()
+    public function pump(/*3*/$arg0, $arg1, $arg2)
     {
 
     }
-    /*
+    /**
      * (int maxSize)
+     * @return Pump
      * methodSize : 1
      */
-    public function setWriteQueueMaxSize()
+    public function setWriteQueueMaxSize(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return Pump
      * methodSize : 1
      */
-    public function start()
+    public function start(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return Pump
      * methodSize : 1
      */
-    public function stop()
+    public function stop(/*0*/)
     {
 
     }

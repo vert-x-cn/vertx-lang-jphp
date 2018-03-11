@@ -7,77 +7,88 @@ class AsyncMap
     {
 
     }
-    /*
-     * (Handler<AsyncResult<Void>> resultHandler)
+    /**
+     * (callable resultHandler)
+     * @return Void
      * methodSize : 1
      */
-    public function clear()
+    public function clear(/*1*/$arg0)
     {
 
     }
-    /*
-     * (K k, Handler<AsyncResult<V>> resultHandler)
+    /**
+     * (Memory k, callable resultHandler)
+     * @return Void
      * methodSize : 1
      */
-    public function get()
+    public function get(/*2*/$arg0, $arg1)
     {
 
     }
-    /*
-     * (K k, V v, Handler<AsyncResult<Void>> completionHandler)
-     * (K k, V v, long ttl, Handler<AsyncResult<Void>> completionHandler)
+    /**
+     * (Memory k, Memory v, callable completionHandler)
+     * @return Void
+     * (Memory k, Memory v, num ttl, callable completionHandler)
+     * @return Void
      * methodSize : 2
      */
-    public function put()
+    public function put(/*4*/$arg0, $arg1, $arg2, $arg3)
     {
 
     }
-    /*
-     * (K k, V v, Handler<AsyncResult<V>> completionHandler)
-     * (K k, V v, long ttl, Handler<AsyncResult<V>> completionHandler)
+    /**
+     * (Memory k, Memory v, callable completionHandler)
+     * @return Void
+     * (Memory k, Memory v, num ttl, callable completionHandler)
+     * @return Void
      * methodSize : 2
      */
-    public function putIfAbsent()
+    public function putIfAbsent(/*4*/$arg0, $arg1, $arg2, $arg3)
     {
 
     }
-    /*
-     * (K k, Handler<AsyncResult<V>> resultHandler)
+    /**
+     * (Memory k, callable resultHandler)
+     * @return Void
      * methodSize : 1
      */
-    public function remove()
+    public function remove(/*2*/$arg0, $arg1)
     {
 
     }
-    /*
-     * (K k, V v, Handler<AsyncResult<Boolean>> resultHandler)
+    /**
+     * (Memory k, Memory v, callable resultHandler)
+     * @return Void
      * methodSize : 1
      */
-    public function removeIfPresent()
+    public function removeIfPresent(/*3*/$arg0, $arg1, $arg2)
     {
 
     }
-    /*
-     * (K k, V v, Handler<AsyncResult<V>> resultHandler)
+    /**
+     * (Memory k, Memory v, callable resultHandler)
+     * @return Void
      * methodSize : 1
      */
-    public function replace()
+    public function replace(/*3*/$arg0, $arg1, $arg2)
     {
 
     }
-    /*
-     * (K k, V oldValue, V newValue, Handler<AsyncResult<Boolean>> resultHandler)
+    /**
+     * (Memory k, Memory oldValue, Memory newValue, callable resultHandler)
+     * @return Void
      * methodSize : 1
      */
-    public function replaceIfPresent()
+    public function replaceIfPresent(/*4*/$arg0, $arg1, $arg2, $arg3)
     {
 
     }
-    /*
-     * (Handler<AsyncResult<Integer>> resultHandler)
+    /**
+     * (callable resultHandler)
+     * @return Void
      * methodSize : 1
      */
-    public function size()
+    public function size(/*1*/$arg0)
     {
 
     }

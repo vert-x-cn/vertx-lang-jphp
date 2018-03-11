@@ -7,59 +7,66 @@ class Counter
     {
 
     }
-    /*
-     * (long value, Handler<AsyncResult<Long>> resultHandler)
+    /**
+     * (num value, callable resultHandler)
+     * @return Void
      * methodSize : 1
      */
-    public function addAndGet()
+    public function addAndGet(/*2*/$arg0, $arg1)
     {
 
     }
-    /*
-     * (long expected, long value, Handler<AsyncResult<Boolean>> resultHandler)
+    /**
+     * (num expected, num value, callable resultHandler)
+     * @return Void
      * methodSize : 1
      */
-    public function compareAndSet()
+    public function compareAndSet(/*3*/$arg0, $arg1, $arg2)
     {
 
     }
-    /*
-     * (Handler<AsyncResult<Long>> resultHandler)
+    /**
+     * (callable resultHandler)
+     * @return Void
      * methodSize : 1
      */
-    public function decrementAndGet()
+    public function decrementAndGet(/*1*/$arg0)
     {
 
     }
-    /*
-     * (Handler<AsyncResult<Long>> resultHandler)
+    /**
+     * (callable resultHandler)
+     * @return Void
      * methodSize : 1
      */
-    public function get()
+    public function get(/*1*/$arg0)
     {
 
     }
-    /*
-     * (long value, Handler<AsyncResult<Long>> resultHandler)
+    /**
+     * (num value, callable resultHandler)
+     * @return Void
      * methodSize : 1
      */
-    public function getAndAdd()
+    public function getAndAdd(/*2*/$arg0, $arg1)
     {
 
     }
-    /*
-     * (Handler<AsyncResult<Long>> resultHandler)
+    /**
+     * (callable resultHandler)
+     * @return Void
      * methodSize : 1
      */
-    public function getAndIncrement()
+    public function getAndIncrement(/*1*/$arg0)
     {
 
     }
-    /*
-     * (Handler<AsyncResult<Long>> resultHandler)
+    /**
+     * (callable resultHandler)
+     * @return Void
      * methodSize : 1
      */
-    public function incrementAndGet()
+    public function incrementAndGet(/*1*/$arg0)
     {
 
     }

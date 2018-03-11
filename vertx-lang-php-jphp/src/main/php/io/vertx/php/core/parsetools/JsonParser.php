@@ -1,5 +1,7 @@
 <?php 
 namespace io\vertx\php\core\parsetools;
+use io\vertx\php\core\buffer\Buffer;
+use io\vertx\php\core\streams\ReadStream;
 class JsonParser
 {
     
@@ -7,108 +9,122 @@ class JsonParser
     {
 
     }
-    /*
+    /**
      * ()
+     * @return JsonParser
      * methodSize : 1
      */
-    public function arrayEventMode()
+    public function arrayEventMode(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return JsonParser
      * methodSize : 1
      */
-    public function arrayValueMode()
+    public function arrayValueMode(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return Void
      * methodSize : 1
      */
-    public function end()
+    public function end(/*0*/)
     {
 
     }
-    /*
-     * (Handler<Void> endHandler)
+    /**
+     * (callable endHandler)
+     * @return JsonParser
      * methodSize : 1
      */
-    public function endHandler()
+    public function endHandler(/*1*/$arg0)
     {
 
     }
-    /*
-     * (Handler<Throwable> handler)
+    /**
+     * (callable handler)
+     * @return JsonParser
      * methodSize : 1
      */
-    public function exceptionHandler()
+    public function exceptionHandler(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * (Buffer event)
+     * @return Void
      * methodSize : 1
      */
-    public function handle()
+    public function handle(/*1*/$arg0)
     {
 
     }
-    /*
-     * (Handler<JsonEvent> handler)
+    /**
+     * (callable handler)
+     * @return JsonParser
      * methodSize : 1
      */
-    public function handler()
+    public function handler(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * ()
-     * (ReadStream<Buffer> stream)
+     * @return JsonParser
+     * (ReadStream stream)
+     * @return JsonParser
      * methodSize : 2
      */
-    public function newParser()
+    public function newParser(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return JsonParser
      * methodSize : 1
      */
-    public function objectEventMode()
+    public function objectEventMode(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return JsonParser
      * methodSize : 1
      */
-    public function objectValueMode()
+    public function objectValueMode(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return JsonParser
      * methodSize : 1
      */
-    public function pause()
+    public function pause(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return JsonParser
      * methodSize : 1
      */
-    public function resume()
+    public function resume(/*0*/)
     {
 
     }
-    /*
+    /**
      * (Buffer buffer)
+     * @return JsonParser
      * methodSize : 1
      */
-    public function write()
+    public function write(/*1*/$arg0)
     {
 
     }

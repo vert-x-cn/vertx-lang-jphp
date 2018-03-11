@@ -1,5 +1,7 @@
 <?php 
 namespace io\vertx\php\core\http;
+use io\vertx\php\core\MultiMap;
+use io\vertx\php\core\buffer\Buffer;
 class HttpClientRequest
 {
     
@@ -7,275 +9,316 @@ class HttpClientRequest
     {
 
     }
-    /*
+    /**
      * ()
+     * @return string
      * methodSize : 1
      */
-    public function absoluteURI()
+    public function absoluteURI(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return HttpConnection
      * methodSize : 1
      */
-    public function connection()
+    public function connection(/*0*/)
     {
 
     }
-    /*
-     * (Handler<HttpConnection> handler)
+    /**
+     * (callable handler)
+     * @return HttpClientRequest
      * methodSize : 1
      */
-    public function connectionHandler()
+    public function connectionHandler(/*1*/$arg0)
     {
 
     }
-    /*
-     * (Handler<Void> handler)
+    /**
+     * (callable handler)
+     * @return HttpClientRequest
      * methodSize : 1
      */
-    public function continueHandler()
+    public function continueHandler(/*1*/$arg0)
     {
 
     }
-    /*
-     * (Handler<Void> handler)
+    /**
+     * (callable handler)
+     * @return HttpClientRequest
      * methodSize : 1
      */
-    public function drainHandler()
+    public function drainHandler(/*1*/$arg0)
     {
 
     }
-    /*
-     * (String chunk)
+    /**
+     * (string chunk)
+     * @return Void
      * (Buffer chunk)
-     * (String chunk, String enc)
+     * @return Void
+     * (string chunk, string enc)
+     * @return Void
      * ()
+     * @return Void
      * methodSize : 4
      */
-    public function end()
+    public function end(/*2*/$arg0, $arg1)
     {
 
     }
-    /*
-     * (Handler<Void> endHandler)
+    /**
+     * (callable endHandler)
+     * @return HttpClientRequest
      * methodSize : 1
      */
-    public function endHandler()
+    public function endHandler(/*1*/$arg0)
     {
 
     }
-    /*
-     * (Handler<Throwable> handler)
+    /**
+     * (callable handler)
+     * @return HttpClientRequest
      * methodSize : 1
      */
-    public function exceptionHandler()
+    public function exceptionHandler(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return string
      * methodSize : 1
      */
-    public function getHost()
+    public function getHost(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return string
      * methodSize : 1
      */
-    public function getRawMethod()
+    public function getRawMethod(/*0*/)
     {
 
     }
-    /*
-     * (Handler<HttpClientResponse> handler)
+    /**
+     * (callable handler)
+     * @return HttpClientRequest
      * methodSize : 1
      */
-    public function handler()
+    public function handler(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return MultiMap
      * methodSize : 1
      */
-    public function headers()
+    public function headers(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return bool
      * methodSize : 1
      */
-    public function isChunked()
+    public function isChunked(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return enum
      * methodSize : 1
      */
-    public function method()
+    public function method(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return string
      * methodSize : 1
      */
-    public function path()
+    public function path(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return HttpClientRequest
      * methodSize : 1
      */
-    public function pause()
+    public function pause(/*0*/)
     {
 
     }
-    /*
-     * (Handler<HttpClientRequest> handler)
+    /**
+     * (callable handler)
+     * @return HttpClientRequest
      * methodSize : 1
      */
-    public function pushHandler()
+    public function pushHandler(/*1*/$arg0)
     {
 
     }
-    /*
-     * (String name, String value)
+    /**
+     * (string name, string value)
+     * @return HttpClientRequest
      * methodSize : 1
      */
-    public function putHeader()
+    public function putHeader(/*2*/$arg0, $arg1)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return string
      * methodSize : 1
      */
-    public function query()
+    public function query(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
-     * (long code)
+     * @return bool
+     * (num code)
+     * @return bool
      * methodSize : 2
      */
-    public function reset()
+    public function reset(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return HttpClientRequest
      * methodSize : 1
      */
-    public function resume()
+    public function resume(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
-     * (Handler<HttpVersion> completionHandler)
+     * @return HttpClientRequest
+     * (callable completionHandler)
+     * @return HttpClientRequest
      * methodSize : 2
      */
-    public function sendHead()
+    public function sendHead(/*1*/$arg0)
     {
 
     }
-    /*
-     * (boolean chunked)
+    /**
+     * (bool chunked)
+     * @return HttpClientRequest
      * methodSize : 1
      */
-    public function setChunked()
+    public function setChunked(/*1*/$arg0)
     {
 
     }
-    /*
-     * (boolean followRedirects)
+    /**
+     * (bool followRedirects)
+     * @return HttpClientRequest
      * methodSize : 1
      */
-    public function setFollowRedirects()
+    public function setFollowRedirects(/*1*/$arg0)
     {
 
     }
-    /*
-     * (String host)
+    /**
+     * (string host)
+     * @return HttpClientRequest
      * methodSize : 1
      */
-    public function setHost()
+    public function setHost(/*1*/$arg0)
     {
 
     }
-    /*
-     * (String method)
+    /**
+     * (string method)
+     * @return HttpClientRequest
      * methodSize : 1
      */
-    public function setRawMethod()
+    public function setRawMethod(/*1*/$arg0)
     {
 
     }
-    /*
-     * (long timeoutMs)
+    /**
+     * (num timeoutMs)
+     * @return HttpClientRequest
      * methodSize : 1
      */
-    public function setTimeout()
+    public function setTimeout(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * (int maxSize)
+     * @return HttpClientRequest
      * methodSize : 1
      */
-    public function setWriteQueueMaxSize()
+    public function setWriteQueueMaxSize(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return int
      * methodSize : 1
      */
-    public function streamId()
+    public function streamId(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return string
      * methodSize : 1
      */
-    public function uri()
+    public function uri(/*0*/)
     {
 
     }
-    /*
+    /**
      * (Buffer data)
-     * (String chunk)
-     * (String chunk, String enc)
+     * @return HttpClientRequest
+     * (string chunk)
+     * @return HttpClientRequest
+     * (string chunk, string enc)
+     * @return HttpClientRequest
      * methodSize : 3
      */
-    public function write()
+    public function write(/*2*/$arg0, $arg1)
     {
 
     }
-    /*
+    /**
      * (int type, int flags, Buffer payload)
+     * @return HttpClientRequest
      * (HttpFrame frame)
+     * @return HttpClientRequest
      * methodSize : 2
      */
-    public function writeCustomFrame()
+    public function writeCustomFrame(/*3*/$arg0, $arg1, $arg2)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return bool
      * methodSize : 1
      */
-    public function writeQueueFull()
+    public function writeQueueFull(/*0*/)
     {
 
     }

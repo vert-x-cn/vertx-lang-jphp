@@ -7,19 +7,21 @@ class MxRecord
     {
 
     }
-    /*
+    /**
      * ()
+     * @return string
      * methodSize : 1
      */
-    public function name()
+    public function name(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return int
      * methodSize : 1
      */
-    public function priority()
+    public function priority(/*0*/)
     {
 
     }

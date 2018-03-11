@@ -1,5 +1,6 @@
 <?php 
 namespace io\vertx\php\core\net;
+use io\vertx\php\core\buffer\Buffer;
 class NetSocket
 {
     
@@ -7,164 +8,192 @@ class NetSocket
     {
 
     }
-    /*
+    /**
      * ()
+     * @return Void
      * methodSize : 1
      */
-    public function close()
+    public function close(/*0*/)
     {
 
     }
-    /*
-     * (Handler<Void> handler)
+    /**
+     * (callable handler)
+     * @return NetSocket
      * methodSize : 1
      */
-    public function closeHandler()
+    public function closeHandler(/*1*/$arg0)
     {
 
     }
-    /*
-     * (Handler<Void> handler)
+    /**
+     * (callable handler)
+     * @return NetSocket
      * methodSize : 1
      */
-    public function drainHandler()
+    public function drainHandler(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * (Buffer t)
+     * @return Void
      * ()
+     * @return Void
      * methodSize : 2
      */
-    public function end()
+    public function end(/*1*/$arg0)
     {
 
     }
-    /*
-     * (Handler<Void> endHandler)
+    /**
+     * (callable endHandler)
+     * @return NetSocket
      * methodSize : 1
      */
-    public function endHandler()
+    public function endHandler(/*1*/$arg0)
     {
 
     }
-    /*
-     * (Handler<Throwable> handler)
+    /**
+     * (callable handler)
+     * @return NetSocket
      * methodSize : 1
      */
-    public function exceptionHandler()
+    public function exceptionHandler(/*1*/$arg0)
     {
 
     }
-    /*
-     * (Handler<Buffer> handler)
+    /**
+     * (callable handler)
+     * @return NetSocket
      * methodSize : 1
      */
-    public function handler()
+    public function handler(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return string
      * methodSize : 1
      */
-    public function indicatedServerName()
+    public function indicatedServerName(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return bool
      * methodSize : 1
      */
-    public function isSsl()
+    public function isSsl(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return SocketAddress
      * methodSize : 1
      */
-    public function localAddress()
+    public function localAddress(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return NetSocket
      * methodSize : 1
      */
-    public function pause()
+    public function pause(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return SocketAddress
      * methodSize : 1
      */
-    public function remoteAddress()
+    public function remoteAddress(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return NetSocket
      * methodSize : 1
      */
-    public function resume()
+    public function resume(/*0*/)
     {
 
     }
-    /*
-     * (String filename)
-     * (String filename, long offset)
-     * (String filename, Handler<AsyncResult<Void>> resultHandler)
-     * (String filename, long offset, long length)
-     * (String filename, long offset, Handler<AsyncResult<Void>> resultHandler)
-     * (String filename, long offset, long length, Handler<AsyncResult<Void>> resultHandler)
+    /**
+     * (string filename)
+     * @return NetSocket
+     * (string filename, num offset)
+     * @return NetSocket
+     * (string filename, callable resultHandler)
+     * @return NetSocket
+     * (string filename, num offset, num length)
+     * @return NetSocket
+     * (string filename, num offset, callable resultHandler)
+     * @return NetSocket
+     * (string filename, num offset, num length, callable resultHandler)
+     * @return NetSocket
      * methodSize : 6
      */
-    public function sendFile()
+    public function sendFile(/*4*/$arg0, $arg1, $arg2, $arg3)
     {
 
     }
-    /*
+    /**
      * (int maxSize)
+     * @return NetSocket
      * methodSize : 1
      */
-    public function setWriteQueueMaxSize()
+    public function setWriteQueueMaxSize(/*1*/$arg0)
     {
 
     }
-    /*
-     * (Handler<Void> handler)
-     * (String serverName, Handler<Void> handler)
+    /**
+     * (callable handler)
+     * @return NetSocket
+     * (string serverName, callable handler)
+     * @return NetSocket
      * methodSize : 2
      */
-    public function upgradeToSsl()
+    public function upgradeToSsl(/*2*/$arg0, $arg1)
     {
 
     }
-    /*
+    /**
      * (Buffer data)
-     * (String str)
-     * (String str, String enc)
+     * @return NetSocket
+     * (string str)
+     * @return NetSocket
+     * (string str, string enc)
+     * @return NetSocket
      * methodSize : 3
      */
-    public function write()
+    public function write(/*2*/$arg0, $arg1)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return string
      * methodSize : 1
      */
-    public function writeHandlerID()
+    public function writeHandlerID(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return bool
      * methodSize : 1
      */
-    public function writeQueueFull()
+    public function writeQueueFull(/*0*/)
     {
 
     }

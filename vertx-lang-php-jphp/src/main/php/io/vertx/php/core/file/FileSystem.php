@@ -1,5 +1,6 @@
 <?php 
 namespace io\vertx\php\core\file;
+use io\vertx\php\core\buffer\Buffer;
 class FileSystem
 {
     
@@ -7,397 +8,455 @@ class FileSystem
     {
 
     }
-    /*
-     * (String path, String perms, Handler<AsyncResult<Void>> handler)
+    /**
+     * (string path, string perms, callable handler)
+     * @return FileSystem
      * methodSize : 1
      */
-    public function chmod()
+    public function chmod(/*3*/$arg0, $arg1, $arg2)
     {
 
     }
-    /*
-     * (String path, String perms)
+    /**
+     * (string path, string perms)
+     * @return FileSystem
      * methodSize : 1
      */
-    public function chmodBlocking()
+    public function chmodBlocking(/*2*/$arg0, $arg1)
     {
 
     }
-    /*
-     * (String path, String perms, String dirPerms, Handler<AsyncResult<Void>> handler)
+    /**
+     * (string path, string perms, string dirPerms, callable handler)
+     * @return FileSystem
      * methodSize : 1
      */
-    public function chmodRecursive()
+    public function chmodRecursive(/*4*/$arg0, $arg1, $arg2, $arg3)
     {
 
     }
-    /*
-     * (String path, String perms, String dirPerms)
+    /**
+     * (string path, string perms, string dirPerms)
+     * @return FileSystem
      * methodSize : 1
      */
-    public function chmodRecursiveBlocking()
+    public function chmodRecursiveBlocking(/*3*/$arg0, $arg1, $arg2)
     {
 
     }
-    /*
-     * (String path, String user, String group, Handler<AsyncResult<Void>> handler)
+    /**
+     * (string path, string user, string group, callable handler)
+     * @return FileSystem
      * methodSize : 1
      */
-    public function chown()
+    public function chown(/*4*/$arg0, $arg1, $arg2, $arg3)
     {
 
     }
-    /*
-     * (String path, String user, String group)
+    /**
+     * (string path, string user, string group)
+     * @return FileSystem
      * methodSize : 1
      */
-    public function chownBlocking()
+    public function chownBlocking(/*3*/$arg0, $arg1, $arg2)
     {
 
     }
-    /*
-     * (String from, String to, Handler<AsyncResult<Void>> handler)
-     * (String from, String to, CopyOptions options, Handler<AsyncResult<Void>> handler)
+    /**
+     * (string from, string to, callable handler)
+     * @return FileSystem
+     * (string from, string to, CopyOptions options, callable handler)
+     * @return FileSystem
      * methodSize : 2
      */
-    public function copy()
+    public function copy(/*4*/$arg0, $arg1, $arg2, $arg3)
     {
 
     }
-    /*
-     * (String from, String to)
+    /**
+     * (string from, string to)
+     * @return FileSystem
      * methodSize : 1
      */
-    public function copyBlocking()
+    public function copyBlocking(/*2*/$arg0, $arg1)
     {
 
     }
-    /*
-     * (String from, String to, boolean recursive, Handler<AsyncResult<Void>> handler)
+    /**
+     * (string from, string to, bool recursive, callable handler)
+     * @return FileSystem
      * methodSize : 1
      */
-    public function copyRecursive()
+    public function copyRecursive(/*4*/$arg0, $arg1, $arg2, $arg3)
     {
 
     }
-    /*
-     * (String from, String to, boolean recursive)
+    /**
+     * (string from, string to, bool recursive)
+     * @return FileSystem
      * methodSize : 1
      */
-    public function copyRecursiveBlocking()
+    public function copyRecursiveBlocking(/*3*/$arg0, $arg1, $arg2)
     {
 
     }
-    /*
-     * (String path, Handler<AsyncResult<Void>> handler)
-     * (String path, String perms, Handler<AsyncResult<Void>> handler)
+    /**
+     * (string path, callable handler)
+     * @return FileSystem
+     * (string path, string perms, callable handler)
+     * @return FileSystem
      * methodSize : 2
      */
-    public function createFile()
+    public function createFile(/*3*/$arg0, $arg1, $arg2)
     {
 
     }
-    /*
-     * (String path)
-     * (String path, String perms)
+    /**
+     * (string path)
+     * @return FileSystem
+     * (string path, string perms)
+     * @return FileSystem
      * methodSize : 2
      */
-    public function createFileBlocking()
+    public function createFileBlocking(/*2*/$arg0, $arg1)
     {
 
     }
-    /*
-     * (String path, Handler<AsyncResult<Void>> handler)
+    /**
+     * (string path, callable handler)
+     * @return FileSystem
      * methodSize : 1
      */
-    public function delete()
+    public function delete(/*2*/$arg0, $arg1)
     {
 
     }
-    /*
-     * (String path)
+    /**
+     * (string path)
+     * @return FileSystem
      * methodSize : 1
      */
-    public function deleteBlocking()
+    public function deleteBlocking(/*1*/$arg0)
     {
 
     }
-    /*
-     * (String path, boolean recursive, Handler<AsyncResult<Void>> handler)
+    /**
+     * (string path, bool recursive, callable handler)
+     * @return FileSystem
      * methodSize : 1
      */
-    public function deleteRecursive()
+    public function deleteRecursive(/*3*/$arg0, $arg1, $arg2)
     {
 
     }
-    /*
-     * (String path, boolean recursive)
+    /**
+     * (string path, bool recursive)
+     * @return FileSystem
      * methodSize : 1
      */
-    public function deleteRecursiveBlocking()
+    public function deleteRecursiveBlocking(/*2*/$arg0, $arg1)
     {
 
     }
-    /*
-     * (String path, Handler<AsyncResult<Boolean>> handler)
+    /**
+     * (string path, callable handler)
+     * @return FileSystem
      * methodSize : 1
      */
-    public function exists()
+    public function exists(/*2*/$arg0, $arg1)
     {
 
     }
-    /*
-     * (String path)
+    /**
+     * (string path)
+     * @return bool
      * methodSize : 1
      */
-    public function existsBlocking()
+    public function existsBlocking(/*1*/$arg0)
     {
 
     }
-    /*
-     * (String path, Handler<AsyncResult<FileSystemProps>> handler)
+    /**
+     * (string path, callable handler)
+     * @return FileSystem
      * methodSize : 1
      */
-    public function fsProps()
+    public function fsProps(/*2*/$arg0, $arg1)
     {
 
     }
-    /*
-     * (String path)
+    /**
+     * (string path)
+     * @return FileSystemProps
      * methodSize : 1
      */
-    public function fsPropsBlocking()
+    public function fsPropsBlocking(/*1*/$arg0)
     {
 
     }
-    /*
-     * (String link, String existing, Handler<AsyncResult<Void>> handler)
+    /**
+     * (string link, string existing, callable handler)
+     * @return FileSystem
      * methodSize : 1
      */
-    public function link()
+    public function link(/*3*/$arg0, $arg1, $arg2)
     {
 
     }
-    /*
-     * (String link, String existing)
+    /**
+     * (string link, string existing)
+     * @return FileSystem
      * methodSize : 1
      */
-    public function linkBlocking()
+    public function linkBlocking(/*2*/$arg0, $arg1)
     {
 
     }
-    /*
-     * (String path, Handler<AsyncResult<FileProps>> handler)
+    /**
+     * (string path, callable handler)
+     * @return FileSystem
      * methodSize : 1
      */
-    public function lprops()
+    public function lprops(/*2*/$arg0, $arg1)
     {
 
     }
-    /*
-     * (String path)
+    /**
+     * (string path)
+     * @return FileProps
      * methodSize : 1
      */
-    public function lpropsBlocking()
+    public function lpropsBlocking(/*1*/$arg0)
     {
 
     }
-    /*
-     * (String path, Handler<AsyncResult<Void>> handler)
-     * (String path, String perms, Handler<AsyncResult<Void>> handler)
+    /**
+     * (string path, callable handler)
+     * @return FileSystem
+     * (string path, string perms, callable handler)
+     * @return FileSystem
      * methodSize : 2
      */
-    public function mkdir()
+    public function mkdir(/*3*/$arg0, $arg1, $arg2)
     {
 
     }
-    /*
-     * (String path)
-     * (String path, String perms)
+    /**
+     * (string path)
+     * @return FileSystem
+     * (string path, string perms)
+     * @return FileSystem
      * methodSize : 2
      */
-    public function mkdirBlocking()
+    public function mkdirBlocking(/*2*/$arg0, $arg1)
     {
 
     }
-    /*
-     * (String path, Handler<AsyncResult<Void>> handler)
-     * (String path, String perms, Handler<AsyncResult<Void>> handler)
+    /**
+     * (string path, callable handler)
+     * @return FileSystem
+     * (string path, string perms, callable handler)
+     * @return FileSystem
      * methodSize : 2
      */
-    public function mkdirs()
+    public function mkdirs(/*3*/$arg0, $arg1, $arg2)
     {
 
     }
-    /*
-     * (String path)
-     * (String path, String perms)
+    /**
+     * (string path)
+     * @return FileSystem
+     * (string path, string perms)
+     * @return FileSystem
      * methodSize : 2
      */
-    public function mkdirsBlocking()
+    public function mkdirsBlocking(/*2*/$arg0, $arg1)
     {
 
     }
-    /*
-     * (String from, String to, Handler<AsyncResult<Void>> handler)
-     * (String from, String to, CopyOptions options, Handler<AsyncResult<Void>> handler)
+    /**
+     * (string from, string to, callable handler)
+     * @return FileSystem
+     * (string from, string to, CopyOptions options, callable handler)
+     * @return FileSystem
      * methodSize : 2
      */
-    public function move()
+    public function move(/*4*/$arg0, $arg1, $arg2, $arg3)
     {
 
     }
-    /*
-     * (String from, String to)
+    /**
+     * (string from, string to)
+     * @return FileSystem
      * methodSize : 1
      */
-    public function moveBlocking()
+    public function moveBlocking(/*2*/$arg0, $arg1)
     {
 
     }
-    /*
-     * (String path, OpenOptions options, Handler<AsyncResult<AsyncFile>> handler)
+    /**
+     * (string path, OpenOptions options, callable handler)
+     * @return FileSystem
      * methodSize : 1
      */
-    public function open()
+    public function open(/*3*/$arg0, $arg1, $arg2)
     {
 
     }
-    /*
-     * (String path, OpenOptions options)
+    /**
+     * (string path, OpenOptions options)
+     * @return AsyncFile
      * methodSize : 1
      */
-    public function openBlocking()
+    public function openBlocking(/*2*/$arg0, $arg1)
     {
 
     }
-    /*
-     * (String path, Handler<AsyncResult<FileProps>> handler)
+    /**
+     * (string path, callable handler)
+     * @return FileSystem
      * methodSize : 1
      */
-    public function props()
+    public function props(/*2*/$arg0, $arg1)
     {
 
     }
-    /*
-     * (String path)
+    /**
+     * (string path)
+     * @return FileProps
      * methodSize : 1
      */
-    public function propsBlocking()
+    public function propsBlocking(/*1*/$arg0)
     {
 
     }
-    /*
-     * (String path, Handler<AsyncResult<List<String>>> handler)
-     * (String path, String filter, Handler<AsyncResult<List<String>>> handler)
+    /**
+     * (string path, callable handler)
+     * @return FileSystem
+     * (string path, string filter, callable handler)
+     * @return FileSystem
      * methodSize : 2
      */
-    public function readDir()
+    public function readDir(/*3*/$arg0, $arg1, $arg2)
     {
 
     }
-    /*
-     * (String path)
-     * (String path, String filter)
+    /**
+     * (string path)
+     * @return string
+     * (string path, string filter)
+     * @return string
      * methodSize : 2
      */
-    public function readDirBlocking()
+    public function readDirBlocking(/*2*/$arg0, $arg1)
     {
 
     }
-    /*
-     * (String path, Handler<AsyncResult<Buffer>> handler)
+    /**
+     * (string path, callable handler)
+     * @return FileSystem
      * methodSize : 1
      */
-    public function readFile()
+    public function readFile(/*2*/$arg0, $arg1)
     {
 
     }
-    /*
-     * (String path)
+    /**
+     * (string path)
+     * @return Buffer
      * methodSize : 1
      */
-    public function readFileBlocking()
+    public function readFileBlocking(/*1*/$arg0)
     {
 
     }
-    /*
-     * (String link, Handler<AsyncResult<String>> handler)
+    /**
+     * (string link, callable handler)
+     * @return FileSystem
      * methodSize : 1
      */
-    public function readSymlink()
+    public function readSymlink(/*2*/$arg0, $arg1)
     {
 
     }
-    /*
-     * (String link)
+    /**
+     * (string link)
+     * @return string
      * methodSize : 1
      */
-    public function readSymlinkBlocking()
+    public function readSymlinkBlocking(/*1*/$arg0)
     {
 
     }
-    /*
-     * (String link, String existing, Handler<AsyncResult<Void>> handler)
+    /**
+     * (string link, string existing, callable handler)
+     * @return FileSystem
      * methodSize : 1
      */
-    public function symlink()
+    public function symlink(/*3*/$arg0, $arg1, $arg2)
     {
 
     }
-    /*
-     * (String link, String existing)
+    /**
+     * (string link, string existing)
+     * @return FileSystem
      * methodSize : 1
      */
-    public function symlinkBlocking()
+    public function symlinkBlocking(/*2*/$arg0, $arg1)
     {
 
     }
-    /*
-     * (String path, long len, Handler<AsyncResult<Void>> handler)
+    /**
+     * (string path, num len, callable handler)
+     * @return FileSystem
      * methodSize : 1
      */
-    public function truncate()
+    public function truncate(/*3*/$arg0, $arg1, $arg2)
     {
 
     }
-    /*
-     * (String path, long len)
+    /**
+     * (string path, num len)
+     * @return FileSystem
      * methodSize : 1
      */
-    public function truncateBlocking()
+    public function truncateBlocking(/*2*/$arg0, $arg1)
     {
 
     }
-    /*
-     * (String link, Handler<AsyncResult<Void>> handler)
+    /**
+     * (string link, callable handler)
+     * @return FileSystem
      * methodSize : 1
      */
-    public function unlink()
+    public function unlink(/*2*/$arg0, $arg1)
     {
 
     }
-    /*
-     * (String link)
+    /**
+     * (string link)
+     * @return FileSystem
      * methodSize : 1
      */
-    public function unlinkBlocking()
+    public function unlinkBlocking(/*1*/$arg0)
     {
 
     }
-    /*
-     * (String path, Buffer data, Handler<AsyncResult<Void>> handler)
+    /**
+     * (string path, Buffer data, callable handler)
+     * @return FileSystem
      * methodSize : 1
      */
-    public function writeFile()
+    public function writeFile(/*3*/$arg0, $arg1, $arg2)
     {
 
     }
-    /*
-     * (String path, Buffer data)
+    /**
+     * (string path, Buffer data)
+     * @return FileSystem
      * methodSize : 1
      */
-    public function writeFileBlocking()
+    public function writeFileBlocking(/*2*/$arg0, $arg1)
     {
 
     }

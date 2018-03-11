@@ -7,83 +7,100 @@ class EventBus
     {
 
     }
-    /*
-     * (Handler<SendContext> interceptor)
+    /**
+     * (callable interceptor)
+     * @return EventBus
      * methodSize : 1
      */
-    public function addInterceptor()
+    public function addInterceptor(/*1*/$arg0)
     {
 
     }
-    /*
-     * (String address)
-     * (String address, Handler<Message<T>> handler)
+    /**
+     * (string address)
+     * @return MessageConsumer
+     * (string address, callable handler)
+     * @return MessageConsumer
      * methodSize : 2
      */
-    public function consumer()
+    public function consumer(/*2*/$arg0, $arg1)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return bool
      * methodSize : 1
      */
-    public function isMetricsEnabled()
+    public function isMetricsEnabled(/*0*/)
     {
 
     }
-    /*
-     * (String address)
-     * (String address, Handler<Message<T>> handler)
+    /**
+     * (string address)
+     * @return MessageConsumer
+     * (string address, callable handler)
+     * @return MessageConsumer
      * methodSize : 2
      */
-    public function localConsumer()
+    public function localConsumer(/*2*/$arg0, $arg1)
     {
 
     }
-    /*
-     * (String address, Object message)
-     * (String address, Object message, DeliveryOptions options)
+    /**
+     * (string address, object message)
+     * @return EventBus
+     * (string address, object message, DeliveryOptions options)
+     * @return EventBus
      * methodSize : 2
      */
-    public function publish()
+    public function publish(/*3*/$arg0, $arg1, $arg2)
     {
 
     }
-    /*
-     * (String address)
-     * (String address, DeliveryOptions options)
+    /**
+     * (string address)
+     * @return MessageProducer
+     * (string address, DeliveryOptions options)
+     * @return MessageProducer
      * methodSize : 2
      */
-    public function publisher()
+    public function publisher(/*2*/$arg0, $arg1)
     {
 
     }
-    /*
-     * (Handler<SendContext> interceptor)
+    /**
+     * (callable interceptor)
+     * @return EventBus
      * methodSize : 1
      */
-    public function removeInterceptor()
+    public function removeInterceptor(/*1*/$arg0)
     {
 
     }
-    /*
-     * (String address, Object message)
-     * (String address, Object message, Handler<AsyncResult<Message<T>>> replyHandler)
-     * (String address, Object message, DeliveryOptions options)
-     * (String address, Object message, DeliveryOptions options, Handler<AsyncResult<Message<T>>> replyHandler)
+    /**
+     * (string address, object message)
+     * @return EventBus
+     * (string address, object message, callable replyHandler)
+     * @return EventBus
+     * (string address, object message, DeliveryOptions options)
+     * @return EventBus
+     * (string address, object message, DeliveryOptions options, callable replyHandler)
+     * @return EventBus
      * methodSize : 4
      */
-    public function send()
+    public function send(/*4*/$arg0, $arg1, $arg2, $arg3)
     {
 
     }
-    /*
-     * (String address)
-     * (String address, DeliveryOptions options)
+    /**
+     * (string address)
+     * @return MessageProducer
+     * (string address, DeliveryOptions options)
+     * @return MessageProducer
      * methodSize : 2
      */
-    public function sender()
+    public function sender(/*2*/$arg0, $arg1)
     {
 
     }

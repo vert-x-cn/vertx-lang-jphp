@@ -1,5 +1,7 @@
 <?php 
 namespace io\vertx\php\core\datagram;
+use io\vertx\php\core\buffer\Buffer;
+use io\vertx\php\core\net\SocketAddress;
 class DatagramPacket
 {
     
@@ -7,19 +9,21 @@ class DatagramPacket
     {
 
     }
-    /*
+    /**
      * ()
+     * @return Buffer
      * methodSize : 1
      */
-    public function data()
+    public function data(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return SocketAddress
      * methodSize : 1
      */
-    public function sender()
+    public function sender(/*0*/)
     {
 
     }

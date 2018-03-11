@@ -7,140 +7,158 @@ class CommandLine
     {
 
     }
-    /*
+    /**
      * (Option option)
+     * @return bool
      * methodSize : 1
      */
-    public function acceptMoreValues()
+    public function acceptMoreValues(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return string
      * methodSize : 1
      */
-    public function allArguments()
+    public function allArguments(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return CLI
      * methodSize : 1
      */
-    public function cli()
+    public function cli(/*0*/)
     {
 
     }
-    /*
+    /**
      * (CLI cli)
+     * @return CommandLine
      * methodSize : 1
      */
-    public function create()
+    public function create(/*1*/$arg0)
     {
 
     }
-    /*
-     * (String name)
+    /**
+     * (string name)
+     * @return Memory
      * (int index)
+     * @return Memory
      * methodSize : 2
      */
-    public function getArgumentValue()
+    public function getArgumentValue(/*1*/$arg0)
     {
 
     }
-    /*
-     * (String name)
+    /**
+     * (string name)
+     * @return Memory
      * methodSize : 1
      */
-    public function getOptionValue()
+    public function getOptionValue(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * (Argument arg)
+     * @return string
      * methodSize : 1
      */
-    public function getRawValueForArgument()
+    public function getRawValueForArgument(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * (Option option)
+     * @return string
      * methodSize : 1
      */
-    public function getRawValueForOption()
+    public function getRawValueForOption(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * (Option option)
+     * @return string
      * methodSize : 1
      */
-    public function getRawValues()
+    public function getRawValues(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * (Argument argument)
+     * @return string
      * methodSize : 1
      */
-    public function getRawValuesForArgument()
+    public function getRawValuesForArgument(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * (Option option)
+     * @return string
      * methodSize : 1
      */
-    public function getRawValuesForOption()
+    public function getRawValuesForOption(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * (Argument arg)
+     * @return bool
      * methodSize : 1
      */
-    public function isArgumentAssigned()
+    public function isArgumentAssigned(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return bool
      * methodSize : 1
      */
-    public function isAskingForHelp()
+    public function isAskingForHelp(/*0*/)
     {
 
     }
-    /*
-     * (String name)
+    /**
+     * (string name)
+     * @return bool
      * methodSize : 1
      */
-    public function isFlagEnabled()
+    public function isFlagEnabled(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * (Option option)
+     * @return bool
      * methodSize : 1
      */
-    public function isOptionAssigned()
+    public function isOptionAssigned(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * (Option option)
+     * @return bool
      * methodSize : 1
      */
-    public function isSeenInCommandLine()
+    public function isSeenInCommandLine(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return bool
      * methodSize : 1
      */
-    public function isValid()
+    public function isValid(/*0*/)
     {
 
     }

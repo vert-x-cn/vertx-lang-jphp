@@ -7,52 +7,59 @@ class SelfSignedCertificate
     {
 
     }
-    /*
+    /**
      * ()
+     * @return string
      * methodSize : 1
      */
-    public function certificatePath()
+    public function certificatePath(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
-     * (String fqdn)
+     * @return SelfSignedCertificate
+     * (string fqdn)
+     * @return SelfSignedCertificate
      * methodSize : 2
      */
-    public function create()
+    public function create(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return Void
      * methodSize : 1
      */
-    public function delete()
+    public function delete(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return PemKeyCertOptions
      * methodSize : 1
      */
-    public function keyCertOptions()
+    public function keyCertOptions(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return string
      * methodSize : 1
      */
-    public function privateKeyPath()
+    public function privateKeyPath(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return PemTrustOptions
      * methodSize : 1
      */
-    public function trustOptions()
+    public function trustOptions(/*0*/)
     {
 
     }

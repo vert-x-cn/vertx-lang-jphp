@@ -7,51 +7,57 @@ class TimeoutStream
     {
 
     }
-    /*
+    /**
      * ()
+     * @return Void
      * methodSize : 1
      */
-    public function cancel()
+    public function cancel(/*0*/)
     {
 
     }
-    /*
-     * (Handler<Void> endHandler)
+    /**
+     * (callable endHandler)
+     * @return TimeoutStream
      * methodSize : 1
      */
-    public function endHandler()
+    public function endHandler(/*1*/$arg0)
     {
 
     }
-    /*
-     * (Handler<Throwable> handler)
+    /**
+     * (callable handler)
+     * @return TimeoutStream
      * methodSize : 1
      */
-    public function exceptionHandler()
+    public function exceptionHandler(/*1*/$arg0)
     {
 
     }
-    /*
-     * (Handler<Long> handler)
+    /**
+     * (callable handler)
+     * @return TimeoutStream
      * methodSize : 1
      */
-    public function handler()
+    public function handler(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return TimeoutStream
      * methodSize : 1
      */
-    public function pause()
+    public function pause(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return TimeoutStream
      * methodSize : 1
      */
-    public function resume()
+    public function resume(/*0*/)
     {
 
     }

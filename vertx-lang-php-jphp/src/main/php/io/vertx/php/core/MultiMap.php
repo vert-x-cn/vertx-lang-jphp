@@ -7,107 +7,120 @@ class MultiMap
     {
 
     }
-    /*
-     * (String name, String value)
+    /**
+     * (string name, string value)
+     * @return MultiMap
      * methodSize : 1
      */
-    public function add()
+    public function add(/*2*/$arg0, $arg1)
     {
 
     }
-    /*
+    /**
      * (MultiMap map)
+     * @return MultiMap
      * methodSize : 1
      */
-    public function addAll()
+    public function addAll(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return MultiMap
      * methodSize : 1
      */
-    public function caseInsensitiveMultiMap()
+    public function caseInsensitiveMultiMap(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return MultiMap
      * methodSize : 1
      */
-    public function clear()
+    public function clear(/*0*/)
     {
 
     }
-    /*
-     * (String name)
+    /**
+     * (string name)
+     * @return bool
      * methodSize : 1
      */
-    public function contains()
+    public function contains(/*1*/$arg0)
     {
 
     }
-    /*
-     * (String name)
+    /**
+     * (string name)
+     * @return string
      * methodSize : 1
      */
-    public function get()
+    public function get(/*1*/$arg0)
     {
 
     }
-    /*
-     * (String name)
+    /**
+     * (string name)
+     * @return string
      * methodSize : 1
      */
-    public function getAll()
+    public function getAll(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return bool
      * methodSize : 1
      */
-    public function isEmpty()
+    public function isEmpty(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return string
      * methodSize : 1
      */
-    public function names()
+    public function names(/*0*/)
     {
 
     }
-    /*
-     * (String name)
+    /**
+     * (string name)
+     * @return MultiMap
      * methodSize : 1
      */
-    public function remove()
+    public function remove(/*1*/$arg0)
     {
 
     }
-    /*
-     * (String name, String value)
+    /**
+     * (string name, string value)
+     * @return MultiMap
      * methodSize : 1
      */
-    public function set()
+    public function set(/*2*/$arg0, $arg1)
     {
 
     }
-    /*
+    /**
      * (MultiMap map)
+     * @return MultiMap
      * methodSize : 1
      */
-    public function setAll()
+    public function setAll(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return int
      * methodSize : 1
      */
-    public function size()
+    public function size(/*0*/)
     {
 
     }

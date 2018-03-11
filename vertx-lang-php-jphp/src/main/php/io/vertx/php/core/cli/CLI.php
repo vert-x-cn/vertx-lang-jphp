@@ -7,181 +7,205 @@ class CLI
     {
 
     }
-    /*
+    /**
      * (Argument arg)
+     * @return CLI
      * methodSize : 1
      */
-    public function addArgument()
+    public function addArgument(/*1*/$arg0)
     {
 
     }
-    /*
-     * (List<Argument> args)
+    /**
+     * (string args)
+     * @return CLI
      * methodSize : 1
      */
-    public function addArguments()
+    public function addArguments(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * (Option option)
+     * @return CLI
      * methodSize : 1
      */
-    public function addOption()
+    public function addOption(/*1*/$arg0)
     {
 
     }
-    /*
-     * (List<Option> options)
+    /**
+     * (string options)
+     * @return CLI
      * methodSize : 1
      */
-    public function addOptions()
+    public function addOptions(/*1*/$arg0)
     {
 
     }
-    /*
-     * (String name)
+    /**
+     * (string name)
+     * @return CLI
      * methodSize : 1
      */
-    public function create()
+    public function create(/*1*/$arg0)
     {
 
     }
-    /*
-     * (String name)
+    /**
+     * (string name)
+     * @return Argument
      * (int index)
+     * @return Argument
      * methodSize : 2
      */
-    public function getArgument()
+    public function getArgument(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return string
      * methodSize : 1
      */
-    public function getArguments()
+    public function getArguments(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return string
      * methodSize : 1
      */
-    public function getDescription()
+    public function getDescription(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return string
      * methodSize : 1
      */
-    public function getName()
+    public function getName(/*0*/)
     {
 
     }
-    /*
-     * (String name)
+    /**
+     * (string name)
+     * @return Option
      * methodSize : 1
      */
-    public function getOption()
+    public function getOption(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return string
      * methodSize : 1
      */
-    public function getOptions()
+    public function getOptions(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return string
      * methodSize : 1
      */
-    public function getSummary()
+    public function getSummary(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return bool
      * methodSize : 1
      */
-    public function isHidden()
+    public function isHidden(/*0*/)
     {
 
     }
-    /*
-     * (List<String> arguments)
-     * (List<String> arguments, boolean validate)
+    /**
+     * (string arguments)
+     * @return CommandLine
+     * (string arguments, bool validate)
+     * @return CommandLine
      * methodSize : 2
      */
-    public function parse()
+    public function parse(/*2*/$arg0, $arg1)
     {
 
     }
-    /*
+    /**
      * (int index)
+     * @return CLI
      * methodSize : 1
      */
-    public function removeArgument()
+    public function removeArgument(/*1*/$arg0)
     {
 
     }
-    /*
-     * (String name)
+    /**
+     * (string name)
+     * @return CLI
      * methodSize : 1
      */
-    public function removeOption()
+    public function removeOption(/*1*/$arg0)
     {
 
     }
-    /*
-     * (List<Argument> args)
+    /**
+     * (string args)
+     * @return CLI
      * methodSize : 1
      */
-    public function setArguments()
+    public function setArguments(/*1*/$arg0)
     {
 
     }
-    /*
-     * (String desc)
+    /**
+     * (string desc)
+     * @return CLI
      * methodSize : 1
      */
-    public function setDescription()
+    public function setDescription(/*1*/$arg0)
     {
 
     }
-    /*
-     * (boolean hidden)
+    /**
+     * (bool hidden)
+     * @return CLI
      * methodSize : 1
      */
-    public function setHidden()
+    public function setHidden(/*1*/$arg0)
     {
 
     }
-    /*
-     * (String name)
+    /**
+     * (string name)
+     * @return CLI
      * methodSize : 1
      */
-    public function setName()
+    public function setName(/*1*/$arg0)
     {
 
     }
-    /*
-     * (List<Option> options)
+    /**
+     * (string options)
+     * @return CLI
      * methodSize : 1
      */
-    public function setOptions()
+    public function setOptions(/*1*/$arg0)
     {
 
     }
-    /*
-     * (String summary)
+    /**
+     * (string summary)
+     * @return CLI
      * methodSize : 1
      */
-    public function setSummary()
+    public function setSummary(/*1*/$arg0)
     {
 
     }

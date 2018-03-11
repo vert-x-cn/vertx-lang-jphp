@@ -7,52 +7,59 @@ class WriteStream
     {
 
     }
-    /*
-     * (Handler<Void> handler)
+    /**
+     * (callable handler)
+     * @return WriteStream
      * methodSize : 1
      */
-    public function drainHandler()
+    public function drainHandler(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * ()
-     * (T t)
+     * @return Void
+     * (Memory t)
+     * @return Void
      * methodSize : 2
      */
-    public function end()
+    public function end(/*1*/$arg0)
     {
 
     }
-    /*
-     * (Handler<Throwable> handler)
+    /**
+     * (callable handler)
+     * @return WriteStream
      * methodSize : 1
      */
-    public function exceptionHandler()
+    public function exceptionHandler(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * (int maxSize)
+     * @return WriteStream
      * methodSize : 1
      */
-    public function setWriteQueueMaxSize()
+    public function setWriteQueueMaxSize(/*1*/$arg0)
     {
 
     }
-    /*
-     * (T data)
+    /**
+     * (Memory data)
+     * @return WriteStream
      * methodSize : 1
      */
-    public function write()
+    public function write(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return bool
      * methodSize : 1
      */
-    public function writeQueueFull()
+    public function writeQueueFull(/*0*/)
     {
 
     }

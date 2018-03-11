@@ -7,35 +7,39 @@ class SendContext
     {
 
     }
-    /*
+    /**
      * ()
+     * @return Message
      * methodSize : 1
      */
-    public function message()
+    public function message(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return Void
      * methodSize : 1
      */
-    public function next()
+    public function next(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return bool
      * methodSize : 1
      */
-    public function send()
+    public function send(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return object
      * methodSize : 1
      */
-    public function sentBody()
+    public function sentBody(/*0*/)
     {
 
     }

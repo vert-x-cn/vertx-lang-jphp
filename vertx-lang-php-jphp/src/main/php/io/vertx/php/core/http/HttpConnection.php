@@ -1,5 +1,7 @@
 <?php 
 namespace io\vertx\php\core\http;
+use io\vertx\php\core\buffer\Buffer;
+use io\vertx\php\core\net\SocketAddress;
 class HttpConnection
 {
     
@@ -7,159 +9,182 @@ class HttpConnection
     {
 
     }
-    /*
+    /**
      * ()
+     * @return Void
      * methodSize : 1
      */
-    public function close()
+    public function close(/*0*/)
     {
 
     }
-    /*
-     * (Handler<Void> handler)
+    /**
+     * (callable handler)
+     * @return HttpConnection
      * methodSize : 1
      */
-    public function closeHandler()
+    public function closeHandler(/*1*/$arg0)
     {
 
     }
-    /*
-     * (Handler<Throwable> handler)
+    /**
+     * (callable handler)
+     * @return HttpConnection
      * methodSize : 1
      */
-    public function exceptionHandler()
+    public function exceptionHandler(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return int
      * methodSize : 1
      */
-    public function getWindowSize()
+    public function getWindowSize(/*0*/)
     {
 
     }
-    /*
-     * (long errorCode)
-     * (long errorCode, int lastStreamId)
-     * (long errorCode, int lastStreamId, Buffer debugData)
+    /**
+     * (num errorCode)
+     * @return HttpConnection
+     * (num errorCode, int lastStreamId)
+     * @return HttpConnection
+     * (num errorCode, int lastStreamId, Buffer debugData)
+     * @return HttpConnection
      * methodSize : 3
      */
-    public function goAway()
+    public function goAway(/*3*/$arg0, $arg1, $arg2)
     {
 
     }
-    /*
-     * (Handler<GoAway> handler)
+    /**
+     * (callable handler)
+     * @return HttpConnection
      * methodSize : 1
      */
-    public function goAwayHandler()
+    public function goAwayHandler(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return string
      * methodSize : 1
      */
-    public function indicatedServerName()
+    public function indicatedServerName(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return bool
      * methodSize : 1
      */
-    public function isSsl()
+    public function isSsl(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return SocketAddress
      * methodSize : 1
      */
-    public function localAddress()
+    public function localAddress(/*0*/)
     {
 
     }
-    /*
-     * (Buffer data, Handler<AsyncResult<Buffer>> pongHandler)
+    /**
+     * (Buffer data, callable pongHandler)
+     * @return HttpConnection
      * methodSize : 1
      */
-    public function ping()
+    public function ping(/*2*/$arg0, $arg1)
     {
 
     }
-    /*
-     * (Handler<Buffer> handler)
+    /**
+     * (callable handler)
+     * @return HttpConnection
      * methodSize : 1
      */
-    public function pingHandler()
+    public function pingHandler(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return SocketAddress
      * methodSize : 1
      */
-    public function remoteAddress()
+    public function remoteAddress(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return Http2Settings
      * methodSize : 1
      */
-    public function remoteSettings()
+    public function remoteSettings(/*0*/)
     {
 
     }
-    /*
-     * (Handler<Http2Settings> handler)
+    /**
+     * (callable handler)
+     * @return HttpConnection
      * methodSize : 1
      */
-    public function remoteSettingsHandler()
+    public function remoteSettingsHandler(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * (int windowSize)
+     * @return HttpConnection
      * methodSize : 1
      */
-    public function setWindowSize()
+    public function setWindowSize(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return Http2Settings
      * methodSize : 1
      */
-    public function settings()
+    public function settings(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
-     * (long timeoutMs)
+     * @return HttpConnection
+     * (num timeoutMs)
+     * @return HttpConnection
      * methodSize : 2
      */
-    public function shutdown()
+    public function shutdown(/*1*/$arg0)
     {
 
     }
-    /*
-     * (Handler<Void> handler)
+    /**
+     * (callable handler)
+     * @return HttpConnection
      * methodSize : 1
      */
-    public function shutdownHandler()
+    public function shutdownHandler(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * (Http2Settings settings)
-     * (Http2Settings settings, Handler<AsyncResult<Void>> completionHandler)
+     * @return HttpConnection
+     * (Http2Settings settings, callable completionHandler)
+     * @return HttpConnection
      * methodSize : 2
      */
-    public function updateSettings()
+    public function updateSettings(/*2*/$arg0, $arg1)
     {
 
     }

@@ -10,7 +10,68 @@
 
     var importClassSet = new TreeSet();
     def addImport(typeInfo){
-        
+        if(typeInfo.isVariable) {
+            return;
+        }
+        var typeKind = typeInfo.kind;
+        if(lang == php && typeKind != CLASS_API && typeKind != CLASS_CLASS_TYPE) {
+            return;
+        }
+        if(typeKind == CLASS_STRING) {
+
+        } else if(typeKind == CLASS_BOXED_PRIMITIVE) {
+
+        } else if(typeKind == CLASS_PRIMITIVE) {
+
+        } else if(typeKind == CLASS_ENUM) {
+            var enumType = typeInfo;
+            importClassSet.add(enumType.raw.packageName + "." + enumType.raw.simpleName);
+        } else if(typeKind == CLASS_JSON_OBJECT) {
+            importClassSet.add("io.vertx.core.json.JsonObject");
+        } else if(typeKind == CLASS_JSON_ARRAY) {
+            importClassSet.add("io.vertx.core.json.JsonArray");
+        } else if(typeKind == CLASS_THROWABLE) {
+        } else if(typeKind == CLASS_VOID) {
+        } else if(typeKind == CLASS_OBJECT) {
+            var objectType = typeInfo;
+            importClassSet.add(objectType.raw.packageName + "." + objectType.raw.simpleName);
+        } else if(typeKind == CLASS_LIST) {
+            importClassSet.add("java.util.List");
+        } else if(typeKind == CLASS_SET) {
+            importClassSet.add("java.util.Set");
+        } else if(typeKind == CLASS_MAP) {
+            importClassSet.add("java.util.Map");
+        } else if(typeKind == CLASS_API) {
+            var apiType = typeInfo;
+            if(apiType.raw.packageName != type.raw.packageName) {
+                importClassSet.add(apiType.raw.translatePackageName("php") + "." + apiType.raw.simpleName);
+            }
+        } else if(typeKind == CLASS_DATA_OBJECT) {
+            var dataObjectType = typeInfo;
+            importClassSet.add(dataObjectType.raw.packageName + "." + dataObjectType.raw.simpleName);
+        } else if(typeKind == CLASS_HANDLER) {
+            importClassSet.add("io.vertx.core.Handler");
+        } else if(typeKind == CLASS_FUNCTION) {
+            importClassSet.add("java.util.function.Function");
+        } else if(typeKind == CLASS_ASYNC_RESULT) {
+            importClassSet.add("io.vertx.core.AsyncResult");
+        } else if(typeKind == CLASS_CLASS_TYPE) {
+            if(lang == php)importClassSet.add("php.lang.JavaClass");
+        } else if(typeKind == CLASS_OTHER) {
+            if(typeInfo.name == "void") {
+
+            } else {
+                if(!typeInfo.raw.packageName.startsWith("java.lang")) {
+                    var otherType = typeInfo;
+                    importClassSet.add(otherType.raw.packageName + "." + otherType.raw.simpleName);
+                }
+            }
+        }
+        if(typeInfo.isParameterized) {
+            foreach(arg : typeInfo.args) {
+                addImport(arg);
+            }
+        }
     }
 
     var methodsMap = new TreeMap();
@@ -33,9 +94,7 @@
                     if(curParam.type.name == param.type.name) {
                         sameType = true;
                     } else {
-                        if(lang == java || curParam.type.kind == CLASS_API) {
-                            addImport(curParam.type)
-                        }
+                        addImport(curParam.type)
                         if(lang == java) {
                             importClassSet.add("php.runtime.Memory");
                         }
@@ -55,19 +114,32 @@
             var params = [];
             foreach(param : methodParams) {
                 params.add([param]);
-                if(lang == java || param.type.kind == CLASS_API) {
-                    addImport(param.type)
-                }
+                addImport(param.type)
             }
             paramsMap[paramKey] = params;
             sameParamSizeMethod[paramKey] = [method];
         }
+        addImport(method.returnType);
     }
 
 
-    def getParamInfos(method, withType){
-        var methods = methodsMap[method.name];
-
+    def getParamInfos(method){
+        var res = '';
+        var paramss = paramsMap[method.name + "-" + method.params.size()];
+        var k = 0;
+        foreach(ps : paramss) {
+            if(res != '') {
+                res += ", ";
+            }
+            if(ps.size() == 1) {
+                var param = ps.get(0);
+                res += wrapSimpleType(param.type) + " " + param.name;
+            } else {
+                res += "Memory arg" + k;
+                k += 1;
+            }
+        }
+        return res;
     }
     def getPhpParamInfos(methodName){
         var methods = methodsMap[methodName];
@@ -85,53 +157,100 @@
     }
 
     def wrapSimpleType(typeInfo){
+        if(typeInfo.isVariable) {
+            /*return typeInfo.name + " extends Memory";*/
+            return "Memory";
+        }
+        var typeParamsInfo = "";
+        if(typeInfo.isParameterized) {
+            typeParamsInfo += "<";
+            foreach(arg:typeInfo.args) {
+                if(typeParamsInfo != "<") {
+                    typeParamsInfo += ", ";
+                }
+                typeParamsInfo += wrapSimpleType(arg);
+            }
+            typeParamsInfo += ">";
+        }
         var typeKind = typeInfo.kind;
         if(typeKind == CLASS_STRING) {
             return lang == java ? "String" : "string";
         } else if(typeKind == CLASS_BOXED_PRIMITIVE) {
-            return lang == java ? "Memory(BOXED)" : "array";
+            return lang == java ? typeInfo.simpleName : "array";
         } else if(typeKind == CLASS_PRIMITIVE) {
             var typeName = typeInfo.name;
-            return lang == java ? typeName : wrapPrimitiveToPhp(typeName);
+            return lang == java ? (typeName == "int" ? "Integer" : CASE_CAMEL.format([typeName])) : wrapPrimitiveToPhp(typeName);
         } else if(typeKind == CLASS_ENUM) {
-            return lang == java ? "String" : "string";
+            var wrapEnumType = typeInfo;
+            return lang == java ? wrapEnumType.raw.simpleName : "enum";
         } else if(typeKind == CLASS_JSON_OBJECT) {
-            return lang == java ? "String" : "string";
+            return lang == java ? "JsonObject" : "object";
         } else if(typeKind == CLASS_JSON_ARRAY) {
-            return lang == java ? "String" : "string";
+            return lang == java ? "JsonArray" : "array";
         } else if(typeKind == CLASS_THROWABLE) {
-            return lang == java ? "String" : "string";
+            return lang == java ? "Throwable" : "Throwable";
         } else if(typeKind == CLASS_VOID) {
-            return lang == java ? "String" : "string";
+            return lang == java ? "Void" : "void";
         } else if(typeKind == CLASS_OBJECT) {
-            return lang == java ? "String" : "string";
+            var wrapObjectType = typeInfo;
+            return lang == java ? wrapObjectType.raw.simpleName : "object";
         } else if(typeKind == CLASS_LIST) {
-            return lang == java ? "String" : "string";
+            return lang == java ? "List" + typeParamsInfo : "string";
         } else if(typeKind == CLASS_SET) {
-            return lang == java ? "String" : "string";
+            return lang == java ? "Set" + typeParamsInfo : "string";
         } else if(typeKind == CLASS_MAP) {
-            return lang == java ? "String" : "string";
+            return lang == java ? "Map" + typeParamsInfo : "string";
         } else if(typeKind == CLASS_API) {
-            return lang == java ? "String" : "string";
+            var wrapApiType = typeInfo;
+            return lang == java ? wrapApiType.raw.simpleName : wrapApiType.raw.simpleName;
         } else if(typeKind == CLASS_DATA_OBJECT) {
-            return lang == java ? "String" : "string";
+            var wrapDataObjectType = typeInfo;
+            return lang == java ? wrapDataObjectType.raw.simpleName : wrapDataObjectType.raw.simpleName;
         } else if(typeKind == CLASS_HANDLER) {
-            return lang == java ? "String" : "string";
+            return lang == java ? "Handler" + typeParamsInfo : "callable";
         } else if(typeKind == CLASS_FUNCTION) {
-            return lang == java ? "String" : "string";
+            return lang == java ? "Function" + typeParamsInfo : "callable";
         } else if(typeKind == CLASS_ASYNC_RESULT) {
-            return lang == java ? "String" : "string";
+            return lang == java ? "AsyncResult" + typeParamsInfo : "async";
         } else if(typeKind == CLASS_CLASS_TYPE) {
-            return lang == java ? "String" : "string";
+            return lang == java ? "Class" + typeParamsInfo : "JavaClass";
         } else if(typeKind == CLASS_OTHER) {
-            return lang == java ? "String" : "string";
+            if(typeInfo.name == "void") {
+                return "Void";
+            } else {
+                return lang == java ? "Object/*OTHER" + typeInfo.name + "*/" : "object";
+            }
         }
     }
 
     def wrapPrimitiveToPhp(typeName){
         if (typeName == "boolean") {
             return "bool";
+        } else if(typeName == "int" ) {
+            return "int";
+        } else if(typeName == "float" || typeName == "double") {
+            return "float";
+        } else {
+            return "num";
         }
+    }
+
+    def getReturnType(method){
+        if(lang == php) {
+            System.err.println("php templ cannot invoke this method!");
+            return "php templ cannot invoke this method!";
+        }
+        var paramKey222 = method.name + "-" + method.params.size();
+        var methods = sameParamSizeMethod[paramKey222];
+        var prevReturnType = null;
+        foreach(method : methods){
+            if(prevReturnType == null) {
+                prevReturnType = method.returnType;
+            } else if(prevReturnType.name != method.returnType.name) {
+                return "Memory";
+            }
+        }
+        return wrapSimpleType(prevReturnType);
     }
 
 }

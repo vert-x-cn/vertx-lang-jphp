@@ -1,5 +1,6 @@
 <?php 
 namespace io\vertx\php\core\http;
+use io\vertx\php\core\streams\ReadStream;
 class HttpServer
 {
     
@@ -7,89 +8,105 @@ class HttpServer
     {
 
     }
-    /*
+    /**
      * ()
+     * @return int
      * methodSize : 1
      */
-    public function actualPort()
+    public function actualPort(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
-     * (Handler<AsyncResult<Void>> completionHandler)
+     * @return Void
+     * (callable completionHandler)
+     * @return Void
      * methodSize : 2
      */
-    public function close()
+    public function close(/*1*/$arg0)
     {
 
     }
-    /*
-     * (Handler<HttpConnection> handler)
+    /**
+     * (callable handler)
+     * @return HttpServer
      * methodSize : 1
      */
-    public function connectionHandler()
+    public function connectionHandler(/*1*/$arg0)
     {
 
     }
-    /*
-     * (Handler<Throwable> handler)
+    /**
+     * (callable handler)
+     * @return HttpServer
      * methodSize : 1
      */
-    public function exceptionHandler()
+    public function exceptionHandler(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return bool
      * methodSize : 1
      */
-    public function isMetricsEnabled()
+    public function isMetricsEnabled(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
-     * (int port, String host)
-     * (int port, Handler<AsyncResult<HttpServer>> listenHandler)
-     * (int port, String host, Handler<AsyncResult<HttpServer>> listenHandler)
+     * @return HttpServer
+     * (int port, string host)
+     * @return HttpServer
+     * (int port, callable listenHandler)
+     * @return HttpServer
+     * (int port, string host, callable listenHandler)
+     * @return HttpServer
      * (int port)
-     * (Handler<AsyncResult<HttpServer>> listenHandler)
+     * @return HttpServer
+     * (callable listenHandler)
+     * @return HttpServer
      * methodSize : 6
      */
-    public function listen()
+    public function listen(/*3*/$arg0, $arg1, $arg2)
     {
 
     }
-    /*
-     * (Handler<HttpServerRequest> handler)
+    /**
+     * (callable handler)
+     * @return HttpServer
      * methodSize : 1
      */
-    public function requestHandler()
+    public function requestHandler(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return ReadStream
      * methodSize : 1
      */
-    public function requestStream()
+    public function requestStream(/*0*/)
     {
 
     }
-    /*
-     * (Handler<ServerWebSocket> handler)
+    /**
+     * (callable handler)
+     * @return HttpServer
      * methodSize : 1
      */
-    public function websocketHandler()
+    public function websocketHandler(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return ReadStream
      * methodSize : 1
      */
-    public function websocketStream()
+    public function websocketStream(/*0*/)
     {
 
     }

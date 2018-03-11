@@ -145,6 +145,20 @@
     <packaging>jar</packaging>
 
     <build>
+        <resources>
+            <resource>
+                <directory>${project.basedir}/src/main/php</directory>
+            </resource>
+            <resource>
+                <directory>${project.basedir}/src/main/resources</directory>
+            </resource>
+            <resource>
+                <directory>${project.basedir}/src/test/php</directory>
+            </resource>
+            <resource>
+                <directory>${project.basedir}/src/test/resources</directory>
+            </resource>
+        </resources>
         <!--<sourceDirectory>${basedir}/src/main/java</sourceDirectory>-->
         <!--<testSourceDirectory>${basedir}/src/test/java</testSourceDirectory>-->
         <plugins>

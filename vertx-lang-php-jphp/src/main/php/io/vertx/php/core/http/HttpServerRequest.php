@@ -1,5 +1,8 @@
 <?php 
 namespace io\vertx\php\core\http;
+use io\vertx\php\core\MultiMap;
+use io\vertx\php\core\net\NetSocket;
+use io\vertx\php\core\net\SocketAddress;
 class HttpServerRequest
 {
     
@@ -7,267 +10,300 @@ class HttpServerRequest
     {
 
     }
-    /*
+    /**
      * ()
+     * @return string
      * methodSize : 1
      */
-    public function absoluteURI()
+    public function absoluteURI(/*0*/)
     {
 
     }
-    /*
-     * (Handler<Buffer> bodyHandler)
+    /**
+     * (callable bodyHandler)
+     * @return HttpServerRequest
      * methodSize : 1
      */
-    public function bodyHandler()
+    public function bodyHandler(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return HttpConnection
      * methodSize : 1
      */
-    public function connection()
+    public function connection(/*0*/)
     {
 
     }
-    /*
-     * (Handler<HttpFrame> handler)
+    /**
+     * (callable handler)
+     * @return HttpServerRequest
      * methodSize : 1
      */
-    public function customFrameHandler()
+    public function customFrameHandler(/*1*/$arg0)
     {
 
     }
-    /*
-     * (Handler<Void> endHandler)
+    /**
+     * (callable endHandler)
+     * @return HttpServerRequest
      * methodSize : 1
      */
-    public function endHandler()
+    public function endHandler(/*1*/$arg0)
     {
 
     }
-    /*
-     * (Handler<Throwable> handler)
+    /**
+     * (callable handler)
+     * @return HttpServerRequest
      * methodSize : 1
      */
-    public function exceptionHandler()
+    public function exceptionHandler(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return MultiMap
      * methodSize : 1
      */
-    public function formAttributes()
+    public function formAttributes(/*0*/)
     {
 
     }
-    /*
-     * (String attributeName)
+    /**
+     * (string attributeName)
+     * @return string
      * methodSize : 1
      */
-    public function getFormAttribute()
+    public function getFormAttribute(/*1*/$arg0)
     {
 
     }
-    /*
-     * (String headerName)
+    /**
+     * (string headerName)
+     * @return string
      * methodSize : 1
      */
-    public function getHeader()
+    public function getHeader(/*1*/$arg0)
     {
 
     }
-    /*
-     * (String paramName)
+    /**
+     * (string paramName)
+     * @return string
      * methodSize : 1
      */
-    public function getParam()
+    public function getParam(/*1*/$arg0)
     {
 
     }
-    /*
-     * (Handler<Buffer> handler)
+    /**
+     * (callable handler)
+     * @return HttpServerRequest
      * methodSize : 1
      */
-    public function handler()
+    public function handler(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return MultiMap
      * methodSize : 1
      */
-    public function headers()
+    public function headers(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return string
      * methodSize : 1
      */
-    public function host()
+    public function host(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return bool
      * methodSize : 1
      */
-    public function isEnded()
+    public function isEnded(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return bool
      * methodSize : 1
      */
-    public function isExpectMultipart()
+    public function isExpectMultipart(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return bool
      * methodSize : 1
      */
-    public function isSSL()
+    public function isSSL(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return SocketAddress
      * methodSize : 1
      */
-    public function localAddress()
+    public function localAddress(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return enum
      * methodSize : 1
      */
-    public function method()
+    public function method(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return NetSocket
      * methodSize : 1
      */
-    public function netSocket()
+    public function netSocket(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return MultiMap
      * methodSize : 1
      */
-    public function params()
+    public function params(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return string
      * methodSize : 1
      */
-    public function path()
+    public function path(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return HttpServerRequest
      * methodSize : 1
      */
-    public function pause()
+    public function pause(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return string
      * methodSize : 1
      */
-    public function query()
+    public function query(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return string
      * methodSize : 1
      */
-    public function rawMethod()
+    public function rawMethod(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return SocketAddress
      * methodSize : 1
      */
-    public function remoteAddress()
+    public function remoteAddress(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return HttpServerResponse
      * methodSize : 1
      */
-    public function response()
+    public function response(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return HttpServerRequest
      * methodSize : 1
      */
-    public function resume()
+    public function resume(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return string
      * methodSize : 1
      */
-    public function scheme()
+    public function scheme(/*0*/)
     {
 
     }
-    /*
-     * (boolean expect)
+    /**
+     * (bool expect)
+     * @return HttpServerRequest
      * methodSize : 1
      */
-    public function setExpectMultipart()
+    public function setExpectMultipart(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return ServerWebSocket
      * methodSize : 1
      */
-    public function upgrade()
+    public function upgrade(/*0*/)
     {
 
     }
-    /*
-     * (Handler<HttpServerFileUpload> uploadHandler)
+    /**
+     * (callable uploadHandler)
+     * @return HttpServerRequest
      * methodSize : 1
      */
-    public function uploadHandler()
+    public function uploadHandler(/*1*/$arg0)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return string
      * methodSize : 1
      */
-    public function uri()
+    public function uri(/*0*/)
     {
 
     }
-    /*
+    /**
      * ()
+     * @return enum
      * methodSize : 1
      */
-    public function version()
+    public function version(/*0*/)
     {
 
     }
