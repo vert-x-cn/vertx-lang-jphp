@@ -1,0 +1,336 @@
+@code{var lang = "java";}
+@includeNamed{'commons.templ';}
+
+package @{type.raw.translatePackageName("php")};\n
+\n
+@comment{"=======================methodBody======declare==============================================="}
+@declare{'methodBody'}
+@code{
+    var returnType = method.returnType;
+    var returnTypeKind = returnType.kind;
+    var asyncHandlerReturn = false;
+    if (returnTypeKind == CLASS_HANDLER && returnType.args.get(0).kind == CLASS_ASYNC_RESULT) {
+        asyncHandlerReturn = true;
+    }
+}
+@comment{"============return============head==============start"}
+        @if{method.returnType.name != "void" && !method.isFluent}
+return
+ @if{returnTypeName == "Future" && returnType.args.get(0).kind == CLASS_API}
+Wrapper.convReturnFuture(__env__, @{returnType.args.get(0).raw.simpleName}::new, 
+@else{returnTypeKind == CLASS_API}
+new @{returnTypeName}(__env__, @if{(returnTypeName == "ReadStream" || returnTypeName == "WriteStream") && !returnType.args.get(0).isVariable}@code{var streamType = returnType.args.get(0);}Wrapper.conv@{returnTypeName}(__env__, @{streamType.raw.simpleName}@if{returnTypeName == "ReadStream"}::new@else{}.class@end{}, @end{}
+@else{asyncHandlerReturn}
+Wrapper.convReturnHandler(__env__, this, "handle");\n
+@else{returnTypeKind == CLASS_DATA_OBJECT || returnTypeKind == CLASS_JSON_OBJECT || returnTypeKind == CLASS_JSON_ARRAY}
+JsonFunctions.json_decode(__env__, 
+@else{returnTypeKind == CLASS_OBJECT}
+Memory.wrap(__env__, 
+@else{}
+@end{}
+@end{}
+@comment{"============return============head==================end"}
+
+@comment{"==================call==============start"}
+@if{!asyncHandlerReturn}
+@if{isStatic}
+@{wrapperClassType}
+@else{}
+this.getWrappedObject()
+@end{}
+.@{method.name}(
+@code{
+    var first = true;
+}
+@foreach{param : method.params}
+@code{
+    var paramName = methodSize == 1? param.name : param.name + "$$$";
+    var paramType = param.type;
+    var paramKind = paramType.kind;
+}
+@if{!first}, @else{}@code{first = false}@end{}
+@comment{"====================================param================================start"}
+@if{paramKind == CLASS_STRING || paramKind == CLASS_BOXED_PRIMITIVE || paramKind == CLASS_PRIMITIVE || paramKind == CLASS_ENUM}
+@{paramName}
+@else{paramKind == CLASS_DATA_OBJECT}
+Wrapper.convParamDataObject(@{paramName}, @{paramType.raw.simpleName}::new)
+@else{paramKind == CLASS_LIST || paramKind == CLASS_SET}
+@code{
+    var collectionType = paramType.args.get(0);
+    var collectionTypeKind = collectionType.kind;
+    var collector = paramKind == CLASS_SET ? "HashSet::new" : "ArrayList::new";
+}
+@comment{"===========================collection==param====start"}
+@if{collectionTypeKind == CLASS_API}
+Wrapper.convParamFutureCollection(@{param.name}, @{collector})
+@else{collectionTypeKind == CLASS_DATA_OBJECT}
+Wrapper.convParamCollection(@{param.name}, @{collector}@if{collectionTypeKind == CLASS_DATA_OBJECT}, @{collectionType.raw.simpleName}::new@end{})
+@else{collectionTypeKind == CLASS_STRING}
+@{paramName}
+@else{}
+/*list*/@{paramName}
+@end{}
+@comment{"===========================collection==param====end"}
+@else{paramKind == CLASS_API}
+@if{paramType.raw.simpleName == "ReadStream" && !paramType.args.get(0).isVariable}@code{var streamType = paramType.args.get(0).raw}
+Wrapper.convParamReadStream(__env__, @{streamType.simpleName}.class, @{paramName})
+@else{}
+Wrapper.convParamApi(@{paramName})
+@end{}
+@else{paramKind == CLASS_HANDLER}
+Wrapper.
+@code{
+    var handlerType = paramType.args.get(0);
+    var handlerTypeKind = handlerType.kind;
+}
+@comment{"====================================conv=handler=param================================start"}
+@if{handlerTypeKind == CLASS_ASYNC_RESULT}
+@code{
+    var asyncType = handlerType.args.get(0);
+    var asyncTypeKind = asyncType.kind;
+}
+@comment{"====================================conv=ASYNC==handler=param================================start"}
+@if{asyncTypeKind == CLASS_API}
+convParamAsyncHandler
+@else{asyncTypeKind == CLASS_VOID}
+convParamAsyncVoidHandler
+@else{asyncTypeKind == CLASS_BOXED_PRIMITIVE || asyncTypeKind == CLASS_STRING || asyncTypeKind == CLASS_LIST}
+convParamAsyncPrimitiveHandler
+@else{asyncTypeKind == CLASS_LIST}
+convParamAsyncListHandler
+@else{asyncType.isVariable}
+convParamMemoryAsyncHandler
+@else{}unconv/*UNKNOW_ASYNC@{asyncTypeKind}*/
+@end{}
+@comment{"====================================conv=ASYNC==handler=param================================end"}
+@else{handlerTypeKind == CLASS_API}
+@if{handlerType.raw.simpleName == "SendContext"}
+convParamSendContextHandler
+@else{}
+convParamApiHandler
+@end{}
+@else{handlerTypeKind == CLASS_VOID}
+convParamVoidHandler
+@else{handlerTypeKind == CLASS_THROWABLE}
+convParamThrowableHandler
+@else{handlerTypeKind == CLASS_STRING || handlerTypeKind == CLASS_BOXED_PRIMITIVE || handlerTypeKind == CLASS_PRIMITIVE}
+convParamPhpHandler
+@else{handlerTypeKind == CLASS_DATA_OBJECT}
+convParamDataObjectHandler
+@else{handlerTypeKind == CLASS_ENUM}
+convParamEnumHandler
+@else{}
+convParamObjectHandler
+@end{}
+@comment{"====================================conv=handler=param================================end"}
+
+
+(__env__, @{paramName}@if{handlerTypeKind == CLASS_API && handlerType.raw.simpleName != "SendContext"}, @{handlerType.raw.simpleName}::new@else{handlerTypeKind == CLASS_ASYNC_RESULT && handlerType.args.get(0).kind == CLASS_API}, @{handlerType.args.get(0).raw.simpleName}::new@else{handlerTypeKind == CLASS_DATA_OBJECT}, @{handlerType.simpleName}::toJson@end{})
+@else{paramKind == CLASS_FUNCTION}
+@code{
+    var typeArgs = paramType.args;
+    var firstType = typeArgs.get(0);
+    var secondType = typeArgs.get(1);
+    var firstTypeKind = firstType.kind;
+    var secondTypeKind = secondType.kind;
+}
+Wrapper.
+@comment{"====================================conv=function=param===============================start"}
+@if{firstTypeKind == CLASS_THROWABLE && secondTypeKind == CLASS_API}
+convParamThrowableApiFunction
+@else{firstTypeKind == CLASS_API && secondTypeKind == CLASS_API && firstType.raw.simpleName == "CompositeFuture" && secondType.raw.simpleName == "Future"}
+convParamFutureFunction
+@else{firstTypeKind == CLASS_API && secondType.isVariable}
+convParamApiObjectFunction
+@else{secondTypeKind == CLASS_API && firstType.isVariable}
+convParamVFutureFunction
+@else{firstTypeKind == CLASS_API && secondTypeKind == CLASS_API && secondType.raw.simpleName == "Future"}
+convParamApiApiFunction
+@else{}
+/*function*/
+@end{}
+(__env__
+@if{firstTypeKind == CLASS_THROWABLE && secondTypeKind == CLASS_API}
+, @if{className == "CompositeFuture"}this@else{}@{secondType.raw.simpleName}.class@end{}
+@else{firstTypeKind == CLASS_API && secondTypeKind == CLASS_API && firstType.raw.simpleName == "CompositeFuture" && secondType.raw.simpleName == "Future"}
+, CompositeFuture::new
+@else{firstTypeKind == CLASS_API && secondType.isVariable}
+, @{firstType.raw.simpleName}::new
+@else{firstTypeKind == CLASS_API && secondTypeKind == CLASS_API && secondType.raw.simpleName == "Future"}
+, @{firstType.raw.simpleName}::new, @{secondType.args.get(0).raw.simpleName}.class
+@else{}
+@end{}
+, @{paramName}
+)
+@comment{"====================================conv=function=param===============================end"}
+@else{}
+@{paramName}/*11*/
+@end{}
+@comment{"====================================param================================end"}
+@end{}
+)
+@if{!method.isFluent}
+@comment{"=========================="}
+@if{returnTypeKind == CLASS_API || (returnTypeName == "Future" && returnType.args.get(0).kind == CLASS_API)}
+)
+@if{(returnTypeName == "ReadStream" || returnTypeName == "WriteStream") && !returnType.args.get(0).isVariable})@end{}
+@else{returnTypeKind == CLASS_JSON_OBJECT || returnTypeKind == CLASS_JSON_ARRAY}
+.encode())
+@else{returnTypeKind == CLASS_DATA_OBJECT}
+.toJson().encode())
+@else{returnTypeKind == CLASS_OBJECT}
+)
+@else{returnTypeKind == CLASS_SET || returnTypeKind == CLASS_LIST}
+@code{
+    var listArgType = returnType.args.get(0);
+    var listArgTypeKind = listArgType.kind;
+}
+@if{listArgTypeKind == CLASS_DATA_OBJECT}
+.stream().map(dataObject -> JsonFunctions.json_decode(__env__, dataObject.toJson().encode())).collect(Collectors.to@if{returnTypeKind == CLASS_LIST}List@else{}Set@end{}())
+@else{}
+@end{}
+@end{}
+@comment{"=========================="}
+@end{}
+;\n
+@end{}
+@comment{"==================call==============end"}
+@end{}
+
+@comment{"==========================================================imoprt==================================================="}
+@foreach{importClass : importClassSet}
+import @{importClass};\n
+@end{}
+
+@comment{"====================multiMethod===========================start"}
+@code{
+    def getTypeScore(typeInfo){
+        var kind = typeInfo.kind;
+        if(kind == CLASS_STRING) {/*String*/
+            return 999;
+        } else if (kind == CLASS_PRIMITIVE) {/*Long,Double,False,True*/
+            return 10;
+        } else if (kind == CLASS_ENUM) {/*String*/
+            return 800;
+        } else if (kind == CLASS_THROWABLE) {/*ObjectMemory->Exception*/
+            return 99;
+        } else if (kind == CLASS_OBJECT) {/*Memory  ObjectMemory->BaseObject*/
+            return 9999;
+        } else if (kind == CLASS_API) {/*ObjectMemory->BaseWrapper*/
+            return 1;
+        } else if (kind == CLASS_DATA_OBJECT) {/*ArrayMemory    ObjectMemory->StdClass*/
+            return 1;
+        } else if (kind == CLASS_HANDLER) {/*ObjectMemory*/
+            return 1;
+        } else if (kind == CLASS_FUNCTION) {/*ObjectMemory*/
+            return 1;
+        } else {
+            return -10000000;
+        }
+    }
+
+    import java.util.TreeMap;
+    import java.util.HashSet;
+    import java.util.HashMap;
+}
+@declare{'multiMethod'}
+@code{
+    var map = new TreeMap();
+    /*System.err.println(methodName + "___" + methods.size());*/
+    foreach(mmm :methods) {
+        var i = 0;
+        /*System.err.println(methodName + "___" + methods.size() + "____" + mmm.params.size());*/
+        foreach(param : mmm.params) {
+            var kind = param.type.kind;
+            var x = getTypeScore(param.type);
+            var list = map.get("_" + i);
+            if(list == null) {
+                list = new HashSet();
+                map.put("_" + i, list);
+            }
+            list.add(x);
+            i++;
+            /*System.err.println(i + "-------------------" + list);*/
+        }
+    }
+}
+
+        //@{map}\n
+        //@{methods.size()}\n
+        @if{returnTypeName != "void" && !method.isFluent}return null;@end{}\n
+@end{}
+@comment{"====================multiMethod===========================end"}
+
+@code{
+    def parseTypeParams() {
+        if (!typeParams.isEmpty){
+            var ret = '';
+            for (param:typeParams){
+                if (ret != '') {
+                    ret += ', ';
+                }
+                ret += "Memory";
+            }
+            return '<' + ret + '>';
+        } else {
+          return '';
+        }
+    }
+    var wrapperClassType = type.raw.packageName + "." + type.raw.simpleName;
+    var wrapperType = wrapperClassType + parseTypeParams();
+}
+@Name("@{className}")\n
+@Namespace("@{namespace}")\n
+public class @{className} extends BaseWrapper<@{wrapperType}>{\n
+\n
+    public @{className}(Environment env, @{wrapperType} wrappedObject) {\n
+        super(env, wrappedObject);\n
+    }\n
+
+@foreach{methodName:methodsMap.keySet()}
+@foreach{method:methodsMap[methodName]}
+@code{
+    var paramSize = method.params.size();
+    var paramKey = methodName + "-" + paramSize;
+    var methods = sameParamSizeMethod[paramKey];
+    var methodSize = methods.size();
+    var isStatic = method.isStaticMethod;
+    var returnTypes = getReturnTypes(method);
+    var returnTypeName = returnTypes.size() == 1 ? wrapSimpleType1(returnTypes.get(0), true) : "MultiReturnTypeUnHandle";
+}
+\n
+    /**\n
+@foreach{m:methods}
+     * @{wrapSimpleType(m.returnType)} (@code{var first = true;}@foreach{param:m.params}@if{!first}, @else{}@code{first = false;}@end{}@{wrapSimpleType(param.type)} @{param.name}@end{})\n
+@end{}
+     * JavaMethodSize : @{methodSize}\n
+     */\n
+    @Signature\n
+    public @if{isStatic}static @end{}@{returnTypeName} @{methodName}(@if{isStatic}Environment __env__@if{paramSize > 0}, @end{}@end{}@{getParamInfos(method)}){\n
+@if{methods.size() == 1}
+@includeNamed{"methodBody"}
+@else{}
+@includeNamed{"multiMethod"}
+@end{}
+@if{method.isFluent}
+        return this;\n
+@end{}
+    }\n
+@end{}
+@end{}
+
+
+
+@if{className == "Future" || className == "CompositeFuture"}
+    @Signature\n
+    public void handle(Memory result, BaseException cause){\n
+        Wrapper.handle(this, result, cause);\n
+    }\n
+\n
+    @Signature\n
+    public void handle(Memory event){\n
+        Wrapper.handle(this, event);\n
+    }\n
+@end{}
+\n
+}\n

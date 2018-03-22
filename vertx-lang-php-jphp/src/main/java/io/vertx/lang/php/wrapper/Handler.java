@@ -17,6 +17,9 @@ public class Handler extends BaseWrapper<io.vertx.core.Handler<Memory>> implemen
     @Override
     public void handle(Memory event) {
         this.__wrappedObject.handle(event);
+    }
+
+    public void handle(Memory value, Memory cause) {
 
     }
 }

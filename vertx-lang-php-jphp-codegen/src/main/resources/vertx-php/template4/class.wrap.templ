@@ -1,0 +1,27 @@
+@code{
+    var packageName = type.translatePackageName("php");
+}
+package @{packageName};\n
+import io.vertx.lang.jphp.IWrapper;
+import php.runtime.annotation.Reflection.Name;\n
+import php.runtime.annotation.Reflection.Namespace;\n
+import php.runtime.annotation.Reflection.Signature;\n
+@foreach{referencedType:referencedTypes}
+import @{referencedType.translatePackageName("php")}.@{referencedType.simpleName};\n
+@end{}
+
+@Name("@{ifaceSimpleName}")\n
+@Namespace("@{packageName.replace(".", "\\\\")}")\n
+public interface @{ifaceSimpleName}<S extends @{ifaceFQCN}@foreach{tp:typeParams}, @{tp.name}@end{}> extends IWrapper<S>@foreach{superType:superTypes}, @{superType.raw.simpleName}<S@if{superType.isParameterized}@foreach{arg:superType.args},@{arg.name}@end{}@end{}>@end{}{\n
+	@foreach{method:methods}
+		@if{method.name != "toString" || method.params.size() > 0}
+		    \n
+		    @Signature\n
+		    @if{method.isStaticMethod}static@else{}default@end{} @if{method.typeParams.size() > 0}<@end{}@code{var first = true;}@foreach{mp:method.typeParams}@if{!first}, @else{}@code{first = false;}@end{}@{mp.name}@end{}@if{method.typeParams.size() > 0}>@end{}@if{method.isFluent}@{ifaceSimpleName}@else{}@{method.returnType.name}@end{} @{method.name}(@code{first = true;}@foreach{param : method.params}@if{!first}, @else{}@code{first = false;}@end{}@{param.type.name} @{param.name}@end{}) {\n
+		        @if{method.returnType.name != "void" && !method.isFluent}return @end{}@if{method.isStaticMethod}@{ifacePackageName}.@{ifaceSimpleName}@else{}this.getWrappedObject()@end{}.@{method.name}(@code{first = true;}@foreach{param : method.params}@if{!first}, @else{}@code{first = false;}@end{}@{param.name}@end{});@if{method.isFluent}\n
+		        return this;@end{}\n
+		    }\n
+		@end{}
+	@end{}
+\n
+}\n

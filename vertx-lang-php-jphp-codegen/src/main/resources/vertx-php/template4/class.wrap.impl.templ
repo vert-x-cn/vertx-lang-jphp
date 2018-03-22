@@ -1,0 +1,33 @@
+@code{
+    var packageName = type.translatePackageName("php");
+}
+package @{packageName}.impl;\n
+import @{packageName}.@{ifaceSimpleName};\n
+import io.vertx.lang.php.BaseWrapper;\n
+import php.runtime.Memory;\n
+import php.runtime.annotation.Reflection.Name;\n
+import php.runtime.annotation.Reflection.Namespace;\n
+import php.runtime.annotation.Reflection.Signature;\n
+import php.runtime.env.Environment;\n
+import php.runtime.memory.ArrayMemory;\n
+import php.runtime.memory.ObjectMemory;\n
+import php.runtime.reflection.ClassEntity;\n
+
+@Name("@{ifaceSimpleName}Impl")\n
+@Namespace("@{packageName.replace(".", "\\\\")}\\impl")\n
+public class @{ifaceSimpleName}Impl@if{typeParams.size() > 0}<@end{}@code{var first = true;}@foreach{tp:typeParams}@if{!first}, @else{}@code{first = false}@end{}@{tp.name}@end{}@if{typeParams.size() > 0}>@end{} extends BaseWrapper<@{ifaceFQCN}> implements @{ifaceSimpleName}<@{ifaceFQCN}@foreach{tp:typeParams}, @{tp.name}@end{}>{\n
+\n
+    public @{ifaceSimpleName}Impl(Environment __env__, @{ifaceFQCN} __wrappedObject){\n
+        super(__env__, __wrappedObject);\n
+    }\n
+
+	@foreach{method:methods}
+		@if{method.name == "toString" && method.params.size() == 0}
+		    \n
+		    public String toString(){\n
+		        return this.getWrappedObject().toString();\n
+		    }\n
+		@end{}
+	@end{}
+\n
+}\n

@@ -1,0 +1,58 @@
+@code{import java.util.HashSet;var lang = "php";}
+@includeNamed{'commons.templ';}
+<?php \n
+namespace @{namespace};\n
+
+@foreach{importClass : importClassSet}
+use @{importClass.replace(".", "\\")};\n
+@end{}
+
+class @{className}\n
+{\n
+    \n
+    private function __construct()\n
+    {\n
+\n
+    }\n
+
+@foreach{methodName : methodsMap.keySet()}
+    /**\n
+@code{
+    var methodNum = 0;
+    var maxParamSize = 0;
+    var minParamSize = 999;
+    var isStatic = false;
+    var staticMethod = new HashSet();
+}
+@foreach{m:methodsMap[methodName]}
+@code{
+    var paramSize = m.params.size();
+    var paramKey = methodName + "-" + paramSize;
+    var methods = sameParamSizeMethod[paramKey];
+    if(paramSize > maxParamSize) {
+        maxParamSize = paramSize;
+    }
+    if(paramSize < minParamSize) {
+        minParamSize = paramSize;
+    }
+}
+@foreach{method : methods}
+@code{
+    methodNum += 1;
+    staticMethod.add(method.isStaticMethod);
+    if(!isStatic && method.isStaticMethod) {
+        isStatic = true;
+    }
+}
+     * (@code{var first = true;}@foreach{param:method.params}@if{!first}, @else{}@code{first = false;}@end{}@{wrapSimpleType(param.type)} @{param.name}@end{})\n
+     * @return @{wrapSimpleType(method.returnType)}\n
+@end{}
+@end{}
+     * PhpMethodSize : @{methodNum}\n
+     */\n
+    public @if{isStatic}static/*@{staticMethod.size()}*/ @end{}function @{methodName}(/*@{minParamSize}-@{maxParamSize}*/@{getParamName(minParamSize, maxParamSize)})\n
+    {\n
+\n
+    }\n
+@end{}
+}\n

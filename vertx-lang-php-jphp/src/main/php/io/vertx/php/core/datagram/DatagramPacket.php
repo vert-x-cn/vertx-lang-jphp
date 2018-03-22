@@ -1,30 +1,8 @@
-<?php 
+<?php
 namespace io\vertx\php\core\datagram;
-use io\vertx\php\core\buffer\Buffer;
-use io\vertx\php\core\net\SocketAddress;
+use io.vertx.core.net.replace(".", "\\");
+use io.vertx.core.buffer.replace(".", "\\");
 class DatagramPacket
 {
-    
-    private function __construct()
-    {
 
-    }
-    /**
-     * ()
-     * @return Buffer
-     * methodSize : 1
-     */
-    public function data(/*0*/)
-    {
-
-    }
-    /**
-     * ()
-     * @return SocketAddress
-     * methodSize : 1
-     */
-    public function sender(/*0*/)
-    {
-
-    }
 }

@@ -6,72 +6,25 @@
     <parent>
         <groupId>io.vertx</groupId>
         <artifactId>vertx-parent</artifactId>
-        <version>9</version>
+        <version>12</version>
     </parent>
 
     <groupId>tk.okou</groupId>
-    <!--<groupId>io.vertx</groupId>-->
     <artifactId>vertx-lang-php-parent</artifactId>
 
-    <version>3.5.0</version>
+    <version>3.6.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <modules>
         <module>vertx-lang-php-jphp</module>
         <module>vertx-lang-php-compiler-jphp</module>
+        <module>vertx-lang-php-jphp-codegen</module>
     </modules>
-
-    <!--release to com.w2v4-->
-    <name>vertx-lang-php</name>
-    <description>Vert.x Php Implementation</description>
-    <licenses>
-        <license>
-            <name>The Apache Software License, Version 2.0</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-            <distribution>repo</distribution>
-        </license>
-        <license>
-            <name>Eclipse Public License - v 1.0</name>
-            <url>http://www.eclipse.org/legal/epl-v10.html</url>
-            <distribution>repo</distribution>
-        </license>
-    </licenses>
-
-    <profiles>
-        <profile>
-            <id>release-sign-artifacts</id>
-            <activation>
-                <property>
-                    <name>performRelease</name>
-                    <value>true</value>
-                </property>
-            </activation>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-gpg-plugin</artifactId>
-                        <version>1.6</version>
-                        <executions>
-                            <execution>
-                                <id>sign-artifacts</id>
-                                <phase>verify</phase>
-                                <goals>
-                                    <goal>sign</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
-    <!--end of release config-->
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <junit.version>4.12</junit.version>
-        <stack.version>3.5.0</stack.version>
+        <stack.version>3.6.0-SNAPSHOT</stack.version>
     </properties>
 
     <dependencyManagement>
@@ -100,9 +53,17 @@
         </dependency>
     </dependencies>
 
-    <build>
-        <sourceDirectory>src/main/java</sourceDirectory>
-        <testSourceDirectory>src/test/java</testSourceDirectory>
-    </build>
-
+    <profiles>
+        <profile>
+            <id>1.8</id>
+            <activation>
+                <jdk>1.8</jdk>
+            </activation>
+            <modules>
+                <module>vertx-lang-php-jphp</module>
+                <module>vertx-lang-php-compiler-jphp</module>
+                <module>vertx-lang-php-jphp-codegen</module>
+            </modules>
+        </profile>
+    </profiles>
 </project>
