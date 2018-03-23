@@ -2,9 +2,11 @@ package io.vertx.lang.jphp;
 
 
 import php.runtime.Memory;
+import php.runtime.annotation.Reflection.Signature;
 import php.runtime.env.Environment;
 import php.runtime.memory.ArrayMemory;
 import php.runtime.memory.ObjectMemory;
+import php.runtime.memory.StringMemory;
 import php.runtime.reflection.ClassEntity;
 
 public class BaseWrapper<API> implements IWrapper<API> {
@@ -71,5 +73,10 @@ public class BaseWrapper<API> implements IWrapper<API> {
     @Override
     public API getWrappedObject() {
         return __wrappedObject;
+    }
+
+    @Signature
+    public Memory __toString(){
+        return StringMemory.valueOf(toString());
     }
 }

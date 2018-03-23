@@ -1,0 +1,379 @@
+@code{
+	import java.util.TreeSet;
+
+	var packageName = type.translatePackageName("php");
+	var importClassSet = new TreeSet();
+	importClassSet.add("php.runtime.annotation.Reflection.Name");
+	importClassSet.add("php.runtime.annotation.Reflection.Namespace");
+	importClassSet.add("php.runtime.annotation.Reflection.Signature");
+	importClassSet.add("php.runtime.env.Environment");
+	importClassSet.add("php.runtime.Memory");
+	importClassSet.add("io.vertx.lang.jphp.Utils");
+
+	def addImport(typeInfo){
+		if(typeInfo.isVariable){
+			return;
+		}
+		if(!impl || typeInfo.raw.packageName != type.packageName) {
+			importClassSet.add(typeInfo.raw.translatePackageName("php") + ".impl." + typeInfo.raw.simpleName + "Impl");
+		}
+	}
+
+	foreach(methodName:methodsByName.keySet()) {
+		var method = methodsByName[methodName].get(0);
+		var methodReturnType = method.returnType;
+		var methodReturnTypeKind = methodReturnType.kind;
+		if(methodReturnTypeKind == CLASS_API) {
+			addImport(methodReturnType);
+		}
+	}
+
+	if(!impl) {
+		importClassSet.add("io.vertx.lang.jphp.IWrapper");
+		foreach(referencedType:referencedTypes) {
+			importClassSet.add(referencedType.translatePackageName("php") + "." + referencedType.simpleName);
+		}
+	} else {
+		importClassSet.add("io.vertx.lang.jphp.VertxGenWrapper");
+		importClassSet.add("php.runtime.memory.ArrayMemory");
+		importClassSet.add("php.runtime.memory.ObjectMemory");
+		importClassSet.add("php.runtime.reflection.ClassEntity");
+		importClassSet.add(packageName + "." + ifaceSimpleName);
+	}
+}
+package @{packageName}@if{impl}.impl@end{};\n
+
+@foreach{importClass:importClassSet}
+	import @{importClass};\n
+@end{}
+
+@declare{'typeParamInfo'}
+	@if{!imple || typeParams.size() > 0}
+		<
+	@end{}
+	@code{
+		var first = true;
+	}
+	@if{!imple}
+		@if{front}
+			S
+		@end{}
+		@if{front && back}
+			 extends
+		 @end{}
+		@if{back}
+			@{ifaceFQCN}
+		@end{}
+		@code{
+			first = false;
+		}
+	@end{}
+	@foreach{typeParam:typeParams}
+		@if{!first}
+			,
+ 		@else{}
+			@code{
+				first = false;
+			}
+		@end{}
+		@{typeParam.name}
+	@end{}
+	@if{!imple || typeParams.size() > 0}
+		>
+	@end{}
+@end{}
+
+@declare{'methodTemplate'}
+	@code{
+		var prevParamSize = -1;
+		var _else = false;
+		var methodIndex = 0;
+	}
+	@foreach{method:methods}
+		@code{
+			var params = method.params;
+			var paramSize = params.size;
+			methodIndex = methodIndex + 1;
+		}
+		@if{impl && methodName == "toString" && paramSize == 0}
+			\n
+		    @Signature\n
+		    public String toString(){\n
+		        return this.getWrappedObject().toString();
+		    }\n
+		@else{(!impl || method.isStaticMethod) && (methodName != "toString" || paramSize > 0)}
+			@if{paramSize != prevParamSize}
+				@if{prevParamSize != -1}
+					@if{!prevParamEmpty}
+				        }/*3*/@includeNamed{'elseThrow'}\n
+					@end{}
+				    }/*4*/\n
+				@end{}
+				@code{
+					prevParamSize = paramSize;
+					_else = false;
+					var i = 0;
+					prevParamEmpty = paramSize == 0;
+				}
+				\n
+			    @Signature\n
+			    @if{impl}
+					public
+ 				@end{}
+				@if{method.isStaticMethod}
+					static
+ 				@else{!impl}
+					default
+ 				@end{}
+				@{returnInfo}
+ 				@{methodName}(Environment __ENV__
+				@foreach{param:params}
+					, Memory arg@{i}
+					@code{i = i + 1;}
+				@end{}
+				) {\n
+			@end{}
+			@if{paramSize == prevParamSize}
+				@if{paramSize == 0}
+			        @{convReturnStart}@{convReturnEnd};\n
+				@else{}
+			        @if{_else}
+						} else
+ 					@else{}
+						@code{
+							_else = true;
+						}
+					@end{}
+					if(
+					@code{
+						var first = true;
+						var j = 0;
+					}
+					@foreach{param : params}
+						@if{!first}
+ 							&&
+ 						@else{}
+							@code{
+								first = false;
+							}
+						@end{}
+						@if{!param.isNullable}
+							Utils.isNotNull(arg@{j}) &&
+ 						@end{}
+						@includeNamed{'checkType'}
+						@code{
+							j = j + 1;
+						}
+					@end{}
+					) {\n
+			            @{convReturnStart}
+						@code{
+							first = true;
+						}
+						@foreach{param:params}
+							@if{!first}
+								,
+ 							@else{}
+								@code{
+									first = false;
+								}
+							@end{}
+							@includeNamed{'convParamType'}
+						@end{}
+						@{convReturnEnd};\n
+				@end{}
+			@end{}
+			@if{methodIndex == (methods.size())}
+				@if{paramSize > 0}
+			        }/*2*/@includeNamed{'elseThrow'}\n
+				@end{}
+			    }/*1*/\n
+			@end{}
+		@end{}
+	@end{}
+@end{}
+
+@declare{'checkType'}
+	@code{
+		var paramType = param.type;
+		var paramTypeKind = paramType.kind;
+	}
+	Utils.
+	@if{paramTypeKind == CLASS_STRING}
+		isString(
+	@else{paramTypeKind == CLASS_BOXED_PRIMITIVE || paramTypeKind == CLASS_PRIMITIVE}
+		is@{CASE_CAMEL.format([paramType.name])}(
+	@else{paramTypeKind == CLASS_ENUM}
+		isEnum(@{paramType.raw.simpleName}.class,
+ 	@else{paramTypeKind == CLASS_JSON_OBJECT}
+ 		isJsonObject(
+	@else{paramTypeKind == CLASS_JSON_ARRAY}
+ 		isJsonArray(
+	@else{paramTypeKind == CLASS_THROWABLE}
+		isThrowable(
+	@else{paramTypeKind == CLASS_VOID}
+		isUnknown(
+	@else{paramTypeKind == CLASS_OBJECT}
+		isUnknown(
+	@else{paramTypeKind == CLASS_LIST || paramTypeKind == CLASS_SET}
+		@code{
+			var collectionType = paramType.args.get(0);
+			var collectionTypeKind = collectionType.kind;
+		}
+		isCollection
+		@if{collectionTypeKind == CLASS_STRING}
+			String(
+		@else{}
+			Unknown(
+		@end{}
+	@else{paramTypeKind == CLASS_MAP}
+		isUnknown(
+	@else{paramTypeKind == CLASS_API}
+		isApi(
+	@else{paramTypeKind == CLASS_DATA_OBJECT}
+		isUnknown(
+	@else{paramTypeKind == CLASS_HANDLER}
+		isHandler(
+	@else{paramTypeKind == CLASS_FUNCTION}
+		isFunction(
+	@else{paramTypeKind == CLASS_ASYNC_RESULT}
+		isUnknown(
+	@else{paramTypeKind == CLASS_CLASS_TYPE}
+		isUnknown(
+	@else{}
+		isUnknown(
+	@end{}
+	arg@{j})
+@end{}
+@declare{'convParamType'}
+	@code{
+		var paramType = param.type;
+		var paramTypeKind = paramType.kind;
+	}
+	Utils.
+	@if{paramTypeKind == CLASS_STRING}
+		convParamString(
+	@else{paramTypeKind == CLASS_BOXED_PRIMITIVE || paramTypeKind == CLASS_PRIMITIVE}
+	@else{paramTypeKind == CLASS_ENUM}
+	@else{paramTypeKind == CLASS_JSON_OBJECT}
+	@else{paramTypeKind == CLASS_JSON_ARRAY}
+	@else{paramTypeKind == CLASS_THROWABLE}
+	@else{paramTypeKind == CLASS_VOID}
+	@else{paramTypeKind == CLASS_OBJECT}
+	@else{paramTypeKind == CLASS_LIST}
+	@else{paramTypeKind == CLASS_SET}
+	@else{paramTypeKind == CLASS_MAP}
+	@else{paramTypeKind == CLASS_API}
+	@else{paramTypeKind == CLASS_DATA_OBJECT}
+	@else{paramTypeKind == CLASS_HANDLER}
+	@else{paramTypeKind == CLASS_FUNCTION}
+	@else{paramTypeKind == CLASS_ASYNC_RESULT}
+	@else{paramTypeKind == CLASS_CLASS_TYPE}
+	@else{}
+	@end{}
+	@{param.name})
+@end{}
+
+@declare{'elseThrow'}
+ 		else {\n
+            throw new RuntimeException("function invoked with invalid arguments");\n
+        }
+@end{}
+
+
+@Name("@{ifaceSimpleName}@if{impl}Impl@end{}")\n
+@Namespace("@{packageName.replace(".", "\\\\")}@if{impl}\\impl@end{}")\n
+public
+	 @if{!impl}
+		interface
+	@else{}
+		class
+	@end{}
+	 @{ifaceSimpleName}
+	@if{impl}
+		Impl
+	@end{}
+	@includeNamed{'typeParamInfo';imple=impl;front=true;back=true}
+	 extends
+	 @if{impl}
+		VertxGenWrapper<@{ifaceFQCN}> implements @{ifaceSimpleName}@includeNamed{'typeParamInfo';imple=false;front=false;back=true}
+	@else{}
+		IWrapper<S>
+	@end{}
+	{\n
+	@if{impl}
+	    \n
+	    public @{ifaceSimpleName}Impl(Environment env, @{ifaceFQCN} wrappedObject){\n
+	        super(env, wrappedObject);\n
+	    }\n
+	@end{}
+	@code{
+		var prevParamEmpty = true;
+	}
+	@foreach{methodName:methodsByName.keySet()}
+		@code{
+			var methods = methodsByName[methodName];
+			var minParamSize = 99;
+			var maxParamSize = 0;
+			var method = methods.get(0);
+			var returnType = method.returnType;
+			var returnInfo = returnType.name == "void" ? "void" : "Memory";
+			var returnTypeKind = returnType.kind;
+			var convInfo = null;
+			if(returnTypeKind == CLASS_STRING) {
+				convInfo = ["convReturnString", ""];
+			} else if(returnTypeKind == CLASS_BOXED_PRIMITIVE || returnTypeKind == CLASS_PRIMITIVE){
+				convInfo = ["convReturn" + returnType.name, ""];
+			} else if(returnTypeKind == CLASS_ENUM){
+				convInfo = ["convReturnString", ""];
+			} else if(returnTypeKind == CLASS_JSON_OBJECT){
+				convInfo = ["convReturnString", ""];
+			} else if(returnTypeKind == CLASS_JSON_ARRAY){
+				convInfo = ["convReturnString", ""];
+			} else if(returnTypeKind == CLASS_THROWABLE){
+				convInfo = ["convReturnString", ""];
+			} else if(returnTypeKind == CLASS_VOID){
+				convInfo = ["convReturnString", ""];
+			} else if(returnTypeKind == CLASS_OBJECT){
+				convInfo = ["convReturnString", ""];
+			} else if(returnTypeKind == CLASS_LIST){
+				convInfo = ["convReturnString", ""];
+			} else if(returnTypeKind == CLASS_SET){
+				convInfo = ["convReturnString", ""];
+			} else if(returnTypeKind == CLASS_MAP){
+				convInfo = ["convReturnString", ""];
+			} else if(returnTypeKind == CLASS_API){
+				convInfo = ["convReturnVertxGen", returnType.raw.simpleName + "Impl::new, "];
+			} else if(returnTypeKind == CLASS_DATA_OBJECT){
+				convInfo = ["convReturnString", ""];
+			} else if(returnTypeKind == CLASS_HANDLER){
+				convInfo = ["convReturnString", ""];
+			} else if(returnTypeKind == CLASS_FUNCTION){
+				convInfo = ["convReturnString", ""];
+			} else if(returnTypeKind == CLASS_ASYNC_RESULT){
+				convInfo = ["convReturnString", ""];
+			} else if(returnTypeKind == CLASS_CLASS_TYPE){
+				convInfo = ["convReturnString", ""];
+			} else if(returnTypeKind == CLASS_OTHER){
+				convInfo = ["convReturnOther", ""];
+			} else {
+				convInfo = ["convReturnUnknown", ""];
+			}
+			var convReturnStart = "";
+			var convReturnEnd = "";
+			if(returnInfo != "void" && !method.isFluent) {
+				convReturnStart += "return Utils." + convInfo.get(0) + "(__ENV__, " + convInfo.get(1);
+				convReturnEnd = ")" + convReturnEnd;
+			}
+			if(method.isStaticMethod) {
+				convReturnStart += ifacePackageName + "." + ifaceSimpleName;
+			} else {
+				convReturnStart += "this.getWrappedObject()";
+			}
+			convReturnStart += "." + method.name + "(";
+			convReturnEnd = ")" + convReturnEnd;
+		}
+		@includeNamed{'methodTemplate'}
+	@end{}
+\n
+}\n

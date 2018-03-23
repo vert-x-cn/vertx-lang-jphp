@@ -1,0 +1,350 @@
+@code{
+	import java.util.TreeSet;
+
+	var packageName = type.translatePackageName("php");
+	var importClassSet = new TreeSet();
+	importClassSet.add("php.runtime.annotation.Reflection.Name");
+	importClassSet.add("php.runtime.annotation.Reflection.Namespace");
+	importClassSet.add("php.runtime.annotation.Reflection.Signature");
+	importClassSet.add("php.runtime.env.Environment");
+	importClassSet.add("php.runtime.Memory");
+	importClassSet.add("io.vertx.lang.jphp.Utils");
+
+	def addImport(typeInfo){
+		if(typeInfo.isVariable){
+			return;
+		}
+		if(!impl || typeInfo.raw.packageName != type.packageName) {
+			importClassSet.add(typeInfo.raw.translatePackageName("php") + ".impl." + typeInfo.raw.simpleName + "Impl");
+		}
+	}
+
+	foreach(methodName:methodsByName.keySet()) {
+		var method = methodsByName[methodName].get(0);
+		var methodReturnType = method.returnType;
+		var methodReturnTypeKind = methodReturnType.kind;
+		if(methodReturnTypeKind == CLASS_API) {
+			addImport(methodReturnType);
+		}
+	}
+
+	if(!impl) {
+		importClassSet.add("io.vertx.lang.jphp.IWrapper");
+		foreach(referencedType:referencedTypes) {
+			importClassSet.add(referencedType.translatePackageName("php") + "." + referencedType.simpleName);
+		}
+	} else {
+		importClassSet.add("io.vertx.lang.jphp.VertxGenWrapper");
+		importClassSet.add("php.runtime.memory.ArrayMemory");
+		importClassSet.add("php.runtime.memory.ObjectMemory");
+		importClassSet.add("php.runtime.reflection.ClassEntity");
+		importClassSet.add(packageName + "." + ifaceSimpleName);
+	}
+}
+package @{packageName}@if{impl}.impl@end{};\n
+
+@foreach{importClass:importClassSet}
+	import @{importClass};\n
+@end{}
+
+@declare{'typeParamInfo'}
+	@if{!imple || typeParams.size() > 0}
+		<
+	@end{}
+	@code{
+		var first = true;
+	}
+	@if{!imple}
+		@if{front}
+			S
+		@end{}
+		@if{front && back}
+			 extends
+		 @end{}
+		@if{back}
+			@{ifaceFQCN}
+		@end{}
+		@code{
+			first = false;
+		}
+	@end{}
+	@foreach{typeParam:typeParams}
+		@if{!first}
+			,
+ 		@else{}
+			@code{
+				first = false;
+			}
+		@end{}
+		@{typeParam.name}
+	@end{}
+	@if{!imple || typeParams.size() > 0}
+		>
+	@end{}
+@end{}
+@declare{'methodBody111'}
+	@if{method.returnType.name != "void" && !method.isFluent}
+		return
+		@code{
+			var returnTypeKind = method.returnType.kind;
+			var convInfo = null;
+			if(returnTypeKind == CLASS_API) {
+				convInfo = ["convReturnVertxGen", ""];
+			} else {
+				convInfo = ["convReturnUnknow", ""];
+			}
+		}
+ 		Utils.@{convInfo.get(0)}(__ENV__, @{convInfo.get(1)}
+	@end{}
+	@if{method.isStaticMethod}
+		@{ifacePackageName}.@{ifaceSimpleName}
+	@else{}
+		this.getWrappedObject()
+	@end{}
+	.@{method.name}(
+	@code{
+		first = true;
+	}
+	@foreach{param : method.params}
+		@if{!first}
+			,
+		@else{}
+			@code{first = false;}
+		@end{}
+		@{param.name}
+	@end{}
+	@if{method.returnType.name != "void" && !method.isFluent}
+		)
+	@end{}
+	);
+@end{}
+
+@declare{'test'}
+		\n
+		@if{impl && method.name == "toString" && method.params.size() == 0}
+		    public String toString(){\n
+		        return this.getWrappedObject().toString();\n
+		    }\n
+		@else{(!impl || method.isStaticMethod) && (method.name != "toString" || method.params.size() > 0)}
+			@if{method.isStaticMethod}
+			    static
+			@else{}
+			    default
+			@end{}
+			@if{method.typeParams.size() > 0}
+				 <
+			@end{}
+			@code{
+				var first = true;
+			}
+			@foreach{mp:method.typeParams}
+				@if{!first}
+				,
+				@else{}
+					@code{
+						first = false;
+					}
+				@end{}
+				@{mp.name}
+			@end{}
+			@if{method.typeParams.size() > 0}
+				>
+			@end{}
+ 			Memory/*@if{method.isFluent}
+				@{ifaceSimpleName}
+			@else{}
+				@{method.returnType.name}
+			@end{}*/
+ 			@{method.name}(
+			Environment __ENV__
+			@foreach{param : method.params}
+				, @{param.type.name} @{param.name}
+			@end{}
+			) {\n
+		        @includeNamed{'methodBody'}
+				@if{method.isFluent}
+				\n
+		        return toMemory();
+				@end{}\n
+		    }\n
+
+		@end{}
+@end{}
+
+@declare{'methodInfo'}
+	@if{isEmpty}
+		@if{impl && method.name == "toString"}
+			\n
+			@Signature\n
+		    public String toString(){\n
+		        return this.getWrappedObject().toString();
+		    }\n
+		@else{(!impl || method.isStaticMethod) && method.name != "toString"}
+		    @includeNamed{'methodBody'}
+		@end{}
+	@else{}
+		@includeNamed{'methodBody'}
+	@end{}
+@end{}
+
+@declare{'methodBody'}
+	@code{
+		var convReturnStart = "";
+		var convReturnEnd = "";
+		if(returnInfo != "void" && !method.isFluent) {
+			convReturnStart += "return Utils." + convInfo.get(0) + "(__ENV__, " + convInfo.get(1);
+			convReturnEnd = ")" + convReturnEnd;
+		}
+		if(method.isStaticMethod) {
+			convReturnStart += ifacePackageName + "." + ifaceSimpleName;
+		} else {
+			convReturnStart += "this.getWrappedObject()";
+		}
+		convReturnStart += "." + method.name + "(";
+		convReturnEnd = ")" + convReturnEnd;
+	}
+	\n
+    @Signature\n
+    @if{impl}
+		public
+ 	@end{}
+	@if{method.isStaticMethod}
+		static
+ 	@else{!impl}
+		default
+ 	@end{}
+	@{returnInfo}
+ 	@{methodName}(Environment __ENV__
+	@if{!isEmpty}
+		, Memory arg0, Memory... args
+	@end{}
+	) {\n
+		@if{!isEmpty}
+			@code{
+				var first = true;
+				var _else = false;
+			}
+			@foreach{m : methods}
+				@code{
+					var paramSize = m.params.size();
+					var i = 0;
+				}
+				@if{paramSize > 0}
+			        @if{_else}
+						} else
+ 					@else{}
+						@code{
+							_else = true;
+						}
+					@end{}
+					if(args.length == @{paramSize - 1}
+					@foreach{param : m.params}
+ 						&&
+						@if{!param.isNullable}
+ 							Utils.isNull(
+							@if{i == 0}
+								arg0
+							@else{}
+								args[@{i}]
+							@end{}
+							) &&
+						@end{}
+ 							@includeNamed{'checkType'}
+						@code{
+							i = i + 1;
+						}
+					@end{}
+					) {\n
+				@end{}
+			@end{}
+	        } else {\n
+	            throw new RuntimeException();\n
+	        }\n
+		@else{}
+	        @{convReturnStart}@{convReturnEnd}
+		@end{}
+		@if{method.isFluent}
+		\n
+        return toMemory();
+		@end{}
+		\n
+    }\n
+@end{}
+
+@declare{'checkType'}
+	@code{
+		var paramType = param.type;
+		var paramKind = paramType.kind;
+	}
+Utils.is
+@end{}
+
+@declare{'convParamInfo'}
+1
+@end{}
+
+
+@Name("@{ifaceSimpleName}@if{impl}Impl@end{}")\n
+@Namespace("@{packageName.replace(".", "\\\\")}@if{impl}\\impl@end{}")\n
+public
+	 @if{!impl}
+		interface
+	@else{}
+		class
+	@end{}
+	 @{ifaceSimpleName}
+	@if{impl}
+		Impl
+	@end{}
+	@includeNamed{'typeParamInfo';imple=impl;front=true;back=true}
+	 extends
+	 @if{impl}
+		VertxGenWrapper<@{ifaceFQCN}> implements @{ifaceSimpleName}@includeNamed{'typeParamInfo';imple=false;front=false;back=true}
+	@else{}
+		IWrapper<S>
+	@end{}
+	{\n
+	@if{impl}
+	    \n
+	    public @{ifaceSimpleName}Impl(Environment env, @{ifaceFQCN} wrappedObject){\n
+	        super(env, wrappedObject);\n
+	    }\n
+	@end{}
+	@foreach{methodName:methodsByName.keySet()}
+		@code{
+			var methods = methodsByName[methodName];
+			var minParamSize = 99;
+			var maxParamSize = 0;
+		}
+		@foreach{method:methods}
+			@code{
+				var paramSize = method.params.size();
+				if(paramSize > maxParamSize) {
+					maxParamSize = paramSize;
+				}
+				if(paramSize < minParamSize) {
+					minParamSize = paramSize;
+				}
+			}
+		@end{}
+		@code{
+			var method = methods.get(0);
+			var returnType = method.returnType;
+			var returnInfo = returnType.name == "void" ? "void" : "Memory";
+			var returnTypeKind = returnType.kind;
+			var convInfo = null;
+			if(returnTypeKind == CLASS_API) {
+				convInfo = ["convReturnVertxGen", returnType.raw.simpleName + "Impl::new, "];
+			} else {
+				convInfo = ["convReturnUnknow", ""];
+			}
+		}
+		@if{minParamSize == 0}
+			@includeNamed{'methodInfo';isEmpty=true}
+		@end{}
+		@if{maxParamSize > 0}
+			@includeNamed{'methodInfo';isEmpty=false}
+		@end{}
+	@end{}
+\n
+}\n

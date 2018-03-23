@@ -22,6 +22,7 @@ public interface TestApi extends Measured, WriteStream<Object>{
     void test(Future future);
 //    void test(String aaa);
     void test(HttpVersion version);
+    void test(int i);
 
 //    @Override
 //    TestApi exceptionHandler(Handler handler);

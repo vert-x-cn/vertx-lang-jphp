@@ -49,7 +49,7 @@ public class TestJava {
                 new File("src\\\\test\\\\java\\\\io\\\\vertx\\\\model\\\\TestApi.java"),
                 new File("target\\sources\\java\\io\\vertx\\core\\Future.java"),
                 new File("target\\sources\\java\\io\\vertx\\core\\CompositeFuture.java"),
-                new File("target\\sources\\java\\io\\vertx\\core\\shareddata\\LocalMap.java"),
+                new File("target\\sources\\java\\io\\vertx\\core\\http\\HttpClient.java"),
         };
 //        File f1 = new File("target\\sources\\java\\io\\vertx\\core\\buffer\\Buffer.java");
 //        File f2 = new File("target\\sources\\java\\io\\vertx\\core\\eventbus\\EventBus.java");
@@ -61,7 +61,7 @@ public class TestJava {
     }
     @Test
     public void test() throws Exception {
-        assertCompile("testApiGen1", TestApi.class);
+        assertCompile("Php", TestApi.class);
     }
 
 }
