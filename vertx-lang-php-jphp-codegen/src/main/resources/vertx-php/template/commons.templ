@@ -168,14 +168,14 @@ package @{packageName}@if{impl}.impl@end{};\n
 					) {\n
 			            @{convReturnStart}
 						@code{
-							first = true;
+							var k = -1;
 						}
 						@foreach{param:params}
-							@if{!first}
+							@if{k > -1}
 								,
  							@else{}
 								@code{
-									first = false;
+									k = k + 1;
 								}
 							@end{}
 							@includeNamed{'convParamType'}
@@ -212,9 +212,9 @@ package @{packageName}@if{impl}.impl@end{};\n
 	@else{paramTypeKind == CLASS_THROWABLE}
 		isThrowable(
 	@else{paramTypeKind == CLASS_VOID}
-		isUnknown(
+		isVoid(
 	@else{paramTypeKind == CLASS_OBJECT}
-		isUnknown(
+		isObject(
 	@else{paramTypeKind == CLASS_LIST || paramTypeKind == CLASS_SET}
 		@code{
 			var collectionType = paramType.args.get(0);
@@ -227,19 +227,19 @@ package @{packageName}@if{impl}.impl@end{};\n
 			Unknown(
 		@end{}
 	@else{paramTypeKind == CLASS_MAP}
-		isUnknown(
+		isMap(
 	@else{paramTypeKind == CLASS_API}
-		isApi(
+		isVertxGen(
 	@else{paramTypeKind == CLASS_DATA_OBJECT}
-		isUnknown(
+		isDataObject(
 	@else{paramTypeKind == CLASS_HANDLER}
 		isHandler(
 	@else{paramTypeKind == CLASS_FUNCTION}
 		isFunction(
 	@else{paramTypeKind == CLASS_ASYNC_RESULT}
-		isUnknown(
+		isAsyncResult(
 	@else{paramTypeKind == CLASS_CLASS_TYPE}
-		isUnknown(
+		isClassType(
 	@else{}
 		isUnknown(
 	@end{}
@@ -254,24 +254,168 @@ package @{packageName}@if{impl}.impl@end{};\n
 	@if{paramTypeKind == CLASS_STRING}
 		convParamString(
 	@else{paramTypeKind == CLASS_BOXED_PRIMITIVE || paramTypeKind == CLASS_PRIMITIVE}
+		convParam@{CASE_CAMEL.format([paramType.name])}(
 	@else{paramTypeKind == CLASS_ENUM}
+		convParamEnum(
 	@else{paramTypeKind == CLASS_JSON_OBJECT}
+		convParamJsonObject(
 	@else{paramTypeKind == CLASS_JSON_ARRAY}
+		convParamJsonObject(
 	@else{paramTypeKind == CLASS_THROWABLE}
+		convParamThrowable(
 	@else{paramTypeKind == CLASS_VOID}
+		convParamVoid(
+	@else{paramType.isVariable}
+		convParamVariable(
 	@else{paramTypeKind == CLASS_OBJECT}
-	@else{paramTypeKind == CLASS_LIST}
-	@else{paramTypeKind == CLASS_SET}
+		convParamObject(
+	@else{paramTypeKind == CLASS_LIST || paramTypeKind == CLASS_SET}
+		@code{
+			var collectionType = paramType.args.get(0);
+			var collectionTypeKind = collectionType.kind;
+		}
+		convParamCollection
+		@if{collectionTypeKind == CLASS_STRING}
+			String
+		@else{collectionTypeKind == CLASS_BOXED_PRIMITIVE || collectionTypeKind == CLASS_PRIMITIVE}
+			@{CASE_CAMEL.format([collectionType.name])}
+		@else{collectionTypeKind == CLASS_JSON_OBJECT}
+			JsonObject(
+		@else{collectionTypeKind == CLASS_JSON_ARRAY}
+			JsonArray(
+		@else{collectionTypeKind == CLASS_API}
+			@{collectionType.raw.simpleName}(
+		@else{collectionTypeKind == CLASS_DATA_OBJECT}
+			DataObject(
+		@else{collectionTypeKind == CLASS_ENUM}
+			Enum(
+		@else{collectionType.isVariable}
+			Variable(
+		@else{}
+			@{collectionType.raw.simpleName}(
+		@end{}
 	@else{paramTypeKind == CLASS_MAP}
+		@code{
+			var args = paramType.args;
+			var valueType = args.get(1);
+			var valueTypeKind = valueType.kind;
+		}
+		convParamMap
+		@if{valueTypeKind == CLASS_STRING}
+			String
+		@else{valueTypeKind == CLASS_BOXED_PRIMITIVE || valueTypeKind == CLASS_PRIMITIVE}
+			@{CASE_CAMEL.format([collectionType.name])}
+		@else{valueTypeKind == CLASS_JSON_OBJECT}
+			JsonObject(
+		@else{valueTypeKind == CLASS_JSON_ARRAY}
+			JsonArray(
+		@else{valueTypeKind == CLASS_API}
+			@{collectionType.raw.simpleName}(
+		@else{valueType.isVariable}
+			Variable(
+		@else{}
+			@{valueType.raw.simpleName}(
+		@end{}
 	@else{paramTypeKind == CLASS_API}
+		convParamVertxGen
+		@if{!paramType.isParameterized}
+			NoParameter(
+		@else{}
+			@code{
+				var vertxGenArgs = paramType.args;
+				var vertxGenMethod = "";
+				var vertxGenParam = "";
+				foreach(argType : vertxGenArgs){
+					var argTypeKind = argType.kind;
+					if(argTypeKind == CLASS_API) {
+						vertxGenMethod += argType.raw.simpleName;
+						vertxGenParam = ""
+					} else if(argTypeKind == CLASS_VOID) {
+						vertxGenMethod += "Void";
+						vertxGenParam = ""
+					} else if(argTypeKind == CLASS_STRING) {
+						vertxGenMethod += "String";
+						vertxGenParam = ""
+					} else if(argTypeKind == CLASS_BOXED_PRIMITIVE || argTypeKind == CLASS_PRIMITIVE) {
+						var primitiveName = argTypeKind == CLASS_PRIMITIVE ? argType.boxed.name : argType.name;
+						vertxGenMethod += primitiveName;
+						vertxGenParam = ""
+					} else if(argTypeKind == CLASS_JSON_OBJECT) {
+						vertxGenMethod += "JsonObject";
+						vertxGenParam = ""
+					} else if(argTypeKind == CLASS_JSON_ARRAY) {
+						vertxGenMethod += "JsonArray";
+						vertxGenParam = ""
+					} else if(argTypeKind == CLASS_DATA_OBJECT) {
+						vertxGenMethod += "DataObject";
+						vertxGenParam = ""
+					} else if(argTypeKind == CLASS_ENUM) {
+						vertxGenMethod += "Enum";
+						vertxGenParam = ""
+					} else if(argType.isVariable) {
+						vertxGenMethod += "Variable";
+						vertxGenParam = ""
+					} else {
+						vertxGenMethod += "Unknown";
+						vertxGenParam = ""
+					}
+				}
+			}
+			@{vertxGenMethod}(@{vertxGenParam}
+		@end{}
 	@else{paramTypeKind == CLASS_DATA_OBJECT}
+		convParamDataObject(
 	@else{paramTypeKind == CLASS_HANDLER}
+		@code{
+			var handlerType = paramType.args.get(0);
+			var handlerTypeKind = handlerType.kind;
+		}
+		convParamHandler
+		@if{handlerTypeKind != CLASS_ASYNC_RESULT}
+			Variable
+		@else{}
+			AsyncResult
+			@code{
+				var asyncResultType = handlerType.args.get(0);
+				var asyncResultTypeKind = asyncResultType.kind;
+			}
+		@end{}
+		(
 	@else{paramTypeKind == CLASS_FUNCTION}
+		@code{
+			var args = paramType.args;
+			var firstType = args.get(0);
+			var secondType = args.get(1);
+		}
+		convParamFunction
+		@if{firstType.isVariable}
+			VariableIn
+		@else{}
+			@{firstType.raw.simpleName}
+		@end{}
+		@if{secondType.isVariable}
+			VariableOut
+		@else{}
+			@{secondType.raw.simpleName}
+		@end{}
+		(
 	@else{paramTypeKind == CLASS_ASYNC_RESULT}
+		@code{
+			var asyncResultType = paramType.args.get(0);
+		}
+		convParamAsyncResult
+		@if{asyncResultType.isVariable}
+			Variable
+		@else{}
+			@{asyncResultType.raw.simpleName}
+		@end{}
+		(
 	@else{paramTypeKind == CLASS_CLASS_TYPE}
+		convParamClassType(
 	@else{}
+		convParamUnknown(
 	@end{}
-	@{param.name})
+	arg@{k})
 @end{}
 
 @declare{'elseThrow'}
@@ -323,37 +467,35 @@ public
 			if(returnTypeKind == CLASS_STRING) {
 				convInfo = ["convReturnString", ""];
 			} else if(returnTypeKind == CLASS_BOXED_PRIMITIVE || returnTypeKind == CLASS_PRIMITIVE){
-				convInfo = ["convReturn" + returnType.name, ""];
+				convInfo = ["convReturn" + CASE_CAMEL.format([returnType.name]), ""];
 			} else if(returnTypeKind == CLASS_ENUM){
-				convInfo = ["convReturnString", ""];
+				convInfo = ["convReturnEnum", ""];
 			} else if(returnTypeKind == CLASS_JSON_OBJECT){
-				convInfo = ["convReturnString", ""];
+				convInfo = ["convReturnJsonObject", ""];
 			} else if(returnTypeKind == CLASS_JSON_ARRAY){
-				convInfo = ["convReturnString", ""];
+				convInfo = ["convReturnJsonArray", ""];
 			} else if(returnTypeKind == CLASS_THROWABLE){
-				convInfo = ["convReturnString", ""];
+				convInfo = ["convReturnThrowable", ""];
 			} else if(returnTypeKind == CLASS_VOID){
-				convInfo = ["convReturnString", ""];
+				convInfo = ["convReturnVoid", ""];
 			} else if(returnTypeKind == CLASS_OBJECT){
-				convInfo = ["convReturnString", ""];
-			} else if(returnTypeKind == CLASS_LIST){
-				convInfo = ["convReturnString", ""];
-			} else if(returnTypeKind == CLASS_SET){
-				convInfo = ["convReturnString", ""];
+				convInfo = ["convReturnObject", ""];
+			} else if(returnTypeKind == CLASS_LIST || returnTypeKind == CLASS_SET){
+				convInfo = ["convReturnCollection", ""];
 			} else if(returnTypeKind == CLASS_MAP){
-				convInfo = ["convReturnString", ""];
+				convInfo = ["convReturnMap", ""];
 			} else if(returnTypeKind == CLASS_API){
 				convInfo = ["convReturnVertxGen", returnType.raw.simpleName + "Impl::new, "];
 			} else if(returnTypeKind == CLASS_DATA_OBJECT){
-				convInfo = ["convReturnString", ""];
+				convInfo = ["convReturnDataObject", ""];
 			} else if(returnTypeKind == CLASS_HANDLER){
-				convInfo = ["convReturnString", ""];
+				convInfo = ["convReturnHandler", ""];
 			} else if(returnTypeKind == CLASS_FUNCTION){
-				convInfo = ["convReturnString", ""];
+				convInfo = ["convReturnFunction", ""];
 			} else if(returnTypeKind == CLASS_ASYNC_RESULT){
-				convInfo = ["convReturnString", ""];
+				convInfo = ["convReturnAsyncResult", ""];
 			} else if(returnTypeKind == CLASS_CLASS_TYPE){
-				convInfo = ["convReturnString", ""];
+				convInfo = ["convReturnClassType", ""];
 			} else if(returnTypeKind == CLASS_OTHER){
 				convInfo = ["convReturnOther", ""];
 			} else {

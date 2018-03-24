@@ -22,7 +22,6 @@ public class BaseWrapper<API> implements IWrapper<API> {
         this.__wrappedObject = __wrappedObject;
         this.__dynamicProperties__ = new ArrayMemory(true);
         this.__class__ = __env__.fetchClass(getClass());
-        this.__instance = ObjectMemory.valueOf(this);
     }
 
     @Override
@@ -67,7 +66,7 @@ public class BaseWrapper<API> implements IWrapper<API> {
 
     @Override
     public Memory toMemory() {
-        return __instance;
+        return __instance == null ? __instance = ObjectMemory.valueOf(this) : __instance;
     }
 
     @Override

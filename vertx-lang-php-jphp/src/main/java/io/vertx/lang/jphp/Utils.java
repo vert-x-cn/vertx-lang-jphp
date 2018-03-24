@@ -1,5 +1,9 @@
 package io.vertx.lang.jphp;
 
+import io.vertx.core.json.JsonArray;
+import io.vertx.core.json.JsonObject;
+import io.vertx.lang.php.wrapper.JavaThrowable;
+import org.develnext.jphp.zend.ext.json.JsonFunctions;
 import php.runtime.Memory;
 import php.runtime.env.Environment;
 import php.runtime.lang.StdClass;
@@ -137,6 +141,13 @@ public class Utils {
         }
     }
 
+    public static <E extends Enum<E>> E convParamEnum(Class<E> clazz, Memory memory){
+        return Enum.valueOf(clazz, memory.toString());
+    }
+    public static <E extends Enum<E>> Memory convReturnEnum(E e){
+        return StringMemory.valueOf(e.name());
+    }
+
     public static boolean isJsonObject(Memory memory) {
         if (!memory.isArray() && !memory.isObject()) {
             return false;
@@ -154,6 +165,12 @@ public class Utils {
             }
         }
         return true;
+    }
+    public static JsonObject convParamJsonObject(Memory memory){
+        return new JsonObject(JsonFunctions.json_encode(memory));
+    }
+    public static Memory convReturnJsonObject(Environment env, JsonObject json){
+        return JsonFunctions.json_decode(env, json.encode());
     }
 
     public static boolean isJsonArray(Memory memory) {
@@ -179,8 +196,22 @@ public class Utils {
         return true;
     }
 
+    public static JsonArray convParamJsonArray(Memory memory){
+        return new JsonArray(JsonFunctions.json_encode(memory));
+    }
+    public static Memory convReturnJsonArray(Environment env, JsonArray json){
+        return JsonFunctions.json_decode(env, json.encode());
+    }
+
     public static boolean isThrowable(Memory memory) {
-        return memory.isObject() && memory.toValue(ObjectMemory.class).value instanceof RuntimeException;
+        return memory.isObject() && memory.toValue(ObjectMemory.class).value instanceof Throwable;
+    }
+
+    public static Throwable convParamThrowable(Memory memory){
+        return (Throwable)memory.toValue(ObjectMemory.class).value;
+    }
+    public static Memory convReturnThrowable(Environment env, Throwable throwable){
+        return BaseThrowable.of(env, throwable).toMemory();
     }
 
     public static boolean isCollectionString(Memory memory) {
@@ -203,6 +234,20 @@ public class Utils {
 
     public static <API, WRAPPER extends VertxGenWrapper<API>> Memory convReturnVertxGen(Environment env, BiFunction<Environment, API, WRAPPER> wraper, API api) {
         return api == null ? Memory.NULL : wraper.apply(env, api).toMemory();
+    }
+
+    public static boolean isDataObject(Memory memory){
+        return memory.isObject() && memory.toValue(ObjectMemory.class).value instanceof DataObjectWrapper;
+    }
+    public static boolean isVertxGen(Memory memory) {
+        return memory.isObject() && memory.toValue(ObjectMemory.class).value instanceof VertxGenWrapper;
+    }
+    public static boolean isHandler(Memory memory){
+        return memory.isClosure();
+    }
+
+    public static boolean isFunction(Memory memory){
+        return memory.isClosure();
     }
 
     public static Memory convReturnOther(Environment env, Object obj) {
