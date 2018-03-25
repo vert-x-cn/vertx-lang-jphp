@@ -1,8 +1,8 @@
 package io.vertx.lang.jphp;
 
+import io.vertx.codegen.annotations.VertxGen;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
-import io.vertx.lang.php.wrapper.JavaThrowable;
 import org.develnext.jphp.zend.ext.json.JsonFunctions;
 import php.runtime.Memory;
 import php.runtime.env.Environment;
@@ -12,6 +12,7 @@ import php.runtime.memory.support.ArrayMapEntryMemory;
 
 import java.util.List;
 import java.util.function.BiFunction;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class Utils {
@@ -29,6 +30,16 @@ public class Utils {
 
     public static Memory convReturnString(String str) {
         return StringMemory.valueOf(str);
+    }
+
+    public static boolean isByte(Memory memory){
+        return isLong(memory);
+    }
+    public static byte convParamByte(Memory memory){
+        return (byte) memory.toLong();
+    }
+    public static Memory convReturnByte(byte b){
+        return LongMemory.valueOf(b);
     }
 
     public static boolean isChar(Memory memory) {
@@ -214,6 +225,36 @@ public class Utils {
         return BaseThrowable.of(env, throwable).toMemory();
     }
 
+    public static boolean isVariable(Memory memory){
+        //TODO
+        return true;
+    }
+    public static Memory convParamVariable(Memory memory){
+        //TODO
+        return memory;
+    }
+
+    public static boolean isObjectNotSupport(){
+        return false;
+    }
+    public static <API> boolean isVertxGen(Class<API> clazz, Memory memory){
+        if(!memory.isObject()){
+            return false;
+        }
+        ObjectMemory obj = memory.toValue(ObjectMemory.class);
+        if (!(obj.value instanceof VertxGenWrapper)) {
+            return false;
+        }
+        VertxGenWrapper dataDataObjectWrapper = (VertxGenWrapper) obj.value;
+        return clazz.isInstance(dataDataObjectWrapper.getWrappedObject());
+    }
+    @SuppressWarnings("unchecked")
+    public static <API> API convParamVertxGen(Class<API> clazz, Memory memory){
+        return ((VertxGenWrapper<API>) memory.toValue(ObjectMemory.class).value).getWrappedObject();
+    }
+    public static <API, WRAPPER extends VertxGenWrapper<API>> Memory convReturnVertxGen(Environment env, BiFunction<Environment, API, WRAPPER> wraper, API api) {
+        return api == null ? Memory.NULL : wraper.apply(env, api).toMemory();
+    }
     public static boolean isCollectionString(Memory memory) {
         if (!memory.isArray()) {
             return false;
@@ -232,13 +273,34 @@ public class Utils {
         return array.stream().map(it -> it.toString()).collect(Collectors.toList());
     }
 
-    public static <API, WRAPPER extends VertxGenWrapper<API>> Memory convReturnVertxGen(Environment env, BiFunction<Environment, API, WRAPPER> wraper, API api) {
-        return api == null ? Memory.NULL : wraper.apply(env, api).toMemory();
+    public static <D> boolean isDataObject(Class<D> clazz, Memory memory){
+        return isDataObjectObject(memory, clazz) || isJsonObject(memory);
+    }
+    private static <DATA> boolean isDataObjectObject(Memory memory, Class<DATA> clazz){
+        if(!memory.isObject()){
+            return false;
+        }
+        ObjectMemory obj = memory.toValue(ObjectMemory.class);
+        if (!(obj.value instanceof DataObjectWrapper)) {
+            return false;
+        }
+        DataObjectWrapper dataDataObjectWrapper = (DataObjectWrapper) obj.value;
+        return clazz.isInstance(dataDataObjectWrapper.getWrappedObject());
     }
 
-    public static boolean isDataObject(Memory memory){
-        return memory.isObject() && memory.toValue(ObjectMemory.class).value instanceof DataObjectWrapper;
+    @SuppressWarnings("unchecked")
+    public static <DATA> DATA convParamDataObject(Function<JsonObject, DATA> newInstance, Memory memory){
+        if(isJsonObject(memory)) {
+            return newInstance.apply(new JsonObject(JsonFunctions.json_encode(memory)));
+        } else {
+            DataObjectWrapper<DATA> dataDataObjectWrapper = (DataObjectWrapper<DATA>) memory.toValue(ObjectMemory.class).value;
+            return  dataDataObjectWrapper.getWrappedObject();
+        }
     }
+    public static Memory convReturnDataObject() {
+        return null;
+    }
+
     public static boolean isVertxGen(Memory memory) {
         return memory.isObject() && memory.toValue(ObjectMemory.class).value instanceof VertxGenWrapper;
     }
