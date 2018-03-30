@@ -16,7 +16,8 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>vertx-lang-php-jphp</module>
+        <module>vertx-lang-jphp</module>
+        <!--<module>vertx-lang-php-jphp</module>-->
         <module>vertx-lang-php-compiler-jphp</module>
         <module>vertx-lang-php-jphp-codegen</module>
     </modules>
@@ -60,7 +61,7 @@
                 <jdk>1.8</jdk>
             </activation>
             <modules>
-                <module>vertx-lang-php-jphp</module>
+                <!--<module>vertx-lang-php-jphp</module>-->
                 <module>vertx-lang-php-compiler-jphp</module>
                 <module>vertx-lang-php-jphp-codegen</module>
             </modules>

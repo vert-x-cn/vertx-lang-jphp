@@ -48,6 +48,7 @@ public class TestJava {
         File[] fs = new File[]{
                 new File("src\\\\test\\\\java\\\\io\\\\vertx\\\\model\\\\TestApi.java"),
                 new File("target\\sources\\java\\io\\vertx\\core\\Future.java"),
+                new File("target\\sources\\java\\io\\vertx\\core\\Vertx.java"),
                 new File("target\\sources\\java\\io\\vertx\\core\\CompositeFuture.java"),
                 new File("target\\sources\\java\\io\\vertx\\core\\http\\HttpClient.java"),
         };

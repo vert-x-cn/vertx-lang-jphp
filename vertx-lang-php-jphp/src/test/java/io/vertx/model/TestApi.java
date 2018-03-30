@@ -28,7 +28,7 @@ import java.util.function.Function;
  * @author <a href="http://tfox.org">Tim Fox</a>
  */
 @VertxGen
-public interface TestApi<TV> /*extends Measured, WriteStream<Object>*/{
+public interface TestApi<TV, TTT> /*extends Measured, WriteStream<Object>*/{
     //basic String, byte, Byte, char, Character, short, Short, int, Integer, long, Long, double, Double, float, Float, boolean, Boolean
     //json JsonArray, JsonObject
     //DataObject not abstract
@@ -48,7 +48,7 @@ public interface TestApi<TV> /*extends Measured, WriteStream<Object>*/{
 
 
     //basic
-    void testString(String str);
+    void testString(@Nullable String str);
     void testByte(byte i);
     void testByteBoxed(Byte i);
     void testChar(char i);
@@ -80,7 +80,8 @@ public interface TestApi<TV> /*extends Measured, WriteStream<Object>*/{
     void testThrowable(Throwable t);
 
     //V
-<V> void testVariable(V o);//
+<V> void testVariableV(V o);//
+     void testVariableTV(TV o);//
 
     //Object
     void testObject(Object o);//

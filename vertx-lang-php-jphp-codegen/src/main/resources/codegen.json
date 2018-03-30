@@ -5,9 +5,9 @@
     "fileName": "'php/' + module.translateQualifiedName(fqn, 'php').replace('.', '/') + '.php'",
     "templateFileName": "vertx-php/template2/dataobject.templ"
   },{
-    "kind": "//dataObject",
+    "kind": "dataObject",
     "fileName": "'data/' + module.translateQualifiedName(fqn, 'php').replace('.', '/') + '.java'",
-    "templateFileName": "vertx-php/template2/dataobject.wrap.templ"
+    "templateFileName": "vertx-php/template/dataobject.wrap.templ"
   },{
     "kind": "//class",
     "incremental" : true,
@@ -30,7 +30,7 @@
     "fileName": "'api/' + module.translateQualifiedName(fqn, 'php').replace('.', '/') + '.java'",
     "templateFileName": "vertx-php/template/class.wrap.templ"
   },{
-    "kind": "class",
+    "kind": "//class",
     "fileName": "'api/' + module.translateQualifiedName(ifacePackageName, 'php').replace('.', '/') + '/impl/' + ifaceSimpleName + 'Impl.java'",
     "templateFileName": "vertx-php/template/class.wrap.impl.templ"
   }]
