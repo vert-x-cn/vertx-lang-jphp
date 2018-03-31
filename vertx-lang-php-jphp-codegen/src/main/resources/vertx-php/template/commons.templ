@@ -103,20 +103,31 @@
 			return;
 		}
 		var typeKind = typeInfo.kind;
-		if(typeKind == CLASS_API || typeKind == CLASS_DATA_OBJECT) {
+		if(typeKind == CLASS_API) {
 			if(typeInfo.raw.packageName != ifacePackageName) {
 				importClassSet.add(typeInfo.raw.translatePackageName("php") + "." + typeInfo.raw.simpleName);
 			}
+		} else if(typeKind == CLASS_DATA_OBJECT) {
+			if(isParameterized && typeInfo.raw.packageName != ifacePackageName) {
+				importClassSet.add(typeInfo.raw.translatePackageName("php") + "." + typeInfo.raw.simpleName);
+			}
 		} else if(typeKind == CLASS_JSON_OBJECT) {
-			importClassSet.add("io.vertx.core.json.JsonObject");
+			if(isParameterized) {
+				importClassSet.add("io.vertx.core.json.JsonObject");
+			}
 		} else if(typeKind == CLASS_JSON_ARRAY) {
- 			importClassSet.add("io.vertx.core.json.JsonArray");
+			if(isParameterized) {
+ 				importClassSet.add("io.vertx.core.json.JsonArray");
+			}
 		} else if(!typeKind.basic
 				&& !typeKind.collection
 				&& typeKind != CLASS_THROWABLE
 				&& typeKind != CLASS_OBJECT
 				&& typeKind != CLASS_HANDLER
 				&& typeKind != CLASS_ASYNC_RESULT
+				&& typeKind != CLASS_CLASS_TYPE
+				&& typeKind != CLASS_FUNCTION
+				&& typeKind != CLASS_VOID
 				&& typeInfo.raw != null){
 			importClassSet.add(typeInfo.raw.packageName + "." + typeInfo.raw.simpleName);
 		}

@@ -293,13 +293,16 @@ public class Utils {
     }
 
     public static boolean isHandler(Environment env, Memory value) {
-        //TODO
-        return false;
+        return value.toInvoker(env) != null;
     }
 
     public static <S> Handler<S> convParamHandler(Environment env, TypeConverter<S> converter, Memory value) {
         return (event) -> {
-            //TODO
+            try {
+                value.toInvoker(env).call(converter.convReturn(env, event));
+            } catch (Throwable throwable) {
+                env.forwardThrow(throwable);
+            }
         };
     }
     public static <S> Memory convReturnHandler(Environment env,  TypeConverter<S> converter, Handler<S> handler){
