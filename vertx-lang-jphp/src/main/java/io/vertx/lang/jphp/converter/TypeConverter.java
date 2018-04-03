@@ -2,8 +2,7 @@ package io.vertx.lang.jphp.converter;
 
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
-import io.vertx.lang.jphp.Utils;
-import io.vertx.lang.jphp.wrapper.BaseThrowable;
+import io.vertx.lang.jphp.wrapper.extension.BaseThrowable;
 import org.develnext.jphp.zend.ext.json.JsonFunctions;
 import php.runtime.Memory;
 import php.runtime.env.Environment;
@@ -37,12 +36,44 @@ public interface TypeConverter<T> {
 
         @Override
         public Object convParamNotNull(Environment env, Memory value) {
-            return value;
+            if (value.isString()) {
+                return value.toString();
+            } else if (value instanceof LongMemory) {
+                return value.toLong();
+            } else if (value instanceof DoubleMemory) {
+                return value.toDouble();
+            } else if (value instanceof TrueMemory) {
+                return true;
+            } else if (value instanceof FalseMemory) {
+                return false;
+            } else if (value instanceof ReferenceMemory) {
+                return convParam(env, value);
+            } else {
+                String str = JsonFunctions.json_encode(value);
+                return str.charAt(0) == '{' ? new JsonObject(str) : new JsonArray(str);
+            }
         }
 
         @Override
         public Memory convReturnNotNull(Environment env, Object value) {
-            return Utils.convReturnObject(env, value);
+            if (value instanceof String) {
+                return StringMemory.valueOf((String) value);
+            } else if (value instanceof Character) {
+                return StringMemory.valueOf((Character) value);
+            } else if (value instanceof Number) {
+                if (value instanceof Double || value instanceof Float) {
+                    return DoubleMemory.valueOf(((Number)value).doubleValue());
+                } else {
+                    return LongMemory.valueOf(((Number) value).longValue());
+                }
+            } else if (value instanceof JsonObject) {
+                return JsonFunctions.json_decode(env, ((JsonObject) value).encode(), true);
+            } else if (value instanceof JsonArray) {
+                return JsonFunctions.json_decode(env, ((JsonArray) value).encode(), true);
+            } else if (value instanceof Boolean) {
+                return TrueMemory.valueOf((Boolean) value);
+            }
+            return null;
         }
     };
 
@@ -118,7 +149,7 @@ public interface TypeConverter<T> {
 
         @Override
         public Character convParamNotNull(Environment env, Memory value) {
-            return (char) LONG.convParamNotNull(env, value).longValue();
+            return value.toChar();
         }
 
         @Override
@@ -233,10 +264,12 @@ public interface TypeConverter<T> {
         public boolean accept(Environment env, Memory value) {
             return value == null || value.isNull();
         }
+
         @Override
         public Void convParamNotNull(Environment env, Memory value) {
             return null;
         }
+
         @Override
         public Memory convReturnNotNull(Environment env, Void value) {
             return Memory.NULL;
@@ -249,10 +282,10 @@ public interface TypeConverter<T> {
                 return false;
             }
             String name = value.toString();
-            try{
+            try {
                 Class.forName(name);
                 return true;
-            } catch(Throwable throwable) {
+            } catch (Throwable throwable) {
                 return env.fetchClass(name) != null;
             }
         }
@@ -260,9 +293,9 @@ public interface TypeConverter<T> {
         @Override
         public Class<Object> convParamNotNull(Environment env, Memory value) {
             String name = value.toString();
-            try{
+            try {
                 return (Class<Object>) Class.forName(name);
-            } catch(Throwable throwable) {
+            } catch (Throwable throwable) {
                 return (Class<Object>) env.fetchClass(name).getNativeClass();
             }
         }
@@ -270,6 +303,23 @@ public interface TypeConverter<T> {
         @Override
         public Memory convReturnNotNull(Environment env, Class<Object> value) {
             return StringMemory.valueOf(value.getName());
+        }
+    };
+
+    TypeConverter<Memory> MEMORY = new TypeConverter<Memory>() {
+        @Override
+        public boolean accept(Environment env, Memory value) {
+            return true;
+        }
+
+        @Override
+        public Memory convParamNotNull(Environment env, Memory value) {
+            return value;
+        }
+
+        @Override
+        public Memory convReturnNotNull(Environment env, Memory value) {
+            return value;
         }
     };
 

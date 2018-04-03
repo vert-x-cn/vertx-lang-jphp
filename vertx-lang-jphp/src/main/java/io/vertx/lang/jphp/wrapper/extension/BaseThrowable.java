@@ -1,15 +1,17 @@
-package io.vertx.lang.jphp.wrapper;
+package io.vertx.lang.jphp.wrapper.extension;
 
 
+import io.vertx.lang.jphp.wrapper.IMemory;
 import php.runtime.Memory;
-import php.runtime.annotation.Reflection;
+import php.runtime.annotation.Reflection.Name;
 import php.runtime.env.Environment;
 import php.runtime.lang.spl.exception.RuntimeException;
 import php.runtime.memory.ObjectMemory;
 
-@Reflection.Name("BaseThrowable")
-public class BaseThrowable extends RuntimeException {
+@Name("BaseThrowable")
+public class BaseThrowable extends RuntimeException implements IMemory {
     private Memory __INSTANCE;
+
     private BaseThrowable(Environment env, Throwable cause) {
         super(env);
         clazz = env.fetchClass(getClass());
@@ -20,7 +22,7 @@ public class BaseThrowable extends RuntimeException {
         return new BaseThrowable(env, cause);
     }
 
-    public Memory toMemory(){
+    public Memory toMemory() {
         if (__INSTANCE == null) {
             __INSTANCE = ObjectMemory.valueOf(this);
         }

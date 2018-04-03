@@ -9,9 +9,13 @@ import io.vertx.lang.jphp.function.Function2;
 import io.vertx.lang.jphp.function.Function3;
 import io.vertx.lang.jphp.function.Function4;
 import io.vertx.lang.jphp.wrapper.*;
+import io.vertx.lang.jphp.wrapper.extension.AsyncHandler;
 import php.runtime.Memory;
 import php.runtime.env.Environment;
+import php.runtime.memory.ArrayMemory;
+import php.runtime.memory.ObjectMemory;
 import php.runtime.memory.StringMemory;
+import php.runtime.memory.support.operation.InvokerMemoryOperation;
 
 import java.util.List;
 import java.util.Map;
@@ -48,14 +52,17 @@ public class Utils {
         return TypeConverter.BYTE.convReturn(env, value);
     }
 
+    @SuppressWarnings("unused")
     public static boolean isCharacter(Environment env, Memory value) {
         return TypeConverter.CHARACTER.accept(env, value);
     }
 
+    @SuppressWarnings("unused")
     public static Character convParamCharacter(Environment env, Memory value) {
         return TypeConverter.CHARACTER.convParam(env, value);
     }
 
+    @SuppressWarnings("unused")
     public static Memory convReturnCharacter(Environment env, Character value) {
         return TypeConverter.CHARACTER.convReturn(env, value);
     }
@@ -164,15 +171,16 @@ public class Utils {
         return EnumConverter.create(clazz).convParam(env, value);
     }
 
+    @SuppressWarnings("unused")
     public static <E extends Enum<E>> Memory convReturnEnum(Environment env, E value) {
         return StringMemory.valueOf(value.name());
     }
 
-    public static <D, B extends DataObjectWrapper<D>> boolean isDataObject(Environment env, Class<D> clazz, Memory value) {
+    public static <D> boolean isDataObject(Environment env, Class<D> clazz, Memory value) {
         return TypeConverter.JSON_OBJECT.accept(env, value) || DataObjectConverter.create(clazz).accept(env, value);
     }
 
-    public static <D, B extends DataObjectWrapper<D>> D convParamDataObject(Environment env, Class<D> clazz, Memory value) {
+    public static <D> D convParamDataObject(Environment env, Class<D> clazz, Memory value) {
         return DataObjectConverter.create(clazz).convParam(env, value);
     }
 
@@ -193,11 +201,11 @@ public class Utils {
     }
 
     public static boolean isVariable(Environment env, Memory value) {
-        return true;
+        return TypeConverter.UNKNOWN_TYPE.accept(env, value);
     }
 
-    public static <T> T convParamVariable(Environment env, T value) {
-        return value;
+    public static Object convParamVariable(Environment env, Memory value) {
+        return TypeConverter.UNKNOWN_TYPE.convParam(env, value);
     }
 
     public static <T> Memory convReturnVariable(Environment env, T value) {
@@ -205,16 +213,15 @@ public class Utils {
     }
 
     public static boolean isObject(Environment env, Memory value) {
-        return true;
+        return TypeConverter.UNKNOWN_TYPE.accept(env, value);
     }
 
-    public static Memory convParamObject(Environment env, Memory value) {
-        return value;
+    public static Object convParamObject(Environment env, Memory value) {
+        return TypeConverter.UNKNOWN_TYPE.convParam(env, value);
     }
 
     public static Memory convReturnObject(Environment env, Object value) {
-        //TODO need to converter a object to memory
-        return Memory.NULL;
+        return TypeConverter.UNKNOWN_TYPE.convReturn(env, value);
     }
 
     public static boolean isVertxGen(Class<?> clazz, Class<? extends BaseWrapper> wClazz, Memory value) {
@@ -233,10 +240,8 @@ public class Utils {
         return new VertxGenVariable1Converter<>(clazz, creator, converter).convParam(env, value);
     }
 
-    //    public static <A, B extends VertxGenVariable2Wrapper<? extends A, ? extends V1, ? extends V2>, V1, V2> A convParamVertxGenVariable2(Environment env, Class<A> clazz, Function4<Environment, A, TypeConverter<V1>, TypeConverter<V2>, B> creator, TypeConverter<V1> converter1, TypeConverter<V2> converter2, Memory value){
-//        return new VertxGenVariable2Converter<>(clazz, creator, converter1, converter2).convParam(env, value);
-//    }
-    public static <A, B extends VertxGenVariable1Wrapper<A, V1>, V1> Memory convReturnVertxGenVariable1(Environment env, Class<?> clazz, Function3<Environment, A, TypeConverter<V1>, B> function, TypeConverter<V1> converter, A value) {
+    @SuppressWarnings("unused")
+    public static <A, B extends Variable1Wrapper<A, V1>, V1> Memory convReturnVertxGenVariable1(Environment env, Class<?> clazz, Function3<Environment, A, TypeConverter<V1>, B> function, TypeConverter<V1> converter, A value) {
         return function.apply(env, value, converter).toMemory();
     }
 
@@ -293,10 +298,23 @@ public class Utils {
     }
 
     public static boolean isHandler(Environment env, Memory value) {
+        if (value instanceof ObjectMemory) {
+            ObjectMemory objectMemory = (ObjectMemory) value;
+            if (objectMemory.value instanceof io.vertx.lang.jphp.Handler) {
+                return true;
+            }
+        }
         return value.toInvoker(env) != null;
     }
 
+    @SuppressWarnings("unchecked")
     public static <S> Handler<S> convParamHandler(Environment env, TypeConverter<S> converter, Memory value) {
+        if (value instanceof ObjectMemory) {
+            ObjectMemory objectMemory = (ObjectMemory) value;
+            if (objectMemory.value instanceof io.vertx.lang.jphp.Handler) {
+                return (Handler<S>) objectMemory.value;
+            }
+        }
         return (event) -> {
             try {
                 value.toInvoker(env).call(converter.convReturn(env, event));
@@ -305,35 +323,58 @@ public class Utils {
             }
         };
     }
-    public static <S> Memory convReturnHandler(Environment env,  TypeConverter<S> converter, Handler<S> handler){
-        //TODO
-        return Memory.NULL;
+
+    public static <S> Memory convReturnHandler(Environment env, TypeConverter<S> converter, Handler<S> handler) {
+        if (handler instanceof io.vertx.lang.jphp.Handler) {
+            return ((io.vertx.lang.jphp.Handler<S>) handler).toMemory();
+        } else {
+            return new io.vertx.lang.jphp.wrapper.extension.Handler<>(env, handler, converter).toMemory();
+        }
     }
 
     public static boolean isHandlerAsyncResult(Environment env, Memory value) {
-        //TODO
-        return false;
+        return value.toInvoker(env) != null;
     }
 
-    public static <S, B extends BaseWrapper<S>> Handler<AsyncResult<S>> convParamHandlerAsyncResult(Environment env, TypeConverter<S> converter, Memory value) {
+    public static <S> Handler<AsyncResult<S>> convParamHandlerAsyncResult(Environment env, TypeConverter<S> converter, Memory value) {
         return (event) -> {
-            //TODO
+            try {
+                Memory result;
+                Memory cause;
+                if (event.succeeded()) {
+                    result = converter.convReturn(env, event.result());
+                    cause = Memory.NULL;
+                } else {
+                    result = Memory.NULL;
+                    cause = TypeConverter.THROWABLE.convReturn(env, event.cause());
+                }
+                value.toInvoker(env).call(result, cause);
+            } catch (Throwable throwable) {
+                throwable.printStackTrace();
+            }
         };
     }
-    public static <S> Memory convReturnHandlerAsyncResult(Environment env, TypeConverter<S> converter, Handler<AsyncResult<S>> handler){
-        //TODO
-        return null;
+
+    public static <S> Memory convReturnHandlerAsyncResult(Environment env, TypeConverter<S> converter, Handler<AsyncResult<S>> handler) {
+        Memory m = new AsyncHandler<>(env, handler, converter).toMemory();
+        ArrayMemory re = new ArrayMemory();
+        re.add(m);
+        re.add("handle");
+        return re;
     }
 
     public static boolean isFunction(Environment env, Memory value) {
-        //TODO
-        return false;
+        return value.toInvoker(env) != null;
     }
 
     public static <I, O> Function<I, O> convParamFunction(Environment env, TypeConverter<I> converterIn, TypeConverter<O> converterOut, Memory value) {
         return (in) -> {
-            //TODO
-            return null;
+            try {
+                Memory memory = value.toInvoker(env).call(converterIn.convReturn(env, in));
+                return converterOut.convParam(env, memory);
+            } catch (Throwable throwable) {
+                throw new RuntimeException(throwable);
+            }
         };
     }
 }

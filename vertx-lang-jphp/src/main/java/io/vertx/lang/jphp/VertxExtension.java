@@ -1,5 +1,8 @@
 package io.vertx.lang.jphp;
 
+import io.vertx.lang.jphp.wrapper.extension.AsyncHandler;
+import io.vertx.lang.jphp.wrapper.extension.BaseThrowable;
+import io.vertx.lang.jphp.wrapper.extension.Handler;
 import php.runtime.env.CompileScope;
 import php.runtime.ext.support.Extension;
 
@@ -15,6 +18,9 @@ public class VertxExtension extends Extension {
 
     @Override
     public void onRegister(CompileScope scope) {
+        registerClass(scope, AsyncHandler.class);
+        registerClass(scope, Handler.class);
+        registerClass(scope, BaseThrowable.class);
         InputStream s = getClass().getClassLoader().getResourceAsStream("jphp-vertx-extension.properties");
         Properties properties = new Properties();
         try {

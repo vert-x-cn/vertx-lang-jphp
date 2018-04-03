@@ -8,7 +8,7 @@ import php.runtime.memory.ObjectMemory;
 import php.runtime.memory.StringMemory;
 import php.runtime.reflection.ClassEntity;
 
-public class BaseWrapper<API> implements IWrapper<API> {
+public class BaseWrapper<API> implements IWrapper<API>, IMemory {
     private final ArrayMemory __dynamicProperties__;
     private ClassEntity __class__;
     protected final Environment __env__;
@@ -80,6 +80,10 @@ public class BaseWrapper<API> implements IWrapper<API> {
 
     public void set__wrappedObject(API __wrappedObject) {
         this.__wrappedObject = __wrappedObject;
+    }
+
+    public Environment get__env__() {
+        return __env__;
     }
 
     @Reflection.Signature

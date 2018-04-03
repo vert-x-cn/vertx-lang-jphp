@@ -48,7 +48,7 @@
 			var first = true;
 			foreach(arg : args) {
 				if(!first) {
-					typeParamInfo += ", "
+					typeParamInfo += ", ";
 				} else {
 					first = false;
 				}
@@ -149,6 +149,11 @@
 				addImport(arg, true);
 			}
 		}
+	}
+	if(type.isHandler) {
+		importClassSet.add("io.vertx.lang.jphp.Handler");
+		importClassSet.add("io.vertx.lang.jphp.converter.TypeConverter");
+		addImport(type.handlerArg, true);
 	}
 
 	foreach(methodName:methodsByName.keySet()) {
@@ -345,7 +350,14 @@ package @{packageName};\n
  		@else{paramTypeKind == CLASS_API}
 			isVertxGen(@{paramType.raw.packageName}.@{paramType.raw.simpleName}.class, @{paramType.raw.simpleName}.class,
  		@else{paramTypeKind == CLASS_HANDLER}
-			isHandler(__ENV__,
+ 			@code{
+ 				var handlerType = paramType.args.get(0);
+ 			}
+ 			@if{handlerType.kind == CLASS_ASYNC_RESULT}
+				isHandlerAsyncResult(__ENV__,
+ 			@else{}
+				isHandler(__ENV__,
+ 			@end{}
  		@else{paramTypeKind == CLASS_FUNCTION}
 			isFunction(__ENV__,
  		@else{paramTypeKind == CLASS_ASYNC_RESULT}
@@ -569,7 +581,11 @@ public class @{ifaceSimpleName}
 	@foreach{typeParam:typeParams}
 ,		@{typeParam.name}
 	@end{}
-	>{\n
+	>
+	@if{type.isHandler}
+		implements Handler<@{type.handlerArg.name}>
+	@end{}
+	{\n
     \n
     private @{ifaceSimpleName}(Environment env, @{ifaceFQCN} wrappedObject
 		@foreach{typeParam : typeParams}
@@ -638,6 +654,11 @@ public class @{ifaceSimpleName}
 		@code{
 			i += 1;
 		}
+	@end{}
+	@if{type.isHandler}
+	    public TypeConverter<@{type.handlerArg.name}> get__handlerConverter__(){\n
+	        return @{getTypeConverter(type.handlerArg)};\n
+	    }\n
 	@end{}
 	@code{
 		var prevParamEmpty = true;
