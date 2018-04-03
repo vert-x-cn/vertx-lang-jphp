@@ -1294,7 +1294,6 @@ public class Environment {
             throws Throwable {
         String pathTemp = ClasspathFileResolver.resolveFilename(path);
         path = pathTemp != null ? pathTemp : path;
-        System.out.println(path);
         synchronized (moduleManager) {
             if (once && moduleManager.hasModule(path)) {
                 return Memory.TRUE;

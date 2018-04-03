@@ -11,11 +11,11 @@
   },{
     "kind": ["class","dataObject"],
     "incremental" : true,
-    "fileName": "'extension/jphp-vertx-extension.properties'",
+    "fileName": "'resources/jphp-vertx-extension.properties'",
     "templateFileName": "vertx-php/template3/package.templ"
   },{
     "kind": "class",
-    "fileName": "'php/' + module.translateQualifiedName(fqn, 'php').replace('.', '/') + '.php'",
+    "fileName": "'resources/vertx-php/' + module.translateQualifiedName(fqn, 'php').replace('.', '/') + '.php'",
     "templateFileName": "vertx-php/template3/class.templ"
   },{
     "kind": "//class",

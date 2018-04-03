@@ -47,3 +47,8 @@ $future2 = Future::future(function($f) {
 $future2->setHandler(function($res){
     var_dump($res);
 });
+
+
+function test(){
+    echo "test----\n";
+}
