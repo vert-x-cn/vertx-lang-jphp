@@ -2,7 +2,7 @@
   "name": "Php",
   "generators": [{
     "kind": "dataObject",
-    "fileName": "'php/' + module.translateQualifiedName(fqn, 'php').replace('.', '/') + '.php'",
+    "fileName": "'resources/vertx-php/' + module.translateQualifiedName(fqn, 'php').replace('.', '/') + '.php'",
     "templateFileName": "vertx-php/template2/dataobject.templ"
   },{
     "kind": "dataObject",

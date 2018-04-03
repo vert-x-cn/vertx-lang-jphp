@@ -164,8 +164,12 @@
                             <filesets>
                                 <fileset>
                                     <directory>${project.basedir}/src/main/php</directory>
-                                    <directory>${project.basedir}/src/main/api</directory>
+                                </fileset>
+                                <fileset>
                                     <directory>${project.basedir}/src/main/extension</directory>
+                                </fileset>
+                                <fileset>
+                                    <directory>${project.basedir}/src/main/api</directory>
                                 </fileset>
                             </filesets>
                         </configuration>
