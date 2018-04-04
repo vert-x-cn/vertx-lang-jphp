@@ -53,12 +53,6 @@
             <resource>
                 <directory>${project.basedir}/src/main/resources</directory>
             </resource>
-            <resource>
-                <directory>${project.basedir}/src/test/php</directory>
-            </resource>
-            <resource>
-                <directory>${project.basedir}/src/test/resources</directory>
-            </resource>
         </resources>
     </build>
 

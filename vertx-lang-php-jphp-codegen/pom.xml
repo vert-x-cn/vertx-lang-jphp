@@ -73,27 +73,27 @@
                         <java.util.logging.SimpleFormatter.format>%4$s: %3$s - %5$s %6$s%n</java.util.logging.SimpleFormatter.format>
                     </systemProperties>
                 </configuration>
-                <executions>
-                    <!-- Run the annotation processor on vertx-codegen TCK and generate the Kotlin API -->
-                    <execution>
-                        <id>generate-tck</id>
-                        <goals>
-                            <goal>process-test</goal>
-                        </goals>
-                        <phase>generate-test-sources</phase>
-                        <configuration>
-                            <processors>
-                                <processor>io.vertx.codegen.CodeGenProcessor</processor>
-                            </processors>
-                            <optionMap>
-                                <codegen.output>${project.build.directory}/generated-test-sources</codegen.output>
-                                <codegen.generators>Php</codegen.generators>
-                            </optionMap>
-                            <sourceDirectory>${project.build.directory}/sources/vertx-codegen</sourceDirectory>
-                            <defaultOutputDirectory>${project.build.directory}/generated-test-sources/apt</defaultOutputDirectory>
-                        </configuration>
-                    </execution>
-                </executions>
+                <!--<executions>-->
+                    <!--&lt;!&ndash; Run the annotation processor on vertx-codegen TCK and generate the Kotlin API &ndash;&gt;-->
+                    <!--<execution>-->
+                        <!--<id>generate-tck</id>-->
+                        <!--<goals>-->
+                            <!--<goal>process-test</goal>-->
+                        <!--</goals>-->
+                        <!--<phase>generate-test-sources</phase>-->
+                        <!--<configuration>-->
+                            <!--<processors>-->
+                                <!--<processor>io.vertx.codegen.CodeGenProcessor</processor>-->
+                            <!--</processors>-->
+                            <!--<optionMap>-->
+                                <!--<codegen.output>${project.build.directory}/generated-sources</codegen.output>-->
+                                <!--<codegen.generators>Php</codegen.generators>-->
+                            <!--</optionMap>-->
+                            <!--<sourceDirectory>${project.build.directory}/sources/vertx-codegen</sourceDirectory>-->
+                            <!--<defaultOutputDirectory>${project.build.directory}/generated-test-sources/apt</defaultOutputDirectory>-->
+                        <!--</configuration>-->
+                    <!--</execution>-->
+                <!--</executions>-->
                 <dependencies>
                     <dependency>
                         <groupId>junit</groupId>

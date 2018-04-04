@@ -4,6 +4,8 @@ import org.develnext.jphp.scripting.util.ReaderInputStream;
 import php.runtime.Information;
 import php.runtime.env.Context;
 import php.runtime.env.Environment;
+import php.runtime.exceptions.CriticalException;
+import php.runtime.launcher.LaunchException;
 import php.runtime.launcher.Launcher;
 import php.runtime.memory.ArrayMemory;
 import php.runtime.memory.support.MemoryUtils;
@@ -30,8 +32,10 @@ public class JPHPScriptEngine extends AbstractScriptEngine implements Compilable
         Launcher launcher = new Launcher();
         try {
             launcher.run(false);
-        } catch (Throwable e) {
+        } catch(LaunchException e){
             //pass
+        } catch (Throwable e) {
+            e.printStackTrace();
         }
         environment = new Environment(launcher.getCompileScope(), System.out);
         environment.getDefaultBuffer().setImplicitFlush(true);

@@ -1,25 +1,25 @@
 {
-  "name": "Php",
+  "name": "JPhp",
   "generators": [{
     "kind": "dataObject",
-    "fileName": "'resources/vertx-php/' + module.translateQualifiedName(fqn, 'php').replace('.', '/') + '.php'",
+    "fileName": "'jphp/vertx-jphp/' + module.translateQualifiedName(fqn, 'jphp').replace('.', '/') + '.php'",
     "templateFileName": "vertx-php/template2/dataobject.templ"
   },{
     "kind": "dataObject",
-    "fileName": "'data/' + module.translateQualifiedName(fqn, 'php').replace('.', '/') + '.java'",
+    "fileName": "'data/' + module.translateQualifiedName(fqn, 'jphp').replace('.', '/') + '.java'",
     "templateFileName": "vertx-php/template/dataobject.wrap.templ"
   },{
     "kind": ["class","dataObject"],
     "incremental" : true,
-    "fileName": "'resources/jphp-vertx-extension.properties'",
+    "fileName": "'extension/jphp-vertx-extension.properties'",
     "templateFileName": "vertx-php/template3/package.templ"
   },{
     "kind": "class",
-    "fileName": "'resources/vertx-php/' + module.translateQualifiedName(fqn, 'php').replace('.', '/') + '.php'",
+    "fileName": "'jphp/vertx-jphp/' + module.translateQualifiedName(fqn, 'jphp').replace('.', '/') + '.php'",
     "templateFileName": "vertx-php/template3/class.templ"
   },{
     "kind": "//class",
-    "fileName": "'api/' + module.translateQualifiedName(fqn, 'php').replace('.', '/') + '.java'",
+    "fileName": "'api/' + module.translateQualifiedName(fqn, 'jphp').replace('.', '/') + '.java'",
     "templateFileName": "vertx-php/template3/class.wrap.templ"
   },{
     "kind": "//class",
@@ -27,11 +27,11 @@
     "templateFileName": "vertx-js/js.templ"
   },{
     "kind": "class",
-    "fileName": "'api/' + module.translateQualifiedName(fqn, 'php').replace('.', '/') + '.java'",
+    "fileName": "'api/' + module.translateQualifiedName(fqn, 'jphp').replace('.', '/') + '.java'",
     "templateFileName": "vertx-php/template/class.wrap.templ"
   },{
     "kind": "//class",
-    "fileName": "'api/' + module.translateQualifiedName(ifacePackageName, 'php').replace('.', '/') + '/impl/' + ifaceSimpleName + 'Impl.java'",
+    "fileName": "'api/' + module.translateQualifiedName(ifacePackageName, 'jphp').replace('.', '/') + '/impl/' + ifaceSimpleName + 'Impl.java'",
     "templateFileName": "vertx-php/template/class.wrap.impl.templ"
   }]
 }

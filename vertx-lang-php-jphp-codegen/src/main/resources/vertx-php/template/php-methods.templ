@@ -1,9 +1,9 @@
 @code{
     def translateClassName(classType){
-        return classType.raw.translatePackageName("php") + "." + classType.raw.simpleName;
+        return classType.raw.translatePackageName("jphp") + "." + classType.raw.simpleName;
     }
     def translatePHPClassName(classType){
-        return classType.raw.translatePackageName("php").replace(".", "\\") + "\\" + classType.simpleName;
+        return classType.raw.translatePackageName("jphp").replace(".", "\\") + "\\" + classType.simpleName;
     }
     def wrapJavaImport2PhpUse(name){
         return name.replace(".", "\\");

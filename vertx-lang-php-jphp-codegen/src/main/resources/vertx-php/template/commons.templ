@@ -83,7 +83,7 @@
 		}
 	}
 
-	var packageName = type.translatePackageName("php");
+	var packageName = type.translatePackageName("jphp");
 	var importClassSet = new TreeSet();
 	importClassSet.add("php.runtime.annotation.Reflection.Name");
 	importClassSet.add("php.runtime.annotation.Reflection.Namespace");
@@ -95,7 +95,7 @@
 		importClassSet.add("io.vertx.lang.jphp.converter.TypeConverter");
 	}
 
-	def addImport(typeInfo, isParameterized){
+	def addImport(typeInfo, isParameterized, isParam){
 		if(typeInfo.isVariable) {
 			if(isParameterized) {
 				importClassSet.add("io.vertx.lang.jphp.converter.TypeConverter");
@@ -105,11 +105,11 @@
 		var typeKind = typeInfo.kind;
 		if(typeKind == CLASS_API) {
 			if(typeInfo.raw.packageName != ifacePackageName) {
-				importClassSet.add(typeInfo.raw.translatePackageName("php") + "." + typeInfo.raw.simpleName);
+				importClassSet.add(typeInfo.raw.translatePackageName("jphp") + "." + typeInfo.raw.simpleName);
 			}
 		} else if(typeKind == CLASS_DATA_OBJECT) {
 			if(isParameterized && typeInfo.raw.packageName != ifacePackageName) {
-				importClassSet.add(typeInfo.raw.translatePackageName("php") + "." + typeInfo.raw.simpleName);
+				importClassSet.add(typeInfo.raw.translatePackageName("jphp") + "." + typeInfo.raw.simpleName);
 			}
 		} else if(typeKind == CLASS_JSON_OBJECT) {
 			if(isParameterized) {
@@ -129,7 +129,9 @@
 				&& typeKind != CLASS_FUNCTION
 				&& typeKind != CLASS_VOID
 				&& typeInfo.raw != null){
-			importClassSet.add(typeInfo.raw.packageName + "." + typeInfo.raw.simpleName);
+			if(isParam || isParameterized) {
+				importClassSet.add(typeInfo.raw.packageName + "." + typeInfo.raw.simpleName);
+			}
 		}
 		if(isParameterized) {
 			if(typeKind.basic || typeKind.json || typeKind == CLASS_VOID || typeKind == CLASS_THROWABLE || typeKind == CLASS_CLASS_TYPE || typeInfo.isVariable) {
@@ -146,14 +148,14 @@
 		}
 		if(typeInfo.isParameterized) {
 			foreach(arg : typeInfo.args) {
-				addImport(arg, true);
+				addImport(arg, true, isParam);
 			}
 		}
 	}
 	if(type.isHandler) {
 		importClassSet.add("io.vertx.lang.jphp.Handler");
 		importClassSet.add("io.vertx.lang.jphp.converter.TypeConverter");
-		addImport(type.handlerArg, true);
+		addImport(type.handlerArg, true, true);
 	}
 
 	foreach(methodName:methodsByName.keySet()) {
@@ -161,9 +163,9 @@
 		foreach(m : methods){
 			foreach(param : m.params) {
 
-				addImport(param.type, false);
+				addImport(param.type, false, true);
 			}
-			addImport(m.returnType, false)
+			addImport(m.returnType, false, false)
 		}
 	}
 

@@ -20,6 +20,7 @@
         <!--<module>vertx-lang-php-jphp</module>-->
         <module>vertx-lang-php-compiler-jphp</module>
         <module>vertx-lang-php-jphp-codegen</module>
+        <module>vertx-lang-jphp-stack</module>
     </modules>
 
     <properties>
@@ -27,7 +28,6 @@
         <junit.version>4.12</junit.version>
         <stack.version>3.6.0-SNAPSHOT</stack.version>
     </properties>
-
     <dependencyManagement>
         <dependencies>
             <dependency>

@@ -1,5 +1,5 @@
 @includeNamed{'php-methods.templ'}
-package @{type.raw.translatePackageName("php")};\n
+package @{type.raw.translatePackageName("jphp")};\n
 \n
 @code{
 	import java.util.TreeSet;
@@ -64,7 +64,7 @@ import php.runtime.annotation.Reflection.*;\n
 \n
 @SuppressWarnings("unused")\n
 @Name("${type.simpleName}")\n
-@Namespace("@{type.raw.translatePackageName("php").replace(".", "\\\\")}")\n
+@Namespace("@{type.raw.translatePackageName("jphp").replace(".", "\\\\")}")\n
 //@{abs}\n
 public  class ${type.simpleName} extends DataObjectWrapper<@{type.name}> { \n
     public ${type.simpleName}(Environment env, @{type.name} wrappedObject) {\n
