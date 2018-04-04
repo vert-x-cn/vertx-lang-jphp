@@ -37,7 +37,7 @@
     <build>
         <resources>
             <resource>
-                <directory>${project.basedir}/src/main/php</directory>
+                <directory>${project.basedir}/src/main/jphp</directory>
             </resource>
             <resource>
                 <directory>${project.basedir}/src/main/resources</directory>

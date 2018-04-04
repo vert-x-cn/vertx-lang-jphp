@@ -67,7 +67,7 @@
     <build>
         <resources>
             <resource>
-                <directory>${project.basedir}/src/main/php</directory>
+                <directory>${project.basedir}/src/main/jphp</directory>
             </resource>
             <resource>
                 <directory>${project.basedir}/src/main/resources</directory>
@@ -288,7 +288,7 @@
                         <configuration>
                             <filesets>
                                 <fileset>
-                                    <directory>${project.basedir}/src/main/php</directory>
+                                    <directory>${project.basedir}/src/main/jphp</directory>
                                 </fileset>
                                 <fileset>
                                     <directory>${project.basedir}/src/main/extension</directory>

@@ -120,7 +120,7 @@
                                         <directory>src/main/data</directory>
                                     </fileset>
                                     <fileset>
-                                        <directory>src/main/php</directory>
+                                        <directory>src/main/jphp</directory>
                                     </fileset>
                                     <fileset>
                                         <directory>src/main/extension</directory>
