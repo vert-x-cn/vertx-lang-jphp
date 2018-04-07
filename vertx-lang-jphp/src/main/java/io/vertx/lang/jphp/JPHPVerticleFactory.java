@@ -34,9 +34,9 @@ public class JPHPVerticleFactory implements VerticleFactory {
     public JPHPVerticleFactory() throws Exception {
         field = JPHPScriptEngine.class.getDeclaredField("environment");
         field.setAccessible(true);
-        Class<?> futureClass = Class.forName("io.vertx.php.core.Future");
+        Class<?> futureClass = Class.forName("io.vertx.jphp.core.Future");
         futureCreator = futureClass.getDeclaredMethod("__create", Environment.class, Future.class, TypeConverter.class);
-        Class<?> vertxClass = Class.forName("io.vertx.php.core.Vertx");
+        Class<?> vertxClass = Class.forName("io.vertx.jphp.core.Vertx");
         vertxCreator = vertxClass.getDeclaredMethod("__create", Environment.class, Vertx.class);
     }
 

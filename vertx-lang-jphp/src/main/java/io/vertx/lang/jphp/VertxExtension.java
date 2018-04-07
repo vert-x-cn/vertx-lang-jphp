@@ -31,7 +31,7 @@ public class VertxExtension extends Extension {
             while(urls.hasMoreElements()) {
                 URL url = urls.nextElement();
                 properties.clear();
-                properties.load(new FileInputStream(url.getPath()));
+                properties.load(url.openStream());
                 properties.forEach((key, value) -> {
                     try {
                         registerClass(scope, Class.forName(value.toString()));
