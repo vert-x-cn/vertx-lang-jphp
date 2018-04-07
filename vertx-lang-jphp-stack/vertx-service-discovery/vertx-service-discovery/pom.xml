@@ -4,16 +4,15 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <groupId>tk.okou</groupId>
-        <artifactId>vertx-service-discovery-parent</artifactId>
+        <artifactId>vertx-lang-jphp-stack</artifactId>
         <version>3.6.0-SNAPSHOT</version>
-        <relativePath>..</relativePath>
+        <relativePath>../..</relativePath>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
 
 
     <artifactId>vertx-service-discovery-jphp</artifactId>
-    <packaging>pom</packaging>
     <properties>
         <vertx-module>vertx-service-discovery</vertx-module>
     </properties>
@@ -31,6 +30,53 @@
             <version>${stack.version}</version>
             <scope>provided</scope>
             <classifier>sources</classifier>
+        </dependency>
+        <dependency>
+            <groupId>tk.okou</groupId>
+            <artifactId>vertx-web-client-jphp</artifactId>
+            <version>3.6.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>tk.okou</groupId>
+            <artifactId>vertx-web-client-jphp</artifactId>
+            <version>3.6.0-SNAPSHOT</version>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>tk.okou</groupId>
+            <artifactId>vertx-redis-client-jphp</artifactId>
+            <version>3.6.0-SNAPSHOT</version>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>tk.okou</groupId>
+            <artifactId>vertx-jdbc-client-jphp</artifactId>
+            <version>3.6.0-SNAPSHOT</version>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>tk.okou</groupId>
+            <artifactId>vertx-mongo-client-jphp</artifactId>
+            <version>3.6.0-SNAPSHOT</version>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>tk.okou</groupId>
+            <artifactId>vertx-web-jphp</artifactId>
+            <version>3.6.0-SNAPSHOT</version>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-service-proxy</artifactId>
+            <version>${stack.version}</version>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-lang-groovy</artifactId>
+            <version>${stack.version}</version>
+            <optional>true</optional>
         </dependency>
     </dependencies>
 
@@ -79,7 +125,7 @@
                 <configuration>
                     <instructions>
                         <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
-                        <Export-Package>io.vertx.php.amqpbridge44;version=${project.version}
+                        <Export-Package>io.vertx.jphp.servicediscovery;version=${project.version}
                         </Export-Package>
                         <Import-Package>*</Import-Package>
                         <Include-Resource>{maven-resources}</Include-Resource>

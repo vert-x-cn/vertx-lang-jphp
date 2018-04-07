@@ -13,7 +13,6 @@
 
 
     <artifactId>vertx-config-kubernetes-configmap-jphp</artifactId>
-    <packaging>pom</packaging>
     <properties>
         <vertx-module>vertx-config-kubernetes-configmap</vertx-module>
     </properties>

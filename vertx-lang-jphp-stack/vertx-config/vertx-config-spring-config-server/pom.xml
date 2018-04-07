@@ -13,7 +13,6 @@
 
 
     <artifactId>vertx-config-spring-config-server-jphp</artifactId>
-    <packaging>pom</packaging>
     <properties>
         <vertx-module>vertx-config-spring-config-server</vertx-module>
     </properties>

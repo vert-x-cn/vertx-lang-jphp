@@ -13,7 +13,6 @@
 
 
     <artifactId>vertx-config-consul-jphp</artifactId>
-    <packaging>pom</packaging>
     <properties>
         <vertx-module>vertx-config-consul</vertx-module>
     </properties>

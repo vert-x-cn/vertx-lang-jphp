@@ -32,6 +32,36 @@
             <scope>provided</scope>
             <classifier>sources</classifier>
         </dependency>
+        <dependency>
+            <groupId>tk.okou</groupId>
+            <artifactId>vertx-web-jphp</artifactId>
+            <version>3.6.0-SNAPSHOT</version>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>tk.okou</groupId>
+            <artifactId>vertx-auth-common-jphp</artifactId>
+            <version>3.6.0-SNAPSHOT</version>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>tk.okou</groupId>
+            <artifactId>vertx-web-client-jphp</artifactId>
+            <version>3.6.0-SNAPSHOT</version>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>tk.okou</groupId>
+            <artifactId>vertx-jdbc-client-jphp</artifactId>
+            <version>3.6.0-SNAPSHOT</version>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>tk.okou</groupId>
+            <artifactId>vertx-service-discovery-jphp</artifactId>
+            <version>3.6.0-SNAPSHOT</version>
+            <optional>true</optional>
+        </dependency>
     </dependencies>
 
     <build>
