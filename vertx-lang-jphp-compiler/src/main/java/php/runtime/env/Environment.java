@@ -1,6 +1,6 @@
 package php.runtime.env;
 
-import io.vertx.lang.php.ClasspathFileResolver;
+import io.vertx.lang.jphp.ClasspathFileResolver;
 import php.runtime.Information;
 import php.runtime.Memory;
 import php.runtime.common.*;

@@ -4,7 +4,6 @@ import io.vertx.core.*;
 import io.vertx.core.spi.VerticleFactory;
 import io.vertx.lang.jphp.converter.TypeConverter;
 import io.vertx.lang.jphp.wrapper.IMemory;
-import io.vertx.lang.php.ClasspathFileResolver;
 import org.develnext.jphp.scripting.JPHPScriptEngine;
 import php.runtime.Memory;
 import php.runtime.env.Environment;
@@ -13,7 +12,6 @@ import php.runtime.reflection.FunctionEntity;
 import javax.script.ScriptEngine;
 import javax.script.ScriptException;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 public class JPHPVerticleFactory implements VerticleFactory {
