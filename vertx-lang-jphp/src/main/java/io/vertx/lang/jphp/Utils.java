@@ -15,13 +15,13 @@ import php.runtime.env.Environment;
 import php.runtime.memory.ArrayMemory;
 import php.runtime.memory.ObjectMemory;
 import php.runtime.memory.StringMemory;
-import php.runtime.memory.support.operation.InvokerMemoryOperation;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
 
+@SuppressWarnings({"unused"})
 public class Utils {
 
     public static boolean isNotNull(Memory value) {
