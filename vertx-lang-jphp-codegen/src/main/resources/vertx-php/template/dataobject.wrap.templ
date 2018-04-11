@@ -1,0 +1,182 @@
+@includeNamed{'php-methods.templ'}
+package @{type.raw.translatePackageName("jphp")};\n
+\n
+@code{
+	import java.util.TreeSet;
+	/**/
+	def translateParamType(classType){
+		if(classType.kind == CLASS_STRING) {
+			return "String";
+		} else {
+			return classType.name;
+		}
+	}
+
+	var abs = type.abstract;
+	var superClass = superType == null ? null : translateClassName(superType);
+	var _import = superType != null && !superType.raw.packageName.equals(type.raw.packageName);
+	var importClassSet = new TreeSet();
+
+	importClassSet.add("io.vertx.lang.jphp.wrapper.DataObjectWrapper");
+	if(!abs) {
+		importClassSet.add("io.vertx.core.json.JsonObject");
+		importClassSet.add("org.develnext.jphp.zend.ext.json.JsonFunctions");
+		importClassSet.add("php.runtime.Memory");
+		importClassSet.add("php.runtime.memory.ObjectMemory");
+	}
+
+	foreach(property : properties) {
+		var propertyType = property.type;
+		var typeKind = propertyType.kind;
+		var typeName = property.type.name;
+		if(typeKind == CLASS_DATA_OBJECT || typeKind == CLASS_API) {
+			if(!propertyType.raw.packageName.equals(type.raw.packageName)) {
+				importClassSet.add(translateClassName(propertyType));
+			}
+			if(!property.value) {
+				importClassSet.add("java.util.stream.Collectors");
+			}
+		} else if(typeKind != CLASS_PRIMITIVE && !propertyType.name.startsWith("java.lang")){
+			importClassSet.add(propertyType.name);
+			if(typeKind == CLASS_JSON_OBJECT) {
+				importClassSet.add("org.develnext.jphp.zend.ext.json.JsonFunctions");
+			}
+		}
+		if(property.set) {
+			importClassSet.add("java.util.Set");
+		} else if(property.list) {
+			importClassSet.add("java.util.List");
+		} else if(property.map) {
+			if(property.getterMethod != null || property.setterMethod != null) {
+				importClassSet.add("java.util.Map");
+			}
+		}
+	}
+}
+@foreach{im : importClassSet}
+	import ${im};\n
+@end{}
+
+import php.runtime.env.Environment;\n
+import php.runtime.reflection.ClassEntity;\n
+import php.runtime.annotation.Reflection.*;\n
+
+\n
+@SuppressWarnings("unused")\n
+@Name("${type.simpleName}")\n
+@Namespace("@{type.raw.translatePackageName("jphp").replace(".", "\\\\")}")\n
+//@{abs}\n
+public  class ${type.simpleName} extends DataObjectWrapper<@{type.name}> { \n
+    public ${type.simpleName}(Environment env, @{type.name} wrappedObject) {\n
+        super(env, wrappedObject);\n
+    }\n
+\n
+	@if{!abs}
+	    public ${type.simpleName}(Environment env, ClassEntity clazz) {\n
+	        super(env, clazz);\n
+	    }\n
+	@end{}
+	@if{!abs}
+		@if{hasEmptyConstructor}
+			\n
+		    @Signature\n
+		    public Memory __construct(){\n
+		        this.__wrappedObject = new @{type.name}();\n
+		        return Memory.NULL;
+		    }\n
+		@end{}
+	\n
+    @Signature\n
+    public Memory __construct(Memory memory) {\n
+        this.__wrappedObject = new @{type.name}(new JsonObject(JsonFunctions.json_encode(memory)));\n
+        return Memory.NULL;\n
+    }\n
+	@end{}
+	@foreach{property:properties}
+		@code{
+			var propertyType = "";
+			var propertyKind = property.kind;
+			var getterBody = "";
+			var setterBody = "";
+			if(propertyKind.value) {
+				if(property.type.kind == CLASS_STRING) {
+					propertyType = "String";
+				} else if(property.type.kind == CLASS_PRIMITIVE) {
+					propertyType = property.type.name;
+				} else if(property.type.kind == CLASS_JSON_OBJECT){
+					propertyType = "Memory";
+				}else {
+					propertyType = property.type.simpleName;
+				}
+				if(property.type.kind == CLASS_API || property.type.kind == CLASS_DATA_OBJECT) {
+					if(property.type.kind == CLASS_API) {
+						getterBody = propertyType + ".__create(__env__, this.getWrappedObject()." + property.getterMethod + "())";
+					} else {
+						getterBody = "new " + propertyType + "(__env__, this.getWrappedObject()." + property.getterMethod + "())";
+					}
+					setterBody = "this.getWrappedObject()." + property.setterMethod + "(" + property.name + ".getWrappedObject())";
+				} else if(property.type.kind == CLASS_JSON_OBJECT){
+					getterBody = "JsonFunctions.json_decode(__env__, this.getWrappedObject()." + property.getterMethod + "().encode())";
+					setterBody = "this.getWrappedObject()." + property.setterMethod + "(new JsonObject(JsonFunctions.json_encode(" + property.name + ")))";
+				}else {
+					getterBody = "this.getWrappedObject()." + property.getterMethod + "()";
+					setterBody = "this.getWrappedObject()." + property.setterMethod + "(" + property.name + ")";
+				}
+				/*propertyType = property.type.name;*/
+			} else if(propertyKind.map){
+				propertyType = "Map<String, String>";
+				getterBody = "this.getWrappedObject()." + property.getterMethod + "()";
+				setterBody = "this.getWrappedObject()." + property.setterMethod + "(" + property.name + ")";
+			} else {
+				if(propertyKind.list){
+					propertyType = "List<" + property.type.simpleName + ">";
+				} else if(propertyKind.set){
+					propertyType = "Set<" + property.type.simpleName + ">";
+				}
+				if(property.type.kind == CLASS_API || property.type.kind == CLASS_DATA_OBJECT) {
+					if(property.type.kind == CLASS_API){
+						getterBody = "this.getWrappedObject()." + property.getterMethod + "().stream().map(v -> " + property.type.simpleName + ".__create(__env__, v)).collect(Collectors.toList())";
+					} else {
+						getterBody = "this.getWrappedObject()." + property.getterMethod + "().stream().map(v -> new " + property.type.simpleName + "(__env__, v)).collect(Collectors.toList())";
+					}
+					setterBody = "this.getWrappedObject()." + property.setterMethod + "((" + property.name + ".stream().map(" + property.type.simpleName + "::getWrappedObject).collect(Collectors.toList())))";
+				} else {
+					getterBody = "this.getWrappedObject()." + property.getterMethod + "()";
+					setterBody = "this.getWrappedObject()." + property.setterMethod + "(" + property.name + ")";
+				}
+			}
+		}
+		@if{property.adderMethod != null}
+			@if{propertyKind.map}
+			\n
+		    @Signature\n
+		    public ${type.simpleName} ${property.adderMethod}(String key, String value){ \n
+		        this.getWrappedObject().${property.adderMethod}(key, value);\n
+		        return this;\n
+		    }\n
+			@else{}
+			\n
+		    @Signature\n
+		    public ${type.simpleName} ${property.adderMethod}(${translateParamType(property.type)} ${property.name}){ \n
+		        this.getWrappedObject().${property.adderMethod}(${property.name});\n
+		        return this;\n
+		    }\n
+			@end{}
+		@end{}
+		@if{property.getterMethod != null}
+			\n
+		    @Signature\n
+		    public ${propertyType} ${property.getterMethod}(){ \n
+		        return @{getterBody};\n
+		    }\n
+		@end{}
+		@if{property.setterMethod != null}
+			\n
+		    @Signature\n
+		    public ${type.simpleName} ${property.setterMethod}(${propertyType} ${property.name}){ \n
+		        @{setterBody};\n
+		        return this;\n
+		    }\n
+		@end{}
+	@end{}
+}\n
