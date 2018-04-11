@@ -1,7 +1,0 @@
-org.develnext.jphp.ext.crypto.CryptoExtension
-org.develnext.jphp.json.JsonExtension
-org.develnext.jphp.ext.mail.MailExtension
-org.develnext.jphp.ext.sql.SqlExtension
-org.develnext.jphp.ext.xml.XmlExtension
-org.develnext.jphp.yaml.YamlExtension
-org.develnext.jphp.zend.ext.ZendExtension

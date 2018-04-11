@@ -12,14 +12,43 @@
     <groupId>tk.okou</groupId>
     <artifactId>vertx-lang-php-parent</artifactId>
 
+    <name>Vert.x PHP Language Support</name>
+    <description>Vert.x PHP Implementation</description>
+    <url>https://github.com/okou19900722/vertx-lang-php</url>
+
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+        <license>
+            <name>Eclipse Public License - v 1.0</name>
+            <url>http://www.eclipse.org/legal/epl-v10.html</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <scm>
+        <connection>scm:git:git@github.com:okou19900722/vertx-lang-php.git</connection>
+        <developerConnection>scm:git:git@github.com:okou19900722/vertx-lang-php.git</developerConnection>
+        <url>git@github.com:okou19900722/vertx-lang-php.git</url>
+    </scm>
+    <developers>
+        <developer>
+            <id>okou19900722</id>
+            <organization>Okou</organization>
+            <email>ilayan19900722@gmail.com</email>
+        </developer>
+    </developers>
+
     <version>3.6.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <modules>
         <module>vertx-lang-jphp</module>
-        <!--<module>vertx-lang-php-jphp</module>-->
-        <module>vertx-lang-php-compiler-jphp</module>
-        <module>vertx-lang-php-jphp-codegen</module>
+        <module>vertx-lang-jphp-codegen</module>
+        <module>vertx-lang-jphp-compiler</module>
         <module>vertx-lang-jphp-stack</module>
     </modules>
 
@@ -55,15 +84,37 @@
 
     <profiles>
         <profile>
-            <id>1.8</id>
-            <activation>
-                <jdk>1.8</jdk>
-            </activation>
-            <modules>
-                <!--<module>vertx-lang-php-jphp</module>-->
-                <module>vertx-lang-php-compiler-jphp</module>
-                <module>vertx-lang-php-jphp-codegen</module>
-            </modules>
+            <!--<id>release</id>-->
+            <id>snapshot</id>
+            <distributionManagement>
+                <snapshotRepository>
+                    <id>oss</id>
+                    <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+                </snapshotRepository>
+                <repository>
+                    <id>oss</id>
+                    <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+                </repository>
+            </distributionManagement>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.6</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
         </profile>
     </profiles>
+
 </project>

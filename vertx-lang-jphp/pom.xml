@@ -16,24 +16,20 @@
     <properties>
         <asciidoc.path>${project.basedir}/src/main/asciidoc</asciidoc.path>
         <stack.version>3.6.0-SNAPSHOT</stack.version>
+        <vertx-module>vertx-core</vertx-module>
+        <netty.version>4.1.19.Final</netty.version>
     </properties>
     <dependencies>
         <dependency>
             <groupId>tk.okou</groupId>
-            <artifactId>vertx-lang-php-compiler-jphp</artifactId>
+            <artifactId>vertx-lang-jphp-compiler</artifactId>
             <version>${stack.version}</version>
         </dependency>
         <dependency>
             <groupId>tk.okou</groupId>
-            <artifactId>vertx-lang-php-jphp-codegen</artifactId>
+            <artifactId>vertx-lang-jphp-codegen</artifactId>
             <version>${stack.version}</version>
             <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.12</version>
-            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.sun</groupId>
@@ -42,10 +38,6 @@
             <scope>system</scope>
             <optional>true</optional>
             <systemPath>${java.home}/../lib/tools.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>io.vertx</groupId>
-            <artifactId>vertx-core</artifactId>
         </dependency>
         <dependency>
             <groupId>io.vertx</groupId>
@@ -85,6 +77,24 @@
 
         <plugins>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>createAsciiDocD</id>
+                        <phase>process-resources</phase>
+                        <configuration>
+                            <tasks>
+                                <mkdir dir="${asciidoc.dir}"/>
+                            </tasks>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
                 <version>1.8</version>
@@ -105,9 +115,20 @@
                 </executions>
             </plugin>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <additionalClasspathElements>
+                        <additionalClasspathElement>${project.build.testSourceDirectory}
+                        </additionalClasspathElement>
+                        <additionalClasspathElement>${project.basedir}/src/main/resources
+                        </additionalClasspathElement>
+                    </additionalClasspathElements>
+                </configuration>
+            </plugin>
+            <plugin>
                 <artifactId>maven-dependency-plugin</artifactId>
                 <executions>
-                    <!-- Unpack vertx-core source code to target/sources/vertx-core -->
                     <execution>
                         <id>unpack-vertx-core</id>
                         <phase>generate-sources</phase>
@@ -116,27 +137,12 @@
                         </goals>
                         <configuration>
                             <includeGroupIds>io.vertx</includeGroupIds>
-                            <includeArtifactIds>vertx-core</includeArtifactIds>
+                            <includeArtifactIds>${vertx-module}</includeArtifactIds>
                             <includeTypes>jar</includeTypes>
                             <includeClassifiers>sources</includeClassifiers>
-                            <includes>io/vertx/core/**/*.java,examples/**/*.java</includes>
-                            <excludes>**/impl/**/*.java,**/logging/**/*.java</excludes>
-                            <outputDirectory>${project.build.directory}/sources/vertx-core</outputDirectory>
-                        </configuration>
-                    </execution>
-                    <!-- Unpack tck source code to src/test/java -->
-                    <execution>
-                        <id>unpack-codegen</id>
-                        <phase>generate-test-sources</phase>
-                        <goals>
-                            <goal>unpack-dependencies</goal>
-                        </goals>
-                        <configuration>
-                            <includeGroupIds>io.vertx</includeGroupIds>
-                            <includeArtifactIds>vertx-codegen</includeArtifactIds>
-                            <includeTypes>jar</includeTypes>
-                            <includeClassifiers>tck-sources</includeClassifiers>
-                            <outputDirectory>${project.build.directory}/sources/codegen</outputDirectory>
+                            <includes>**/*.java,**/*.adoc</includes>
+                            <excludes>**/rxjava/**/*.*,**/impl/**/*.java,**/logging/**/*.java</excludes>
+                            <outputDirectory>${project.build.directory}/sources/vertx</outputDirectory>
                         </configuration>
                     </execution>
                 </executions>
@@ -144,12 +150,11 @@
             <plugin>
                 <groupId>org.bsc.maven</groupId>
                 <artifactId>maven-processor-plugin</artifactId>
-                <version>3.1.0</version>
+                <version>3.2.0</version>
                 <configuration>
                     <systemProperties>
                         <java.util.logging.SimpleFormatter.format>%4$s: %3$s - %5$s %6$s%n
                         </java.util.logging.SimpleFormatter.format>
-                        <mvel2.disable.jit>true</mvel2.disable.jit>
                     </systemProperties>
                 </configuration>
                 <executions>
@@ -162,12 +167,14 @@
                         <configuration>
                             <processors>
                                 <processor>io.vertx.codegen.CodeGenProcessor</processor>
+                                <processor>io.vertx.docgen.DocGenProcessor</processor>
                             </processors>
                             <optionMap>
-                                <outputDirectory>${project.basedir}/src/main</outputDirectory>
+                                <codegen.output>${project.basedir}/src/main</codegen.output>
+                                <docgen.source>${project.build.directory}/sources/vertx/*.adoc</docgen.source>
                                 <docgen.output>${asciidoc.dir}/php</docgen.output>
                             </optionMap>
-                            <sourceDirectory>${project.build.directory}/sources/vertx-core</sourceDirectory>
+                            <sourceDirectory>${project.build.directory}/sources/vertx</sourceDirectory>
                         </configuration>
                     </execution>
                     <execution>
@@ -204,7 +211,7 @@
                                 <maven.artifactId>${project.artifactId}</maven.artifactId>
                                 <maven.version>${project.version}</maven.version>
                             </optionMap>
-                            <sourceDirectory>${project.build.directory}/sources/vertx-core</sourceDirectory>
+                            <sourceDirectory>${project.build.directory}/sources/vertx</sourceDirectory>
                         </configuration>
                     </execution>
                     <!-- We have to run the annotation processor again to process docoverride -->
@@ -229,63 +236,23 @@
                         </configuration>
                     </execution>
                 </executions>
-                <dependencies>
-                    <dependency>
-                        <groupId>junit</groupId>
-                        <artifactId>junit</artifactId>
-                        <version>4.12</version>
-                    </dependency>
-                </dependencies>
             </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <configuration>
-                    <additionalClasspathElements>
-                        <additionalClasspathElement>${project.build.testSourceDirectory}</additionalClasspathElement>
-                    </additionalClasspathElements>
-                </configuration>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>rename-asciidoc</id>
-                    </execution>
-                    <execution>
-                        <id>copy-asciidoc-override</id>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <plugin>
-                <groupId>org.bsc.maven</groupId>
-                <artifactId>maven-processor-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>generate-sources</id>
-                    </execution>
-                    <execution>
-                        <id>generate-doc</id>
-                    </execution>
-                </executions>
-            </plugin>
-
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>package-docs</id>
-                    </execution>
-                    <execution>
                         <id>assemble-docs</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <configuration>
+                            <attach>true</attach>
+                            <descriptorSourceDirectory>src/main/assembly</descriptorSourceDirectory>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
-
             <plugin>
                 <artifactId>maven-clean-plugin</artifactId>
                 <executions>
@@ -294,16 +261,19 @@
                         <configuration>
                             <filesets>
                                 <fileset>
-                                    <directory>${project.basedir}/src/main/jphp</directory>
+                                    <directory>src/main/api</directory>
                                 </fileset>
                                 <fileset>
-                                    <directory>${project.basedir}/src/main/extension</directory>
+                                    <directory>src/main/data</directory>
                                 </fileset>
                                 <fileset>
-                                    <directory>${project.basedir}/src/main/api</directory>
+                                    <directory>src/main/jphp</directory>
                                 </fileset>
                                 <fileset>
-                                    <directory>${project.basedir}/src/main/data</directory>
+                                    <directory>src/main/extension</directory>
+                                </fileset>
+                                <fileset>
+                                    <directory>${asciidoc.dir}</directory>
                                 </fileset>
                             </filesets>
                         </configuration>
