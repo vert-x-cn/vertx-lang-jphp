@@ -186,7 +186,7 @@ public interface TypeConverter<T> {
             }
             if (value.isArray()) {
                 ArrayMemory array = value.toValue(ArrayMemory.class);
-                if (array.stream().anyMatch(r -> !(r.getValue() instanceof ArrayMapEntryMemory))) {
+                if (array.stream().anyMatch(r -> !(r instanceof ArrayMapEntryMemory))) {
                     return false;
                 }
             }
