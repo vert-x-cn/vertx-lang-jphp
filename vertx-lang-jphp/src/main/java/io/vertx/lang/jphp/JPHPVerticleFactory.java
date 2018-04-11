@@ -56,6 +56,9 @@ public class JPHPVerticleFactory implements VerticleFactory {
 
     @Override
     public Verticle createVerticle(String verticleName, ClassLoader classLoader) throws Exception {
+        if (!verticleName.endsWith(".php")) {
+            verticleName += ".php";
+        }
         ScriptEngine engine = initScriptEngine();
         return new JPHPVerticle(VerticleFactory.removePrefix(verticleName), engine);
     }
