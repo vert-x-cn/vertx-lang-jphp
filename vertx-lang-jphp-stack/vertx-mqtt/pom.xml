@@ -15,7 +15,6 @@
     <artifactId>vertx-mqtt-jphp</artifactId>
     <properties>
         <vertx-module>vertx-mqtt</vertx-module>
-        <stack.version>3.6.0-SNAPSHOT</stack.version>
     </properties>
 
     <dependencies>
@@ -82,7 +81,7 @@
                 <configuration>
                     <instructions>
                         <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
-                        <Export-Package>io.vertx.php.amqpbridge25;version=${project.version}
+                        <Export-Package>io.vertx.jphp.mqtt;version=${project.version}
                         </Export-Package>
                         <Import-Package>*</Import-Package>
                         <Include-Resource>{maven-resources}</Include-Resource>

@@ -11,8 +11,10 @@
 
     <groupId>tk.okou</groupId>
     <artifactId>vertx-lang-php-parent</artifactId>
+    <version>3.6.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
 
-    <name>Vert.x PHP Language Support</name>
+    <name>Vert.x JPHP Language Support</name>
     <description>Vert.x PHP Implementation</description>
     <url>https://github.com/okou19900722/vertx-lang-php</url>
 
@@ -41,9 +43,6 @@
             <email>ilayan19900722@gmail.com</email>
         </developer>
     </developers>
-
-    <version>3.6.0-SNAPSHOT</version>
-    <packaging>pom</packaging>
 
     <modules>
         <module>vertx-lang-jphp</module>

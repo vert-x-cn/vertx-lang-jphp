@@ -15,7 +15,6 @@
     <artifactId>vertx-mongo-service-jphp</artifactId>
     <properties>
         <vertx-module>vertx-mongo-service</vertx-module>
-        <stack.version>3.6.0-SNAPSHOT</stack.version>
     </properties>
 
     <dependencies>
@@ -28,7 +27,7 @@
         <dependency>
             <groupId>tk.okou</groupId>
             <artifactId>vertx-mongo-client-jphp</artifactId>
-            <version>${stack.version}</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>io.vertx</groupId>
@@ -87,7 +86,7 @@
                 <configuration>
                     <instructions>
                         <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
-                        <Export-Package>io.vertx.php.amqpbridge33;version=${project.version}
+                        <Export-Package>io.vertx.jphp.ext.mongo;version=${project.version}
                         </Export-Package>
                         <Import-Package>*</Import-Package>
                         <Include-Resource>{maven-resources}</Include-Resource>

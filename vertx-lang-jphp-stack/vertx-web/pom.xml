@@ -15,7 +15,6 @@
     <artifactId>vertx-web-jphp</artifactId>
     <properties>
         <vertx-module>vertx-web</vertx-module>
-        <stack.version>3.6.0-SNAPSHOT</stack.version>
     </properties>
 
     <dependencies>
@@ -28,42 +27,42 @@
         <dependency>
             <groupId>tk.okou</groupId>
             <artifactId>vertx-bridge-common-jphp</artifactId>
-            <version>${stack.version}</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>tk.okou</groupId>
             <artifactId>vertx-auth-common-jphp</artifactId>
-            <version>${stack.version}</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>tk.okou</groupId>
             <artifactId>vertx-auth-jwt-jphp</artifactId>
-            <version>${stack.version}</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>tk.okou</groupId>
             <artifactId>vertx-auth-oauth2-jphp</artifactId>
-            <version>${stack.version}</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>tk.okou</groupId>
             <artifactId>vertx-auth-jdbc-jphp</artifactId>
-            <version>${stack.version}</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>tk.okou</groupId>
             <artifactId>vertx-auth-mongo-jphp</artifactId>
-            <version>${stack.version}</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>tk.okou</groupId>
             <artifactId>vertx-auth-shiro-jphp</artifactId>
-            <version>${stack.version}</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>tk.okou</groupId>
             <artifactId>vertx-auth-htdigest-jphp</artifactId>
-            <version>${stack.version}</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>io.vertx</groupId>

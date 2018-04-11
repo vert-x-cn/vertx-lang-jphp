@@ -15,7 +15,6 @@
     <artifactId>vertx-web-common-jphp</artifactId>
     <properties>
         <vertx-module>vertx-web-common</vertx-module>
-        <stack.version>3.6.0-SNAPSHOT</stack.version>
     </properties>
 
     <dependencies>

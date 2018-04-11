@@ -57,17 +57,17 @@
         <dependency>
             <groupId>tk.okou</groupId>
             <artifactId>vertx-lang-jphp</artifactId>
-            <version>3.6.0-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>tk.okou</groupId>
             <artifactId>vertx-lang-jphp-compiler</artifactId>
-            <version>${stack.version}</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>tk.okou</groupId>
             <artifactId>vertx-lang-jphp-codegen</artifactId>
-            <version>${stack.version}</version>
+            <version>${project.version}</version>
             <optional>true</optional>
         </dependency>
     </dependencies>

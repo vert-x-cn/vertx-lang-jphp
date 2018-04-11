@@ -27,7 +27,7 @@
         <dependency>
             <groupId>tk.okou</groupId>
             <artifactId>vertx-auth-common-jphp</artifactId>
-            <version>${stack.version}</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>io.vertx</groupId>

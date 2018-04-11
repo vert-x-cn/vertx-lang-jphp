@@ -15,7 +15,6 @@
     <artifactId>vertx-mysql-postgresql-client-jphp</artifactId>
     <properties>
         <vertx-module>vertx-mysql-postgresql-client</vertx-module>
-        <stack.version>3.6.0-SNAPSHOT</stack.version>
     </properties>
 
     <dependencies>
@@ -28,7 +27,7 @@
         <dependency>
             <groupId>tk.okou</groupId>
             <artifactId>vertx-sql-common-jphp</artifactId>
-            <version>${stack.version}</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>io.vertx</groupId>
@@ -87,7 +86,7 @@
                 <configuration>
                     <instructions>
                         <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
-                        <Export-Package>io.vertx.php.amqpbridge4;version=${project.version}
+                        <Export-Package>io.vertx.jphp.ext.asyncsql;version=${project.version}
                         </Export-Package>
                         <Import-Package>*</Import-Package>
                         <Include-Resource>{maven-resources}</Include-Resource>

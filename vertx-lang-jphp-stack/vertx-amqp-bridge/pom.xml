@@ -13,7 +13,6 @@
     <artifactId>vertx-amqp-bridge-jphp</artifactId>
     <properties>
         <vertx-module>vertx-amqp-bridge</vertx-module>
-        <stack.version>3.6.0-SNAPSHOT</stack.version>
     </properties>
 
     <dependencies>
@@ -26,7 +25,7 @@
         <dependency>
             <groupId>tk.okou</groupId>
             <artifactId>vertx-proton-jphp</artifactId>
-            <version>${stack.version}</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>io.vertx</groupId>

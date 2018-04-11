@@ -81,7 +81,7 @@
                 <configuration>
                     <instructions>
                         <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
-                        <Export-Package>io.vertx.php.amqpbridge37;version=${project.version}
+                        <Export-Package>io.vertx.jphp.config.hocon;version=${project.version}
                         </Export-Package>
                         <Import-Package>*</Import-Package>
                         <Include-Resource>{maven-resources}</Include-Resource>

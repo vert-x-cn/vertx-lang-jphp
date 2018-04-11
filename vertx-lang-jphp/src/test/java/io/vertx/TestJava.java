@@ -3,7 +3,6 @@ package io.vertx;
 import io.vertx.codegen.CodeGenProcessor;
 import io.vertx.codegen.Compiler;
 import io.vertx.docgen.DocGenProcessor;
-import io.vertx.lang.php.PhpDocGenerator;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;

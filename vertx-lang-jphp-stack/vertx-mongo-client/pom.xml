@@ -15,7 +15,6 @@
     <artifactId>vertx-mongo-client-jphp</artifactId>
     <properties>
         <vertx-module>vertx-mongo-client</vertx-module>
-        <stack.version>3.6.0-SNAPSHOT</stack.version>
     </properties>
 
     <dependencies>

@@ -15,7 +15,6 @@
     <artifactId>vertx-mail-client-jphp</artifactId>
     <properties>
         <vertx-module>vertx-mail-client</vertx-module>
-        <stack.version>3.6.0-SNAPSHOT</stack.version>
     </properties>
 
     <dependencies>
@@ -82,7 +81,7 @@
                 <configuration>
                     <instructions>
                         <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
-                        <Export-Package>io.vertx.php.amqpbridge7;version=${project.version}
+                        <Export-Package>io.vertx.jphp.ext.mail;version=${project.version}
                         </Export-Package>
                         <Import-Package>*</Import-Package>
                         <Include-Resource>{maven-resources}</Include-Resource>

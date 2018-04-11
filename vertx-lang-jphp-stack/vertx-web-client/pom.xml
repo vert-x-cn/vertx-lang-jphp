@@ -15,7 +15,6 @@
     <artifactId>vertx-web-client-jphp</artifactId>
     <properties>
         <vertx-module>vertx-web-client</vertx-module>
-        <stack.version>3.6.0-SNAPSHOT</stack.version>
     </properties>
 
     <dependencies>
@@ -33,7 +32,7 @@
         <dependency>
             <groupId>tk.okou</groupId>
             <artifactId>vertx-web-common-jphp</artifactId>
-            <version>${stack.version}</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>io.vertx</groupId>
@@ -92,7 +91,7 @@
                 <configuration>
                     <instructions>
                         <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
-                        <Export-Package>io.vertx.php.amqpbridge5;version=${project.version}
+                        <Export-Package>io.vertx.jphp.ext.web.client;version=${project.version}
                         </Export-Package>
                         <Import-Package>*</Import-Package>
                         <Include-Resource>{maven-resources}</Include-Resource>

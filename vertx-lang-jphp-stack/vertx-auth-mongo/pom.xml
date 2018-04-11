@@ -15,7 +15,6 @@
     <artifactId>vertx-auth-mongo-jphp</artifactId>
     <properties>
         <vertx-module>vertx-auth-mongo</vertx-module>
-        <stack.version>3.6.0-SNAPSHOT</stack.version>
     </properties>
 
     <dependencies>
@@ -28,12 +27,12 @@
         <dependency>
             <groupId>tk.okou</groupId>
             <artifactId>vertx-auth-common-jphp</artifactId>
-            <version>${stack.version}</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>tk.okou</groupId>
             <artifactId>vertx-mongo-client-jphp</artifactId>
-            <version>${stack.version}</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>io.vertx</groupId>

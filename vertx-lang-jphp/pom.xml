@@ -15,7 +15,6 @@
 
     <properties>
         <asciidoc.path>${project.basedir}/src/main/asciidoc</asciidoc.path>
-        <stack.version>3.6.0-SNAPSHOT</stack.version>
         <vertx-module>vertx-core</vertx-module>
         <netty.version>4.1.19.Final</netty.version>
     </properties>
@@ -23,12 +22,12 @@
         <dependency>
             <groupId>tk.okou</groupId>
             <artifactId>vertx-lang-jphp-compiler</artifactId>
-            <version>${stack.version}</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>tk.okou</groupId>
             <artifactId>vertx-lang-jphp-codegen</artifactId>
-            <version>${stack.version}</version>
+            <version>${project.version}</version>
             <optional>true</optional>
         </dependency>
         <dependency>
@@ -172,7 +171,7 @@
                             <optionMap>
                                 <codegen.output>${project.basedir}/src/main</codegen.output>
                                 <docgen.source>${project.build.directory}/sources/vertx/*.adoc</docgen.source>
-                                <docgen.output>${asciidoc.dir}/php</docgen.output>
+                                <docgen.output>${asciidoc.dir}/jphp</docgen.output>
                             </optionMap>
                             <sourceDirectory>${project.build.directory}/sources/vertx</sourceDirectory>
                         </configuration>
@@ -206,7 +205,7 @@
                             </processors>
                             <optionMap>
                                 <outputDirectory>${project.basedir}/src/main</outputDirectory>
-                                <docgen.output>${asciidoc.dir}/php</docgen.output>
+                                <docgen.output>${asciidoc.dir}/jphp</docgen.output>
                                 <maven.groupId>${project.groupId}</maven.groupId>
                                 <maven.artifactId>${project.artifactId}</maven.artifactId>
                                 <maven.version>${project.version}</maven.version>
@@ -227,7 +226,7 @@
                             </processors>
                             <optionMap>
                                 <outputDirectory>${project.basedir}/src/main</outputDirectory>
-                                <docgen.output>${asciidoc.dir}/php</docgen.output>
+                                <docgen.output>${asciidoc.dir}/jphp</docgen.output>
                                 <maven.groupId>${project.groupId}</maven.groupId>
                                 <maven.artifactId>${project.artifactId}</maven.artifactId>
                                 <maven.version>${project.version}</maven.version>
@@ -283,4 +282,42 @@
         </plugins>
     </build>
 
+    <profiles>
+        <!-- Use -Pdocs -->
+        <profile>
+            <id>docs</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.asciidoctor</groupId>
+                        <artifactId>asciidoctor-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>process-asciidoc</goal>
+                                </goals>
+                                <phase>prepare-package</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <configuration>
+                                    <sourcepath>${project.build.directory}/sources/vertx/</sourcepath>
+                                    <reportOutputDirectory>${project.build.directory}/docs</reportOutputDirectory>
+                                </configuration>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>javadoc</goal>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>

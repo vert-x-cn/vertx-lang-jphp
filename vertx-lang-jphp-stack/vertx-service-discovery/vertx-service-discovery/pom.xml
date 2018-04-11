@@ -34,30 +34,30 @@
         <dependency>
             <groupId>tk.okou</groupId>
             <artifactId>vertx-web-client-jphp</artifactId>
-            <version>3.6.0-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>tk.okou</groupId>
             <artifactId>vertx-redis-client-jphp</artifactId>
-            <version>3.6.0-SNAPSHOT</version>
+            <version>${project.version}</version>
             <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>tk.okou</groupId>
             <artifactId>vertx-jdbc-client-jphp</artifactId>
-            <version>3.6.0-SNAPSHOT</version>
+            <version>${project.version}</version>
             <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>tk.okou</groupId>
             <artifactId>vertx-mongo-client-jphp</artifactId>
-            <version>3.6.0-SNAPSHOT</version>
+            <version>${project.version}</version>
             <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>tk.okou</groupId>
             <artifactId>vertx-web-jphp</artifactId>
-            <version>3.6.0-SNAPSHOT</version>
+            <version>${project.version}</version>
             <optional>true</optional>
         </dependency>
         <dependency>

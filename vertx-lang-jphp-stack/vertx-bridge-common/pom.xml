@@ -15,7 +15,6 @@
     <artifactId>vertx-bridge-common-jphp</artifactId>
     <properties>
         <vertx-module>vertx-bridge-common</vertx-module>
-        <stack.version>3.6.0-SNAPSHOT</stack.version>
     </properties>
 
     <dependencies>

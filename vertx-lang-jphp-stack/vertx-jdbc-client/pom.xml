@@ -15,7 +15,6 @@
     <artifactId>vertx-jdbc-client-jphp</artifactId>
     <properties>
         <vertx-module>vertx-jdbc-client</vertx-module>
-        <stack.version>3.6.0-SNAPSHOT</stack.version>
     </properties>
 
     <dependencies>
@@ -28,7 +27,7 @@
         <dependency>
             <groupId>tk.okou</groupId>
             <artifactId>vertx-sql-common-jphp</artifactId>
-            <version>${stack.version}</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>io.vertx</groupId>
