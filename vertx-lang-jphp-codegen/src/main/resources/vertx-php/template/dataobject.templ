@@ -1,8 +1,8 @@
 <?php \n
-namespace @{type.raw.translatePackageName("php").replace(".", "\\")};\n
+namespace @{type.raw.translatePackageName("jphp").replace(".", "\\")};\n
 @code{
     var abs = type.abstract;
-    var superClass = superType == null ? null : superType.raw.translatePackageName("php").replace(".", "\\") + "\\" + superType.simpleName;
+    var superClass = superType == null ? null : superType.raw.translatePackageName("jphp").replace(".", "\\") + "\\" + superType.simpleName;
     var use = superType != null && !superType.raw.packageName.equals(type.raw.packageName);
 }
 

@@ -8,7 +8,7 @@
     var java = "java";
     var php = "php";
     var className = type.simpleName;
-    var namespace = type.raw.translatePackageName("php").replace(".", lang == java ? "\\\\" : "\\");
+    var namespace = type.raw.translatePackageName("jphp").replace(".", lang == java ? "\\\\" : "\\");
 
     var importClassSet = new TreeSet();
     if(lang == java) {
@@ -81,7 +81,7 @@
         } else if(typeKind == CLASS_API) {
             var apiType = typeInfo;
             if(apiType.raw.packageName != type.raw.packageName) {
-                importClassSet.add(apiType.raw.translatePackageName("php") + "." + apiType.raw.simpleName);
+                importClassSet.add(apiType.raw.translatePackageName("jphp") + "." + apiType.raw.simpleName);
             }
             var typeName = typeInfo.raw.simpleName;
             if (lang == java && (typeName == "ReadStream" || typeName == "WriteStream" || !wrapPhp)) {
