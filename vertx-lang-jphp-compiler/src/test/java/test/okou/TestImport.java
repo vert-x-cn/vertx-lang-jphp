@@ -1,6 +1,6 @@
 package test.okou;
 
-import io.vertx.lang.php.ClasspathFileResolver;
+import io.vertx.lang.jphp.ClasspathFileResolver;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;

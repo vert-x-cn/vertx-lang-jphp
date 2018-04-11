@@ -32,7 +32,7 @@
 		} else if(typeKind == CLASS_ENUM){
 			return "EnumConverter.create(" + typeInfo.raw.simpleName + ".class)";
 		} else if(typeKind == CLASS_DATA_OBJECT){
-			return "DataObjectConverter.create(" + typeInfo.raw.packageName + "." + typeInfo.raw.simpleName + ".class)";
+			return "DataObjectConverter.create(" + typeInfo.raw.packageName + "." + typeInfo.raw.simpleName + ".class, " + typeInfo.raw.packageName + "." + typeInfo.raw.simpleName + "::new)";
 		} else if(typeKind == CLASS_LIST || typeKind == CLASS_SET || typeKind == CLASS_MAP) {
 			var containerType = null;
 			if(typeKind != CLASS_MAP){
@@ -334,7 +334,7 @@ package @{packageName};\n
  		@else{paramTypeKind == CLASS_JSON_ARRAY}
 			isJsonArray(__ENV__,
  		@else{paramTypeKind == CLASS_DATA_OBJECT}
-			isDataObject(__ENV__, @{paramType.name}.class,
+			isDataObject(__ENV__, @{paramType.name}.class, @{paramType.name}::new,
  		@else{paramTypeKind == CLASS_ENUM}
 			isEnum(__ENV__, @{paramType.raw.simpleName}.class,
  		@else{paramTypeKind == CLASS_THROWABLE}
@@ -390,7 +390,7 @@ package @{packageName};\n
  		@else{paramTypeKind == CLASS_JSON_ARRAY}
 			convParamJsonArray(__ENV__,
  		@else{paramTypeKind == CLASS_DATA_OBJECT}
-			convParamDataObject(__ENV__, @{paramType.name}.class,
+			convParamDataObject(__ENV__, @{paramType.name}.class, @{paramType.name}::new,
  		@else{paramTypeKind == CLASS_ENUM}
 			convParamEnum(__ENV__, @{paramType.raw.simpleName}.class,
  		@else{paramTypeKind == CLASS_THROWABLE}
@@ -742,7 +742,7 @@ public class @{ifaceSimpleName}
 				var typeParamInfo2 = typeParamInfo == "" ? "" : "<" + typeParamInfo + ">";
 				convInfo = ["<" + returnType.raw.packageName + "." + returnType.raw.simpleName + typeParamInfo2 + ", " + returnType.raw.simpleName + typeParamInfo2 + (typeParamInfo == "" ? "" : ", ") + typeParamInfo + ">" + "convReturnVertxGenVariable" + typeParamSize, returnType.raw.simpleName + ".class, " + returnType.raw.simpleName + "::__create" + typeConverter + ", "];
 			} else if(returnTypeKind == CLASS_DATA_OBJECT){
-				convInfo = ["convReturnDataObject", returnType.name + ".class, " + returnType.raw.simpleName + "::new, "];
+				convInfo = ["convReturnDataObject", returnType.name + ".class, " + returnType.raw.simpleName + "::new, " + returnType.raw.name + "::new, "];
 			} else if(returnTypeKind == CLASS_HANDLER){
 				var handlerType = returnType.args.get(0);
 				if(handlerType.kind == CLASS_ASYNC_RESULT) {

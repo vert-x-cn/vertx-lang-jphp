@@ -176,16 +176,16 @@ public class Utils {
         return StringMemory.valueOf(value.name());
     }
 
-    public static <D> boolean isDataObject(Environment env, Class<D> clazz, Memory value) {
-        return TypeConverter.JSON_OBJECT.accept(env, value) || DataObjectConverter.create(clazz).accept(env, value);
+    public static <D> boolean isDataObject(Environment env, Class<D> clazz, Function<JsonObject, D> function, Memory value) {
+        return DataObjectConverter.create(clazz, function).accept(env, value);
     }
 
-    public static <D> D convParamDataObject(Environment env, Class<D> clazz, Memory value) {
-        return DataObjectConverter.create(clazz).convParam(env, value);
+    public static <D> D convParamDataObject(Environment env, Class<D> clazz, Function<JsonObject, D> function, Memory value) {
+        return DataObjectConverter.create(clazz, function).convParam(env, value);
     }
 
-    public static <D, B extends DataObjectWrapper<D>> Memory convReturnDataObject(Environment env, Class<D> clazz, Function2<Environment, D, B> creator, D value) {
-        return DataObjectConverter.<D, B>create(clazz).convReturnNotNull(env, creator, value);
+    public static <D, B extends DataObjectWrapper<D>> Memory convReturnDataObject(Environment env, Class<D> clazz, Function2<Environment, D, B> creator, Function<JsonObject, D> function, D value) {
+        return DataObjectConverter.<D, B>create(clazz, function).convReturnNotNull(env, creator, value);
     }
 
     public static boolean isThrowable(Environment env, Memory value) {

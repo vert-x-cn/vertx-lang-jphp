@@ -4,17 +4,14 @@ package io.vertx.test;
 import io.netty.util.internal.logging.InternalLoggerFactory;
 import io.netty.util.internal.logging.JdkLoggerFactory;
 import io.vertx.core.logging.JULLogDelegateFactory;
-import io.vertx.lang.php.ClasspathFileResolver;
+import io.vertx.lang.jphp.ClasspathFileResolver;
 import org.develnext.jphp.scripting.JPHPScriptEngine;
-import org.develnext.jphp.scripting.JPHPScriptEngineFactory;
 import php.runtime.env.Environment;
 import php.runtime.reflection.FunctionEntity;
-import php.runtime.reflection.MethodEntity;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineFactory;
 import javax.script.ScriptEngineManager;
-import javax.script.ScriptException;
 import java.lang.reflect.Field;
 
 public class Main {

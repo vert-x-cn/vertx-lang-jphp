@@ -10,6 +10,6 @@ public class TestVertx {
         System.setProperty("vertx.logger-delegate-factory-class-name", JULLogDelegateFactory.class.getName());
         InternalLoggerFactory.setDefaultFactory(JdkLoggerFactory.INSTANCE);
         Vertx vertx = Vertx.vertx();
-        vertx.deployVerticle("php:phpVerticle.php");
+        vertx.deployVerticle("php:testDataObjectArraySupport.php");
     }
 }
