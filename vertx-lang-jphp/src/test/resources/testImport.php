@@ -9,3 +9,10 @@
 echo "====\n";
 var_dump($vertx);
 echo "====\n";
+
+
+use io\vertx\jphp\core\http\HttpServerOptions;
+
+$httpServerOptions = new HttpServerOptions();
+$httpServerOptions->setPort(8080);
+$httpServerOptions->setHost("localhost");

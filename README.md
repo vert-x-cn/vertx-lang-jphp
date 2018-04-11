@@ -67,6 +67,7 @@ function vertxStopAsync($future){
 ```
 
 当Vert.x 部署这个Verticle脚本时，如果上下文环境中有`vertxStart`方法，会优先调用此方法，否则尝试调用异步的`vertxStartAsync`方法。`vertxStartAsync`方法接收一个`io\vertx\jphp\core\Future`类型的参数，在Verticle部署完成后，需要调用`complete`方法来显式的告诉Vert.x完成。
+
 同理，Vert.x在移除一个Verticle脚本时，优先判断`vertxStop`并执行，如果没有`vertxStop`方法，会尝试调用异步的`vertxStartAsync`方法。`vertxStartAsync`方法也有一个`io\vertx\jphp\core\Future`类型的参数。
 
 ### 部署Verticle / Verticle Deployment
@@ -91,6 +92,33 @@ function vertxStopAsync($future){
     // 或者
     vertx.deployVerticle("test.php");
 ```
+
+### DataObject
+你可以直接创建需要的DataObject对象，比如HttpServerOption:
+
+```php
+use io\vertx\jphp\core\http\HttpServerOptions;
+
+$httpServerOptions = new HttpServerOptions();
+$httpServerOptions->setPort(8080);
+$httpServerOptions->setHost("localhost");
+```
+
+当然你也可以直接使用数组，比如`Hello Vert.x!`例子中
+```php
+$httpServerOptions = array(
+    "port"  =>  8998,
+    "host"  =>  "localhost",
+);
+
+$httpServer = $vertx->createHttpServer($httpServerOptions);
+$httpServer->requestHandler(function ($res) {
+    $res->response()->end("Hello from Vert.x!");
+});
+$httpServer->listen();
+```
+
+
 
 ;TODO
 

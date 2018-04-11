@@ -15,7 +15,7 @@ public class TestVertx {
         vertx.deployVerticle("php:testDataObjectArraySupport.php");
 
 
-        TimeUnit.SECONDS.sleep(3);
-        vertx.close();
+//        TimeUnit.SECONDS.sleep(3);
+//        vertx.close();
     }
 }

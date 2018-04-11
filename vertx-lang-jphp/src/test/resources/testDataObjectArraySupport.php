@@ -1,18 +1,23 @@
 <?php
 
-require_once 'testImport.php';
+//require_once 'testImport.php';
 
-//$httpServer = $vertx->createHttpServer();
-//$httpServer->requestHandler(function ($res) {
-//    $res->response()->end("Hello from Vert.x!");
-//});
-//$httpServer->listen(8998);
+$httpServerOptions = array(
+    "port"  =>  8998,
+    "host"  =>  "localhost",
+);
+
+$httpServer = $vertx->createHttpServer($httpServerOptions);
+$httpServer->requestHandler(function ($res) {
+    $res->response()->end("Hello from Vert.x!");
+});
+$httpServer->listen();
 
 //    use php\lang\Thread;
-    function vertxStart(){
-        echo "start";
-    }
-    function vertxStop(){
-        echo "end";
-    }
+//    function vertxStart(){
+//        echo "start";
+//    }
+//    function vertxStop(){
+//        echo "end";
+//    }
 //    var_dump(Thread::current());
