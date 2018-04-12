@@ -100,7 +100,8 @@ You get a reference to the event bus as follows:
 
 [source,jphp]
 ----
-/*variableDecl*/$eb = $vertx.$eventBus()
+<?php
+    $eb = $vertx->eventBus();
 
 ----
 
@@ -113,11 +114,12 @@ Here's an example:
 
 [source,jphp]
 ----
-/*variableDecl*/$eb = $vertx.$eventBus()
+<?php
+    $eb = $vertx->eventBus();
 
-$eb.$consumer<Any>("news.uk.sport", { message ->
-  echo "I have received a message: ${$message.$body()}"."\n";
-})
+    $eb->consumer("news.uk.sport", function ($message) {
+        echo "I have received a message: ".$message->body()."\n";
+    });
 
 ----
 
@@ -132,12 +134,13 @@ to return a +MessageConsumer+ with no handler set, and then set the handler on t
 
 [source,jphp]
 ----
-/*variableDecl*/$eb = $vertx.$eventBus()
+<?php
+    $eb = $vertx->eventBus();
 
-/*variableDecl*/$consumer = $eb.$consumer<Any>("news.uk.sport")
-$consumer.$handler({ message ->
-  echo "I have received a message: ${$message.$body()}"."\n";
-})
+    $consumer = $eb->consumer("news.uk.sport");
+    $consumer->handler(function ($message) {
+        echo "I have received a message: ".$message->body()."\n";
+    });
 
 ----
 
@@ -149,13 +152,14 @@ on the +MessageConsumer+ object.
 
 [source,jphp]
 ----
-$consumer.$completionHandler({ res ->
-  if (res.succeeded()) {
-    echo "The handler registration has reached all nodes"."\n";
-  } else {
-    echo "Registration failed!"."\n";
-  }
-})
+<?php
+    $consumer->completionHandler(function ($res, $res_err) {
+        if ($res != null) {
+            echo "The handler registration has reached all nodes\n";
+        } else {
+            echo "Registration failed!\n";
+        };
+    });
 
 ----
 
@@ -168,13 +172,14 @@ be notified when this is complete use `link:../../apidocs/io/vertx/core/eventbus
 
 [source,jphp]
 ----
-$consumer.$unregister({ res ->
-  if (res.succeeded()) {
-    echo "The handler un-registration has reached all nodes"."\n";
-  } else {
-    echo "Un-registration failed!"."\n";
-  }
-})
+<?php
+    $consumer->unregister(function ($res, $res_err) {
+        if ($res != null) {
+            echo "The handler un-registration has reached all nodes\n";
+        } else {
+            echo "Un-registration failed!\n";
+        };
+    });
 
 ----
 
@@ -185,7 +190,8 @@ address to publish it to.
 
 [source,jphp]
 ----
-$eventBus.$publish("news.uk.sport", "Yay! Someone kicked a ball")
+<?php
+    $eventBus->publish("news.uk.sport", "Yay! Someone kicked a ball");
 
 ----
 
@@ -200,7 +206,8 @@ You can send a message with `link:../../apidocs/io/vertx/core/eventbus/EventBus.
 
 [source,jphp]
 ----
-$eventBus.$send("news.uk.sport", "Yay! Someone kicked a ball")
+<?php
+    $eventBus->send("news.uk.sport", "Yay! Someone kicked a ball");
 
 ----
 
@@ -235,11 +242,12 @@ The receiver:
 
 [source,jphp]
 ----
-/*variableDecl*/$consumer = $eventBus.$consumer<Any>("news.uk.sport")
-$consumer.$handler({ message ->
-  echo "I have received a message: ${$message.$body()}"."\n";
-  $message.$reply("how interesting!")
-})
+<?php
+    $consumer = $eventBus->consumer("news.uk.sport");
+    $consumer->handler(function ($message) {
+        echo "I have received a message: ".$message->body()."\n";
+        $message->reply("how interesting!");
+    });
 
 ----
 
@@ -247,11 +255,12 @@ The sender:
 
 [source,jphp]
 ----
-$eventBus.$send<Any>("news.uk.sport", "Yay! Someone kicked a ball across a patch of grass", { ar ->
-  if (ar.succeeded()) {
-    echo "Received reply: ${ar.result().$body()}"."\n";
-  }
-})
+<?php
+    $eventBus->send("news.uk.sport", "Yay! Someone kicked a ball across a patch of grass", function ($ar, $ar_err) {
+        if ($ar != null) {
+            echo "Received reply: ".$ar->body()."\n";
+        };
+    });
 
 ----
 
@@ -300,16 +309,19 @@ instance as clustered;
 
 [source,jphp]
 ----
-/*variableDecl*/$options = VertxOptions()
-Vertx.$clusteredVertx($options, { res ->
-  if (res.succeeded()) {
-    /*variableDecl*/$vertx = res.result()
-    /*variableDecl*/$eventBus = $vertx.$eventBus()
-    echo "We now have a clustered event bus: ${$eventBus}"."\n";
-  } else {
-    echo "Failed: ${res.cause()}"."\n";
-  }
-})
+<?php
+    use io\vertx\jphp\core\Vertx;
+    $options = array(
+    );
+    Vertx::clusteredVertx($options, function ($res, $res_err) {
+        if ($res != null) {
+            $vertx = $res;
+            $eventBus = $vertx->eventBus();
+            echo "We now have a clustered event bus: ".$eventBus."\n";
+        } else {
+            echo "Failed: ".$res_err."\n";
+        };
+    });
 
 ----
 
@@ -337,26 +349,32 @@ the event bus acts as a server and client, the configuration is close to
 
 [source,jphp]
 ----
-/*variableDecl*/$options = VertxOptions(
-  eventBusOptions = EventBusOptions(
-    ssl = true,
-    keyStoreOptions = JksOptions(
-      path = "keystore.jks",
-      password = "wibble"),
-    trustStoreOptions = JksOptions(
-      path = "keystore.jks",
-      password = "wibble"),
-    clientAuth = ClientAuth.REQUIRED))
+<?php
+    use io\vertx\jphp\core\Vertx;
+    $options = array(
+        "eventBusOptions" => array(
+            "ssl" => true,
+            "keyStoreOptions" => array(
+                "path" => "keystore.jks",
+                "password" => "wibble"
+            ),
+            "trustStoreOptions" => array(
+                "path" => "keystore.jks",
+                "password" => "wibble"
+            ),
+            "clientAuth" => "REQUIRED"
+        )
+    );
 
-Vertx.$clusteredVertx($options, { res ->
-  if (res.succeeded()) {
-    /*variableDecl*/$vertx = res.result()
-    /*variableDecl*/$eventBus = $vertx.$eventBus()
-    echo "We now have a clustered event bus: ${$eventBus}"."\n";
-  } else {
-    echo "Failed: ${res.cause()}"."\n";
-  }
-})
+    Vertx::clusteredVertx($options, function ($res, $res_err) {
+        if ($res != null) {
+            $vertx = $res;
+            $eventBus = $vertx->eventBus();
+            echo "We now have a clustered event bus: ".$eventBus."\n";
+        } else {
+            echo "Failed: ".$res_err."\n";
+        };
+    });
 
 ----
 
@@ -377,19 +395,23 @@ When used in containers, you can also configure the public host and port:
 
 [source,jphp]
 ----
-/*variableDecl*/$options = VertxOptions(
-  eventBusOptions = EventBusOptions(
-    clusterPublicHost = "whatever",
-    clusterPublicPort = 1234))
+<?php
+    use io\vertx\jphp\core\Vertx;
+    $options = array(
+        "eventBusOptions" => array(
+            "clusterPublicHost" => "whatever",
+            "clusterPublicPort" => 1234
+        )
+    );
 
-Vertx.$clusteredVertx($options, { res ->
-  if (res.succeeded()) {
-    /*variableDecl*/$vertx = res.result()
-    /*variableDecl*/$eventBus = $vertx.$eventBus()
-    echo "We now have a clustered event bus: ${$eventBus}"."\n";
-  } else {
-    echo "Failed: ${res.cause()}"."\n";
-  }
-})
+    Vertx::clusteredVertx($options, function ($res, $res_err) {
+        if ($res != null) {
+            $vertx = $res;
+            $eventBus = $vertx->eventBus();
+            echo "We now have a clustered event bus: ".$eventBus."\n";
+        } else {
+            echo "Failed: ".$res_err."\n";
+        };
+    });
 
 ----

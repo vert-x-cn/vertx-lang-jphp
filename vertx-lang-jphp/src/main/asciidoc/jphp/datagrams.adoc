@@ -31,7 +31,9 @@ and receive.
 
 [source,jphp]
 ----
-/*variableDecl*/$socket = $vertx.$createDatagramSocket(DatagramSocketOptions())
+<?php
+    $socket = $vertx->createDatagramSocket(array(
+    ));
 
 ----
 
@@ -49,16 +51,19 @@ Sending packets is as easy as shown here:
 
 [source,jphp]
 ----
-/*variableDecl*/$socket = $vertx.$createDatagramSocket(DatagramSocketOptions())
-/*variableDecl*/$buffer = Buffer.$buffer("content")
-// Send a Buffer
-$socket.$send($buffer, 1234, "10.0.0.1", { asyncResult ->
-  echo "Send succeeded? ${asyncResult.succeeded()}"."\n";
-})
-// Send a String
-$socket.$send("A string used as content", 1234, "10.0.0.1", { asyncResult ->
-  echo "Send succeeded? ${asyncResult.succeeded()}"."\n";
-})
+<?php
+    use io\vertx\jphp\core\buffer\Buffer;
+    $socket = $vertx->createDatagramSocket(array(
+    ));
+    $buffer = Buffer::buffer("content");
+    // Send a Buffer
+    $socket->send($buffer, 1234, "10.0.0.1", function ($asyncResult, $asyncResult_err) {
+        echo "Send succeeded? ".$asyncResult != null."\n";
+    });
+    // Send a String
+    $socket->send("A string used as content", 1234, "10.0.0.1", function ($asyncResult, $asyncResult_err) {
+        echo "Send succeeded? ".$asyncResult != null."\n";
+    });
 
 ----
 
@@ -81,16 +86,18 @@ So to listen on a specific address and port you would do something like shown he
 
 [source,jphp]
 ----
-/*variableDecl*/$socket = $vertx.$createDatagramSocket(DatagramSocketOptions())
-$socket.$listen(1234, "0.0.0.0", { asyncResult ->
-  if (asyncResult.succeeded()) {
-    $socket.$handler({ packet ->
-      // Do something with the packet
-    })
-  } else {
-    echo "Listen failed${asyncResult.cause()}"."\n";
-  }
-})
+<?php
+    $socket = $vertx->createDatagramSocket(array(
+    ));
+    $socket->listen(1234, "0.0.0.0", function ($asyncResult, $asyncResult_err) {
+        if ($asyncResult != null) {
+            $socket->handler(function ($packet) {
+                // Do something with the packet
+            });
+        } else {
+            echo "Listen failed".$asyncResult_err."\n";
+        };
+    });
 
 ----
 
@@ -115,12 +122,15 @@ This is show here:
 
 [source,jphp]
 ----
-/*variableDecl*/$socket = $vertx.$createDatagramSocket(DatagramSocketOptions())
-/*variableDecl*/$buffer = Buffer.$buffer("content")
-// Send a Buffer to a multicast address
-$socket.$send($buffer, 1234, "230.0.0.1", { asyncResult ->
-  echo "Send succeeded? ${asyncResult.succeeded()}"."\n";
-})
+<?php
+    use io\vertx\jphp\core\buffer\Buffer;
+    $socket = $vertx->createDatagramSocket(array(
+    ));
+    $buffer = Buffer::buffer("content");
+    // Send a Buffer to a multicast address
+    $socket->send($buffer, 1234, "230.0.0.1", function ($asyncResult, $asyncResult_err) {
+        echo "Send succeeded? ".$asyncResult != null."\n";
+    });
 
 ----
 
@@ -146,21 +156,23 @@ would do something like shown here:
 
 [source,jphp]
 ----
-/*variableDecl*/$socket = $vertx.$createDatagramSocket(DatagramSocketOptions())
-$socket.$listen(1234, "0.0.0.0", { asyncResult ->
-  if (asyncResult.succeeded()) {
-    $socket.$handler({ packet ->
-      // Do something with the packet
-    })
+<?php
+    $socket = $vertx->createDatagramSocket(array(
+    ));
+    $socket->listen(1234, "0.0.0.0", function ($asyncResult, $asyncResult_err) {
+        if ($asyncResult != null) {
+            $socket->handler(function ($packet) {
+                // Do something with the packet
+            });
 
-    // join the multicast group
-    $socket.$listenMulticastGroup("230.0.0.1", { asyncResult2 ->
-      echo "Listen succeeded? ${asyncResult2.succeeded()}"."\n";
-    })
-  } else {
-    echo "Listen failed${asyncResult.cause()}"."\n";
-  }
-})
+            // join the multicast group
+            $socket->listenMulticastGroup("230.0.0.1", function ($asyncResult2, $asyncResult2_err) {
+                echo "Listen succeeded? ".$asyncResult2 != null."\n";
+            });
+        } else {
+            echo "Listen failed".$asyncResult_err."\n";
+        };
+    });
 
 ----
 
@@ -174,31 +186,33 @@ This is shown here:
 
 [source,jphp]
 ----
-/*variableDecl*/$socket = $vertx.$createDatagramSocket(DatagramSocketOptions())
-$socket.$listen(1234, "0.0.0.0", { asyncResult ->
-  if (asyncResult.succeeded()) {
-    $socket.$handler({ packet ->
-      // Do something with the packet
-    })
+<?php
+    $socket = $vertx->createDatagramSocket(array(
+    ));
+    $socket->listen(1234, "0.0.0.0", function ($asyncResult, $asyncResult_err) {
+        if ($asyncResult != null) {
+            $socket->handler(function ($packet) {
+                // Do something with the packet
+            });
 
-    // join the multicast group
-    $socket.$listenMulticastGroup("230.0.0.1", { asyncResult2 ->
-      if (asyncResult2.succeeded()) {
-        // will now receive packets for group
+            // join the multicast group
+            $socket->listenMulticastGroup("230.0.0.1", function ($asyncResult2, $asyncResult2_err) {
+                if ($asyncResult2 != null) {
+                    // will now receive packets for group
 
-        // do some work
+                    // do some work
 
-        $socket.$unlistenMulticastGroup("230.0.0.1", { asyncResult3 ->
-          echo "Unlisten succeeded? ${asyncResult3.succeeded()}"."\n";
-        })
-      } else {
-        echo "Listen failed${asyncResult2.cause()}"."\n";
-      }
-    })
-  } else {
-    echo "Listen failed${asyncResult.cause()}"."\n";
-  }
-})
+                    $socket->unlistenMulticastGroup("230.0.0.1", function ($asyncResult3, $asyncResult3_err) {
+                        echo "Unlisten succeeded? ".$asyncResult3 != null."\n";
+                    });
+                } else {
+                    echo "Listen failed".$asyncResult2_err."\n";
+                };
+            });
+        } else {
+            echo "Listen failed".$asyncResult_err."\n";
+        };
+    });
 
 ----
 
@@ -216,14 +230,16 @@ like shown here:
 
 [source,jphp]
 ----
-/*variableDecl*/$socket = $vertx.$createDatagramSocket(DatagramSocketOptions())
+<?php
+    $socket = $vertx->createDatagramSocket(array(
+    ));
 
-// Some code
+    // Some code
 
-// This would block packets which are send from 10.0.0.2
-$socket.$blockMulticastGroup("230.0.0.1", "10.0.0.2", { asyncResult ->
-  echo "block succeeded? ${asyncResult.succeeded()}"."\n";
-})
+    // This would block packets which are send from 10.0.0.2
+    $socket->blockMulticastGroup("230.0.0.1", "10.0.0.2", function ($asyncResult, $asyncResult_err) {
+        echo "block succeeded? ".$asyncResult != null."\n";
+    });
 
 ----
 

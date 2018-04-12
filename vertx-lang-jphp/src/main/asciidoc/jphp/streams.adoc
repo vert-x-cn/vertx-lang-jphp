@@ -29,15 +29,17 @@ to the `NetSocket`:
 
 [source,jphp]
 ----
-/*variableDecl*/$server = $vertx.$createNetServer(NetServerOptions(
-  port = 1234,
-  host = "localhost"))
-$server.$connectHandler({ sock ->
-  $sock.$handler({ buffer ->
-    // Write the data straight back
-    $sock.$write($buffer)
-  })
-}).$listen()
+<?php
+    $server = $vertx->createNetServer(array(
+        "port" => 1234,
+        "host" => "localhost"
+    ));
+    $server->connectHandler(function ($sock) {
+        $sock->handler(function ($buffer) {
+            // Write the data straight back
+            $sock->write($buffer);
+        });
+    })->listen();
 
 ----
 
@@ -51,17 +53,19 @@ writing to it:
 
 [source,jphp]
 ----
-/*variableDecl*/$server = $vertx.$createNetServer(NetServerOptions(
-  port = 1234,
-  host = "localhost"))
-$server.$connectHandler({ sock ->
-  $sock.$handler({ buffer ->
-    if (!$sock.$writeQueueFull()) {
-      $sock.$write($buffer)
-    }
-  })
+<?php
+    $server = $vertx->createNetServer(array(
+        "port" => 1234,
+        "host" => "localhost"
+    ));
+    $server->connectHandler(function ($sock) {
+        $sock->handler(function ($buffer) {
+            if (!$sock->writeQueueFull()) {
+                $sock->write($buffer);
+            };
+        });
 
-}).$listen()
+    })->listen();
 
 ----
 
@@ -70,17 +74,19 @@ really want to do is pause the `NetSocket` when the write queue is full:
 
 [source,jphp]
 ----
-/*variableDecl*/$server = $vertx.$createNetServer(NetServerOptions(
-  port = 1234,
-  host = "localhost"))
-$server.$connectHandler({ sock ->
-  $sock.$handler({ buffer ->
-    $sock.$write($buffer)
-    if ($sock.$writeQueueFull()) {
-      $sock.$pause()
-    }
-  })
-}).$listen()
+<?php
+    $server = $vertx->createNetServer(array(
+        "port" => 1234,
+        "host" => "localhost"
+    ));
+    $server->connectHandler(function ($sock) {
+        $sock->handler(function ($buffer) {
+            $sock->write($buffer);
+            if ($sock->writeQueueFull()) {
+                $sock->pause();
+            };
+        });
+    })->listen();
 
 ----
 
@@ -89,20 +95,22 @@ it when the write queue has processed its backlog:
 
 [source,jphp]
 ----
-/*variableDecl*/$server = $vertx.$createNetServer(NetServerOptions(
-  port = 1234,
-  host = "localhost"))
-$server.$connectHandler({ sock ->
-  $sock.$handler({ buffer ->
-    $sock.$write($buffer)
-    if ($sock.$writeQueueFull()) {
-      $sock.$pause()
-      $sock.$drainHandler({ done ->
-        $sock.$resume()
-      })
-    }
-  })
-}).$listen()
+<?php
+    $server = $vertx->createNetServer(array(
+        "port" => 1234,
+        "host" => "localhost"
+    ));
+    $server->connectHandler(function ($sock) {
+        $sock->handler(function ($buffer) {
+            $sock->write($buffer);
+            if ($sock->writeQueueFull()) {
+                $sock->pause();
+                $sock->drainHandler(function ($done) {
+                    $sock->resume();
+                });
+            };
+        });
+    })->listen();
 
 ----
 
@@ -116,12 +124,15 @@ You just feed it the `ReadStream` plus the `WriteStream` then start it:
 
 [source,jphp]
 ----
-/*variableDecl*/$server = $vertx.$createNetServer(NetServerOptions(
-  port = 1234,
-  host = "localhost"))
-$server.$connectHandler({ sock ->
-  Pump.$pump($sock, $sock).$start()
-}).$listen()
+<?php
+    use io\vertx\jphp\core\streams\Pump;
+    $server = $vertx->createNetServer(array(
+        "port" => 1234,
+        "host" => "localhost"
+    ));
+    $server->connectHandler(function ($sock) {
+        Pump::pump($sock, $sock)->start();
+    })->listen();
 
 ----
 

@@ -30,26 +30,28 @@ Here's an example of using a shared local map:
 
 [source,jphp]
 ----
+<?php
+    use io\vertx\jphp\core\buffer\Buffer;
 
-/*variableDecl*/$sd = $vertx.$sharedData()
+    $sd = $vertx->sharedData();
 
-/*variableDecl*/$map1 = $sd.$getLocalMap<Any, Any>("mymap1")
+    $map1 = $sd->getLocalMap("mymap1");
 
-$map1.$put("foo", "bar")
+    $map1->put("foo", "bar");
 
-/*variableDecl*/$map2 = $sd.$getLocalMap<Any, Any>("mymap2")
+    $map2 = $sd->getLocalMap("mymap2");
 
-$map2.$put("eek", Buffer.$buffer().$appendInt(123))
+    $map2->put("eek", Buffer::buffer()->appendInt(123));
 
-// Then... in another part of your application:
+    // Then... in another part of your application:
 
-$map1 = $sd.$getLocalMap<Any, Any>("mymap1")
+    $map1 = $sd->getLocalMap("mymap1");
 
-/*variableDecl*/$val = $map1.$get("foo")
+    $val = $map1->get("foo");
 
-$map2 = $sd.$getLocalMap<Any, Any>("mymap2")
+    $map2 = $sd->getLocalMap("mymap2");
 
-/*variableDecl*/$buff = $map2.$get("eek")
+    $buff = $map2->get("eek");
 
 ----
 
@@ -71,16 +73,17 @@ Getting the map is asynchronous and the result is returned to you in the handler
 
 [source,jphp]
 ----
+<?php
 
-/*variableDecl*/$sd = $vertx.$sharedData()
+    $sd = $vertx->sharedData();
 
-$sd.$getAsyncMap<String, String>("mymap", { res ->
-  if (res.succeeded()) {
-    /*variableDecl*/$map = res.result()
-  } else {
-    // Something went wrong!
-  }
-})
+    $sd->getAsyncMap("mymap", function ($res, $res_err) {
+        if ($res != null) {
+            $map = $res;
+        } else {
+            // Something went wrong!
+        };
+    });
 
 
 ----
@@ -93,14 +96,15 @@ The actual put is asynchronous and the handler is notified once it is complete:
 
 [source,jphp]
 ----
+<?php
 
-$map.$put("foo", "bar", { resPut ->
-  if (resPut.succeeded()) {
-    // Successfully put the value
-  } else {
-    // Something went wrong!
-  }
-})
+    $map->put("foo", "bar", function ($resPut, $resPut_err) {
+        if ($resPut != null) {
+            // Successfully put the value
+        } else {
+            // Something went wrong!
+        };
+    });
 
 
 ----
@@ -113,15 +117,16 @@ The actual get is asynchronous and the handler is notified with the result some 
 
 [source,jphp]
 ----
+<?php
 
-$map.$get("foo", { resGet ->
-  if (resGet.succeeded()) {
-    // Successfully got the value
-    /*variableDecl*/$val = resGet.result()
-  } else {
-    // Something went wrong!
-  }
-})
+    $map->get("foo", function ($resGet, $resGet_err) {
+        if ($resGet != null) {
+            // Successfully got the value
+            $val = $resGet;
+        } else {
+            // Something went wrong!
+        };
+    });
 
 
 ----
@@ -152,21 +157,22 @@ another caller can obtain it.
 
 [source,jphp]
 ----
-$sd.$getLock("mylock", { res ->
-  if (res.succeeded()) {
-    // Got the lock!
-    /*variableDecl*/$lock = res.result()
+<?php
+    $sd->getLock("mylock", function ($res, $res_err) {
+        if ($res != null) {
+            // Got the lock!
+            $lock = $res;
 
-    // 5 seconds later we release the lock so someone else can get it
+            // 5 seconds later we release the lock so someone else can get it
 
-    $vertx.$setTimer(5000, { tid ->
-      $lock.$release()
-    })
+            $vertx->setTimer(5000, function ($tid) {
+                $lock->release();
+            });
 
-  } else {
-    // Something went wrong
-  }
-})
+        } else {
+            // Something went wrong
+        };
+    });
 
 ----
 
@@ -175,15 +181,16 @@ with a failure:
 
 [source,jphp]
 ----
-$sd.$getLockWithTimeout("mylock", 10000, { res ->
-  if (res.succeeded()) {
-    // Got the lock!
-    /*variableDecl*/$lock = res.result()
+<?php
+    $sd->getLockWithTimeout("mylock", 10000, function ($res, $res_err) {
+        if ($res != null) {
+            // Got the lock!
+            $lock = $res;
 
-  } else {
-    // Failed to get lock
-  }
-})
+        } else {
+            // Failed to get lock
+        };
+    });
 
 ----
 
@@ -197,13 +204,14 @@ You obtain an instance with `link:../../apidocs/io/vertx/core/shareddata/SharedD
 
 [source,jphp]
 ----
-$sd.$getCounter("mycounter", { res ->
-  if (res.succeeded()) {
-    /*variableDecl*/$counter = res.result()
-  } else {
-    // Something went wrong!
-  }
-})
+<?php
+    $sd->getCounter("mycounter", function ($res, $res_err) {
+        if ($res != null) {
+            $counter = $res;
+        } else {
+            // Something went wrong!
+        };
+    });
 
 ----
 

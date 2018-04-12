@@ -2,696 +2,587 @@ package io.vertx.codetrans.lang.jphp;
 
 import com.sun.source.tree.LambdaExpressionTree;
 import io.vertx.codegen.type.*;
-import io.vertx.codetrans.*;
+import io.vertx.codetrans.CodeModel;
+import io.vertx.codetrans.CodeWriter;
+import io.vertx.codetrans.MethodSignature;
+import io.vertx.codetrans.TypeArg;
 import io.vertx.codetrans.expression.*;
 import io.vertx.codetrans.statement.StatementModel;
-import kotlin.collections.CollectionsKt;
 
 import javax.lang.model.element.TypeElement;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.lang.reflect.Field;
+import java.util.Iterator;
+import java.util.List;
 
 class JPhpWriter extends CodeWriter {
+  private JPhpCodeBuilder builder;
 
+  public JPhpWriter(JPhpCodeBuilder builder) {
+    super(builder);
+    this.builder = builder;
+  }
 
-    private static final Map<String, String> BASIC_TYPES = new HashMap<>();
+  public void renderIdentifier(String name, VariableScope scope) {
+    append("$");
+    append(name);
+  }
 
-    static {
-        BASIC_TYPES.put(java.lang.Byte.class.getName(), "Byte");
-        BASIC_TYPES.put(byte.class.getName(), "Byte");
-        BASIC_TYPES.put(java.lang.Short.class.getName(), "Short");
-        BASIC_TYPES.put(short.class.getName(), "Short");
-        BASIC_TYPES.put(java.lang.Integer.class.getName(), "Int");
-        BASIC_TYPES.put(int.class.getName(), "Int");
-        BASIC_TYPES.put(java.lang.Long.class.getName(), "Long");
-        BASIC_TYPES.put(long.class.getName(), "Long");
-        BASIC_TYPES.put(java.lang.Float.class.getName(), "Float");
-        BASIC_TYPES.put(float.class.getName(), "Float");
-        BASIC_TYPES.put(java.lang.Double.class.getName(), "Double");
-        BASIC_TYPES.put(double.class.getName(), "Double");
-        BASIC_TYPES.put(java.lang.Character.class.getName(), "Char");
-        BASIC_TYPES.put(char.class.getName(), "Char");
-        BASIC_TYPES.put(java.lang.Boolean.class.getName(), "Boolean");
-        BASIC_TYPES.put(boolean.class.getName(), "Boolean");
+  private final Field f;
+
+  {
+    try {
+      f = ParenthesizedModel.class.getDeclaredField("expression");
+      f.setAccessible(true);
+    } catch (NoSuchFieldException e) {
+      e.printStackTrace();
+      throw new RuntimeException(e);
     }
+  }
 
-    private int jsonLevel = 0;
-
-    public JPhpWriter(CodeBuilder builder) {
-        super(builder);
+  private boolean isStringModel(ExpressionModel expression) throws IllegalAccessException {
+    if (expression instanceof BinaryExpressionModel) {
+      BinaryExpressionModel m = (BinaryExpressionModel) expression;
+      ExpressionModel left = m.getLeft();
+      ExpressionModel right = m.getRight();
+      return isStringModel(left) || isStringModel(right);
+    } else if (expression instanceof StringLiteralModel) {
+      return true;
+    } else if (expression instanceof ParenthesizedModel) {
+      ExpressionModel o = (ExpressionModel) f.get(expression);
+      return isStringModel(o);
+    } else if (expression instanceof JPhpCodeBuilder.JPhpIdentifierModel) {
+      return ((JPhpCodeBuilder.JPhpIdentifierModel) expression).getKind() == ClassKind.STRING;
     }
+    return false;
+  }
 
-    @Override
-    public JPhpCodeBuilder getBuilder() {
-        return (JPhpCodeBuilder) super.getBuilder();
-    }
+  private void renderA(JPhpCodeBuilder.A expression) {
+    append("\"");
+    expression.render(this);
+    append("\"");
+  }
 
-    @Override
-    public void renderStringLiteral(List<?> parts) {
-        System.err.println("renderStringLiteral");
-        append('"');
-        for (Object part : parts) {
-            if (part instanceof ExpressionModel) {
-                append("${");
-                ((ExpressionModel) part).render(this);
-                append("}");
-            } else {
-                renderChars(part.toString());
-            }
-        }
-        append('"');
-    }
-
-    public void renderChars(String value) {
-        System.err.println("renderChars");
-        for (int i = 0; i < value.length(); i++) {
-            char c = value.charAt(i);
-            switch (c) {
-                case '\b':
-                    append("\\b");
-                    break;
-                case '\f':
-                    append("\\u000c");
-                    break;
-                case '\n':
-                    append("\\n");
-                    break;
-                case '\t':
-                    append("\\t");
-                    break;
-                case '\r':
-                    append("\\r");
-                    break;
-                case '"':
-                    append("\\\"");
-                    break;
-                case '\\':
-                    append("\\\\");
-                    break;
-                case '$':
-                    append("\\$");
-                default:
-                    if (c < 32 || c > 126) {
-                        String s = Integer.toHexString(c).toUpperCase();
-                        while (s.length() < 4) {
-                            s = "0" + s;
-                        }
-                        append("\\u").append(s);
-                    } else {
-                        append(c);
-                    }
-            }
-        }
-    }
-
-    @Override
-    public void renderNewList() {
-        System.err.println("renderNewList");
-        append("array()");
-    }
-
-    @Override
-    public void renderNewMap() {
-        System.err.println("renderNewMap");
-        append("array()");
-    }
-
-    @Override
-    public void renderThis() {
-        System.err.println("renderThis");
-        append("$this");
-    }
-
-    @Override
-    public void renderMethodReference(ExpressionModel expression, MethodSignature signature) {
-        System.err.println("renderMethodReference");
-        append("{ ");
-        List<ExpressionModel> arguments = new ArrayList<>();
-
-        if (!signature.getParameterTypes().isEmpty()) {
-            for (int i = 0, m = signature.getParameterTypes().size(); i < m; ++i) {
-                String name;
-                if (m == 1) {
-                    name = "it";
-                } else {
-                    name = "p" + Integer.toString(i);
-                }
-
-                arguments.add(new IdentifierModel(builder, name, VariableScope.VARIABLE));
-            }
-
-            if (arguments.size() > 1) {
-                for (int i = 0, m = arguments.size(); i < m; ++i) {
-                    if (i > 0) {
-                        append(", ");
-                    }
-
-                    append(((IdentifierModel) arguments.get(i)).name);
-                }
-
-                append(" -> ");
-            }
-        }
-
-        renderMethodInvocation(expression, VoidTypeInfo.INSTANCE, signature, VoidTypeInfo.INSTANCE, Collections.emptyList(), arguments, CollectionsKt.emptyList());
-        append(" }");
-    }
-
-    @Override
-    public void renderLongLiteral(String value) {
-        System.err.println("renderLongLiteral");
-        renderChars(value);
-        append('L');
-    }
-
-    @Override
-    public void renderFloatLiteral(String value) {
-        System.err.println("renderFloatLiteral");
-        renderChars(value);
-        append('f');
-    }
-
-    @Override
-    public void renderDoubleLiteral(String value) {
-        System.err.println("renderDoubleLiteral");
-        renderChars(value);
-    }
-
-    @Override
-    public void renderBinary(BinaryExpressionModel expression) {
-        System.err.println("renderBinary");
-        expression.getLeft().render(this);
-        append(" ");
-
-        append(expression.getOp());
-
-        append(" ");
-        expression.getRight().render(this);
-    }
-
-    @Override
-    public void renderStatement(StatementModel statement) {
-        System.err.println("renderStatement");
-        statement.render(this);
-        append("\n");
-    }
-
-    @Override
-    public void renderTryCatch(StatementModel tryBlock, StatementModel catchBlock) {
-        System.err.println("renderTryCatch");
-        append("try {\n");
-        indent();
-        tryBlock.render(this);
-        unindent();
-        append("} catch(e: Exception) {\n");
-        indent();
-        catchBlock.render(this);
-        unindent();
-        append("}\n");
-    }
-
-    @Override
-    public void renderThrow(String throwableType, ExpressionModel reason) {
-        System.err.println("renderThrow");
-        append("throw ");
-        append(throwableType);
-        append("(");
-
-        if (reason != null) {
-            reason.render(this);
-        }
-
-        append(")");
-    }
-
-    @Override
-    public void renderSystemOutPrintln(ExpressionModel expression) {
-        System.err.println("renderSystemOutPrintln");
-        append("echo ");
-        expression.render(this);
-        append(".\"\\n\";");
-    }
-
-    @Override
-    public void renderSystemErrPrintln(ExpressionModel expression) {
-        System.err.println("renderSystemErrPrintln");
-        append("echo ");
-        expression.render(this);
-        append(".\"\\n\";");
-    }
-
-
-    @Override
-    public void renderLambda(LambdaExpressionTree.BodyKind bodyKind, List<TypeInfo> parameterTypes, List<String> parameterNames, CodeModel body) {
-        System.err.println("renderLambda");
-        append("{");
-        if (!parameterNames.isEmpty()) {
-            for (int i = 0; i < parameterNames.size(); i++) {
-                if (i == 0) {
-                    append(" ");
-                } else {
-                    append(", ");
-                }
-                append(parameterNames.get(i));
-            }
-            append(" ->\n");
+  @Override
+  public void renderBinary(BinaryExpressionModel expression) {
+    try {
+      String op = expression.getOp();
+      boolean isString = isStringModel(expression);
+//      append("/*111" + isString + "," + expression.getLeft().getClass() + "," + expression.getRight().getClass() + "*/");
+      if (op.equals("+") && isString) {
+        ExpressionModel left = expression.getLeft();
+        ExpressionModel right = expression.getRight();
+        if (left instanceof JPhpCodeBuilder.A) {
+          renderA((JPhpCodeBuilder.A) left);
         } else {
-            append("\n");
+          left.render(this);
         }
-        indent();
-        body.render(this);
-        if (bodyKind == LambdaExpressionTree.BodyKind.EXPRESSION) {
-            append("\n");
-        }
-        unindent();
-        append("}");
-    }
-
-    @Override
-    public void renderApiType(ApiTypeInfo apiType) {
-        System.err.println("renderApiType");
-        append(apiType.getSimpleName());
-    }
-
-    @Override
-    public void renderJavaType(ClassTypeInfo javaType) {
-        System.err.println("renderJavaType");
-        switch (javaType.getKind()) {
-            case STRING:
-                append("String");
-                break;
-            case VOID:
-                append("Unit");
-                break;
-            case BOXED_PRIMITIVE:
-                renderBasicType(javaType);
-                break;
-            default:
-                append(javaType.getName());
-        }
-    }
-
-    private static final Set<String> reservedWords = new HashSet<>(Arrays.asList("object", "class"));
-
-    @Override
-    public void renderIdentifier(String name, VariableScope scope) {
-        System.err.println("renderIdentifier");
-        append("$");
-        if (reservedWords.contains(name)) {
-            append("`");
-            append(name);
-            append("`");
+        append(".");
+        if (right instanceof JPhpCodeBuilder.A) {
+          renderA((JPhpCodeBuilder.A) right);
         } else {
-            append(name);
+          right.render(this);
         }
+      } else {
+        super.renderBinary(expression);
+      }
+    } catch (Throwable t) {
+      t.printStackTrace();
     }
+  }
 
-    public void renderBasicType(TypeInfo type) {
-        System.err.println("renderBasicType");
-        append(BASIC_TYPES.getOrDefault(type.getName(), type.getName()));
-    }
-
-    @Override
-    public void renderAsyncResultSucceeded(TypeInfo resultType, String name) {
-        System.err.println("renderAsyncResultSucceeded");
-        append(name).append(".succeeded()");
-    }
-
-    @Override
-    public void renderAsyncResultFailed(TypeInfo resultType, String name) {
-        System.err.println("renderAsyncResultFailed");
-        append(name).append(".failed()");
-    }
-
-    @Override
-    public void renderAsyncResultCause(TypeInfo resultType, String name) {
-        System.err.println("renderAsyncResultCause");
-        append(name).append(".cause()");
-    }
-
-    @Override
-    public void renderAsyncResultValue(TypeInfo resultType, String name) {
-        System.err.println("renderAsyncResultValue");
-        append(name).append(".result()");
-    }
-
-    @Override
-    public void renderEnumConstant(EnumTypeInfo type, String constant) {
-        System.err.println("renderEnumConstant");
-        append(type.getSimpleName()).append('.').append(constant);
-    }
-
-    @Override
-    public void renderListAdd(ExpressionModel list, ExpressionModel value) {
-        System.err.println("renderListAdd");
-        list.render(this);
-        append(".add(");
-        value.render(this);
-        append(")");
-    }
-
-    @Override
-    public void renderListSize(ExpressionModel list) {
-        System.err.println("renderListSize");
-        append("sizeof(");
-        list.render(this);
-        append(")");
-    }
-
-    @Override
-    public void renderListGet(ExpressionModel list, ExpressionModel index) {
-        System.err.println("renderListGet");
-        list.render(this);
-        append("[");
-        index.render(this);
-        append("]");
-    }
-
-    @Override
-    public void renderMapGet(ExpressionModel map, ExpressionModel key) {
-        System.err.println("renderMapGet");
-        map.render(this);
-        append("[");
-        key.render(this);
-        append("]");
-    }
-
-    @Override
-    public void renderMapPut(ExpressionModel map, ExpressionModel key, ExpressionModel value) {
-        System.err.println("renderMapPut");
-        map.render(this);
-        append("[");
-        key.render(this);
-        append("] = ");
-        value.render(this);
-    }
-
-    @Override
-    public void renderMapForEach(ExpressionModel map, String keyName, TypeInfo keyType, String valueName, TypeInfo valueType, LambdaExpressionTree.BodyKind bodyKind, CodeModel block) {
-        System.err.println("renderMapForEach");
-        append("for ((").append(keyName).append(", ").append(valueName).append(") in ");
-        map.render(this);
-        append(") {\n");
-        indent();
-
-        block.render(this);
-        if (bodyKind == LambdaExpressionTree.BodyKind.EXPRESSION) {
-            append("\n");
-        }
-
-        unindent();
-        append("}\n");
-    }
-
-    @Override
-    public void renderNew(ExpressionModel expression, TypeInfo type, List<ExpressionModel> argumentModels) {
-        System.err.println("renderNew");
-        expression.render(this);
-        append('(');
-        for (int i = 0; i < argumentModels.size(); i++) {
-            if (i > 0) {
-                append(", ");
-            }
-            argumentModels.get(i).render(this);
-        }
-        append(')');
-    }
-
-    @Override
-    public void renderInstanceOf(ExpressionModel expression, TypeElement type) {
-        System.err.println("renderInstanceOf");
-        expression.render(this);
-        append(" is ");
-        append(type.getQualifiedName());
-    }
-
-    @Override
-    public void renderListLiteral(List<ExpressionModel> arguments) {
-        System.err.println("renderListLiteral");
-        append("listOf(");
-        for (int i = 0; i < arguments.size(); ++i) {
-            if (i > 0) {
-                append(", ");
-            }
-
-            arguments.get(i).render(this);
-        }
-        append(")");
-    }
-
-    @Override
-    public void renderJsonArrayToString(ExpressionModel expression) {
-        System.err.println("renderJsonArrayToString");
-        expression.render(this);
-        append(".toString()");
-    }
-
-    @Override
-    public void renderJsonObjectToString(ExpressionModel expression) {
-        System.err.println("renderJsonObjectToString");
-        expression.render(this);
-        append(".toString()");
-    }
-
-    @Override
-    public void renderJsonArray(JsonArrayLiteralModel jsonArray) {
-        System.err.println("renderJsonArray");
-        renderJsonArray(jsonArray.getValues());
-    }
-
-    @Override
-    public void renderJsonArrayAdd(ExpressionModel expression, ExpressionModel value) {
-        System.err.println("renderJsonArrayAdd");
-        expression.render(this);
-
-        if (value instanceof NullLiteralModel) {
-            append(".addNull()");
+  @Override
+  public void renderStringLiteral(List<?> parts) {
+    try {
+      boolean back = false;
+      boolean first = true;
+      for (Iterator<?> it = parts.iterator(); it.hasNext(); ) {
+        Object part = it.next();
+        if (part instanceof String || part instanceof StringLiteralModel || part instanceof JPhpCodeBuilder.A) {
+          if (!first) {
+            append(".");
+          }
+          if (!back) {
+            append('"');
+            back = true;
+          }
+          if (part instanceof String) {
+            renderChars((String) part);
+          } else {
+            ExpressionModel m = (ExpressionModel) part;
+            m.render(this);
+          }
         } else {
-            append(".add(");
-            value.render(this);
+          if (back) {
+            append('"');
+            back = false;
+            append(".");
+          }
+          if (!first && part instanceof BinaryExpressionModel) {
+            append("(");
+          }
+          ExpressionModel m = (ExpressionModel) part;
+          m.render(this);
+          if (!first && part instanceof BinaryExpressionModel) {
             append(")");
+          }
         }
+        first = false;
+      }
+      if (back) {
+        append('"');
+      }
+    } catch (Throwable t) {
+      t.printStackTrace();
+    }
+    //      if (part instanceof JPhpCodeBuilder.A) {
+    //        ((JPhpCodeBuilder.A) part).render(this);
+    //      } else if (part instanceof IdentifierModel) {
+    //        IdentifierModel identifier = (IdentifierModel) part;
+    //        append("${");
+    //        append(identifier.name);
+    //        append("}");
+    //      } else if (part instanceof ExpressionModel) {
+    //        System.err.println(part.getClass());
+    ////        append("/*");
+    ////        append(part.getClass().getSimpleName());
+    ////        append("*/");
+    //        append("\".");
+    //        if (!(part instanceof ParenthesizedModel)) {
+    //          append("(");
+    //        }
+    //        ((ExpressionModel) part).render(this);
+    //        append("/*end*/");
+    //        if (!(part instanceof ParenthesizedModel)) {
+    //          append(")");
+    //        }
+    //        if (hasNext) {
+    //          append(".\"");
+    //        }
+    //      } else {
+    //        renderChars(part.toString());
+    //      }
+    //    }
+    //    append('"');
+  }
+
+  @Override
+  public void renderStatement(StatementModel statement) {
+    statement.render(this);
+    append(";\n");
+  }
+
+  @Override
+  public void renderTryCatch(StatementModel tryBlock, StatementModel catchBlock) {
+    append("try {\n");
+    indent();
+    tryBlock.render(this);
+    unindent();
+    append("} catch(Exception $throwable) {\n");
+    indent();
+    catchBlock.render(this);
+    unindent();
+    append("}\n");
+  }
+
+  @Override
+  public void renderMethodReference(ExpressionModel expression, MethodSignature signature) {
+    if (!(expression instanceof ThisModel)) {
+      append("array(");
+      expression.render(this);
+      append(", ");
+    }
+    renderStringLiteral(signature.getName());
+    if (!(expression instanceof ThisModel)) {
+      append(")");
+    }
+  }
+
+  @Override
+  public void renderNew(ExpressionModel expression, TypeInfo type, List<ExpressionModel> argumentModels) {
+    expression.render(this);
+    append(".newInstance(");
+    for (int i = 0; i < argumentModels.size(); i++) {
+      if (i > 0) {
+        append(", ");
+      }
+      argumentModels.get(i).render(this);
+    }
+    append(')');
+  }
+
+  @Override
+  public void renderListAdd(ExpressionModel list, ExpressionModel value) {
+    list.render(this);
+    append("[] = ");
+    value.render(this);
+  }
+
+  @Override
+  public void renderListSize(ExpressionModel list) {
+    append("sizeof(");
+    list.render(this);
+    append(")");
+  }
+
+  @Override
+  public void renderListGet(ExpressionModel list, ExpressionModel index) {
+    list.render(this);
+    append("[");
+    index.render(this);
+    append("]");
+  }
+
+  @Override
+  public void renderListLiteral(List<ExpressionModel> arguments) {
+    append("array(");
+    Iterator<ExpressionModel> it = arguments.iterator();
+    while (it.hasNext()) {
+      append("");
+      append(" ");
+      it.next().render(this);
+      if (it.hasNext()) {
+        append(", ");
+      }
+    }
+    append(")");
+  }
+
+  @Override
+  public void renderMapGet(ExpressionModel map, ExpressionModel key) {
+    map.render(this);
+    append("[");
+    key.render(this);
+    append("]");
+  }
+
+  @Override
+  public void renderMapPut(ExpressionModel map, ExpressionModel key, ExpressionModel value) {
+    map.render(this);
+    append("[");
+    key.render(this);
+    append("] = ");
+    value.render(this);
+  }
+
+  @Override
+  public CodeWriter indent() {
+    super.indent();
+    return super.indent();
+  }
+
+  @Override
+  public CodeWriter unindent() {
+    super.unindent();
+    return super.unindent();
+  }
+
+  @Override
+  public void renderMapForEach(ExpressionModel map, String keyName, TypeInfo keyType, String valueName, TypeInfo valueType, LambdaExpressionTree.BodyKind bodyKind, CodeModel block) {
+    append("foreach (");
+    map.render(this);
+    append(" as $");
+    append(keyName);
+    append(" => ");
+    append("$");
+    append(valueName);
+    append(") {\n").indent();
+    block.render(this);
+    unindent();
+    append("}\n");
+  }
+
+  @Override
+  public void renderJsonObject(JsonObjectLiteralModel model) {
+    renderJsonObject(model.getMembers());
+  }
+
+  @Override
+  public void renderJsonArray(JsonArrayLiteralModel jsonArray) {
+    renderJsonArray(jsonArray.getValues());
+  }
+
+
+  @Override
+  public void renderDataObject(DataObjectLiteralModel model) {
+    renderJsonObject(model.getMembers());
+  }
+
+  private void renderJsonObject(Iterable<Member> members) {
+    append("array(\n");
+    indent();
+    for (Iterator<Member> iterator = members.iterator(); iterator.hasNext(); ) {
+      Member member = iterator.next();
+      String name = member.getName();
+      append("\"");
+      renderChars(name);
+      append("\" => ");
+      if (member instanceof Member.Single) {
+        ((Member.Single) member).getValue().render(this);
+      } else if (member instanceof Member.Sequence) {
+        renderJsonArray(((Member.Sequence) member).getValues());
+      } else if (member instanceof Member.Entries) {
+        renderJsonObject(((Member.Entries) member).entries());
+      }
+      if (iterator.hasNext()) {
+        append(',');
+      }
+      append('\n');
+    }
+    unindent().append(")");
+  }
+
+  private void renderJsonArray(List<ExpressionModel> values) {
+    append("[\n").indent();
+    for (int i = 0; i < values.size(); i++) {
+      values.get(i).render(this);
+      if (i < values.size() - 1) {
+        append(',');
+      }
+      append('\n');
+    }
+    unindent().append(']');
+  }
+
+  @Override
+  public void renderJsonObjectAssign(ExpressionModel expression, String name, ExpressionModel value) {
+    expression.render(this);
+    append("[\"");
+    append(name);
+    append("\"]");
+    append(" = ");
+    value.render(this);
+  }
+
+  @Override
+  public void renderDataObjectAssign(ExpressionModel expression, String name, ExpressionModel value) {
+    renderJsonObjectAssign(expression, name, value);
+  }
+
+  @Override
+  public void renderJsonObjectToString(ExpressionModel expression) {
+    renderJson(expression);
+  }
+
+  private void renderJson(ExpressionModel expression) {
+    append("json_encode(");
+    expression.render(this);
+    append(")");
+  }
+
+  @Override
+  public void renderJsonArrayToString(ExpressionModel expression) {
+    renderJson(expression);
+  }
+
+  @Override
+  public void renderJsonObjectMemberSelect(ExpressionModel expression, Class<?> type, String name) {
+    expression.render(this);
+    append("[\"");
+    append(name);
+    append("\"]");
+  }
+
+  @Override
+  public void renderDataObjectMemberSelect(ExpressionModel expression, String name) {
+    renderJsonObjectMemberSelect(expression, Object.class, name);
+  }
+
+  @Override
+  public void renderNewMap() {
+    append("array()");
+  }
+
+  @Override
+  public void renderNewList() {
+    append("array()");
+  }
+
+  @Override
+  public void renderAsyncResultSucceeded(TypeInfo resultType, String name) {
+    append("$").append(name).append(" != null");
+  }
+
+  @Override
+  public void renderAsyncResultFailed(TypeInfo resultType, String name) {
+    append("$").append(name).append("_err != null");
+  }
+
+  @Override
+  public void renderAsyncResultCause(TypeInfo resultType, String name) {
+    append("$").append(name).append("_err");
+  }
+
+  @Override
+  public void renderAsyncResultValue(TypeInfo resultType, String name) {
+    append("$").append(name);
+  }
+
+  @Override
+  public void renderLambda(LambdaExpressionTree.BodyKind bodyKind, List<TypeInfo> parameterTypes, List<String> parameterNames, CodeModel body) {
+    append("function (");
+    for (int i = 0; i < parameterNames.size(); i++) {
+      if (i > 0) {
+        append(", ");
+      }
+      append("$");
+      append(parameterNames.get(i));
+    }
+    append(") {\n");
+    indent();
+    body.render(this);
+    if (bodyKind == LambdaExpressionTree.BodyKind.EXPRESSION) {
+      append(";\n");
+    }
+    unindent();
+    append("}");
+  }
+
+  @Override
+  public void renderEnumConstant(EnumTypeInfo type, String constant) {
+    append('"');
+    append(constant);
+    append('"');
+  }
+
+  @Override
+  public void renderSystemOutPrintln(ExpressionModel expression) {
+    append("echo ");
+    if (expression instanceof StringLiteralModel) {
+      StringLiteralModel str = (StringLiteralModel) expression;
+      append("\"");
+      renderChars(str.getValue());
+      append("\\n\"");
+    } else {
+      expression.render(this);
+      append(".\"\\n\"");
+    }
+  }
+
+  @Override
+  public void renderMethodInvocation(ExpressionModel expression, TypeInfo receiverType, MethodSignature method, TypeInfo returnType, List<TypeArg> typeArguments, List<ExpressionModel> argumentModels, List<TypeInfo> argumentTypes) {
+    List<TypeInfo> parameterTypes = method.getParameterTypes();
+    for (int i = 0; i < parameterTypes.size(); i++) {
+      TypeInfo parameterType = parameterTypes.get(i);
+      TypeInfo argumentType = argumentTypes.get(i);
+      if (io.vertx.codetrans.Helper.isHandler(parameterType) && io.vertx.codetrans.Helper.isInstanceOfHandler(argumentType)) {
+        ExpressionModel expressionModel = argumentModels.get(i);
+        argumentModels.set(i, builder.render(expressionModel::render));
+      }
     }
 
-    private void jsonEnter() {
-        System.err.println("jsonEnter");
-        if (jsonLevel == 0) {
-            append("json {\n");
-            indent();
-        }
-        jsonLevel++;
-    }
-
-    private void jsonLeave() {
-        System.err.println("jsonLeave");
-        jsonLevel--;
-        if (jsonLevel == 0) {
-            unindent();
-            append("\n}");
-        }
-    }
-
-    @Override
-    public void renderJsonArrayGet(ExpressionModel expression, Class<?> type, ExpressionModel index) {
-        System.err.println("renderJsonArrayGet");
+    //
+    if (expression instanceof JPhpCodeBuilder.JPhpIdentifierModel && ((JPhpCodeBuilder.JPhpIdentifierModel) expression).getKind() == ClassKind.STRING) {
+      if (method.getName().equals("startsWith")) {
+        append("substr(");
         expression.render(this);
-        append(".");
-        if (type == Object.class) {
-            append("get<Any?>(");
-        } else {
-            append("get");
-            append(type.getSimpleName());
+        append(", 0, strlen(");
+        argumentModels.get(0).render(this);
+        append(")) === ");
+        argumentModels.get(0).render(this);
+        if (argumentModels.size() > 1) {
+          append("/*wrong arg num*/");
         }
-        append("(");
-        index.render(this);
-        append(')');
-    }
-
-    private void renderJsonArray(List<ExpressionModel> entries) {
-        System.err.println("renderJsonArray");
-        jsonEnter();
-        append("array(");
-
-        for (int i = 0; i < entries.size(); ++i) {
-            if (i > 0) {
-                append(", ");
-            }
-
-            entries.get(i).render(this);
-        }
-
-        append(")");
-        jsonLeave();
-    }
-
-    @Override
-    public void renderJsonObject(JsonObjectLiteralModel jsonObject) {
-        System.err.println("renderJsonObject");
-        jsonEnter();
-
-        renderMapStructure("obj", jsonObject.getMembers());
-
-        jsonLeave();
-    }
-
-    @Override
-    public void renderJsonObjectAssign(ExpressionModel expression, String name, ExpressionModel value) {
-        System.err.println("renderJsonObjectAssign");
-        ArrayList<ExpressionModel> args = new ArrayList<>();
-        args.add(new StringLiteralModel(getBuilder(), name));
-
-        if (value instanceof NullLiteralModel) {
-            renderMethodInvocation(expression, VoidTypeInfo.INSTANCE, new MethodSignature("putNull", Collections.emptyList(), false, VoidTypeInfo.INSTANCE), VoidTypeInfo.INSTANCE, Collections.emptyList(), args, Collections.emptyList());
-        } else {
-            args.add(value);
-            renderMethodInvocation(expression, VoidTypeInfo.INSTANCE, new MethodSignature("put", Collections.emptyList(), false, VoidTypeInfo.INSTANCE), VoidTypeInfo.INSTANCE, Collections.emptyList(), args, Collections.emptyList());
-        }
-    }
-
-    @Override
-    public void renderMethodInvocation(ExpressionModel expression, TypeInfo receiverType, MethodSignature method, TypeInfo returnType, List<TypeArg> typeArguments, List<ExpressionModel> argumentModels, List<TypeInfo> argumentTypes) {
-
-        System.err.println("renderMethodInvocation");
-        if (!(expression instanceof ThisModel)) {
-            expression.render(this);
-            append('.');
-        }
-        renderIdentifier(method.getName(), VariableScope.FIELD);
-        if (typeArguments.size() > 0) {
-            boolean needed = typeArguments.stream().filter(typeArg -> typeArg == null || !typeArg.resolved).count() > 0;
-            if (needed) {
-                append('<');
-                append(typeArguments.stream().map(ti -> {
-                    if (ti != null) {
-                        return ti.value.getSimpleName();
-                    } else {
-                        return "Any";
-                    }
-                }).collect(Collectors.joining(", ")));
-                append('>');
-            }
-        }
-        append('(');
-        for (int i = 0; i < argumentModels.size(); i++) {
-            if (i > 0) {
-                append(", ");
-            }
-            argumentModels.get(i).render(this);
-        }
-        append(')');
-    }
-
-    @Override
-    public void renderJsonObjectMemberSelect(ExpressionModel expression, Class<?> type, String name) {
-        System.err.println("renderJsonObjectMemberSelect");
+      } else if (method.getName().equals("length")) {
+        append("strlen(");
         expression.render(this);
-        append(".");
-        if (type == Object.class) {
-            append("get<Any?>");
-        } else {
-            append("get");
-            append(type.getSimpleName());
-        }
-        append("(");
-        renderStringLiteral(name);
         append(")");
-    }
-
-    @Override
-    public void renderDataObject(DataObjectLiteralModel model) {
-        System.err.println("renderDataObject");
-        append(model.getType().getSimpleName());
-        append("(");
-        if (model.getMembers().iterator().hasNext()) {
-            append("\n");
-            indent();
-            int index = 0;
-            for (Member m : model.getMembers()) {
-                if (index > 0) {
-                    append(",\n");
-                }
-                append(m.getName()).append(" = ");
-                renderMember(m);
-                index++;
-            }
-            unindent();
-        }
-        append(")");
-    }
-
-    @Override
-    public void renderDataObjectAssign(ExpressionModel expression, String name, ExpressionModel value) {
-        System.err.println("renderDataObjectAssign");
-        renderDataObjectMemberSelect(expression, name);
-        append(" = ");
-        value.render(this);
-    }
-
-    @Override
-    public void renderDataObjectMemberSelect(ExpressionModel expression, String name) {
-        System.err.println("renderDataObjectMemberSelect");
+      } else {
+        append("/*string method").append(method.getName()).append("*/");
+      }
+    } else {
+      if (!(expression instanceof ThisModel)) {
         expression.render(this);
-        append(".");
-        renderIdentifier(name, VariableScope.FIELD);
-    }
-
-    @Override
-    public void renderMemberSelect(ExpressionModel expression, String identifier) {
-        System.err.println("renderMemberSelect");
-        expression.render(this);
-        append('.');
-        renderIdentifier(identifier, VariableScope.FIELD);
-    }
-
-    private void renderMapStructure(String builderFunctionName, Iterable<Member> members) {
-        System.err.println("renderMapStructure");
-        List<Member> membersList = new ArrayList<>();
-        CollectionsKt.addAll(membersList, members);
-        boolean feedLine = membersList.size() > 1;
-
-        append(builderFunctionName);
-        append("(");
-        if (feedLine) {
-            append("\n");
+        renderJoiner(expression);
+      }
+      append(method.getName());
+      append('(');
+      for (int i = 0; i < argumentModels.size(); i++) {
+        if (i > 0) {
+          append(", ");
         }
-        indent();
-
-        int i = 0;
-        for (Member m : membersList) {
-            if (i > 0) {
-                append(",");
-                if (feedLine) {
-                    append("\n");
-                }
-            }
-
-            renderStringLiteral(m.getName());
-            append(" to ");
-            renderMember(m);
-
-            i++;
-        }
-
-        unindent();
-        if (feedLine) {
-            append("\n");
-        }
-        append(")");
+        argumentModels.get(i).render(this);
+      }
+      append(')');
     }
 
-    private void renderMap(Iterable<Member> members) {
-        System.err.println("renderMap");
-        renderMapStructure("mapOf", members);
+  }
+
+  @Override
+  public void renderSystemErrPrintln(ExpressionModel expression) {
+    renderSystemOutPrintln(expression);
+  }
+
+  @Override
+  public void renderThrow(String throwableType, ExpressionModel reason) {
+    append("throw new ");
+    append(throwableType.replace(".", "\\"));
+    append("(");
+
+    if (reason != null) {
+      reason.render(this);
     }
 
-    private void renderMember(Member m) {
-        System.err.println("renderMember");
-        if (m instanceof Member.Single) {
-            ((Member.Single) m).getValue().render(this);
-        } else if (m instanceof Member.Sequence) {
-            renderListLiteral(((Member.Sequence) m).getValues());
-        } else if (m instanceof Member.Entries) {
-            renderMap(((Member.Entries) m).entries());
-        }
+    append(")");
+  }
+
+  @Override
+  public void renderThis() {
+    append("$this");
+  }
+
+  @Override
+  public void renderApiType(ApiTypeInfo apiType) {
+    append(apiType.getSimpleName());
+  }
+
+  @Override
+  public void renderJavaType(ClassTypeInfo apiType) {
+    append("Java::type(\"");
+    append(apiType.getPackageName());
+    append(".");
+    append(apiType.getSimpleName());
+    append("\")");
+  }
+
+  private void renderJoiner(ExpressionModel expression) {
+    if (expression instanceof ApiTypeModel) {
+      append("::");
+    } else if (expression instanceof ClassModel) {
+      append("->");
+    } else {
+      append("->");
     }
+  }
+
+  public void renderMemberSelect(ExpressionModel expression, String identifier) {
+    expression.render(this);
+    renderJoiner(expression);
+    append(identifier);
+  }
+
+  @Override
+  public void renderJsonArrayAdd(ExpressionModel expression, ExpressionModel value) {
+    renderListAdd(expression, value);
+  }
+
+  @Override
+  public void renderInstanceOf(ExpressionModel expression, TypeElement type) {
+    expression.render(this);
+    append(".getClass().getSimpleName() == '");
+    append(type.getSimpleName());
+    append("'");
+  }
+
+  @Override
+  public void renderAssign(ExpressionModel variable, ExpressionModel expression) {
+    if (expression instanceof JPhpCodeBuilder.JPhpIdentifierModel) {
+      JPhpCodeBuilder.JPhpIdentifierModel e = (JPhpCodeBuilder.JPhpIdentifierModel) expression;
+      if (e.getScope() == VariableScope.FIELD && builder.defineFunction) {
+        append("global $").append(e.name).append(";");
+      }
+    }
+    variable.render(this);
+    append(" = ");
+    expression.render(this);
+  }
 }

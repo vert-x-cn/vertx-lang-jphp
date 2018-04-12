@@ -27,17 +27,22 @@ describe options and arguments:
 
 [source,jphp]
 ----
-/*variableDecl*/$cli = CLI.$create("copy").$setSummary("A command line interface to copy files.").$addOption(Option(
-  longName = "directory",
-  shortName = "R",
-  description = "enables directory support",
-  flag = true)).$addArgument(Argument(
-  index = 0,
-  description = "The source",
-  argName = "source")).$addArgument(Argument(
-  index = 1,
-  description = "The destination",
-  argName = "target"))
+<?php
+    use io\vertx\jphp\core\cli\CLI;
+    $cli = CLI::create("copy")->setSummary("A command line interface to copy files.")->addOption(array(
+        "longName" => "directory",
+        "shortName" => "R",
+        "description" => "enables directory support",
+        "flag" => true
+    ))->addArgument(array(
+        "index" => 0,
+        "description" => "The source",
+        "argName" => "source"
+    ))->addArgument(array(
+        "index" => 1,
+        "description" => "The destination",
+        "argName" => "target"
+    ));
 
 ----
 
@@ -59,18 +64,23 @@ configure the option to receive several values using `link:../../apidocs/io/vert
 
 [source,jphp]
 ----
-/*variableDecl*/$cli = CLI.$create("some-name").$setSummary("A command line interface illustrating the options valuation.").$addOption(Option(
-  longName = "flag",
-  shortName = "f",
-  flag = true,
-  description = "a flag")).$addOption(Option(
-  longName = "single",
-  shortName = "s",
-  description = "a single-valued option")).$addOption(Option(
-  longName = "multiple",
-  shortName = "m",
-  multiValued = true,
-  description = "a multi-valued option"))
+<?php
+    use io\vertx\jphp\core\cli\CLI;
+    $cli = CLI::create("some-name")->setSummary("A command line interface illustrating the options valuation.")->addOption(array(
+        "longName" => "flag",
+        "shortName" => "f",
+        "flag" => true,
+        "description" => "a flag"
+    ))->addOption(array(
+        "longName" => "single",
+        "shortName" => "s",
+        "description" => "a single-valued option"
+    ))->addOption(array(
+        "longName" => "multiple",
+        "shortName" => "m",
+        "multiValued" => true,
+        "description" => "a multi-valued option"
+    ));
 
 ----
 
@@ -79,10 +89,13 @@ the parsing:
 
 [source,jphp]
 ----
-/*variableDecl*/$cli = CLI.$create("some-name").$addOption(Option(
-  longName = "mandatory",
-  required = true,
-  description = "a mandatory option"))
+<?php
+    use io\vertx\jphp\core\cli\CLI;
+    $cli = CLI::create("some-name")->addOption(array(
+        "longName" => "mandatory",
+        "required" => true,
+        "description" => "a mandatory option"
+    ));
 
 ----
 
@@ -91,10 +104,13 @@ the command line:
 
 [source,jphp]
 ----
-/*variableDecl*/$cli = CLI.$create("some-name").$addOption(Option(
-  longName = "optional",
-  defaultValue = "hello",
-  description = "an optional option with a default value"))
+<?php
+    use io\vertx\jphp\core\cli\CLI;
+    $cli = CLI::create("some-name")->addOption(array(
+        "longName" => "optional",
+        "defaultValue" => "hello",
+        "description" => "an optional option with a default value"
+    ));
 
 ----
 
@@ -105,11 +121,18 @@ If the option value is contrained to a fixed set, you can set the different acce
 
 [source,jphp]
 ----
-/*variableDecl*/$cli = CLI.$create("some-name").$addOption(Option(
-  longName = "color",
-  defaultValue = "green",
-  choices = listOf("blue", "red", "green"),
-  description = "a color"))
+<?php
+    use io\vertx\jphp\core\cli\CLI;
+    $cli = CLI::create("some-name")->addOption(array(
+        "longName" => "color",
+        "defaultValue" => "green",
+        "choices" => [
+            "blue",
+            "red",
+            "green"
+        ],
+        "description" => "a color"
+    ));
 
 ----
 
@@ -125,13 +148,17 @@ index `0`:
 
 [source,jphp]
 ----
-/*variableDecl*/$cli = CLI.$create("some-name").$addArgument(Argument(
-  index = 0,
-  description = "the first argument",
-  argName = "arg1")).$addArgument(Argument(
-  index = 1,
-  description = "the second argument",
-  argName = "arg2"))
+<?php
+    use io\vertx\jphp\core\cli\CLI;
+    $cli = CLI::create("some-name")->addArgument(array(
+        "index" => 0,
+        "description" => "the first argument",
+        "argName" => "arg1"
+    ))->addArgument(array(
+        "index" => 1,
+        "description" => "the second argument",
+        "argName" => "arg2"
+    ));
 
 ----
 
@@ -139,11 +166,15 @@ If you don't set the argument indexes, it computes it automatically by using the
 
 [source,jphp]
 ----
-/*variableDecl*/$cli = CLI.$create("some-name").$addArgument(Argument(
-  description = "the first argument",
-  argName = "arg1")).$addArgument(Argument(
-  description = "the second argument",
-  argName = "arg2"))
+<?php
+    use io\vertx\jphp\core\cli\CLI;
+    $cli = CLI::create("some-name")->addArgument(array(
+        "description" => "the first argument",
+        "argName" => "arg1"
+    ))->addArgument(array(
+        "description" => "the second argument",
+        "argName" => "arg2"
+    ));
 
 ----
 
@@ -165,20 +196,25 @@ Once your `link:../../apidocs/io/vertx/core/cli/CLI.html[CLI]` instance is confi
 
 [source,jphp]
 ----
-/*variableDecl*/$cli = CLI.$create("copy").$setSummary("A command line interface to copy files.").$addOption(Option(
-  longName = "directory",
-  shortName = "R",
-  description = "enables directory support",
-  flag = true)).$addArgument(Argument(
-  index = 0,
-  description = "The source",
-  argName = "source")).$addArgument(Argument(
-  index = 0,
-  description = "The destination",
-  argName = "target"))
+<?php
+    use io\vertx\jphp\core\cli\CLI;
+    $cli = CLI::create("copy")->setSummary("A command line interface to copy files.")->addOption(array(
+        "longName" => "directory",
+        "shortName" => "R",
+        "description" => "enables directory support",
+        "flag" => true
+    ))->addArgument(array(
+        "index" => 0,
+        "description" => "The source",
+        "argName" => "source"
+    ))->addArgument(array(
+        "index" => 0,
+        "description" => "The destination",
+        "argName" => "target"
+    ));
 
-/*variableDecl*/$builder = java.lang.StringBuilder()
-$cli.$usage($builder)
+    $builder = Java::type("java.lang.StringBuilder").newInstance();
+    $cli->usage($builder);
 
 ----
 
@@ -202,7 +238,8 @@ each option and argument:
 
 [source,jphp]
 ----
-/*variableDecl*/$commandLine = $cli.$parse($userCommandLineArguments)
+<?php
+    $commandLine = $cli->parse($userCommandLineArguments);
 
 ----
 
@@ -223,10 +260,11 @@ method:
 
 [source,jphp]
 ----
-/*variableDecl*/$commandLine = $cli.$parse($userCommandLineArguments)
-/*variableDecl*/$opt = $commandLine.$getOptionValue<Any>("my-option")
-/*variableDecl*/$flag = $commandLine.$isFlagEnabled("my-flag")
-/*variableDecl*/$arg0 = $commandLine.$getArgumentValue<Any>(0)
+<?php
+    $commandLine = $cli->parse($userCommandLineArguments);
+    $opt = $commandLine->getOptionValue("my-option");
+    $flag = $commandLine->isFlagEnabled("my-flag");
+    $arg0 = $commandLine->getArgumentValue(0);
 
 ----
 
@@ -235,22 +273,26 @@ won't failed, but give you the opportunity to check if the user asks for help:
 
 [source,jphp]
 ----
-/*variableDecl*/$cli = CLI.$create("test").$addOption(Option(
-  longName = "help",
-  shortName = "h",
-  flag = true,
-  help = true)).$addOption(Option(
-  longName = "mandatory",
-  required = true))
+<?php
+    use io\vertx\jphp\core\cli\CLI;
+    $cli = CLI::create("test")->addOption(array(
+        "longName" => "help",
+        "shortName" => "h",
+        "flag" => true,
+        "help" => true
+    ))->addOption(array(
+        "longName" => "mandatory",
+        "required" => true
+    ));
 
-/*variableDecl*/$line = $cli.$parse(java.util.Collections.$singletonList("-h"))
+    $line = $cli->parse(Java::type("java.util.Collections")->singletonList("-h"));
 
-// The parsing does not fail and let you do:
-if (!$line.$isValid() && $line.$isAskingForHelp()) {
-  /*variableDecl*/$builder = java.lang.StringBuilder()
-  $cli.$usage($builder)
-  $stream.$print($builder.$toString())
-}
+    // The parsing does not fail and let you do:
+    if (!$line->isValid() && $line->isAskingForHelp()) {
+        $builder = Java::type("java.lang.StringBuilder").newInstance();
+        $cli->usage($builder);
+        $stream->print($builder->toString());
+    };
 
 ----
 

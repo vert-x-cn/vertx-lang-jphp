@@ -8,8 +8,9 @@ The simplest way to create a TCP server, using all default options is as follows
 
 [source,jphp]
 ----
+<?php
 
-/*variableDecl*/$server = $vertx.$createNetServer()
+    $server = $vertx->createNetServer();
 
 ----
 
@@ -20,10 +21,12 @@ instance when creating it:
 
 [source,jphp]
 ----
+<?php
 
-/*variableDecl*/$options = NetServerOptions(
-  port = 4321)
-/*variableDecl*/$server = $vertx.$createNetServer($options)
+    $options = array(
+        "port" => 4321
+    );
+    $server = $vertx->createNetServer($options);
 
 ----
 
@@ -36,9 +39,10 @@ To tell the server to listen at the host and port as specified in the options:
 
 [source,jphp]
 ----
+<?php
 
-/*variableDecl*/$server = $vertx.$createNetServer()
-$server.$listen()
+    $server = $vertx->createNetServer();
+    $server->listen();
 
 ----
 
@@ -46,9 +50,10 @@ Or to specify the host and port in the call to listen, ignoring what is configur
 
 [source,jphp]
 ----
+<?php
 
-/*variableDecl*/$server = $vertx.$createNetServer()
-$server.$listen(1234, "localhost")
+    $server = $vertx->createNetServer();
+    $server->listen(1234, "localhost");
 
 ----
 
@@ -63,15 +68,16 @@ For example:
 
 [source,jphp]
 ----
+<?php
 
-/*variableDecl*/$server = $vertx.$createNetServer()
-$server.$listen(1234, "localhost", { res ->
-  if (res.succeeded()) {
-    echo "Server is now listening!"."\n";
-  } else {
-    echo "Failed to bind!"."\n";
-  }
-})
+    $server = $vertx->createNetServer();
+    $server->listen(1234, "localhost", function ($res, $res_err) {
+        if ($res != null) {
+            echo "Server is now listening!\n";
+        } else {
+            echo "Failed to bind!\n";
+        };
+    });
 
 ----
 
@@ -83,15 +89,16 @@ To find out the real port the server is listening on you can call `link:../../ap
 
 [source,jphp]
 ----
+<?php
 
-/*variableDecl*/$server = $vertx.$createNetServer()
-$server.$listen(0, "localhost", { res ->
-  if (res.succeeded()) {
-    echo "Server is now listening on actual port: ${$server.$actualPort()}"."\n";
-  } else {
-    echo "Failed to bind!"."\n";
-  }
-})
+    $server = $vertx->createNetServer();
+    $server->listen(0, "localhost", function ($res, $res_err) {
+        if ($res != null) {
+            echo "Server is now listening on actual port: ".$server->actualPort()."\n";
+        } else {
+            echo "Failed to bind!\n";
+        };
+    });
 
 ----
 
@@ -101,11 +108,12 @@ To be notified when a connection is made you need to set a `link:../../apidocs/i
 
 [source,jphp]
 ----
+<?php
 
-/*variableDecl*/$server = $vertx.$createNetServer()
-$server.$connectHandler({ socket ->
-  // Handle the connection in here
-})
+    $server = $vertx->createNetServer();
+    $server->connectHandler(function ($socket) {
+        // Handle the connection in here
+    });
 
 ----
 
@@ -124,13 +132,14 @@ the socket.
 
 [source,jphp]
 ----
+<?php
 
-/*variableDecl*/$server = $vertx.$createNetServer()
-$server.$connectHandler({ socket ->
-  $socket.$handler({ buffer ->
-    echo "I received some bytes: ${$buffer.$length()}"."\n";
-  })
-})
+    $server = $vertx->createNetServer();
+    $server->connectHandler(function ($socket) {
+        $socket->handler(function ($buffer) {
+            echo "I received some bytes: ".$buffer->length()."\n";
+        });
+    });
 
 ----
 
@@ -140,16 +149,18 @@ You write to a socket using one of `link:../../apidocs/io/vertx/core/net/NetSock
 
 [source,jphp]
 ----
+<?php
+    use io\vertx\jphp\core\buffer\Buffer;
 
-// Write a buffer
-/*variableDecl*/$buffer = Buffer.$buffer().$appendFloat(12.34f).$appendInt(123)
-$socket.$write($buffer)
+    // Write a buffer
+    $buffer = Buffer::buffer()->appendFloat(12.34)->appendInt(123);
+    $socket->write($buffer);
 
-// Write a string in UTF-8 encoding
-$socket.$write("some data")
+    // Write a string in UTF-8 encoding
+    $socket->write("some data");
 
-// Write a string using the specified encoding
-$socket.$write("some data", "UTF-16")
+    // Write a string using the specified encoding
+    $socket->write("some data", "UTF-16");
 
 
 
@@ -164,10 +175,11 @@ on it:
 
 [source,jphp]
 ----
+<?php
 
-$socket.$closeHandler({ v ->
-  echo "The socket has been closed"."\n";
-})
+    $socket->closeHandler(function ($v) {
+        echo "The socket has been closed\n";
+    });
 
 ----
 
@@ -207,8 +219,9 @@ classpath resolution or disabling it.
 
 [source,jphp]
 ----
+<?php
 
-$socket.$sendFile("myfile.dat")
+    $socket->sendFile("myfile.dat");
 
 ----
 
@@ -239,14 +252,15 @@ This handler will then be called when the close has fully completed.
 
 [source,jphp]
 ----
+<?php
 
-$server.$close({ res ->
-  if (res.succeeded()) {
-    echo "Server is now closed"."\n";
-  } else {
-    echo "close failed"."\n";
-  }
-})
+    $server->close(function ($res, $res_err) {
+        if ($res != null) {
+            echo "Server is now closed\n";
+        } else {
+            echo "close failed\n";
+        };
+    });
 
 ----
 
@@ -268,19 +282,20 @@ You can instantiate more instances programmatically in your code:
 
 [source,jphp]
 ----
+<?php
 
-// Create a few instances so we can utilise cores
+    // Create a few instances so we can utilise cores
 
-/*sequenceForLoop*/for ($i = 0; $i < 10; $i++) {
-  /*variableDecl*/$server = $vertx.$createNetServer()
-  $server.$connectHandler({ socket ->
-    $socket.$handler({ buffer ->
-      // Just echo back the data
-      $socket.$write($buffer)
-    })
-  })
-  $server.$listen(1234, "localhost")
-}
+    for ($i = 0; $i < 10; $i++) {
+        $server = $vertx->createNetServer();
+        $server->connectHandler(function ($socket) {
+            $socket->handler(function ($buffer) {
+                // Just echo back the data
+                $socket->write($buffer);
+            });
+        });
+        $server->listen(1234, "localhost");
+    };
 
 ----
 
@@ -293,10 +308,12 @@ or when programmatically deploying your verticle
 
 [source,jphp]
 ----
+<?php
 
-/*variableDecl*/$options = DeploymentOptions(
-  instances = 10)
-$vertx.$deployVerticle("com.mycompany.MyVerticle", $options)
+    $options = array(
+        "instances" => 10
+    );
+    $vertx->deployVerticle("com.mycompany.MyVerticle", $options);
 
 ----
 
@@ -322,8 +339,9 @@ The simplest way to create a TCP client, using all default options is as follows
 
 [source,jphp]
 ----
+<?php
 
-/*variableDecl*/$client = $vertx.$createNetClient()
+    $client = $vertx->createNetClient();
 
 ----
 
@@ -334,10 +352,12 @@ instance when creating it:
 
 [source,jphp]
 ----
+<?php
 
-/*variableDecl*/$options = NetClientOptions(
-  connectTimeout = 10000)
-/*variableDecl*/$client = $vertx.$createNetClient($options)
+    $options = array(
+        "connectTimeout" => 10000
+    );
+    $client = $vertx->createNetClient($options);
 
 ----
 
@@ -349,18 +369,20 @@ specifying the port and host of the server and a handler that will be called wit
 
 [source,jphp]
 ----
+<?php
 
-/*variableDecl*/$options = NetClientOptions(
-  connectTimeout = 10000)
-/*variableDecl*/$client = $vertx.$createNetClient($options)
-$client.$connect(4321, "localhost", { res ->
-  if (res.succeeded()) {
-    echo "Connected!"."\n";
-    /*variableDecl*/$socket = res.result()
-  } else {
-    echo "Failed to connect: ${res.cause().$getMessage()}"."\n";
-  }
-})
+    $options = array(
+        "connectTimeout" => 10000
+    );
+    $client = $vertx->createNetClient($options);
+    $client->connect(4321, "localhost", function ($res, $res_err) {
+        if ($res != null) {
+            echo "Connected!\n";
+            $socket = $res;
+        } else {
+            echo "Failed to connect: ".$res_err->getMessage()."\n";
+        };
+    });
 
 ----
 
@@ -375,12 +397,14 @@ only apply to creating initial connections.
 
 [source,jphp]
 ----
+<?php
 
-/*variableDecl*/$options = NetClientOptions(
-  reconnectAttempts = 10,
-  reconnectInterval = 500)
+    $options = array(
+        "reconnectAttempts" => 10,
+        "reconnectInterval" => 500
+    );
 
-/*variableDecl*/$client = $vertx.$createNetClient($options)
+    $client = $vertx->createNetClient($options);
 
 ----
 
@@ -393,11 +417,13 @@ For debugging purposes, network activity can be logged:
 
 [source,jphp]
 ----
+<?php
 
-/*variableDecl*/$options = NetServerOptions(
-  logActivity = true)
+    $options = array(
+        "logActivity" => true
+    );
 
-/*variableDecl*/$server = $vertx.$createNetServer($options)
+    $server = $vertx->createNetServer($options);
 
 ----
 
@@ -405,11 +431,13 @@ for the client
 
 [source,jphp]
 ----
+<?php
 
-/*variableDecl*/$options = NetClientOptions(
-  logActivity = true)
+    $options = array(
+        "logActivity" => true
+    );
 
-/*variableDecl*/$client = $vertx.$createNetClient($options)
+    $client = $vertx->createNetClient($options);
 
 ----
 
@@ -452,12 +480,15 @@ The password for the key store should also be provided:
 
 [source,jphp]
 ----
-/*variableDecl*/$options = NetServerOptions(
-  ssl = true,
-  keyStoreOptions = JksOptions(
-    path = "/path/to/your/server-keystore.jks",
-    password = "password-of-your-keystore"))
-/*variableDecl*/$server = $vertx.$createNetServer($options)
+<?php
+    $options = array(
+        "ssl" => true,
+        "keyStoreOptions" => array(
+            "path" => "/path/to/your/server-keystore.jks",
+            "password" => "password-of-your-keystore"
+        )
+    );
+    $server = $vertx->createNetServer($options);
 
 ----
 
@@ -465,14 +496,17 @@ Alternatively you can read the key store yourself as a buffer and provide that d
 
 [source,jphp]
 ----
-/*variableDecl*/$myKeyStoreAsABuffer = $vertx.$fileSystem().$readFileBlocking("/path/to/your/server-keystore.jks")
-/*variableDecl*/$jksOptions = JksOptions(
-  value = $myKeyStoreAsABuffer,
-  password = "password-of-your-keystore")
-/*variableDecl*/$options = NetServerOptions(
-  ssl = true,
-  keyStoreOptions = $jksOptions)
-/*variableDecl*/$server = $vertx.$createNetServer($options)
+<?php
+    $myKeyStoreAsABuffer = $vertx->fileSystem()->readFileBlocking("/path/to/your/server-keystore.jks");
+    $jksOptions = array(
+        "value" => $myKeyStoreAsABuffer,
+        "password" => "password-of-your-keystore"
+    );
+    $options = array(
+        "ssl" => true,
+        "keyStoreOptions" => $jksOptions
+    );
+    $server = $vertx->createNetServer($options);
 
 ----
 
@@ -481,12 +515,15 @@ extension can also be loaded in a similar fashion than JKS key stores:
 
 [source,jphp]
 ----
-/*variableDecl*/$options = NetServerOptions(
-  ssl = true,
-  pfxKeyCertOptions = PfxOptions(
-    path = "/path/to/your/server-keystore.pfx",
-    password = "password-of-your-keystore"))
-/*variableDecl*/$server = $vertx.$createNetServer($options)
+<?php
+    $options = array(
+        "ssl" => true,
+        "pfxKeyCertOptions" => array(
+            "path" => "/path/to/your/server-keystore.pfx",
+            "password" => "password-of-your-keystore"
+        )
+    );
+    $server = $vertx->createNetServer($options);
 
 ----
 
@@ -494,14 +531,17 @@ Buffer configuration is also supported:
 
 [source,jphp]
 ----
-/*variableDecl*/$myKeyStoreAsABuffer = $vertx.$fileSystem().$readFileBlocking("/path/to/your/server-keystore.pfx")
-/*variableDecl*/$pfxOptions = PfxOptions(
-  value = $myKeyStoreAsABuffer,
-  password = "password-of-your-keystore")
-/*variableDecl*/$options = NetServerOptions(
-  ssl = true,
-  pfxKeyCertOptions = $pfxOptions)
-/*variableDecl*/$server = $vertx.$createNetServer($options)
+<?php
+    $myKeyStoreAsABuffer = $vertx->fileSystem()->readFileBlocking("/path/to/your/server-keystore.pfx");
+    $pfxOptions = array(
+        "value" => $myKeyStoreAsABuffer,
+        "password" => "password-of-your-keystore"
+    );
+    $options = array(
+        "ssl" => true,
+        "pfxKeyCertOptions" => $pfxOptions
+    );
+    $server = $vertx->createNetServer($options);
 
 ----
 
@@ -509,12 +549,15 @@ Another way of providing server private key and certificate separately using `.p
 
 [source,jphp]
 ----
-/*variableDecl*/$options = NetServerOptions(
-  ssl = true,
-  pemKeyCertOptions = PemKeyCertOptions(
-    keyPath = "/path/to/your/server-key.pem",
-    certPath = "/path/to/your/server-cert.pem"))
-/*variableDecl*/$server = $vertx.$createNetServer($options)
+<?php
+    $options = array(
+        "ssl" => true,
+        "pemKeyCertOptions" => array(
+            "keyPath" => "/path/to/your/server-key.pem",
+            "certPath" => "/path/to/your/server-cert.pem"
+        )
+    );
+    $server = $vertx->createNetServer($options);
 
 ----
 
@@ -522,15 +565,18 @@ Buffer configuration is also supported:
 
 [source,jphp]
 ----
-/*variableDecl*/$myKeyAsABuffer = $vertx.$fileSystem().$readFileBlocking("/path/to/your/server-key.pem")
-/*variableDecl*/$myCertAsABuffer = $vertx.$fileSystem().$readFileBlocking("/path/to/your/server-cert.pem")
-/*variableDecl*/$pemOptions = PemKeyCertOptions(
-  keyValue = $myKeyAsABuffer,
-  certValue = $myCertAsABuffer)
-/*variableDecl*/$options = NetServerOptions(
-  ssl = true,
-  pemKeyCertOptions = $pemOptions)
-/*variableDecl*/$server = $vertx.$createNetServer($options)
+<?php
+    $myKeyAsABuffer = $vertx->fileSystem()->readFileBlocking("/path/to/your/server-key.pem");
+    $myCertAsABuffer = $vertx->fileSystem()->readFileBlocking("/path/to/your/server-cert.pem");
+    $pemOptions = array(
+        "keyValue" => $myKeyAsABuffer,
+        "certValue" => $myCertAsABuffer
+    );
+    $options = array(
+        "ssl" => true,
+        "pemKeyCertOptions" => $pemOptions
+    );
+    $server = $vertx->createNetServer($options);
 
 ----
 
@@ -551,13 +597,16 @@ The password for the trust store should also be provided:
 
 [source,jphp]
 ----
-/*variableDecl*/$options = NetServerOptions(
-  ssl = true,
-  clientAuth = ClientAuth.REQUIRED,
-  trustStoreOptions = JksOptions(
-    path = "/path/to/your/truststore.jks",
-    password = "password-of-your-truststore"))
-/*variableDecl*/$server = $vertx.$createNetServer($options)
+<?php
+    $options = array(
+        "ssl" => true,
+        "clientAuth" => "REQUIRED",
+        "trustStoreOptions" => array(
+            "path" => "/path/to/your/truststore.jks",
+            "password" => "password-of-your-truststore"
+        )
+    );
+    $server = $vertx->createNetServer($options);
 
 ----
 
@@ -565,14 +614,17 @@ Alternatively you can read the trust store yourself as a buffer and provide that
 
 [source,jphp]
 ----
-/*variableDecl*/$myTrustStoreAsABuffer = $vertx.$fileSystem().$readFileBlocking("/path/to/your/truststore.jks")
-/*variableDecl*/$options = NetServerOptions(
-  ssl = true,
-  clientAuth = ClientAuth.REQUIRED,
-  trustStoreOptions = JksOptions(
-    value = $myTrustStoreAsABuffer,
-    password = "password-of-your-truststore"))
-/*variableDecl*/$server = $vertx.$createNetServer($options)
+<?php
+    $myTrustStoreAsABuffer = $vertx->fileSystem()->readFileBlocking("/path/to/your/truststore.jks");
+    $options = array(
+        "ssl" => true,
+        "clientAuth" => "REQUIRED",
+        "trustStoreOptions" => array(
+            "value" => $myTrustStoreAsABuffer,
+            "password" => "password-of-your-truststore"
+        )
+    );
+    $server = $vertx->createNetServer($options);
 
 ----
 
@@ -581,13 +633,16 @@ extension can also be loaded in a similar fashion than JKS trust stores:
 
 [source,jphp]
 ----
-/*variableDecl*/$options = NetServerOptions(
-  ssl = true,
-  clientAuth = ClientAuth.REQUIRED,
-  pfxTrustOptions = PfxOptions(
-    path = "/path/to/your/truststore.pfx",
-    password = "password-of-your-truststore"))
-/*variableDecl*/$server = $vertx.$createNetServer($options)
+<?php
+    $options = array(
+        "ssl" => true,
+        "clientAuth" => "REQUIRED",
+        "pfxTrustOptions" => array(
+            "path" => "/path/to/your/truststore.pfx",
+            "password" => "password-of-your-truststore"
+        )
+    );
+    $server = $vertx->createNetServer($options);
 
 ----
 
@@ -595,14 +650,17 @@ Buffer configuration is also supported:
 
 [source,jphp]
 ----
-/*variableDecl*/$myTrustStoreAsABuffer = $vertx.$fileSystem().$readFileBlocking("/path/to/your/truststore.pfx")
-/*variableDecl*/$options = NetServerOptions(
-  ssl = true,
-  clientAuth = ClientAuth.REQUIRED,
-  pfxTrustOptions = PfxOptions(
-    value = $myTrustStoreAsABuffer,
-    password = "password-of-your-truststore"))
-/*variableDecl*/$server = $vertx.$createNetServer($options)
+<?php
+    $myTrustStoreAsABuffer = $vertx->fileSystem()->readFileBlocking("/path/to/your/truststore.pfx");
+    $options = array(
+        "ssl" => true,
+        "clientAuth" => "REQUIRED",
+        "pfxTrustOptions" => array(
+            "value" => $myTrustStoreAsABuffer,
+            "password" => "password-of-your-truststore"
+        )
+    );
+    $server = $vertx->createNetServer($options);
 
 ----
 
@@ -610,12 +668,17 @@ Another way of providing server certificate authority using a list `.pem` files.
 
 [source,jphp]
 ----
-/*variableDecl*/$options = NetServerOptions(
-  ssl = true,
-  clientAuth = ClientAuth.REQUIRED,
-  pemTrustOptions = PemTrustOptions(
-    certPaths = listOf("/path/to/your/server-ca.pem")))
-/*variableDecl*/$server = $vertx.$createNetServer($options)
+<?php
+    $options = array(
+        "ssl" => true,
+        "clientAuth" => "REQUIRED",
+        "pemTrustOptions" => array(
+            "certPaths" => [
+                "/path/to/your/server-ca.pem"
+            ]
+        )
+    );
+    $server = $vertx->createNetServer($options);
 
 ----
 
@@ -623,13 +686,18 @@ Buffer configuration is also supported:
 
 [source,jphp]
 ----
-/*variableDecl*/$myCaAsABuffer = $vertx.$fileSystem().$readFileBlocking("/path/to/your/server-ca.pfx")
-/*variableDecl*/$options = NetServerOptions(
-  ssl = true,
-  clientAuth = ClientAuth.REQUIRED,
-  pemTrustOptions = PemTrustOptions(
-    certValues = listOf($myCaAsABuffer)))
-/*variableDecl*/$server = $vertx.$createNetServer($options)
+<?php
+    $myCaAsABuffer = $vertx->fileSystem()->readFileBlocking("/path/to/your/server-ca.pfx");
+    $options = array(
+        "ssl" => true,
+        "clientAuth" => "REQUIRED",
+        "pemTrustOptions" => array(
+            "certValues" => [
+                $myCaAsABuffer
+            ]
+        )
+    );
+    $server = $vertx->createNetServer($options);
 
 ----
 
@@ -647,10 +715,12 @@ be sure who you are connecting to. Use this with caution. Default value is false
 
 [source,jphp]
 ----
-/*variableDecl*/$options = NetClientOptions(
-  ssl = true,
-  trustAll = true)
-/*variableDecl*/$client = $vertx.$createNetClient($options)
+<?php
+    $options = array(
+        "ssl" => true,
+        "trustAll" => true
+    );
+    $client = $vertx->createNetClient($options);
 
 ----
 
@@ -663,10 +733,12 @@ To enable host verification, set the algorithm to use on your client (only HTTPS
 
 [source,jphp]
 ----
-/*variableDecl*/$options = NetClientOptions(
-  ssl = true,
-  hostnameVerificationAlgorithm = "HTTPS")
-/*variableDecl*/$client = $vertx.$createNetClient($options)
+<?php
+    $options = array(
+        "ssl" => true,
+        "hostnameVerificationAlgorithm" => "HTTPS"
+    );
+    $client = $vertx->createNetClient($options);
 
 ----
 
@@ -681,12 +753,15 @@ in the client trust store, the connection attempt will not succeed.
 
 [source,jphp]
 ----
-/*variableDecl*/$options = NetClientOptions(
-  ssl = true,
-  trustStoreOptions = JksOptions(
-    path = "/path/to/your/truststore.jks",
-    password = "password-of-your-truststore"))
-/*variableDecl*/$client = $vertx.$createNetClient($options)
+<?php
+    $options = array(
+        "ssl" => true,
+        "trustStoreOptions" => array(
+            "path" => "/path/to/your/truststore.jks",
+            "password" => "password-of-your-truststore"
+        )
+    );
+    $client = $vertx->createNetClient($options);
 
 ----
 
@@ -694,13 +769,16 @@ Buffer configuration is also supported:
 
 [source,jphp]
 ----
-/*variableDecl*/$myTrustStoreAsABuffer = $vertx.$fileSystem().$readFileBlocking("/path/to/your/truststore.jks")
-/*variableDecl*/$options = NetClientOptions(
-  ssl = true,
-  trustStoreOptions = JksOptions(
-    value = $myTrustStoreAsABuffer,
-    password = "password-of-your-truststore"))
-/*variableDecl*/$client = $vertx.$createNetClient($options)
+<?php
+    $myTrustStoreAsABuffer = $vertx->fileSystem()->readFileBlocking("/path/to/your/truststore.jks");
+    $options = array(
+        "ssl" => true,
+        "trustStoreOptions" => array(
+            "value" => $myTrustStoreAsABuffer,
+            "password" => "password-of-your-truststore"
+        )
+    );
+    $client = $vertx->createNetClient($options);
 
 ----
 
@@ -709,12 +787,15 @@ extension can also be loaded in a similar fashion than JKS trust stores:
 
 [source,jphp]
 ----
-/*variableDecl*/$options = NetClientOptions(
-  ssl = true,
-  pfxTrustOptions = PfxOptions(
-    path = "/path/to/your/truststore.pfx",
-    password = "password-of-your-truststore"))
-/*variableDecl*/$client = $vertx.$createNetClient($options)
+<?php
+    $options = array(
+        "ssl" => true,
+        "pfxTrustOptions" => array(
+            "path" => "/path/to/your/truststore.pfx",
+            "password" => "password-of-your-truststore"
+        )
+    );
+    $client = $vertx->createNetClient($options);
 
 ----
 
@@ -722,13 +803,16 @@ Buffer configuration is also supported:
 
 [source,jphp]
 ----
-/*variableDecl*/$myTrustStoreAsABuffer = $vertx.$fileSystem().$readFileBlocking("/path/to/your/truststore.pfx")
-/*variableDecl*/$options = NetClientOptions(
-  ssl = true,
-  pfxTrustOptions = PfxOptions(
-    value = $myTrustStoreAsABuffer,
-    password = "password-of-your-truststore"))
-/*variableDecl*/$client = $vertx.$createNetClient($options)
+<?php
+    $myTrustStoreAsABuffer = $vertx->fileSystem()->readFileBlocking("/path/to/your/truststore.pfx");
+    $options = array(
+        "ssl" => true,
+        "pfxTrustOptions" => array(
+            "value" => $myTrustStoreAsABuffer,
+            "password" => "password-of-your-truststore"
+        )
+    );
+    $client = $vertx->createNetClient($options);
 
 ----
 
@@ -736,11 +820,16 @@ Another way of providing server certificate authority using a list `.pem` files.
 
 [source,jphp]
 ----
-/*variableDecl*/$options = NetClientOptions(
-  ssl = true,
-  pemTrustOptions = PemTrustOptions(
-    certPaths = listOf("/path/to/your/ca-cert.pem")))
-/*variableDecl*/$client = $vertx.$createNetClient($options)
+<?php
+    $options = array(
+        "ssl" => true,
+        "pemTrustOptions" => array(
+            "certPaths" => [
+                "/path/to/your/ca-cert.pem"
+            ]
+        )
+    );
+    $client = $vertx->createNetClient($options);
 
 ----
 
@@ -748,12 +837,17 @@ Buffer configuration is also supported:
 
 [source,jphp]
 ----
-/*variableDecl*/$myTrustStoreAsABuffer = $vertx.$fileSystem().$readFileBlocking("/path/to/your/ca-cert.pem")
-/*variableDecl*/$options = NetClientOptions(
-  ssl = true,
-  pemTrustOptions = PemTrustOptions(
-    certValues = listOf($myTrustStoreAsABuffer)))
-/*variableDecl*/$client = $vertx.$createNetClient($options)
+<?php
+    $myTrustStoreAsABuffer = $vertx->fileSystem()->readFileBlocking("/path/to/your/ca-cert.pem");
+    $options = array(
+        "ssl" => true,
+        "pemTrustOptions" => array(
+            "certValues" => [
+                $myTrustStoreAsABuffer
+            ]
+        )
+    );
+    $client = $vertx->createNetClient($options);
 
 ----
 
@@ -769,12 +863,15 @@ Again it's just a regular Java key store. The client keystore location is set by
 
 [source,jphp]
 ----
-/*variableDecl*/$options = NetClientOptions(
-  ssl = true,
-  keyStoreOptions = JksOptions(
-    path = "/path/to/your/client-keystore.jks",
-    password = "password-of-your-keystore"))
-/*variableDecl*/$client = $vertx.$createNetClient($options)
+<?php
+    $options = array(
+        "ssl" => true,
+        "keyStoreOptions" => array(
+            "path" => "/path/to/your/client-keystore.jks",
+            "password" => "password-of-your-keystore"
+        )
+    );
+    $client = $vertx->createNetClient($options);
 
 ----
 
@@ -782,14 +879,17 @@ Buffer configuration is also supported:
 
 [source,jphp]
 ----
-/*variableDecl*/$myKeyStoreAsABuffer = $vertx.$fileSystem().$readFileBlocking("/path/to/your/client-keystore.jks")
-/*variableDecl*/$jksOptions = JksOptions(
-  value = $myKeyStoreAsABuffer,
-  password = "password-of-your-keystore")
-/*variableDecl*/$options = NetClientOptions(
-  ssl = true,
-  keyStoreOptions = $jksOptions)
-/*variableDecl*/$client = $vertx.$createNetClient($options)
+<?php
+    $myKeyStoreAsABuffer = $vertx->fileSystem()->readFileBlocking("/path/to/your/client-keystore.jks");
+    $jksOptions = array(
+        "value" => $myKeyStoreAsABuffer,
+        "password" => "password-of-your-keystore"
+    );
+    $options = array(
+        "ssl" => true,
+        "keyStoreOptions" => $jksOptions
+    );
+    $client = $vertx->createNetClient($options);
 
 ----
 
@@ -798,12 +898,15 @@ extension can also be loaded in a similar fashion than JKS key stores:
 
 [source,jphp]
 ----
-/*variableDecl*/$options = NetClientOptions(
-  ssl = true,
-  pfxKeyCertOptions = PfxOptions(
-    path = "/path/to/your/client-keystore.pfx",
-    password = "password-of-your-keystore"))
-/*variableDecl*/$client = $vertx.$createNetClient($options)
+<?php
+    $options = array(
+        "ssl" => true,
+        "pfxKeyCertOptions" => array(
+            "path" => "/path/to/your/client-keystore.pfx",
+            "password" => "password-of-your-keystore"
+        )
+    );
+    $client = $vertx->createNetClient($options);
 
 ----
 
@@ -811,14 +914,17 @@ Buffer configuration is also supported:
 
 [source,jphp]
 ----
-/*variableDecl*/$myKeyStoreAsABuffer = $vertx.$fileSystem().$readFileBlocking("/path/to/your/client-keystore.pfx")
-/*variableDecl*/$pfxOptions = PfxOptions(
-  value = $myKeyStoreAsABuffer,
-  password = "password-of-your-keystore")
-/*variableDecl*/$options = NetClientOptions(
-  ssl = true,
-  pfxKeyCertOptions = $pfxOptions)
-/*variableDecl*/$client = $vertx.$createNetClient($options)
+<?php
+    $myKeyStoreAsABuffer = $vertx->fileSystem()->readFileBlocking("/path/to/your/client-keystore.pfx");
+    $pfxOptions = array(
+        "value" => $myKeyStoreAsABuffer,
+        "password" => "password-of-your-keystore"
+    );
+    $options = array(
+        "ssl" => true,
+        "pfxKeyCertOptions" => $pfxOptions
+    );
+    $client = $vertx->createNetClient($options);
 
 ----
 
@@ -826,12 +932,15 @@ Another way of providing server private key and certificate separately using `.p
 
 [source,jphp]
 ----
-/*variableDecl*/$options = NetClientOptions(
-  ssl = true,
-  pemKeyCertOptions = PemKeyCertOptions(
-    keyPath = "/path/to/your/client-key.pem",
-    certPath = "/path/to/your/client-cert.pem"))
-/*variableDecl*/$client = $vertx.$createNetClient($options)
+<?php
+    $options = array(
+        "ssl" => true,
+        "pemKeyCertOptions" => array(
+            "keyPath" => "/path/to/your/client-key.pem",
+            "certPath" => "/path/to/your/client-cert.pem"
+        )
+    );
+    $client = $vertx->createNetClient($options);
 
 ----
 
@@ -839,15 +948,18 @@ Buffer configuration is also supported:
 
 [source,jphp]
 ----
-/*variableDecl*/$myKeyAsABuffer = $vertx.$fileSystem().$readFileBlocking("/path/to/your/client-key.pem")
-/*variableDecl*/$myCertAsABuffer = $vertx.$fileSystem().$readFileBlocking("/path/to/your/client-cert.pem")
-/*variableDecl*/$pemOptions = PemKeyCertOptions(
-  keyValue = $myKeyAsABuffer,
-  certValue = $myCertAsABuffer)
-/*variableDecl*/$options = NetClientOptions(
-  ssl = true,
-  pemKeyCertOptions = $pemOptions)
-/*variableDecl*/$client = $vertx.$createNetClient($options)
+<?php
+    $myKeyAsABuffer = $vertx->fileSystem()->readFileBlocking("/path/to/your/client-key.pem");
+    $myCertAsABuffer = $vertx->fileSystem()->readFileBlocking("/path/to/your/client-cert.pem");
+    $pemOptions = array(
+        "keyValue" => $myKeyAsABuffer,
+        "certValue" => $myCertAsABuffer
+    );
+    $options = array(
+        "ssl" => true,
+        "pemKeyCertOptions" => $pemOptions
+    );
+    $client = $vertx->createNetClient($options);
 
 ----
 
@@ -865,32 +977,36 @@ give `link:../../apidocs/io/vertx/core/net/KeyCertOptions.html[KeyCertOptions]` 
 
 [source,jphp]
 ----
-/*variableDecl*/$certificate = SelfSignedCertificate.$create()
+<?php
+    use io\vertx\jphp\core\net\SelfSignedCertificate;
+    $certificate = SelfSignedCertificate::create();
 
-/*variableDecl*/$serverOptions = NetServerOptions(
-  ssl = true,
-  keyCertOptions = $certificate.$keyCertOptions(),
-  trustOptions = $certificate.$trustOptions())
+    $serverOptions = array(
+        "ssl" => true,
+        "keyCertOptions" => $certificate->keyCertOptions(),
+        "trustOptions" => $certificate->trustOptions()
+    );
 
-/*variableDecl*/$server = $vertx.$createNetServer($serverOptions).$connectHandler({ socket ->
-  $socket.$write("Hello!").$end()
-}).$listen(1234, "localhost")
+    $server = $vertx->createNetServer($serverOptions)->connectHandler(function ($socket) {
+        $socket->write("Hello!")->end();
+    })->listen(1234, "localhost");
 
-/*variableDecl*/$clientOptions = NetClientOptions(
-  ssl = true,
-  keyCertOptions = $certificate.$keyCertOptions(),
-  trustOptions = $certificate.$trustOptions())
+    $clientOptions = array(
+        "ssl" => true,
+        "keyCertOptions" => $certificate->keyCertOptions(),
+        "trustOptions" => $certificate->trustOptions()
+    );
 
-/*variableDecl*/$client = $vertx.$createNetClient($clientOptions)
-$client.$connect(1234, "localhost", { ar ->
-  if (ar.succeeded()) {
-    ar.result().$handler({ buffer ->
-      echo $buffer."\n";
-    })
-  } else {
-    echo "Woops: ${ar.cause().$getMessage()}"."\n";
-  }
-})
+    $client = $vertx->createNetClient($clientOptions);
+    $client->connect(1234, "localhost", function ($ar, $ar_err) {
+        if ($ar != null) {
+            $ar->handler(function ($buffer) {
+                echo $buffer."\n";
+            });
+        } else {
+            echo "Woops: ".$ar_err->getMessage()."\n";
+        };
+    });
 
 ----
 
@@ -898,9 +1014,11 @@ The client can also be configured to trust all certificates:
 
 [source,jphp]
 ----
-/*variableDecl*/$clientOptions = NetClientOptions(
-  ssl = true,
-  trustAll = true)
+<?php
+    $clientOptions = array(
+        "ssl" => true,
+        "trustAll" => true
+    );
 
 ----
 
@@ -908,14 +1026,17 @@ Note that self-signed certificates also work for other TCP protocols like HTTPS:
 
 [source,jphp]
 ----
-/*variableDecl*/$certificate = SelfSignedCertificate.$create()
+<?php
+    use io\vertx\jphp\core\net\SelfSignedCertificate;
+    $certificate = SelfSignedCertificate::create();
 
-$vertx.$createHttpServer(HttpServerOptions(
-  ssl = true,
-  keyCertOptions = $certificate.$keyCertOptions(),
-  trustOptions = $certificate.$trustOptions())).$requestHandler({ req ->
-  $req.$response().$end("Hello!")
-}).$listen(8080)
+    $vertx->createHttpServer(array(
+        "ssl" => true,
+        "keyCertOptions" => $certificate->keyCertOptions(),
+        "trustOptions" => $certificate->trustOptions()
+    ))->requestHandler(function ($req) {
+        $req->response()->end("Hello!");
+    })->listen(8080);
 
 ----
 
@@ -927,11 +1048,15 @@ the crl list to use:
 
 [source,jphp]
 ----
-/*variableDecl*/$options = NetClientOptions(
-  ssl = true,
-  trustStoreOptions = $trustOptions,
-  crlPaths = listOf("/path/to/your/crl.pem"))
-/*variableDecl*/$client = $vertx.$createNetClient($options)
+<?php
+    $options = array(
+        "ssl" => true,
+        "trustStoreOptions" => $trustOptions,
+        "crlPaths" => [
+            "/path/to/your/crl.pem"
+        ]
+    );
+    $client = $vertx->createNetClient($options);
 
 ----
 
@@ -939,12 +1064,16 @@ Buffer configuration is also supported:
 
 [source,jphp]
 ----
-/*variableDecl*/$myCrlAsABuffer = $vertx.$fileSystem().$readFileBlocking("/path/to/your/crl.pem")
-/*variableDecl*/$options = NetClientOptions(
-  ssl = true,
-  trustStoreOptions = $trustOptions,
-  crlValues = listOf($myCrlAsABuffer))
-/*variableDecl*/$client = $vertx.$createNetClient($options)
+<?php
+    $myCrlAsABuffer = $vertx->fileSystem()->readFileBlocking("/path/to/your/crl.pem");
+    $options = array(
+        "ssl" => true,
+        "trustStoreOptions" => $trustOptions,
+        "crlValues" => [
+            $myCrlAsABuffer
+        ]
+    );
+    $client = $vertx->createNetClient($options);
 
 ----
 
@@ -955,11 +1084,18 @@ configured with a suite of enabled ciphers:
 
 [source,jphp]
 ----
-/*variableDecl*/$options = NetServerOptions(
-  ssl = true,
-  keyStoreOptions = $keyStoreOptions,
-  enabledCipherSuites = listOf("ECDHE-RSA-AES128-GCM-SHA256", "ECDHE-ECDSA-AES128-GCM-SHA256", "ECDHE-RSA-AES256-GCM-SHA384", "CDHE-ECDSA-AES256-GCM-SHA384"))
-/*variableDecl*/$server = $vertx.$createNetServer($options)
+<?php
+    $options = array(
+        "ssl" => true,
+        "keyStoreOptions" => $keyStoreOptions,
+        "enabledCipherSuites" => [
+            "ECDHE-RSA-AES128-GCM-SHA256",
+            "ECDHE-ECDSA-AES128-GCM-SHA256",
+            "ECDHE-RSA-AES256-GCM-SHA384",
+            "CDHE-ECDSA-AES256-GCM-SHA384"
+        ]
+    );
+    $server = $vertx->createNetServer($options);
 
 ----
 
@@ -989,23 +1125,29 @@ The engine options to use is
 
 [source,jphp]
 ----
+<?php
 
-// Use JDK SSL engine
-/*variableDecl*/$options = NetServerOptions(
-  ssl = true,
-  keyStoreOptions = $keyStoreOptions)
+    // Use JDK SSL engine
+    $options = array(
+        "ssl" => true,
+        "keyStoreOptions" => $keyStoreOptions
+    );
 
-// Use JDK SSL engine explicitly
-$options = NetServerOptions(
-  ssl = true,
-  keyStoreOptions = $keyStoreOptions,
-  jdkSslEngineOptions = JdkSSLEngineOptions())
+    // Use JDK SSL engine explicitly
+    $options = array(
+        "ssl" => true,
+        "keyStoreOptions" => $keyStoreOptions,
+        "jdkSslEngineOptions" => array(
+        )
+    );
 
-// Use OpenSSL engine
-$options = NetServerOptions(
-  ssl = true,
-  keyStoreOptions = $keyStoreOptions,
-  openSslEngineOptions = OpenSSLEngineOptions())
+    // Use OpenSSL engine
+    $options = array(
+        "ssl" => true,
+        "keyStoreOptions" => $keyStoreOptions,
+        "openSslEngineOptions" => array(
+        )
+    );
 
 ----
 
@@ -1037,14 +1179,17 @@ Java KeyStore files or PKCS12 files can store multiple key/cert pairs out of the
 
 [source,jphp]
 ----
-/*variableDecl*/$keyCertOptions = JksOptions(
-  path = "keystore.jks",
-  password = "wibble")
+<?php
+    $keyCertOptions = array(
+        "path" => "keystore.jks",
+        "password" => "wibble"
+    );
 
-/*variableDecl*/$netServer = $vertx.$createNetServer(NetServerOptions(
-  keyStoreOptions = $keyCertOptions,
-  ssl = true,
-  sni = true))
+    $netServer = $vertx->createNetServer(array(
+        "keyStoreOptions" => $keyCertOptions,
+        "ssl" => true,
+        "sni" => true
+    ));
 
 ----
 
@@ -1052,14 +1197,17 @@ Java KeyStore files or PKCS12 files can store multiple key/cert pairs out of the
 
 [source,jphp]
 ----
-/*variableDecl*/$keyCertOptions = PemKeyCertOptions(
-  keyPaths = listOf("default-key.pem", "host1-key.pem", "etc..."),
-  certPaths = listOf("default-cert.pem", "host2-key.pem", "etc..."))
+<?php
+    $keyCertOptions = array(
+        "keyPaths" => array( "default-key.pem",  "host1-key.pem",  "etc..."),
+        "certPaths" => array( "default-cert.pem",  "host2-key.pem",  "etc...")
+    );
 
-/*variableDecl*/$netServer = $vertx.$createNetServer(NetServerOptions(
-  pemKeyCertOptions = $keyCertOptions,
-  ssl = true,
-  sni = true))
+    $netServer = $vertx->createNetServer(array(
+        "pemKeyCertOptions" => $keyCertOptions,
+        "ssl" => true,
+        "sni" => true
+    ));
 
 ----
 
@@ -1069,20 +1217,22 @@ You can provide an explicit server name when connecting a socket
 
 [source,jphp]
 ----
+<?php
 
-/*variableDecl*/$client = $vertx.$createNetClient(NetClientOptions(
-  trustStoreOptions = $trustOptions,
-  ssl = true))
+    $client = $vertx->createNetClient(array(
+        "trustStoreOptions" => $trustOptions,
+        "ssl" => true
+    ));
 
-// Connect to 'localhost' and present 'server.name' server name
-$client.$connect(1234, "localhost", "server.name", { res ->
-  if (res.succeeded()) {
-    echo "Connected!"."\n";
-    /*variableDecl*/$socket = res.result()
-  } else {
-    echo "Failed to connect: ${res.cause().$getMessage()}"."\n";
-  }
-})
+    // Connect to 'localhost' and present 'server.name' server name
+    $client->connect(1234, "localhost", "server.name", function ($res, $res_err) {
+        if ($res != null) {
+            echo "Connected!\n";
+            $socket = $res;
+        } else {
+            echo "Failed to connect: ".$res_err->getMessage()."\n";
+        };
+    });
 
 ----
 
@@ -1154,14 +1304,17 @@ Here's an example:
 [source,jphp]
 
 ----
-/*variableDecl*/$options = NetClientOptions(
-  proxyOptions = ProxyOptions(
-    type = ProxyType.SOCKS5,
-    host = "localhost",
-    port = 1080,
-    username = "username",
-    password = "secret"))
-/*variableDecl*/$client = $vertx.$createNetClient($options)
+<?php
+    $options = array(
+        "proxyOptions" => array(
+            "type" => "SOCKS5",
+            "host" => "localhost",
+            "port" => 1080,
+            "username" => "username",
+            "password" => "secret"
+        )
+    );
+    $client = $vertx->createNetClient($options);
 
 ----
 

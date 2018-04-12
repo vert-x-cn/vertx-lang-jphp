@@ -1,166 +1,180 @@
 package io.vertx.codetrans.lang.jphp;
 
 import com.sun.source.tree.LambdaExpressionTree;
-import com.sun.tools.javac.comp.Todo;
 import io.vertx.codegen.type.*;
 import io.vertx.codetrans.*;
 import io.vertx.codetrans.expression.*;
 import io.vertx.codetrans.statement.StatementModel;
 
 import java.util.*;
+import java.util.function.Consumer;
+
 
 class JPhpCodeBuilder implements CodeBuilder {
-    private TreeSet<String> imports = new TreeSet<>();
+  boolean defineFunction = false;
+  Set<String> imports = new HashSet<>();
 
-    JPhpCodeBuilder() {
+  @Override
+  public CodeWriter newWriter() {
+    return new JPhpWriter(this);
+  }
+
+  @Override
+  public String render(RunnableCompilationUnit unit, RenderMode renderMode) {
+    CodeWriter render = newWriter();
+    render.append("<?php\n");
+    render.indent();
+
+    for (String importClass : imports) {
+      render.append("use ").append(importClass.replace(".", "\\")).append(";\n");
     }
-
-    @Override
-    public JPhpWriter newWriter() {
-        return new JPhpWriter(this);
-    }
-
-    @Override
-    public String render(RunnableCompilationUnit unit, RenderMode renderMode) {
-        JPhpWriter writer = newWriter();
-        if (renderMode != RenderMode.SNIPPET) {
-            throw new RuntimeException("todo");
+    if (renderMode != RenderMode.SNIPPET) {
+      for (Map.Entry<String, StatementModel> field : unit.getFields().entrySet()) {
+        field.getValue().render(render);
+        render.append(";\n");
+      }
+      for (Map.Entry<String, MethodModel> member : unit.getMethods().entrySet()) {
+        defineFunction = true;
+        render.append("function ").append(member.getKey()).append("(");
+        for (Iterator<String> it = member.getValue().getParameterNames().iterator(); it.hasNext(); ) {
+          String paramName = it.next();
+          render.append("$").append(paramName);
+          if (it.hasNext()) {
+            render.append(", ");
+          }
         }
-        System.err.println(unit.getMain().getStatement().getClass());
-        unit.getMain().render(writer);
-        return writer.getBuffer().toString();
+        render.append(") {\n");
+        render.indent();
+        member.getValue().render(render);
+        render.unindent();
+        render.append("};\n");
+      }
+      defineFunction = false;
+    }
+
+    unit.getMain().render(render);
+    return render.getBuffer().toString();
+  }
+
+  @Override
+  public ExpressionModel asyncResultHandler(LambdaExpressionTree.BodyKind bodyKind, ParameterizedTypeInfo resultType, String resultName, CodeModel body, CodeModel succeededBody, CodeModel failedBody) {
+    return new LambdaExpressionModel(this, bodyKind, Arrays.asList(resultType.getArgs().get(0), TypeReflectionFactory.create(Throwable.class)), Arrays.asList(resultName, resultName + "_err"), body);
+  }
+
+  @Override
+  public StatementModel variableDecl(VariableScope scope, TypeInfo type, String name, ExpressionModel initializer) {
+    return StatementModel.render(render -> {
+      render.append("$").append(name);
+      if (initializer != null) {
+        render.append(" = ");
+        initializer.render(render);
+      }
+    });
+  }
+
+  @Override
+  public StatementModel enhancedForLoop(String variableName, ExpressionModel expression, StatementModel body) {
+    return StatementModel.render(renderer -> {
+      renderer.append("foreach(");
+      expression.render(renderer);
+      renderer.append(" as ").append("$").append(variableName);
+//      renderer.append("foreach( $").append(variableName).append(" as ");
+//      expression.render(renderer);
+      renderer.append(") {\n");
+      renderer.indent();
+      body.render(renderer);
+      renderer.unindent();
+      renderer.append("}");
+    });
+  }
+
+  @Override
+  public StatementModel forLoop(StatementModel initializer, ExpressionModel condition, ExpressionModel update, StatementModel body) {
+    return StatementModel.render((renderer) -> {
+      initializer.render(renderer);
+      renderer.append(";\n");
+      renderer.append("while (");
+      condition.render(renderer);
+      renderer.append(") {\n").indent();
+      body.render(renderer);
+      renderer.append("\n");
+      update.render(renderer);
+      renderer.append(";\n");
+      renderer.unindent().append("}");
+    });
+  }
+
+  @Override
+  public StatementModel sequenceForLoop(String variableName, ExpressionModel fromValue, ExpressionModel toValue, StatementModel body) {
+    return StatementModel.render((renderer) -> {
+      renderer.append("for ($").append(variableName).append(" = ");
+      fromValue.render(renderer);
+      renderer.append("; $").append(variableName).append(" < ");
+      toValue.render(renderer);
+      renderer.append("; $").append(variableName).append("++) {\n");
+      renderer.indent();
+      body.render(renderer);
+      renderer.unindent();
+      renderer.append("}");
+    });
+  }
+
+  @Override
+  public ExpressionModel render(Consumer<CodeWriter> c) {
+    return new A(this) {
+      @Override
+      public void render(CodeWriter writer) {
+//        writer.append("/*AAAAAA*/");
+        c.accept(writer);
+      }
+    };
+  }
+
+  @Override
+  public ExpressionModel identifier(String name, VariableScope scope) {
+    return new JPhpIdentifierModel(this, name, scope);
+//    return CodeBuilder.super.identifier(name, scope);
+  }
+
+
+
+  class JPhpIdentifierModel extends IdentifierModel {
+    private TypeInfo type;
+    private VariableScope scope;
+    public JPhpIdentifierModel(CodeBuilder builder, String name, VariableScope scope) {
+      super(builder, name, scope);
+      this.scope = scope;
+    }
+
+    public VariableScope getScope() {
+      return scope;
     }
 
     @Override
-    public DataObjectClassModel dataObjectClass(ClassTypeInfo type) {
-        System.err.println("/*dataObjectClass*/");
-        addImport(type);
-        imports.add(type.translatePackageName("jphp") + ".*");
-        return CodeBuilder.super.dataObjectClass(type);
+    public ExpressionModel as(TypeInfo type) {
+      this.type = type;
+      return super.as(type);
+    }
+    public ClassKind getKind() {
+      return type.getKind();
     }
 
     @Override
-    public EnumExpressionModel enumType(EnumTypeInfo type) {
-        System.err.println("/*enumType*/");
-        addImport(type);
-        return CodeBuilder.super.enumType(type);
+    public void render(CodeWriter writer) {
+//      writer.append("/*BBBB*/");
+      super.render(writer);
     }
+  }
 
-    @Override
-    public ApiTypeModel apiType(ApiTypeInfo type) {
-        System.err.println("/*enumType*/");
-        addImport(type);
-        return CodeBuilder.super.apiType(type);
-    }
+  @Override
+  public ApiTypeModel apiType(ApiTypeInfo type) {
+    imports.add(type.translateName("jphp"));
+    return CodeBuilder.super.apiType(type);
+  }
 
-    @Override
-    public ExpressionModel asyncResultHandler(LambdaExpressionTree.BodyKind bodyKind, ParameterizedTypeInfo resultType, String resultName, CodeModel body, CodeModel succeededBody, CodeModel failedBody) {
-        System.err.println("/*asyncResultHandler*/");
-        return new LambdaExpressionModel(this, bodyKind, Collections.singletonList(resultType), Collections.singletonList(resultName), body);
+  static class A extends ExpressionModel {
+    public A(CodeBuilder builder) {
+      super(builder);
     }
-
-    @Override
-    public StatementModel variableDecl(VariableScope scope, TypeInfo type, String name, ExpressionModel initializer) {
-        //----finish
-        return StatementModel.render(renderer -> {
-            System.err.println("/*variableDecl*/");
-            renderer.append("/*variableDecl*/");
-            renderer.append("$").append(name);
-            if (initializer != null) {
-                renderer.append(" = ");
-                initializer.render(renderer);
-            }
-        });
-    }
-
-    @Override
-    public StatementModel enhancedForLoop(String variableName, ExpressionModel expression, StatementModel body) {
-        return StatementModel.render(renderer -> {
-            System.err.println("/*enhancedForLoop*/");
-            renderer.append("/*enhancedForLoop*/");
-            renderer.append("foreach (");
-            expression.render(renderer);
-            renderer.append(" as $").append(variableName).append(") { \n");
-            renderer.indent();
-            body.render(renderer);
-            renderer.unindent();
-            renderer.append("}");
-        });
-    }
-
-    @Override
-    public StatementModel forLoop(StatementModel initializer, ExpressionModel condition, ExpressionModel update, StatementModel body) {
-        return StatementModel.conditional((renderer) -> {
-            System.err.println("/*forLoop*/");
-            renderer.append("/*forLoop*/");
-            renderer.append("for (");
-            initializer.render(renderer);
-            renderer.append("; ");
-            condition.render(renderer);
-            renderer.append("; ");
-            update.render(renderer);
-            renderer.append(") {\n");
-            renderer.indent();
-            body.render(renderer);
-            renderer.unindent();
-            renderer.append("}");
-        });
-    }
-
-    @Override
-    public StatementModel sequenceForLoop(String variableName, ExpressionModel fromValue, ExpressionModel toValue, StatementModel body) {
-        //----finish
-        return StatementModel.conditional((renderer) -> {
-            System.err.println("/*sequenceForLoop*/");
-            renderer.append("/*sequenceForLoop*/");
-            renderer.append("for ($").append(variableName).append(" = ");
-            fromValue.render(renderer);
-            renderer.append("; $").append(variableName).append(" < ");
-            toValue.render(renderer);
-            renderer.append("; $").append(variableName).append("++) {\n");
-            renderer.indent();
-            body.render(renderer);
-            renderer.unindent();
-            renderer.append("}");
-        });
-    }
-
-    @Override
-    public JsonObjectClassModel jsonObjectClassModel() {
-        System.err.println("/*jsonObjectClassModel*/");
-        imports.add("io.vertx.kotlin.core.json.*");
-        return CodeBuilder.super.jsonObjectClassModel();
-    }
-
-    @Override
-    public JsonArrayClassModel jsonArrayClassModel() {
-        System.err.println("/*jsonArrayClassModel*/");
-        imports.add("io.vertx.kotlin.core.json.*");
-        return CodeBuilder.super.jsonArrayClassModel();
-    }
-
-    private void renderType(TypeInfo type, JPhpWriter renderer) {
-        renderer.append("/*renderType*/");
-        System.err.println("/*renderType*/");
-        if (type instanceof ApiTypeInfo) {
-            renderer.renderApiType((ApiTypeInfo) type);
-        } else if (type instanceof ClassTypeInfo) {
-            renderer.renderJavaType((ClassTypeInfo) type);
-        } else if (type instanceof PrimitiveTypeInfo) {
-            renderer.renderBasicType(type);
-        } else {
-            renderer.append(type.getName());
-        }
-    }
-
-    private void addImport(ClassTypeInfo importedType) {
-        System.err.println("/*addImport*/");
-        String fqn = importedType.getName();
-/*
-    if (importedType instanceof ApiTypeInfo) {
-      fqn = importedType.translateName("kotlin");
-    }
-*/
-        imports.add(fqn);
-    }
+  }
 }

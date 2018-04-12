@@ -13,8 +13,9 @@ The simplest way to create an HTTP server, using all default options is as follo
 
 [source,jphp]
 ----
+<?php
 
-/*variableDecl*/$server = $vertx.$createHttpServer()
+    $server = $vertx->createHttpServer();
 
 ----
 
@@ -25,11 +26,13 @@ instance when creating it:
 
 [source,jphp]
 ----
+<?php
 
-/*variableDecl*/$options = HttpServerOptions(
-  maxWebsocketFrameSize = 1000000)
+    $options = array(
+        "maxWebsocketFrameSize" => 1000000
+    );
 
-/*variableDecl*/$server = $vertx.$createHttpServer($options)
+    $server = $vertx->createHttpServer($options);
 
 ----
 
@@ -45,13 +48,16 @@ To handle `h2` requests, TLS must be enabled along with `link:../../apidocs/io/v
 
 [source,jphp]
 ----
-/*variableDecl*/$options = HttpServerOptions(
-  useAlpn = true,
-  ssl = true,
-  keyStoreOptions = JksOptions(
-    path = "/path/to/my/keystore"))
+<?php
+    $options = array(
+        "useAlpn" => true,
+        "ssl" => true,
+        "keyStoreOptions" => array(
+            "path" => "/path/to/my/keystore"
+        )
+    );
 
-/*variableDecl*/$server = $vertx.$createHttpServer($options)
+    $server = $vertx->createHttpServer($options);
 
 ----
 
@@ -81,11 +87,13 @@ For debugging purposes, network activity can be logged.
 
 [source,jphp]
 ----
+<?php
 
-/*variableDecl*/$options = HttpServerOptions(
-  logActivity = true)
+    $options = array(
+        "logActivity" => true
+    );
 
-/*variableDecl*/$server = $vertx.$createHttpServer($options)
+    $server = $vertx->createHttpServer($options);
 
 ----
 
@@ -100,9 +108,10 @@ To tell the server to listen at the host and port as specified in the options:
 
 [source,jphp]
 ----
+<?php
 
-/*variableDecl*/$server = $vertx.$createHttpServer()
-$server.$listen()
+    $server = $vertx->createHttpServer();
+    $server->listen();
 
 ----
 
@@ -110,9 +119,10 @@ Or to specify the host and port in the call to listen, ignoring what is configur
 
 [source,jphp]
 ----
+<?php
 
-/*variableDecl*/$server = $vertx.$createHttpServer()
-$server.$listen(8080, "myhost.com")
+    $server = $vertx->createHttpServer();
+    $server->listen(8080, "myhost.com");
 
 ----
 
@@ -126,15 +136,16 @@ For example:
 
 [source,jphp]
 ----
+<?php
 
-/*variableDecl*/$server = $vertx.$createHttpServer()
-$server.$listen(8080, "myhost.com", { res ->
-  if (res.succeeded()) {
-    echo "Server is now listening!"."\n";
-  } else {
-    echo "Failed to bind!"."\n";
-  }
-})
+    $server = $vertx->createHttpServer();
+    $server->listen(8080, "myhost.com", function ($res, $res_err) {
+        if ($res != null) {
+            echo "Server is now listening!\n";
+        } else {
+            echo "Failed to bind!\n";
+        };
+    });
 
 ----
 
@@ -144,11 +155,12 @@ To be notified when a request arrives you need to set a `link:../../apidocs/io/v
 
 [source,jphp]
 ----
+<?php
 
-/*variableDecl*/$server = $vertx.$createHttpServer()
-$server.$requestHandler({ request ->
-  // Handle the request in here
-})
+    $server = $vertx->createHttpServer();
+    $server->requestHandler(function ($request) {
+        // Handle the request in here
+    });
 
 ----
 
@@ -173,10 +185,11 @@ Here's a simple example of a server handling a request and replying with "hello 
 
 [source,jphp]
 ----
+<?php
 
-$vertx.$createHttpServer().$requestHandler({ request ->
-  $request.$response().$end("Hello world")
-}).$listen(8080)
+    $vertx->createHttpServer()->requestHandler(function ($request) {
+        $request->response()->end("Hello world");
+    })->listen(8080);
 
 
 ----
@@ -233,14 +246,15 @@ It also has case-insensitive keys, that means you can do the following:
 
 [source,jphp]
 ----
+<?php
 
-/*variableDecl*/$headers = $request.$headers()
+    $headers = $request->headers();
 
-// Get the User-Agent:
-echo "User agent is ${$headers.$get("user-agent")}"."\n";
+    // Get the User-Agent:
+    echo "User agent is ".$headers->get("user-agent")."\n";
 
-// You can also do this and get the same result:
-echo "User agent is ${$headers.$get("User-Agent")}"."\n";
+    // You can also do this and get the same result:
+    echo "User agent is ".$headers->get("User-Agent")."\n";
 
 ----
 
@@ -299,10 +313,11 @@ this will get called every time a chunk of the request body arrives. Here's an e
 
 [source,jphp]
 ----
+<?php
 
-$request.$handler({ buffer ->
-  echo "I have received a chunk of the body of length ${$buffer.$length()}"."\n";
-})
+    $request->handler(function ($buffer) {
+        echo "I have received a chunk of the body of length ".$buffer->length()."\n";
+    });
 
 ----
 
@@ -314,18 +329,20 @@ the aggregation yourself as follows:
 
 [source,jphp]
 ----
+<?php
+    use io\vertx\jphp\core\buffer\Buffer;
 
-// Create an empty buffer
-/*variableDecl*/$totalBuffer = Buffer.$buffer()
+    // Create an empty buffer
+    $totalBuffer = Buffer::buffer();
 
-$request.$handler({ buffer ->
-  echo "I have received a chunk of the body of length ${$buffer.$length()}"."\n";
-  $totalBuffer.$appendBuffer($buffer)
-})
+    $request->handler(function ($buffer) {
+        echo "I have received a chunk of the body of length ".$buffer->length()."\n";
+        $totalBuffer->appendBuffer($buffer);
+    });
 
-$request.$endHandler({ v ->
-  echo "Full body received, length = ${$totalBuffer.$length()}"."\n";
-})
+    $request->endHandler(function ($v) {
+        echo "Full body received, length = ".$totalBuffer->length()."\n";
+    });
 
 ----
 
@@ -334,10 +351,11 @@ for you. The body handler is called once when all the body has been received:
 
 [source,jphp]
 ----
+<?php
 
-$request.$bodyHandler({ totalBuffer ->
-  echo "Full body received, length = ${$totalBuffer.$length()}"."\n";
-})
+    $request->bodyHandler(function ($totalBuffer) {
+        echo "Full body received, length = ".$totalBuffer->length()."\n";
+    });
 
 ----
 
@@ -366,14 +384,15 @@ once the entire body has been read:
 
 [source,jphp]
 ----
+<?php
 
-$server.$requestHandler({ request ->
-  $request.$setExpectMultipart(true)
-  $request.$endHandler({ v ->
-    // The body has now been fully read, so retrieve the form attributes
-    /*variableDecl*/$formAttributes = $request.$formAttributes()
-  })
-})
+    $server->requestHandler(function ($request) {
+        $request->setExpectMultipart(true);
+        $request->endHandler(function ($v) {
+            // The body has now been fully read, so retrieve the form attributes
+            $formAttributes = $request->formAttributes();
+        });
+    });
 
 ----
 
@@ -391,13 +410,14 @@ The object passed into the handler is a `link:../../apidocs/io/vertx/core/http/H
 
 [source,jphp]
 ----
+<?php
 
-$server.$requestHandler({ request ->
-  $request.$setExpectMultipart(true)
-  $request.$uploadHandler({ upload ->
-    echo "Got a file upload ${$upload.$name()}"."\n";
-  })
-})
+    $server->requestHandler(function ($request) {
+        $request->setExpectMultipart(true);
+        $request->uploadHandler(function ($upload) {
+            echo "Got a file upload ".$upload->name()."\n";
+        });
+    });
 
 ----
 
@@ -406,12 +426,13 @@ exhaustion, instead, the upload data is received in chunks:
 
 [source,jphp]
 ----
+<?php
 
-$request.$uploadHandler({ upload ->
-  $upload.$handler({ chunk ->
-    echo "Received a chunk of the upload of length ${$chunk.$length()}"."\n";
-  })
-})
+    $request->uploadHandler(function ($upload) {
+        $upload->handler(function ($chunk) {
+            echo "Received a chunk of the upload of length ".$chunk->length()."\n";
+        });
+    });
 
 ----
 
@@ -423,10 +444,11 @@ If you just want to upload the file to disk somewhere you can use `link:../../ap
 
 [source,jphp]
 ----
+<?php
 
-$request.$uploadHandler({ upload ->
-  $upload.$streamToFileSystem("myuploads_directory/${$upload.$filename()}")
-})
+    $request->uploadHandler(function ($upload) {
+        $upload->streamToFileSystem("myuploads_directory/".$upload->filename());
+    });
 
 ----
 
@@ -453,11 +475,12 @@ this will get called every time a custom frame arrives. Here's an example:
 
 [source,jphp]
 ----
+<?php
 
-$request.$customFrameHandler({ frame ->
+    $request->customFrameHandler(function ($frame) {
 
-  echo "Received a frame type=${$frame.$type()} payload${$frame.$payload().$toString()}"."\n";
-})
+        echo "Received a frame type=".$frame->type()." payload".$frame->payload()->toString()."\n";
+    });
 
 ----
 
@@ -499,8 +522,9 @@ With a single buffer:
 
 [source,jphp]
 ----
-/*variableDecl*/$response = $request.$response()
-$response.$write($buffer)
+<?php
+    $response = $request->response();
+    $response->write($buffer);
 
 ----
 
@@ -508,8 +532,9 @@ With a string. In this case the string will encoded using UTF-8 and the result w
 
 [source,jphp]
 ----
-/*variableDecl*/$response = $request.$response()
-$response.$write("hello world!")
+<?php
+    $response = $request->response();
+    $response->write("hello world!");
 
 ----
 
@@ -518,8 +543,9 @@ result written to the wire.
 
 [source,jphp]
 ----
-/*variableDecl*/$response = $request.$response()
-$response.$write("hello world!", "UTF-16")
+<?php
+    $response = $request->response();
+    $response->write("hello world!", "UTF-16");
 
 ----
 
@@ -542,9 +568,10 @@ With no arguments, the response is simply ended.
 
 [source,jphp]
 ----
-/*variableDecl*/$response = $request.$response()
-$response.$write("hello world!")
-$response.$end()
+<?php
+    $response = $request->response();
+    $response->write("hello world!");
+    $response->end();
 
 ----
 
@@ -553,8 +580,9 @@ calling write with a string or buffer followed by calling end with no arguments.
 
 [source,jphp]
 ----
-/*variableDecl*/$response = $request.$response()
-$response.$end("hello world!")
+<?php
+    $response = $request->response();
+    $response->end("hello world!");
 
 ----
 
@@ -576,10 +604,11 @@ HTTP response headers can be added to the response by adding them directly to th
 
 [source,jphp]
 ----
-/*variableDecl*/$response = $request.$response()
-/*variableDecl*/$headers = $response.$headers()
-$headers.$set("content-type", "text/html")
-$headers.$set("other-header", "wibble")
+<?php
+    $response = $request->response();
+    $headers = $response->headers();
+    $headers->set("content-type", "text/html");
+    $headers->set("other-header", "wibble");
 
 ----
 
@@ -587,8 +616,9 @@ Or you can use `link:../../apidocs/io/vertx/core/http/HttpServerResponse.html#pu
 
 [source,jphp]
 ----
-/*variableDecl*/$response = $request.$response()
-$response.$putHeader("content-type", "text/html").$putHeader("other-header", "wibble")
+<?php
+    $response = $request->response();
+    $response->putHeader("content-type", "text/html")->putHeader("other-header", "wibble");
 
 ----
 
@@ -605,8 +635,9 @@ You put the HTTP response into chunked mode as follows:
 
 [source,jphp]
 ----
-/*variableDecl*/$response = $request.$response()
-$response.$setChunked(true)
+<?php
+    $response = $request->response();
+    $response->setChunked(true);
 
 ----
 
@@ -622,10 +653,11 @@ To add trailers to the response, add them directly to the `link:../../apidocs/io
 
 [source,jphp]
 ----
-/*variableDecl*/$response = $request.$response()
-$response.$setChunked(true)
-/*variableDecl*/$trailers = $response.$trailers()
-$trailers.$set("X-wibble", "woobble").$set("X-quux", "flooble")
+<?php
+    $response = $request->response();
+    $response->setChunked(true);
+    $trailers = $response->trailers();
+    $trailers->set("X-wibble", "woobble")->set("X-quux", "flooble");
 
 ----
 
@@ -633,9 +665,10 @@ Or use `link:../../apidocs/io/vertx/core/http/HttpServerResponse.html#putTrailer
 
 [source,jphp]
 ----
-/*variableDecl*/$response = $request.$response()
-$response.$setChunked(true)
-$response.$putTrailer("X-wibble", "woobble").$putTrailer("X-quux", "flooble")
+<?php
+    $response = $request->response();
+    $response->setChunked(true);
+    $response->putTrailer("X-wibble", "woobble")->putTrailer("X-quux", "flooble");
 
 ----
 
@@ -658,15 +691,16 @@ Here's a very simple web server that serves files from the file system using sen
 
 [source,jphp]
 ----
-$vertx.$createHttpServer().$requestHandler({ request ->
-  /*variableDecl*/$file = ""
-  if ($request.$path() == "/") {
-    $file = "index.html"
-  } else if (!$request.$path().$contains("..")) {
-    $file = $request.$path()
-  }
-  $request.$response().$sendFile("web/${$file}")
-}).$listen(8080)
+<?php
+    $vertx->createHttpServer()->requestHandler(function ($request) {
+        $file = "";
+        if ($request->path() == "/") {
+            $file = "index.html";
+        } else if (!$request->path()->contains("..")) {
+            $file = $request->path();
+        };
+        $request->response()->sendFile("web/".$file);
+    })->listen(8080);
 
 ----
 
@@ -686,25 +720,26 @@ When there is a need to serve just a segment of a file, say starting from a give
 
 [source,jphp]
 ----
-$vertx.$createHttpServer().$requestHandler({ request ->
-  /*variableDecl*/$offset = 0
-  try {
-    $offset = Long.$parseLong($request.$getParam("start"))
-  } catch(e: Exception) {
-    // error handling...
-  }
+<?php
+    $vertx->createHttpServer()->requestHandler(function ($request) {
+        $offset = 0;
+        try {
+            $offset = Java::type("java.lang.Long")->parseLong($request->getParam("start"));
+        } catch(Exception $throwable) {
+            // error handling...
+        }
+        ;
 
+        $end = Java::type("java.lang.Long")->MAX_VALUE;
+        try {
+            $end = Java::type("java.lang.Long")->parseLong($request->getParam("end"));
+        } catch(Exception $throwable) {
+            // error handling...
+        }
+        ;
 
-  /*variableDecl*/$end = Long.$MAX_VALUE
-  try {
-    $end = Long.$parseLong($request.$getParam("end"))
-  } catch(e: Exception) {
-    // error handling...
-  }
-
-
-  $request.$response().$sendFile("web/mybigfile.txt", $offset, $end)
-}).$listen(8080)
+        $request->response()->sendFile("web/mybigfile.txt", $offset, $end);
+    })->listen(8080);
 
 ----
 
@@ -713,17 +748,18 @@ case you can just do:
 
 [source,jphp]
 ----
-$vertx.$createHttpServer().$requestHandler({ request ->
-  /*variableDecl*/$offset = 0
-  try {
-    $offset = Long.$parseLong($request.$getParam("start"))
-  } catch(e: Exception) {
-    // error handling...
-  }
+<?php
+    $vertx->createHttpServer()->requestHandler(function ($request) {
+        $offset = 0;
+        try {
+            $offset = Java::type("java.lang.Long")->parseLong($request->getParam("start"));
+        } catch(Exception $throwable) {
+            // error handling...
+        }
+        ;
 
-
-  $request.$response().$sendFile("web/mybigfile.txt", $offset)
-}).$listen(8080)
+        $request->response()->sendFile("web/mybigfile.txt", $offset);
+    })->listen(8080);
 
 ----
 
@@ -739,18 +775,20 @@ at any one time:
 
 [source,jphp]
 ----
-$vertx.$createHttpServer().$requestHandler({ request ->
-  /*variableDecl*/$response = $request.$response()
-  if ($request.$method() == HttpMethod.PUT) {
-    $response.$setChunked(true)
-    Pump.$pump($request, $response).$start()
-    $request.$endHandler({ v ->
-      $response.$end()
-    })
-  } else {
-    $response.$setStatusCode(400).$end()
-  }
-}).$listen(8080)
+<?php
+    use io\vertx\jphp\core\streams\Pump;
+    $vertx->createHttpServer()->requestHandler(function ($request) {
+        $response = $request->response();
+        if ($request->method() == "PUT") {
+            $response->setChunked(true);
+            Pump::pump($request, $response)->start();
+            $request->endHandler(function ($v) {
+                $response->end();
+            });
+        } else {
+            $response->setStatusCode(400)->end();
+        };
+    })->listen(8080);
 
 ----
 
@@ -764,13 +802,15 @@ Here's an example:
 
 [source,jphp]
 ----
+<?php
+    use io\vertx\jphp\core\buffer\Buffer;
 
-/*variableDecl*/$frameType = 40
-/*variableDecl*/$frameStatus = 10
-/*variableDecl*/$payload = Buffer.$buffer("some data")
+    $frameType = 40;
+    $frameStatus = 10;
+    $payload = Buffer::buffer("some data");
 
-// Sending a frame to the client
-$response.$writeCustomFrame($frameType, $frameStatus, $payload)
+    // Sending a frame to the client
+    $response->writeCustomFrame($frameType, $frameStatus, $payload);
 
 ----
 
@@ -786,9 +826,10 @@ HTTP/2 supports stream reset at any time during the request/response:
 
 [source,jphp]
 ----
+<?php
 
-// Reset the stream
-$request.$response().$reset()
+    // Reset the stream
+    $request->response()->reset();
 
 ----
 
@@ -796,9 +837,10 @@ By default the `NO_ERROR` (0) error code is sent, another code can sent instead:
 
 [source,jphp]
 ----
+<?php
 
-// Cancel the stream
-$request.$response().$reset(8)
+    // Cancel the stream
+    $request->response()->reset(8);
 
 ----
 
@@ -809,13 +851,14 @@ The request handler are notified of stream reset events with the `link:../../api
 
 [source,jphp]
 ----
+<?php
 
-$request.$response().$exceptionHandler({ err ->
-  if ($err is io.vertx.core.http.StreamResetException) {
-    /*variableDecl*/$reset = $err
-    echo "Stream reset ${$reset.$getCode()}"."\n";
-  }
-})
+    $request->response()->exceptionHandler(function ($err) {
+        if ($err.getClass().getSimpleName() == 'StreamResetException') {
+            $reset = $err;
+            echo "Stream reset ".$reset->getCode()."\n";
+        };
+    });
 
 ----
 
@@ -827,26 +870,27 @@ When a server process a request, it can push a request/response to the client:
 
 [source,jphp]
 ----
+<?php
 
-/*variableDecl*/$response = $request.$response()
+    $response = $request->response();
 
-// Push main.js to the client
-$response.$push(HttpMethod.GET, "/main.js", { ar ->
+    // Push main.js to the client
+    $response->push("GET", "/main.js", function ($ar, $ar_err) {
 
-  if (ar.succeeded()) {
+        if ($ar != null) {
 
-    // The server is ready to push the response
-    /*variableDecl*/$pushedResponse = ar.result()
+            // The server is ready to push the response
+            $pushedResponse = $ar;
 
-    // Send main.js response
-    $pushedResponse.$putHeader("content-type", "application/json").$end("alert(\"Push response hello\")")
-  } else {
-    echo "Could not push client resource ${ar.cause()}"."\n";
-  }
-})
+            // Send main.js response
+            $pushedResponse->putHeader("content-type", "application/json")->end("alert(\"Push response hello\")");
+        } else {
+            echo "Could not push client resource ".$ar_err."\n";
+        };
+    });
 
-// Send the requested resource
-$response.$sendFile("<html><head><script src=\"/main.js\"></script></head><body></body></html>")
+    // Send the requested resource
+    $response->sendFile("<html><head><script src=\"/main.js\"></script></head><body></body></html>");
 
 ----
 
@@ -888,8 +932,9 @@ Whenever the response needs to be sent without compression you can set the heade
 
 [source,jphp]
 ----
-// Disable compression and send an image
-$request.$response().$putHeader(io.vertx.core.http.HttpHeaders.$CONTENT_ENCODING, io.vertx.core.http.HttpHeaders.$IDENTITY).$sendFile("/path/to/image.jpg")
+<?php
+    // Disable compression and send an image
+    $request->response()->putHeader(Java::type("io.vertx.core.http.HttpHeaders")->CONTENT_ENCODING, Java::type("io.vertx.core.http.HttpHeaders")->IDENTITY)->sendFile("/path/to/image.jpg");
 
 ----
 
@@ -916,7 +961,8 @@ You create an `link:../../apidocs/io/vertx/core/http/HttpClient.html[HttpClient]
 
 [source,jphp]
 ----
-/*variableDecl*/$client = $vertx.$createHttpClient()
+<?php
+    $client = $vertx->createHttpClient();
 
 ----
 
@@ -924,9 +970,11 @@ If you want to configure options for the client, you create it as follows:
 
 [source,jphp]
 ----
-/*variableDecl*/$options = HttpClientOptions(
-  keepAlive = false)
-/*variableDecl*/$client = $vertx.$createHttpClient($options)
+<?php
+    $options = array(
+        "keepAlive" => false
+    );
+    $client = $vertx->createHttpClient($options);
 
 ----
 
@@ -939,14 +987,16 @@ For `h2` requests, TLS must be enabled with _Application-Layer Protocol Negotiat
 
 [source,jphp]
 ----
+<?php
 
-/*variableDecl*/$options = HttpClientOptions(
-  protocolVersion = HttpVersion.HTTP_2,
-  ssl = true,
-  useAlpn = true,
-  trustAll = true)
+    $options = array(
+        "protocolVersion" => "HTTP_2",
+        "ssl" => true,
+        "useAlpn" => true,
+        "trustAll" => true
+    );
 
-/*variableDecl*/$client = $vertx.$createHttpClient($options)
+    $client = $vertx->createHttpClient($options);
 
 ----
 
@@ -954,11 +1004,13 @@ For `h2c` requests, TLS must be disabled, the client will do an HTTP/1.1 request
 
 [source,jphp]
 ----
+<?php
 
-/*variableDecl*/$options = HttpClientOptions(
-  protocolVersion = HttpVersion.HTTP_2)
+    $options = array(
+        "protocolVersion" => "HTTP_2"
+    );
 
-/*variableDecl*/$client = $vertx.$createHttpClient($options)
+    $client = $vertx->createHttpClient($options);
 
 ----
 
@@ -980,9 +1032,11 @@ For debugging purposes, network activity can be logged.
 
 [source,jphp]
 ----
-/*variableDecl*/$options = HttpClientOptions(
-  logActivity = true)
-/*variableDecl*/$client = $vertx.$createHttpClient($options)
+<?php
+    $options = array(
+        "logActivity" => true
+    );
+    $client = $vertx->createHttpClient($options);
 
 ----
 
@@ -998,14 +1052,16 @@ every time you make a request you can configure the client with a default host/p
 
 [source,jphp]
 ----
-// Set the default host
-/*variableDecl*/$options = HttpClientOptions(
-  defaultHost = "wibble.com")
-// Can also set default port if you want...
-/*variableDecl*/$client = $vertx.$createHttpClient($options)
-$client.$getNow("/some-uri", { response ->
-  echo "Received response with status code ${$response.$statusCode()}"."\n";
-})
+<?php
+    // Set the default host
+    $options = array(
+        "defaultHost" => "wibble.com"
+    );
+    // Can also set default port if you want...
+    $client = $vertx->createHttpClient($options);
+    $client->getNow("/some-uri", function ($response) {
+        echo "Received response with status code ".$response->statusCode()."\n";
+    });
 
 ----
 
@@ -1014,17 +1070,18 @@ simply specify the host/port when doing the request.
 
 [source,jphp]
 ----
-/*variableDecl*/$client = $vertx.$createHttpClient()
+<?php
+    $client = $vertx->createHttpClient();
 
-// Specify both port and host name
-$client.$getNow(8080, "myserver.mycompany.com", "/some-uri", { response ->
-  echo "Received response with status code ${$response.$statusCode()}"."\n";
-})
+    // Specify both port and host name
+    $client->getNow(8080, "myserver.mycompany.com", "/some-uri", function ($response) {
+        echo "Received response with status code ".$response->statusCode()."\n";
+    });
 
-// This time use the default port 80 but specify the host name
-$client.$getNow("foo.othercompany.com", "/other-uri", { response ->
-  echo "Received response with status code ${$response.$statusCode()}"."\n";
-})
+    // This time use the default port 80 but specify the host name
+    $client->getNow("foo.othercompany.com", "/other-uri", function ($response) {
+        echo "Received response with status code ".$response->statusCode()."\n";
+    });
 
 ----
 
@@ -1043,17 +1100,18 @@ called with the http response when it comes back.
 
 [source,jphp]
 ----
-/*variableDecl*/$client = $vertx.$createHttpClient()
+<?php
+    $client = $vertx->createHttpClient();
 
-// Send a GET request
-$client.$getNow("/some-uri", { response ->
-  echo "Received response with status code ${$response.$statusCode()}"."\n";
-})
+    // Send a GET request
+    $client->getNow("/some-uri", function ($response) {
+        echo "Received response with status code ".$response->statusCode()."\n";
+    });
 
-// Send a GET request
-$client.$headNow("/other-uri", { response ->
-  echo "Received response with status code ${$response.$statusCode()}"."\n";
-})
+    // Send a GET request
+    $client->headNow("/other-uri", function ($response) {
+        echo "Received response with status code ".$response->statusCode()."\n";
+    });
 
 
 ----
@@ -1066,15 +1124,16 @@ the HTTP method at run-time:
 
 [source,jphp]
 ----
-/*variableDecl*/$client = $vertx.$createHttpClient()
+<?php
+    $client = $vertx->createHttpClient();
 
-$client.$request(HttpMethod.GET, "some-uri", { response ->
-  echo "Received response with status code ${$response.$statusCode()}"."\n";
-}).$end()
+    $client->request("GET", "some-uri", function ($response) {
+        echo "Received response with status code ".$response->statusCode()."\n";
+    })->end();
 
-$client.$request(HttpMethod.POST, "foo-uri", { response ->
-  echo "Received response with status code ${$response.$statusCode()}"."\n";
-}).$end("some-data")
+    $client->request("POST", "foo-uri", function ($response) {
+        echo "Received response with status code ".$response->statusCode()."\n";
+    })->end("some-data");
 
 ----
 
@@ -1093,31 +1152,32 @@ Here are some examples of writing a POST request with a body:
 m
 [source,jphp]
 ----
-/*variableDecl*/$client = $vertx.$createHttpClient()
+<?php
+    $client = $vertx->createHttpClient();
 
-/*variableDecl*/$request = $client.$post("some-uri", { response ->
-  echo "Received response with status code ${$response.$statusCode()}"."\n";
-})
+    $request = $client->post("some-uri", function ($response) {
+        echo "Received response with status code ".$response->statusCode()."\n";
+    });
 
-// Now do stuff with the request
-$request.$putHeader("content-length", "1000")
-$request.$putHeader("content-type", "text/plain")
-$request.$write($body)
+    // Now do stuff with the request
+    $request->putHeader("content-length", "1000");
+    $request->putHeader("content-type", "text/plain");
+    $request->write($body);
 
-// Make sure the request is ended when you're done with it
-$request.$end()
+    // Make sure the request is ended when you're done with it
+    $request->end();
 
-// Or fluently:
+    // Or fluently:
 
-$client.$post("some-uri", { response ->
-  echo "Received response with status code ${$response.$statusCode()}"."\n";
-}).$putHeader("content-length", "1000").$putHeader("content-type", "text/plain").$write($body).$end()
+    $client->post("some-uri", function ($response) {
+        echo "Received response with status code ".$response->statusCode()."\n";
+    })->putHeader("content-length", "1000")->putHeader("content-type", "text/plain")->write($body)->end();
 
-// Or event more simply:
+    // Or event more simply:
 
-$client.$post("some-uri", { response ->
-  echo "Received response with status code ${$response.$statusCode()}"."\n";
-}).$putHeader("content-type", "text/plain").$end($body)
+    $client->post("some-uri", function ($response) {
+        echo "Received response with status code ".$response->statusCode()."\n";
+    })->putHeader("content-type", "text/plain")->end($body);
 
 
 ----
@@ -1126,17 +1186,19 @@ Methods exist to write strings in UTF-8 encoding and in any specific encoding an
 
 [source,jphp]
 ----
+<?php
+    use io\vertx\jphp\core\buffer\Buffer;
 
-// Write string encoded in UTF-8
-$request.$write("some data")
+    // Write string encoded in UTF-8
+    $request->write("some data");
 
-// Write string encoded in specific encoding
-$request.$write("some other data", "UTF-16")
+    // Write string encoded in specific encoding
+    $request->write("some other data", "UTF-16");
 
-// Write a buffer
-/*variableDecl*/$buffer = Buffer.$buffer()
-$buffer.$appendInt(123).$appendLong(245L)
-$request.$write($buffer)
+    // Write a buffer
+    $buffer = Buffer::buffer();
+    $buffer->appendInt(123)->appendLong(245);
+    $request->write($buffer);
 
 
 ----
@@ -1146,13 +1208,15 @@ single call to the `end` function.
 
 [source,jphp]
 ----
+<?php
+    use io\vertx\jphp\core\buffer\Buffer;
 
-// Write string and end the request (send it) in a single call
-$request.$end("some simple data")
+    // Write string and end the request (send it) in a single call
+    $request->end("some simple data");
 
-// Write buffer and end the request (send it) in a single call
-/*variableDecl*/$buffer = Buffer.$buffer().$appendDouble(12.34).$appendLong(432L)
-$request.$end($buffer)
+    // Write buffer and end the request (send it) in a single call
+    $buffer = Buffer::buffer()->appendDouble(12.34)->appendLong(432);
+    $request->end($buffer);
 
 
 ----
@@ -1179,11 +1243,12 @@ You can write headers to a request using the `link:../../apidocs/io/vertx/core/h
 
 [source,jphp]
 ----
+<?php
 
-// Write some headers using the headers() multimap
+    // Write some headers using the headers() multimap
 
-/*variableDecl*/$headers = $request.$headers()
-$headers.$set("content-type", "application/json").$set("other-header", "foo")
+    $headers = $request->headers();
+    $headers->set("content-type", "application/json")->set("other-header", "foo");
 
 
 ----
@@ -1195,10 +1260,11 @@ You can also write headers using `link:../../apidocs/io/vertx/core/http/HttpClie
 
 [source,jphp]
 ----
+<?php
 
-// Write some headers using the putHeader method
+    // Write some headers using the putHeader method
 
-$request.$putHeader("content-type", "application/json").$putHeader("other-header", "foo")
+    $request->putHeader("content-type", "application/json")->putHeader("other-header", "foo");
 
 
 ----
@@ -1223,7 +1289,8 @@ Requests can be ended in several ways. With no arguments the request is simply e
 
 [source,jphp]
 ----
-$request.$end()
+<?php
+    $request->end();
 
 ----
 
@@ -1232,12 +1299,14 @@ before calling `end` with no arguments
 
 [source,jphp]
 ----
-// End the request with a string
-$request.$end("some-data")
+<?php
+    use io\vertx\jphp\core\buffer\Buffer;
+    // End the request with a string
+    $request->end("some-data");
 
-// End it with a buffer
-/*variableDecl*/$buffer = Buffer.$buffer().$appendFloat(12.3f).$appendInt(321)
-$request.$end($buffer)
+    // End it with a buffer
+    $buffer = Buffer::buffer()->appendFloat(12.3)->appendInt(321);
+    $request->end($buffer);
 
 ----
 
@@ -1255,15 +1324,16 @@ no need to set the `Content-Length` of the request up-front.
 
 [source,jphp]
 ----
+<?php
 
-$request.$setChunked(true)
+    $request->setChunked(true);
 
-// Write some chunks
-/*sequenceForLoop*/for ($i = 0; $i < 10; $i++) {
-  $request.$write("this-is-chunk-${$i}")
-}
+    // Write some chunks
+    for ($i = 0; $i < 10; $i++) {
+        $request->write("this-is-chunk-".$i);
+    };
 
-$request.$end()
+    $request->end();
 
 ----
 
@@ -1281,14 +1351,15 @@ You can handle exceptions corresponding to a request by setting an exception han
 
 [source,jphp]
 ----
+<?php
 
-/*variableDecl*/$request = $client.$post("some-uri", { response ->
-  echo "Received response with status code ${$response.$statusCode()}"."\n";
-})
-$request.$exceptionHandler({ e ->
-  echo "Received exception: ${$e.$getMessage()}"."\n";
-  $e.$printStackTrace()
-})
+    $request = $client->post("some-uri", function ($response) {
+        echo "Received response with status code ".$response->statusCode()."\n";
+    });
+    $request->exceptionHandler(function ($e) {
+        echo "Received exception: ".$e->getMessage()."\n";
+        $e->printStackTrace();
+    });
 
 ----
 
@@ -1297,17 +1368,18 @@ This does not handle non _2xx_ response that need to be handled in the
 
 [source, jphp]
 ----
-/*variableDecl*/$request = $client.$post("some-uri", { response ->
-  if ($response.$statusCode() == 200) {
-    echo "Everything fine"."\n";
-    return
-  }
-  if ($response.$statusCode() == 500) {
-    echo "Unexpected behavior on the server side"."\n";
-    return
-  }
-})
-$request.$end()
+<?php
+    $request = $client->post("some-uri", function ($response) {
+        if ($response->statusCode() == 200) {
+            echo "Everything fine\n";
+            return;
+        };
+        if ($response->statusCode() == 500) {
+            echo "Unexpected behavior on the server side\n";
+            return;
+        };
+    });
+    $request->end();
 
 ----
 
@@ -1321,11 +1393,12 @@ not provide a handler when the request is created and set it later on the reques
 
 [source,jphp]
 ----
+<?php
 
-/*variableDecl*/$request = $client.$post("some-uri")
-$request.$handler({ response ->
-  echo "Received response with status code ${$response.$statusCode()}"."\n";
-})
+    $request = $client->post("some-uri");
+    $request->handler(function ($response) {
+        echo "Received response with status code ".$response->statusCode()."\n";
+    });
 
 ----
 
@@ -1338,13 +1411,15 @@ For, example, you could pump a file on disk to a http request body as follows:
 
 [source,jphp]
 ----
+<?php
+    use io\vertx\jphp\core\streams\Pump;
 
-$request.$setChunked(true)
-/*variableDecl*/$pump = Pump.$pump($file, $request)
-$file.$endHandler({ v ->
-  $request.$end()
-})
-$pump.$start()
+    $request->setChunked(true);
+    $pump = Pump::pump($file, $request);
+    $file->endHandler(function ($v) {
+        $request->end();
+    });
+    $pump->start();
 
 
 ----
@@ -1358,13 +1433,15 @@ To send such frames, you can use the `link:../../apidocs/io/vertx/core/http/Http
 
 [source,jphp]
 ----
+<?php
+    use io\vertx\jphp\core\buffer\Buffer;
 
-/*variableDecl*/$frameType = 40
-/*variableDecl*/$frameStatus = 10
-/*variableDecl*/$payload = Buffer.$buffer("some data")
+    $frameType = 40;
+    $frameStatus = 10;
+    $payload = Buffer::buffer("some data");
 
-// Sending a frame to the server
-$request.$writeCustomFrame($frameType, $frameStatus, $payload)
+    // Sending a frame to the server
+    $request->writeCustomFrame($frameType, $frameStatus, $payload);
 
 ----
 
@@ -1377,8 +1454,9 @@ HTTP/2 supports stream reset at any time during the request/response:
 
 [source,jphp]
 ----
+<?php
 
-$request.$reset()
+    $request->reset();
 
 
 ----
@@ -1387,8 +1465,9 @@ By default the NO_ERROR (0) error code is sent, another code can sent instead:
 
 [source,jphp]
 ----
+<?php
 
-$request.$reset(8)
+    $request->reset(8);
 
 
 ----
@@ -1400,13 +1479,14 @@ The request handler are notified of stream reset events with the `link:../../api
 
 [source,jphp]
 ----
+<?php
 
-$request.$exceptionHandler({ err ->
-  if ($err is io.vertx.core.http.StreamResetException) {
-    /*variableDecl*/$reset = $err
-    echo "Stream reset ${$reset.$getCode()}"."\n";
-  }
-})
+    $request->exceptionHandler(function ($err) {
+        if ($err.getClass().getSimpleName() == 'StreamResetException') {
+            $reset = $err;
+            echo "Stream reset ".$reset->getCode()."\n";
+        };
+    });
 
 ----
 
@@ -1420,14 +1500,15 @@ and `link:../../apidocs/io/vertx/core/http/HttpClientResponse.html#statusMessage
 
 [source,jphp]
 ----
+<?php
 
-$client.$getNow("some-uri", { response ->
-  // the status code - e.g. 200 or 404
-  echo "Status code is ${$response.$statusCode()}"."\n";
+    $client->getNow("some-uri", function ($response) {
+        // the status code - e.g. 200 or 404
+        echo "Status code is ".$response->statusCode()."\n";
 
-  // the status message e.g. "OK" or "Not Found".
-  echo "Status message is ${$response.$statusMessage()}"."\n";
-})
+        // the status message e.g. "OK" or "Not Found".
+        echo "Status message is ".$response->statusMessage()."\n";
+    });
 
 
 ----
@@ -1445,9 +1526,10 @@ The object returned is a `link:../../apidocs/io/vertx/core/MultiMap.html[MultiMa
 
 [source,jphp]
 ----
+<?php
 
-/*variableDecl*/$contentType = $response.$headers().$get("content-type")
-/*variableDecl*/$contentLength = $response.$headers().$get("content-lengh")
+    $contentType = $response->headers()->get("content-type");
+    $contentLength = $response->headers()->get("content-lengh");
 
 
 ----
@@ -1469,13 +1551,14 @@ a `link:../../apidocs/io/vertx/core/buffer/Buffer.html[Buffer]` representing the
 
 [source,jphp]
 ----
+<?php
 
-$client.$getNow("some-uri", { response ->
+    $client->getNow("some-uri", function ($response) {
 
-  $response.$handler({ buffer ->
-    echo "Received a part of the response body: ${$buffer}"."\n";
-  })
-})
+        $response->handler(function ($buffer) {
+            echo "Received a part of the response body: ".$buffer."\n";
+        });
+    });
 
 ----
 
@@ -1484,23 +1567,25 @@ either aggregate it yourself:
 
 [source,jphp]
 ----
+<?php
+    use io\vertx\jphp\core\buffer\Buffer;
 
-$client.$getNow("some-uri", { response ->
+    $client->getNow("some-uri", function ($response) {
 
-  // Create an empty buffer
-  /*variableDecl*/$totalBuffer = Buffer.$buffer()
+        // Create an empty buffer
+        $totalBuffer = Buffer::buffer();
 
-  $response.$handler({ buffer ->
-    echo "Received a part of the response body: ${$buffer.$length()}"."\n";
+        $response->handler(function ($buffer) {
+            echo "Received a part of the response body: ".$buffer->length()."\n";
 
-    $totalBuffer.$appendBuffer($buffer)
-  })
+            $totalBuffer->appendBuffer($buffer);
+        });
 
-  $response.$endHandler({ v ->
-    // Now all the body has been read
-    echo "Total response body length is ${$totalBuffer.$length()}"."\n";
-  })
-})
+        $response->endHandler(function ($v) {
+            // Now all the body has been read
+            echo "Total response body length is ".$totalBuffer->length()."\n";
+        });
+    });
 
 ----
 
@@ -1509,14 +1594,15 @@ is called with the entire body when the response has been fully read:
 
 [source,jphp]
 ----
+<?php
 
-$client.$getNow("some-uri", { response ->
+    $client->getNow("some-uri", function ($response) {
 
-  $response.$bodyHandler({ totalBuffer ->
-    // Now all the body has been read
-    echo "Total response body length is ${$totalBuffer.$length()}"."\n";
-  })
-})
+        $response->bodyHandler(function ($totalBuffer) {
+            // Now all the body has been read
+            echo "Total response body length is ".$totalBuffer->length()."\n";
+        });
+    });
 
 ----
 
@@ -1541,10 +1627,11 @@ Here's an example:
 
 [source,jphp]
 ----
+<?php
 
-$client.$get("some-uri", { response ->
-  echo "Received response with status code ${$response.$statusCode()}"."\n";
-}).$setFollowRedirects(true).$end()
+    $client->get("some-uri", function ($response) {
+        echo "Received response with status code ".$response->statusCode()."\n";
+    })->setFollowRedirects(true)->end();
 
 ----
 
@@ -1559,13 +1646,15 @@ The maximum redirects is `16` by default and can be changed with `link:../../api
 
 [source,jphp]
 ----
+<?php
 
-/*variableDecl*/$client = $vertx.$createHttpClient(HttpClientOptions(
-  maxRedirects = 32))
+    $client = $vertx->createHttpClient(array(
+        "maxRedirects" => 32
+    ));
 
-$client.$get("some-uri", { response ->
-  echo "Received response with status code ${$response.$statusCode()}"."\n";
-}).$setFollowRedirects(true).$end()
+    $client->get("some-uri", function ($response) {
+        echo "Received response with status code ".$response->statusCode()."\n";
+    })->setFollowRedirects(true)->end();
 
 ----
 
@@ -1575,22 +1664,24 @@ The default redirection policy can changed with a custom implementation:
 
 [source,jphp]
 ----
+<?php
+    use io\vertx\jphp\core\Future;
 
-$client.$redirectHandler({ response ->
+    $client->redirectHandler(function ($response) {
 
-  // Only follow 301 code
-  if ($response.$statusCode() == 301 && $response.$getHeader("Location") != null) {
+        // Only follow 301 code
+        if ($response->statusCode() == 301 && $response->getHeader("Location") != null) {
 
-    // Compute the redirect URI
-    /*variableDecl*/$absoluteURI = $resolveURI($response.$request().$absoluteURI(), $response.$getHeader("Location"))
+            // Compute the redirect URI
+            $absoluteURI = resolveURI($response->request()->absoluteURI(), $response->getHeader("Location"));
 
-    // Create a new ready to use request that the client will use
-    return Future.$succeededFuture($client.$getAbs($absoluteURI))
-  }
+            // Create a new ready to use request that the client will use
+            return Future::succeededFuture($client->getAbs($absoluteURI));
+        };
 
-  // We don't redirect
-  return null
-})
+        // We don't redirect
+        return null;
+    });
 
 ----
 
@@ -1635,19 +1726,20 @@ Here's an example:
 
 [source,jphp]
 ----
+<?php
 
-/*variableDecl*/$request = $client.$put("some-uri", { response ->
-  echo "Received response with status code ${$response.$statusCode()}"."\n";
-})
+    $request = $client->put("some-uri", function ($response) {
+        echo "Received response with status code ".$response->statusCode()."\n";
+    });
 
-$request.$putHeader("Expect", "100-Continue")
+    $request->putHeader("Expect", "100-Continue");
 
-$request.$continueHandler({ v ->
-  // OK to send rest of body
-  $request.$write("Some data")
-  $request.$write("Some more data")
-  $request.$end()
-})
+    $request->continueHandler(function ($v) {
+        // OK to send rest of body
+        $request->write("Some data");
+        $request->write("Some more data");
+        $request->end();
+    });
 
 ----
 
@@ -1662,23 +1754,24 @@ to have the client continue sending the body:
 
 [source,jphp]
 ----
+<?php
 
-$httpServer.$requestHandler({ request ->
-  if ($request.$getHeader("Expect").$equalsIgnoreCase("100-Continue")) {
+    $httpServer->requestHandler(function ($request) {
+        if ($request->getHeader("Expect")->equalsIgnoreCase("100-Continue")) {
 
-    // Send a 100 continue response
-    $request.$response().$writeContinue()
+            // Send a 100 continue response
+            $request->response()->writeContinue();
 
-    // The client should send the body when it receives the 100 response
-    $request.$bodyHandler({ body ->
-      // Do something with body
-    })
+            // The client should send the body when it receives the 100 response
+            $request->bodyHandler(function ($body) {
+                // Do something with body
+            });
 
-    $request.$endHandler({ v ->
-      $request.$response().$end()
-    })
-  }
-})
+            $request->endHandler(function ($v) {
+                $request->response()->end();
+            });
+        };
+    });
 
 ----
 
@@ -1688,25 +1781,26 @@ cannot be a logical protocol constraint):
 
 [source,jphp]
 ----
+<?php
 
-$httpServer.$requestHandler({ request ->
-  if ($request.$getHeader("Expect").$equalsIgnoreCase("100-Continue")) {
+    $httpServer->requestHandler(function ($request) {
+        if ($request->getHeader("Expect")->equalsIgnoreCase("100-Continue")) {
 
-    //
-    /*variableDecl*/$rejectAndClose = true
-    if ($rejectAndClose) {
+            //
+            $rejectAndClose = true;
+            if ($rejectAndClose) {
 
-      // Reject with a failure code and close the connection
-      // this is probably best with persistent connection
-      $request.$response().$setStatusCode(405).$putHeader("Connection", "close").$end()
-    } else {
+                // Reject with a failure code and close the connection
+                // this is probably best with persistent connection
+                $request->response()->setStatusCode(405)->putHeader("Connection", "close")->end();
+            } else {
 
-      // Reject with a failure code and ignore the body
-      // this may be appropriate if the body is small
-      $request.$response().$setStatusCode(405).$end()
-    }
-  }
-})
+                // Reject with a failure code and ignore the body
+                // this may be appropriate if the body is small
+                $request->response()->setStatusCode(405)->end();
+            };
+        };
+    });
 
 ----
 
@@ -1718,25 +1812,26 @@ A push handler can be set on a request to receive the request/response pushed by
 
 [source,jphp]
 ----
+<?php
 
-/*variableDecl*/$request = $client.$get("/index.html", { response ->
-  // Process index.html response
-})
+    $request = $client->get("/index.html", function ($response) {
+        // Process index.html response
+    });
 
-// Set a push handler to be aware of any resource pushed by the server
-$request.$pushHandler({ pushedRequest ->
+    // Set a push handler to be aware of any resource pushed by the server
+    $request->pushHandler(function ($pushedRequest) {
 
-  // A resource is pushed for this request
-  echo "Server pushed ${$pushedRequest.$path()}"."\n";
+        // A resource is pushed for this request
+        echo "Server pushed ".$pushedRequest->path()."\n";
 
-  // Set an handler for the response
-  $pushedRequest.$handler({ pushedResponse ->
-    echo "The response for the pushed request"."\n";
-  })
-})
+        // Set an handler for the response
+        $pushedRequest->handler(function ($pushedResponse) {
+            echo "The response for the pushed request\n";
+        });
+    });
 
-// End the request
-$request.$end()
+    // End the request
+    $request->end();
 
 ----
 
@@ -1744,13 +1839,14 @@ If the client does not want to receive a pushed request, it can reset the stream
 
 [source,jphp]
 ----
-$request.$pushHandler({ pushedRequest ->
-  if ($pushedRequest.$path() == "/main.js") {
-    $pushedRequest.$reset()
-  } else {
-    // Handle it
-  }
-})
+<?php
+    $request->pushHandler(function ($pushedRequest) {
+        if ($pushedRequest->path() == "/main.js") {
+            $pushedRequest->reset();
+        } else {
+            // Handle it
+        };
+    });
 
 ----
 
@@ -1767,10 +1863,11 @@ frame arrives. Here's an example:
 
 [source,jphp]
 ----
-$response.$customFrameHandler({ frame ->
+<?php
+    $response->customFrameHandler(function ($frame) {
 
-  echo "Received a frame type=${$frame.$type()} payload${$frame.$payload().$toString()}"."\n";
-})
+        echo "Received a frame type=".$frame->type()." payload".$frame->payload()->toString()."\n";
+    });
 
 ----
 
@@ -1821,10 +1918,15 @@ The maximum number of connections to pool *for each server* is configured using 
 When making a request with pooling enabled, Vert.x will create a new connection if there are less than the maximum number of
 connections already created for that server, otherwise it will add the request to a queue.
 
-Keep alive connections will not be closed by the client automatically. To close them you can close the client instance.
+Keep alive connections will be closed by the client automatically after a timeout. The timeout can be specified
+by the server using the `keep-alive` header:
 
-Alternatively you can set idle timeout using `link:../../apidocs/io/vertx/core/http/HttpClientOptions.html#setIdleTimeout-int-[setIdleTimeout]` - any
-connections not used within this timeout will be closed. Please note the idle timeout value is in seconds not milliseconds.
+----
+keep-alive: timeout=30
+----
+
+You can set the default timeout using `link:../../apidocs/io/vertx/core/http/HttpClientOptions.html#setKeepAliveTimeout-int-[setKeepAliveTimeout]` - any
+connections not used within this timeout will be closed. Please note the timeout value is in seconds not milliseconds.
 
 === HTTP/1.1 pipe-lining
 
@@ -1856,13 +1958,15 @@ can be used.
 
 [source,jphp]
 ----
+<?php
 
-/*variableDecl*/$clientOptions = HttpClientOptions(
-  http2MultiplexingLimit = 10,
-  http2MaxPoolSize = 3)
+    $clientOptions = array(
+        "http2MultiplexingLimit" => 10,
+        "http2MaxPoolSize" => 3
+    );
 
-// Uses up to 3 connections and up to 10 streams per connection
-/*variableDecl*/$client = $vertx.$createHttpClient($clientOptions)
+    // Uses up to 3 connections and up to 10 streams per connection
+    $client = $vertx->createHttpClient($clientOptions);
 
 ----
 
@@ -1893,7 +1997,8 @@ The `link:../../apidocs/io/vertx/core/http/HttpServerRequest.html#connection--[c
 
 [source,jphp]
 ----
-/*variableDecl*/$connection = $request.$connection()
+<?php
+    $connection = $request->connection();
 
 ----
 
@@ -1901,11 +2006,12 @@ A connection handler can be set on the server to be notified of any incoming con
 
 [source,jphp]
 ----
-/*variableDecl*/$server = $vertx.$createHttpServer($http2Options)
+<?php
+    $server = $vertx->createHttpServer($http2Options);
 
-$server.$connectionHandler({ connection ->
-  echo "A client connected"."\n";
-})
+    $server->connectionHandler(function ($connection) {
+        echo "A client connected\n";
+    });
 
 ----
 
@@ -1915,7 +2021,8 @@ The `link:../../apidocs/io/vertx/core/http/HttpClientRequest.html#connection--[c
 
 [source,jphp]
 ----
-/*variableDecl*/$connection = $request.$connection()
+<?php
+    $connection = $request->connection();
 
 ----
 
@@ -1923,9 +2030,10 @@ A connection handler can be set on the request to be notified when the connectio
 
 [source,jphp]
 ----
-$request.$connectionHandler({ connection ->
-  echo "Connected to the server"."\n";
-})
+<?php
+    $request->connectionHandler(function ($connection) {
+        echo "Connected to the server\n";
+    });
 
 ----
 
@@ -1943,8 +2051,10 @@ The settings can be changed at any time after the connection is established:
 
 [source,jphp]
 ----
-$connection.$updateSettings(Http2Settings(
-  maxConcurrentStreams = 100))
+<?php
+    $connection->updateSettings(array(
+        "maxConcurrentStreams" => 100
+    ));
 
 ----
 
@@ -1953,12 +2063,14 @@ to be notified of the acknowledgment:
 
 [source,jphp]
 ----
-$connection.$updateSettings(Http2Settings(
-  maxConcurrentStreams = 100), { ar ->
-  if (ar.succeeded()) {
-    echo "The settings update has been acknowledged "."\n";
-  }
-})
+<?php
+    $connection->updateSettings(array(
+        "maxConcurrentStreams" => 100
+    ), function ($ar, $ar_err) {
+        if ($ar != null) {
+            echo "The settings update has been acknowledged \n";
+        };
+    });
 
 ----
 
@@ -1967,9 +2079,10 @@ when the new remote settings are received:
 
 [source,jphp]
 ----
-$connection.$remoteSettingsHandler({ settings ->
-  echo "Received new settings"."\n";
-})
+<?php
+    $connection->remoteSettingsHandler(function ($settings) {
+        echo "Received new settings\n";
+    });
 
 ----
 
@@ -1983,13 +2096,15 @@ endpoint:
 
 [source,jphp]
 ----
-/*variableDecl*/$data = Buffer.$buffer()
-/*sequenceForLoop*/for ($i = 0; $i < 8; $i++) {
-  $data.$appendByte($i)
-}
-$connection.$ping($data, { pong ->
-  echo "Remote side replied"."\n";
-})
+<?php
+    use io\vertx\jphp\core\buffer\Buffer;
+    $data = Buffer::buffer();
+    for ($i = 0; $i < 8; $i++) {
+        $data->appendByte($i);
+    };
+    $connection->ping($data, function ($pong, $pong_err) {
+        echo "Remote side replied\n";
+    });
 
 ----
 
@@ -1998,9 +2113,10 @@ an handler can be set to be notified for each ping received:
 
 [source,jphp]
 ----
-$connection.$pingHandler({ ping ->
-  echo "Got pinged by remote side"."\n";
-})
+<?php
+    $connection->pingHandler(function ($ping) {
+        echo "Got pinged by remote side\n";
+    });
 
 ----
 
@@ -2018,7 +2134,8 @@ waits some time (30 seconds by default) until all current streams closed and clo
 
 [source,jphp]
 ----
-$connection.$shutdown()
+<?php
+    $connection->shutdown();
 
 ----
 
@@ -2031,7 +2148,8 @@ close:
 
 [source,jphp]
 ----
-$connection.$goAway(0)
+<?php
+    $connection->goAway(0);
 
 ----
 
@@ -2039,9 +2157,10 @@ Conversely, it is also possible to be notified when {@literal GOAWAY} are receiv
 
 [source,jphp]
 ----
-$connection.$goAwayHandler({ goAway ->
-  echo "Received a go away frame"."\n";
-})
+<?php
+    $connection->goAwayHandler(function ($goAway) {
+        echo "Received a go away frame\n";
+    });
 
 ----
 
@@ -2050,12 +2169,13 @@ have been closed and the connection can be closed:
 
 [source,jphp]
 ----
-$connection.$goAway(0)
-$connection.$shutdownHandler({ v ->
+<?php
+    $connection->goAway(0);
+    $connection->shutdownHandler(function ($v) {
 
-  // All streams are closed, close the connection
-  $connection.$close()
-})
+        // All streams are closed, close the connection
+        $connection->close();
+    });
 
 ----
 
@@ -2103,9 +2223,10 @@ Let's take a verticle creating a HTTP server such as:
 .io.vertx.examples.http.sharing.HttpServerVerticle
 [source,jphp]
 ----
-$vertx.$createHttpServer().$requestHandler({ request ->
-  $request.$response().$end("Hello from server ${$this}")
-}).$listen(8080)
+<?php
+    $vertx->createHttpServer()->requestHandler(function ($request) {
+        $request->response()->end("Hello from server ".$this);
+    })->listen(8080);
 
 ----
 
@@ -2119,13 +2240,14 @@ receiving a request it calls the server handlers following a round robin strateg
 Let's now imagine a client such as:
 [source,jphp]
 ----
-$vertx.$setPeriodic(100, { l ->
-  $vertx.$createHttpClient().$getNow(8080, "localhost", "/", { resp ->
-    $resp.$bodyHandler({ body ->
-      echo $body.$toString("ISO-8859-1")."\n";
-    })
-  })
-})
+<?php
+    $vertx->setPeriodic(100, function ($l) {
+        $vertx->createHttpClient()->getNow(8080, "localhost", "/", function ($resp) {
+            $resp->bodyHandler(function ($body) {
+                echo $body->toString("ISO-8859-1")."\n";
+            });
+        });
+    });
 
 ----
 
@@ -2156,13 +2278,15 @@ method.
 
 [source,jphp]
 ----
-$client.$getNow(RequestOptions(
-  host = "localhost",
-  port = 8080,
-  uRI = "/",
-  ssl = true), { response ->
-  echo "Received response with status code ${$response.$statusCode()}"."\n";
-})
+<?php
+    $client->getNow(array(
+        "host" => "localhost",
+        "port" => 8080,
+        "uRI" => "/",
+        "ssl" => true
+    ), function ($response) {
+        echo "Received response with status code ".$response->statusCode()."\n";
+    });
 
 ----
 
@@ -2204,10 +2328,11 @@ When a WebSocket connection is made to the server, the handler will be called, p
 
 [source,jphp]
 ----
+<?php
 
-$server.$websocketHandler({ websocket ->
-  echo "Connected!"."\n";
-})
+    $server->websocketHandler(function ($websocket) {
+        echo "Connected!\n";
+    });
 
 ----
 
@@ -2215,14 +2340,15 @@ You can choose to reject the WebSocket by calling `link:../../apidocs/io/vertx/c
 
 [source,jphp]
 ----
+<?php
 
-$server.$websocketHandler({ websocket ->
-  if ($websocket.$path() == "/myapi") {
-    $websocket.$reject()
-  } else {
-    // Do something
-  }
-})
+    $server->websocketHandler(function ($websocket) {
+        if ($websocket->path() == "/myapi") {
+            $websocket->reject();
+        } else {
+            // Do something
+        };
+    });
 
 ----
 
@@ -2233,18 +2359,19 @@ call `link:../../apidocs/io/vertx/core/http/HttpServerRequest.html#upgrade--[upg
 
 [source,jphp]
 ----
+<?php
 
-$server.$requestHandler({ request ->
-  if ($request.$path() == "/myapi") {
+    $server->requestHandler(function ($request) {
+        if ($request->path() == "/myapi") {
 
-    /*variableDecl*/$websocket = $request.$upgrade()
-    // Do something
+            $websocket = $request->upgrade();
+            // Do something
 
-  } else {
-    // Reject
-    $request.$response().$setStatusCode(400).$end()
-  }
-})
+        } else {
+            // Reject
+            $request->response()->setStatusCode(400)->end();
+        };
+    });
 
 ----
 
@@ -2265,9 +2392,10 @@ The handler will be called with an instance of `link:../../apidocs/io/vertx/core
 
 [source,jphp]
 ----
-$client.$websocket("/some-uri", { websocket ->
-  echo "Connected!"."\n";
-})
+<?php
+    $client->websocket("/some-uri", function ($websocket) {
+        echo "Connected!\n";
+    });
 
 ----
 
@@ -2279,13 +2407,15 @@ If you wish to write a single WebSocket message to the WebSocket you can do this
 
 [source,jphp]
 ----
-// Write a simple binary message
-/*variableDecl*/$buffer = Buffer.$buffer().$appendInt(123).$appendFloat(1.23f)
-$websocket.$writeBinaryMessage($buffer)
+<?php
+    use io\vertx\jphp\core\buffer\Buffer;
+    // Write a simple binary message
+    $buffer = Buffer::buffer()->appendInt(123)->appendFloat(1.23);
+    $websocket->writeBinaryMessage($buffer);
 
-// Write a simple text message
-/*variableDecl*/$message = "hello"
-$websocket.$writeTextMessage($message)
+    // Write a simple text message
+    $message = "hello";
+    $websocket->writeTextMessage($message);
 
 ----
 
@@ -2310,16 +2440,18 @@ Here's an example for binary frames:
 
 [source,jphp]
 ----
+<?php
+    use io\vertx\jphp\core\http\WebSocketFrame;
 
-/*variableDecl*/$frame1 = WebSocketFrame.$binaryFrame($buffer1, false)
-$websocket.$writeFrame($frame1)
+    $frame1 = WebSocketFrame::binaryFrame($buffer1, false);
+    $websocket->writeFrame($frame1);
 
-/*variableDecl*/$frame2 = WebSocketFrame.$continuationFrame($buffer2, false)
-$websocket.$writeFrame($frame2)
+    $frame2 = WebSocketFrame::continuationFrame($buffer2, false);
+    $websocket->writeFrame($frame2);
 
-// Write the final frame
-/*variableDecl*/$frame3 = WebSocketFrame.$continuationFrame($buffer2, true)
-$websocket.$writeFrame($frame3)
+    // Write the final frame
+    $frame3 = WebSocketFrame::continuationFrame($buffer2, true);
+    $websocket->writeFrame($frame3);
 
 
 ----
@@ -2332,16 +2464,18 @@ Here's an example:
 
 [source,jphp]
 ----
+<?php
+    use io\vertx\jphp\core\buffer\Buffer;
 
-// Send a websocket messages consisting of a single final text frame:
+    // Send a websocket messages consisting of a single final text frame:
 
-$websocket.$writeFinalTextFrame("Geronimo!")
+    $websocket->writeFinalTextFrame("Geronimo!");
 
-// Send a websocket messages consisting of a single final binary frame:
+    // Send a websocket messages consisting of a single final binary frame:
 
-/*variableDecl*/$buff = Buffer.$buffer().$appendInt(12).$appendString("foo")
+    $buff = Buffer::buffer()->appendInt(12)->appendString("foo");
 
-$websocket.$writeFinalBinaryFrame($buff)
+    $websocket->writeFinalBinaryFrame($buff);
 
 
 ----
@@ -2355,10 +2489,11 @@ for example:
 
 [source,jphp]
 ----
+<?php
 
-$websocket.$frameHandler({ frame ->
-  echo "Received a frame of size!"."\n";
-})
+    $websocket->frameHandler(function ($frame) {
+        echo "Received a frame of size!\n";
+    });
 
 
 ----
@@ -2390,15 +2525,18 @@ Here's an example of using an HTTP proxy:
 
 [source,jphp]
 ----
+<?php
 
-/*variableDecl*/$options = HttpClientOptions(
-  proxyOptions = ProxyOptions(
-    type = ProxyType.HTTP,
-    host = "localhost",
-    port = 3128,
-    username = "username",
-    password = "secret"))
-/*variableDecl*/$client = $vertx.$createHttpClient($options)
+    $options = array(
+        "proxyOptions" => array(
+            "type" => "HTTP",
+            "host" => "localhost",
+            "port" => 3128,
+            "username" => "username",
+            "password" => "secret"
+        )
+    );
+    $client = $vertx->createHttpClient($options);
 
 
 ----
@@ -2413,15 +2551,18 @@ For a SOCKS5 proxy:
 
 [source,jphp]
 ----
+<?php
 
-/*variableDecl*/$options = HttpClientOptions(
-  proxyOptions = ProxyOptions(
-    type = ProxyType.SOCKS5,
-    host = "localhost",
-    port = 1080,
-    username = "username",
-    password = "secret"))
-/*variableDecl*/$client = $vertx.$createHttpClient($options)
+    $options = array(
+        "proxyOptions" => array(
+            "type" => "SOCKS5",
+            "host" => "localhost",
+            "port" => 1080,
+            "username" => "username",
+            "password" => "secret"
+        )
+    );
+    $client = $vertx->createHttpClient($options);
 
 
 ----
@@ -2436,14 +2577,17 @@ that, which isn't available in non-proxy getAbs requests.
 
 [source,jphp]
 ----
+<?php
 
-/*variableDecl*/$options = HttpClientOptions(
-  proxyOptions = ProxyOptions(
-    type = ProxyType.HTTP))
-/*variableDecl*/$client = $vertx.$createHttpClient($options)
-$client.$getAbs("ftp://ftp.gnu.org/gnu/", { response ->
-  echo "Received response with status code ${$response.$statusCode()}"."\n";
-})
+    $options = array(
+        "proxyOptions" => array(
+            "type" => "HTTP"
+        )
+    );
+    $client = $vertx->createHttpClient($options);
+    $client->getAbs("ftp://ftp.gnu.org/gnu/", function ($response) {
+        echo "Received response with status code ".$response->statusCode()."\n";
+    });
 
 
 ----

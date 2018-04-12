@@ -26,14 +26,17 @@ Let's see the associated code:
 
 [source, jphp]
 ----
-/*variableDecl*/$parser = RecordParser.$newDelimited("\n", { h ->
-  echo $h.$toString()."\n";
-})
+<?php
+    use io\vertx\jphp\core\buffer\Buffer;
+    use io\vertx\jphp\core\parsetools\RecordParser;
+    $parser = RecordParser::newDelimited("\n", function ($h) {
+        echo $h->toString()."\n";
+    });
 
-$parser.$handle(Buffer.$buffer("HELLO\nHOW ARE Y"))
-$parser.$handle(Buffer.$buffer("OU?\nI AM"))
-$parser.$handle(Buffer.$buffer("DOING OK"))
-$parser.$handle(Buffer.$buffer("\n"))
+    $parser->handle(Buffer::buffer("HELLO\nHOW ARE Y"));
+    $parser->handle(Buffer::buffer("OU?\nI AM"));
+    $parser->handle(Buffer::buffer("DOING OK"));
+    $parser->handle(Buffer::buffer("\n"));
 
 ----
 
@@ -41,9 +44,11 @@ You can also produce fixed sized chunks as follows:
 
 [source, jphp]
 ----
-RecordParser.$newFixed(4, { h ->
-  echo $h.$toString()."\n";
-})
+<?php
+    use io\vertx\jphp\core\parsetools\RecordParser;
+    RecordParser::newFixed(4, function ($h) {
+        echo $h->toString()."\n";
+    });
 
 ----
 
@@ -66,29 +71,32 @@ The parser is non-blocking and emitted events are driven by the input buffers.
 
 [source, jphp]
 ----
+<?php
+    use io\vertx\jphp\core\buffer\Buffer;
+    use io\vertx\jphp\core\parsetools\JsonParser;
 
-/*variableDecl*/$parser = JsonParser.$newParser()
+    $parser = JsonParser::newParser();
 
-// start array event
-// start object event
-// "firstName":"Bob" event
-$parser.$handle(Buffer.$buffer("[{\"firstName\":\"Bob\","))
+    // start array event
+    // start object event
+    // "firstName":"Bob" event
+    $parser->handle(Buffer::buffer("[{\"firstName\":\"Bob\","));
 
-// "lastName":"Morane" event
-// end object event
-$parser.$handle(Buffer.$buffer("\"lastName\":\"Morane\"},"))
+    // "lastName":"Morane" event
+    // end object event
+    $parser->handle(Buffer::buffer("\"lastName\":\"Morane\"},"));
 
-// start object event
-// "firstName":"Luke" event
-// "lastName":"Lucky" event
-// end object event
-$parser.$handle(Buffer.$buffer("{\"firstName\":\"Luke\",\"lastName\":\"Lucky\"}"))
+    // start object event
+    // "firstName":"Luke" event
+    // "lastName":"Lucky" event
+    // end object event
+    $parser->handle(Buffer::buffer("{\"firstName\":\"Luke\",\"lastName\":\"Lucky\"}"));
 
-// end array event
-$parser.$handle(Buffer.$buffer("]"))
+    // end array event
+    $parser->handle(Buffer::buffer("]"));
 
-// Always call end
-$parser.$end()
+    // Always call end
+    $parser->end();
 
 ----
 
@@ -119,13 +127,14 @@ You can also decode POJOs
 
 [source, jphp]
 ----
-$parser.$handler({ event ->
-  // Handle each object
-  // Get the field in which this object was parsed
-  /*variableDecl*/$id = $event.$fieldName()
-  /*variableDecl*/$user = $event.$mapTo(examples.ParseToolsExamples.User.$`class`)
-  echo "User with id ${$id} : ${$user.$firstName} ${$user.$lastName}"."\n";
-})
+<?php
+    $parser->handler(function ($event) {
+        // Handle each object
+        // Get the field in which this object was parsed
+        $id = $event->fieldName();
+        $user = $event->mapTo(Java::type("examples.ParseToolsExamples.User")->class);
+        echo "User with id ".$id." : .$user->firstName. .$user->lastName"."\n";
+    });
 
 ----
 
@@ -133,12 +142,14 @@ Whenever the parser fails to process a buffer, an exception will be thrown unles
 
 [source, jphp]
 ----
+<?php
+    use io\vertx\jphp\core\parsetools\JsonParser;
 
-/*variableDecl*/$parser = JsonParser.$newParser()
+    $parser = JsonParser::newParser();
 
-$parser.$exceptionHandler({ err ->
-  // Catch any parsing or decoding error
-})
+    $parser->exceptionHandler(function ($err) {
+        // Catch any parsing or decoding error
+    });
 
 ----
 

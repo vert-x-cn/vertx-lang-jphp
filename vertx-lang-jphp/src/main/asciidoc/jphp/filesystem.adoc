@@ -11,16 +11,17 @@ Here's an example of an asynchronous copy of a file:
 
 [source,jphp]
 ----
-/*variableDecl*/$fs = $vertx.$fileSystem()
+<?php
+    $fs = $vertx->fileSystem();
 
-// Copy file from foo.txt to bar.txt
-$fs.$copy("foo.txt", "bar.txt", { res ->
-  if (res.succeeded()) {
-    // Copied ok!
-  } else {
-    // Something went wrong
-  }
-})
+    // Copy file from foo.txt to bar.txt
+    $fs->copy("foo.txt", "bar.txt", function ($res, $res_err) {
+        if ($res != null) {
+            // Copied ok!
+        } else {
+            // Something went wrong
+        };
+    });
 
 ----
 The blocking versions are named `xxxBlocking` and return the results or throw exceptions directly. In many
@@ -32,10 +33,11 @@ Here's the copy using the blocking API:
 
 [source,jphp]
 ----
-/*variableDecl*/$fs = $vertx.$fileSystem()
+<?php
+    $fs = $vertx->fileSystem();
 
-// Copy file from foo.txt to bar.txt synchronously
-$fs.$copyBlocking("foo.txt", "bar.txt")
+    // Copy file from foo.txt to bar.txt synchronously
+    $fs->copyBlocking("foo.txt", "bar.txt");
 
 ----
 
@@ -46,45 +48,48 @@ Let's see a couple of examples using asynchronous methods:
 
 [source,jphp]
 ----
-/*variableDecl*/$vertx = Vertx.$vertx()
+<?php
+    use io\vertx\jphp\core\Vertx;
+    use io\vertx\jphp\core\buffer\Buffer;
+    $vertx = Vertx::vertx();
 
-// Read a file
-$vertx.$fileSystem().$readFile("target/classes/readme.txt", { result ->
-  if (result.succeeded()) {
-    echo result.result()."\n";
-  } else {
-    echo "Oh oh ...${result.cause()}"."\n";
-  }
-})
+    // Read a file
+    $vertx->fileSystem()->readFile("target/classes/readme.txt", function ($result, $result_err) {
+        if ($result != null) {
+            echo $result."\n";
+        } else {
+            echo "Oh oh ...".$result_err."\n";
+        };
+    });
 
-// Copy a file
-$vertx.$fileSystem().$copy("target/classes/readme.txt", "target/classes/readme2.txt", { result ->
-  if (result.succeeded()) {
-    echo "File copied"."\n";
-  } else {
-    echo "Oh oh ...${result.cause()}"."\n";
-  }
-})
+    // Copy a file
+    $vertx->fileSystem()->copy("target/classes/readme.txt", "target/classes/readme2.txt", function ($result, $result_err) {
+        if ($result != null) {
+            echo "File copied\n";
+        } else {
+            echo "Oh oh ...".$result_err."\n";
+        };
+    });
 
-// Write a file
-$vertx.$fileSystem().$writeFile("target/classes/hello.txt", Buffer.$buffer("Hello"), { result ->
-  if (result.succeeded()) {
-    echo "File written"."\n";
-  } else {
-    echo "Oh oh ...${result.cause()}"."\n";
-  }
-})
+    // Write a file
+    $vertx->fileSystem()->writeFile("target/classes/hello.txt", Buffer::buffer("Hello"), function ($result, $result_err) {
+        if ($result != null) {
+            echo "File written\n";
+        } else {
+            echo "Oh oh ...".$result_err."\n";
+        };
+    });
 
-// Check existence and delete
-$vertx.$fileSystem().$exists("target/classes/junk.txt", { result ->
-  if (result.succeeded() && result.result()) {
-    $vertx.$fileSystem().$delete("target/classes/junk.txt", { r ->
-      echo "File deleted"."\n";
-    })
-  } else {
-    echo "Oh oh ... - cannot delete the file: ${result.cause()}"."\n";
-  }
-})
+    // Check existence and delete
+    $vertx->fileSystem()->exists("target/classes/junk.txt", function ($result, $result_err) {
+        if ($result != null && $result) {
+            $vertx->fileSystem()->delete("target/classes/junk.txt", function ($r, $r_err) {
+                echo "File deleted\n";
+            });
+        } else {
+            echo "Oh oh ... - cannot delete the file: ".$result_err."\n";
+        };
+    });
 
 ----
 
@@ -96,14 +101,16 @@ You open an `link:../../apidocs/io/vertx/core/file/AsyncFile.html[AsyncFile]` as
 
 [source,jphp]
 ----
-/*variableDecl*/$options = OpenOptions()
-$fileSystem.$open("myfile.txt", $options, { res ->
-  if (res.succeeded()) {
-    /*variableDecl*/$file = res.result()
-  } else {
-    // Something went wrong!
-  }
-})
+<?php
+    $options = array(
+    );
+    $fileSystem->open("myfile.txt", $options, function ($res, $res_err) {
+        if ($res != null) {
+            $file = $res;
+        } else {
+            // Something went wrong!
+        };
+    });
 
 ----
 
@@ -128,25 +135,29 @@ Here is an example of random access writes:
 
 [source,jphp]
 ----
-/*variableDecl*/$vertx = Vertx.$vertx()
-$vertx.$fileSystem().$open("target/classes/hello.txt", OpenOptions(), { result ->
-  if (result.succeeded()) {
-    /*variableDecl*/$file = result.result()
-    /*variableDecl*/$buff = Buffer.$buffer("foo")
-    /*sequenceForLoop*/for ($i = 0; $i < 5; $i++) {
-      $file.$write($buff, $buff.$length() * $i, { ar ->
-        if (ar.succeeded()) {
-          echo "Written ok!"."\n";
-          // etc
+<?php
+    use io\vertx\jphp\core\Vertx;
+    use io\vertx\jphp\core\buffer\Buffer;
+    $vertx = Vertx::vertx();
+    $vertx->fileSystem()->open("target/classes/hello.txt", array(
+    ), function ($result, $result_err) {
+        if ($result != null) {
+            $file = $result;
+            $buff = Buffer::buffer("foo");
+            for ($i = 0; $i < 5; $i++) {
+                $file->write($buff, $buff->length() * $i, function ($ar, $ar_err) {
+                    if ($ar != null) {
+                        echo "Written ok!\n";
+                        // etc
+                    } else {
+                        echo "Failed to write: ".$ar_err."\n";
+                    };
+                });
+            };
         } else {
-          echo "Failed to write: ${ar.cause()}"."\n";
-        }
-      })
-    }
-  } else {
-    echo "Cannot open file ${result.cause()}"."\n";
-  }
-})
+            echo "Cannot open file ".$result_err."\n";
+        };
+    });
 
 ----
 
@@ -168,24 +179,28 @@ Here's an example of random access reads:
 
 [source,jphp]
 ----
-/*variableDecl*/$vertx = Vertx.$vertx()
-$vertx.$fileSystem().$open("target/classes/les_miserables.txt", OpenOptions(), { result ->
-  if (result.succeeded()) {
-    /*variableDecl*/$file = result.result()
-    /*variableDecl*/$buff = Buffer.$buffer(1000)
-    /*sequenceForLoop*/for ($i = 0; $i < 10; $i++) {
-      $file.$read($buff, $i * 100, $i * 100, 100, { ar ->
-        if (ar.succeeded()) {
-          echo "Read ok!"."\n";
+<?php
+    use io\vertx\jphp\core\Vertx;
+    use io\vertx\jphp\core\buffer\Buffer;
+    $vertx = Vertx::vertx();
+    $vertx->fileSystem()->open("target/classes/les_miserables.txt", array(
+    ), function ($result, $result_err) {
+        if ($result != null) {
+            $file = $result;
+            $buff = Buffer::buffer(1000);
+            for ($i = 0; $i < 10; $i++) {
+                $file->read($buff, $i * 100, $i * 100, 100, function ($ar, $ar_err) {
+                    if ($ar != null) {
+                        echo "Read ok!\n";
+                    } else {
+                        echo "Failed to write: ".$ar_err."\n";
+                    };
+                });
+            };
         } else {
-          echo "Failed to write: ${ar.cause()}"."\n";
-        }
-      })
-    }
-  } else {
-    echo "Cannot open file ${result.cause()}"."\n";
-  }
-})
+            echo "Cannot open file ".$result_err."\n";
+        };
+    });
 
 ----
 
@@ -219,20 +234,25 @@ copy the content to another `AsyncFile`:
 
 [source,jphp]
 ----
-/*variableDecl*/$vertx = Vertx.$vertx()
-/*variableDecl*/$output = $vertx.$fileSystem().$openBlocking("target/classes/plagiary.txt", OpenOptions())
+<?php
+    use io\vertx\jphp\core\Vertx;
+    use io\vertx\jphp\core\streams\Pump;
+    $vertx = Vertx::vertx();
+    $output = $vertx->fileSystem()->openBlocking("target/classes/plagiary.txt", array(
+    ));
 
-$vertx.$fileSystem().$open("target/classes/les_miserables.txt", OpenOptions(), { result ->
-  if (result.succeeded()) {
-    /*variableDecl*/$file = result.result()
-    Pump.$pump($file, $output).$start()
-    $file.$endHandler({ r ->
-      echo "Copy done"."\n";
-    })
-  } else {
-    echo "Cannot open file ${result.cause()}"."\n";
-  }
-})
+    $vertx->fileSystem()->open("target/classes/les_miserables.txt", array(
+    ), function ($result, $result_err) {
+        if ($result != null) {
+            $file = $result;
+            Pump::pump($file, $output)->start();
+            $file->endHandler(function ($r) {
+                echo "Copy done\n";
+            });
+        } else {
+            echo "Cannot open file ".$result_err."\n";
+        };
+    });
 
 ----
 

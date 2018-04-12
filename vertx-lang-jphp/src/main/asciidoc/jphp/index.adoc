@@ -55,7 +55,9 @@ If you're embedding Vert.x then you simply create an instance as follows:
 
 [source,jphp]
 ----
-/*variableDecl*/$vertx = Vertx.$vertx()
+<?php
+    use io\vertx\jphp\core\Vertx;
+    $vertx = Vertx::vertx();
 
 ----
 
@@ -68,8 +70,11 @@ When creating a Vertx object you can also specify options if the defaults aren't
 
 [source,jphp]
 ----
-/*variableDecl*/$vertx = Vertx.$vertx(VertxOptions(
-  workerPoolSize = 40))
+<?php
+    use io\vertx\jphp\core\Vertx;
+    $vertx = Vertx::vertx(array(
+        "workerPoolSize" => 40
+    ));
 
 ----
 
@@ -92,7 +97,8 @@ A fluent API is where multiple methods calls can be chained together. For exampl
 
 [source,jphp]
 ----
-$request.$response().$putHeader("Content-Type", "text/plain").$write("some text").$end()
+<?php
+    $request->response()->putHeader("Content-Type", "text/plain")->write("some text")->end();
 
 ----
 
@@ -104,10 +110,11 @@ your code like this:
 
 [source,jphp]
 ----
-/*variableDecl*/$response = $request.$response()
-$response.$putHeader("Content-Type", "text/plain")
-$response.$write("some text")
-$response.$end()
+<?php
+    $response = $request->response();
+    $response->putHeader("Content-Type", "text/plain");
+    $response->write("some text");
+    $response->end();
 
 ----
 
@@ -129,10 +136,11 @@ would do:
 
 [source,jphp]
 ----
-$vertx.$setPeriodic(1000, { id ->
-  // This handler will get called every second
-  echo "timer fired!"."\n";
-})
+<?php
+    $vertx->setPeriodic(1000, function ($id) {
+        // This handler will get called every second
+        echo "timer fired!\n";
+    });
 
 ----
 
@@ -140,11 +148,12 @@ Or to receive an HTTP request:
 
 [source,jphp]
 ----
-// Respond to each http request with "Hello World"
-$server.$requestHandler({ request ->
-  // This handler will be called every time an HTTP request is received at the server
-  $request.$response().$end("hello world!")
-})
+<?php
+    // Respond to each http request with "Hello World"
+    $server->requestHandler(function ($request) {
+        // This handler will be called every time an HTTP request is received at the server
+        $request->response()->end("hello world!");
+    });
 
 ----
 
@@ -280,13 +289,14 @@ result handler to be called back asynchronous when the blocking code has been ex
 
 [source,jphp]
 ----
-$vertx.$executeBlocking<Any>({ future ->
-  // Call some blocking API that takes a significant amount of time to return
-  /*variableDecl*/$result = $someAPI.$blockingMethod("hello")
-  $future.$complete($result)
-}, { res ->
-  echo "The result is: ${res.result()}"."\n";
-})
+<?php
+    $vertx->executeBlocking(function ($future) {
+        // Call some blocking API that takes a significant amount of time to return
+        $result = $someAPI->blockingMethod("hello");
+        $future->complete($result);
+    }, function ($res, $res_err) {
+        echo "The result is: ".$res."\n";
+    });
 
 ----
 
@@ -307,14 +317,15 @@ Additional pools can be created for different purposes:
 
 [source,jphp]
 ----
-/*variableDecl*/$executor = $vertx.$createSharedWorkerExecutor("my-worker-pool")
-$executor.$executeBlocking<Any>({ future ->
-  // Call some blocking API that takes a significant amount of time to return
-  /*variableDecl*/$result = $someAPI.$blockingMethod("hello")
-  $future.$complete($result)
-}, { res ->
-  echo "The result is: ${res.result()}"."\n";
-})
+<?php
+    $executor = $vertx->createSharedWorkerExecutor("my-worker-pool");
+    $executor->executeBlocking(function ($future) {
+        // Call some blocking API that takes a significant amount of time to return
+        $result = $someAPI->blockingMethod("hello");
+        $future->complete($result);
+    }, function ($res, $res_err) {
+        echo "The result is: ".$res."\n";
+    });
 
 ----
 
@@ -322,7 +333,8 @@ The worker executor must be closed when it's not necessary anymore:
 
 [source,jphp]
 ----
-$executor.$close()
+<?php
+    $executor->close();
 
 ----
 
@@ -336,14 +348,15 @@ Worker executors can be configured when created:
 
 [source,jphp]
 ----
-//
-// 10 threads max
-/*variableDecl*/$poolSize = 10
+<?php
+    //
+    // 10 threads max
+    $poolSize = 10;
 
-// 2 minutes
-/*variableDecl*/$maxExecuteTime = 120000
+    // 2 minutes
+    $maxExecuteTime = 120000;
 
-/*variableDecl*/$executor = $vertx.$createSharedWorkerExecutor("my-worker-pool", $poolSize, $maxExecuteTime)
+    $executor = $vertx->createSharedWorkerExecutor("my-worker-pool", $poolSize, $maxExecuteTime);
 
 ----
 
@@ -362,19 +375,22 @@ _succeeded_ when all the futures are and _failed_ when at least one of the futur
 
 [source,jphp]
 ----
-/*variableDecl*/$httpServerFuture = Future.$future<Any>()
-$httpServer.$listen($httpServerFuture.$completer())
+<?php
+    use io\vertx\jphp\core\CompositeFuture;
+    use io\vertx\jphp\core\Future;
+    $httpServerFuture = Future::future();
+    $httpServer->listen($httpServerFuture->completer());
 
-/*variableDecl*/$netServerFuture = Future.$future<Any>()
-$netServer.$listen($netServerFuture.$completer())
+    $netServerFuture = Future::future();
+    $netServer->listen($netServerFuture->completer());
 
-CompositeFuture.$all($httpServerFuture, $netServerFuture).$setHandler({ ar ->
-  if (ar.succeeded()) {
-    // All servers started
-  } else {
-    // At least one server failed
-  }
-})
+    CompositeFuture::all($httpServerFuture, $netServerFuture)->setHandler(function ($ar, $ar_err) {
+        if ($ar != null) {
+            // All servers started
+        } else {
+            // At least one server failed
+        };
+    });
 
 ----
 
@@ -387,7 +403,9 @@ Alternatively, you can pass a list (potentially empty) of futures:
 
 [source,jphp]
 ----
-CompositeFuture.$all(listOf($future1, $future2, $future3))
+<?php
+    use io\vertx\jphp\core\CompositeFuture;
+    CompositeFuture::all(array( $future1,  $future2,  $future3));
 
 ----
 
@@ -398,13 +416,15 @@ all the futures are failed:
 
 [source,jphp]
 ----
-CompositeFuture.$any($future1, $future2).$setHandler({ ar ->
-  if (ar.succeeded()) {
-    // At least one is succeeded
-  } else {
-    // All failed
-  }
-})
+<?php
+    use io\vertx\jphp\core\CompositeFuture;
+    CompositeFuture::any($future1, $future2)->setHandler(function ($ar, $ar_err) {
+        if ($ar != null) {
+            // At least one is succeeded
+        } else {
+            // All failed
+        };
+    });
 
 ----
 
@@ -412,7 +432,9 @@ A list of futures can be used also:
 
 [source,jphp]
 ----
-CompositeFuture.$any(listOf($f1, $f2, $f3))
+<?php
+    use io\vertx\jphp\core\CompositeFuture;
+    CompositeFuture::any(array( $f1,  $f2,  $f3));
 
 ----
 
@@ -423,13 +445,15 @@ them is failed:
 
 [source,jphp]
 ----
-CompositeFuture.$join($future1, $future2, $future3).$setHandler({ ar ->
-  if (ar.succeeded()) {
-    // All succeeded
-  } else {
-    // All completed and at least one failed
-  }
-})
+<?php
+    use io\vertx\jphp\core\CompositeFuture;
+    CompositeFuture::join($future1, $future2, $future3)->setHandler(function ($ar, $ar_err) {
+        if ($ar != null) {
+            // All succeeded
+        } else {
+            // All completed and at least one failed
+        };
+    });
 
 ----
 
@@ -437,7 +461,9 @@ A list of futures can be used also:
 
 [source,jphp]
 ----
-CompositeFuture.$join(listOf($future1, $future2, $future3))
+<?php
+    use io\vertx\jphp\core\CompositeFuture;
+    CompositeFuture::join(array( $future1,  $future2,  $future3));
 
 ----
 
@@ -448,22 +474,25 @@ for chaining futures (so sequential composition).
 
 [source,jphp]
 ----
+<?php
+    use io\vertx\jphp\core\buffer\Buffer;
+    use io\vertx\jphp\core\Future;
 
-/*variableDecl*/$fs = $vertx.$fileSystem()
-/*variableDecl*/$startFuture = Future.$future<Any>()
+    $fs = $vertx->fileSystem();
+    $startFuture = Future::future();
 
-/*variableDecl*/$fut1 = Future.$future<Any>()
-$fs.$createFile("/foo", $fut1.$completer())
+    $fut1 = Future::future();
+    $fs->createFile("/foo", $fut1->completer());
 
-$fut1.$compose<Any>({ v ->
-  // When the file is created (fut1), execute this:
-  /*variableDecl*/$fut2 = Future.$future<Any>()
-  $fs.$writeFile("/foo", Buffer.$buffer(), $fut2.$completer())
-  return $fut2
-}).$compose({ v ->
-  // When the file is written (fut2), execute this:
-  $fs.$move("/foo", "/bar", $startFuture.$completer())
-}, $startFuture)
+    $fut1->compose(function ($v) {
+        // When the file is created (fut1), execute this:
+        $fut2 = Future::future();
+        $fs->writeFile("/foo", Buffer::buffer(), $fut2->completer());
+        return $fut2;
+    })->compose(function ($v) {
+        // When the file is written (fut2), execute this:
+        $fs->move("/foo", "/bar", $startFuture->completer());
+    }, $startFuture);
 
 ----
 
@@ -552,9 +581,11 @@ If you want to deploy a verticle as a worker verticle you do that with `link:../
 
 [source,jphp]
 ----
-/*variableDecl*/$options = DeploymentOptions(
-  worker = true)
-$vertx.$deployVerticle("com.mycompany.MyOrderProcessorVerticle", $options)
+<?php
+    $options = array(
+        "worker" => true
+    );
+    $vertx->deployVerticle("com.mycompany.MyOrderProcessorVerticle", $options);
 
 ----
 
@@ -579,9 +610,10 @@ NOTE: Deploying Verticle *instances* is Java only.
 
 [source,java]
 ----
+<?php
 
-/*variableDecl*/$myVerticle = examples.CoreExamples.MyVerticle()
-$vertx.$deployVerticle($myVerticle)
+    $myVerticle = Java::type("examples.CoreExamples.MyVerticle").newInstance();
+    $vertx->deployVerticle($myVerticle);
 
 ----
 
@@ -599,15 +631,16 @@ Here's an example of deploying some different types of verticles:
 
 [source,jphp]
 ----
+<?php
 
-// Deploy a Java verticle - the name is the fully qualified class name of the verticle class
-$vertx.$deployVerticle("com.mycompany.MyOrderProcessorVerticle")
+    // Deploy a Java verticle - the name is the fully qualified class name of the verticle class
+    $vertx->deployVerticle("com.mycompany.MyOrderProcessorVerticle");
 
-// Deploy a JavaScript verticle
-$vertx.$deployVerticle("verticles/myverticle.js")
+    // Deploy a JavaScript verticle
+    $vertx->deployVerticle("verticles/myverticle.js");
 
-// Deploy a Ruby verticle verticle
-$vertx.$deployVerticle("verticles/my_verticle.rb")
+    // Deploy a Ruby verticle verticle
+    $vertx->deployVerticle("verticles/my_verticle.rb");
 
 
 ----
@@ -646,13 +679,14 @@ If you want to be notified when deployment is complete you can deploy specifying
 
 [source,jphp]
 ----
-$vertx.$deployVerticle("com.mycompany.MyOrderProcessorVerticle", { res ->
-  if (res.succeeded()) {
-    echo "Deployment id is: ${res.result()}"."\n";
-  } else {
-    echo "Deployment failed!"."\n";
-  }
-})
+<?php
+    $vertx->deployVerticle("com.mycompany.MyOrderProcessorVerticle", function ($res, $res_err) {
+        if ($res != null) {
+            echo "Deployment id is: ".$res."\n";
+        } else {
+            echo "Deployment failed!\n";
+        };
+    });
 
 ----
 
@@ -668,13 +702,14 @@ Un-deployment is itself asynchronous so if you want to be notified when un-deplo
 
 [source,jphp]
 ----
-$vertx.$undeploy($deploymentID, { res ->
-  if (res.succeeded()) {
-    echo "Undeployed ok"."\n";
-  } else {
-    echo "Undeploy failed!"."\n";
-  }
-})
+<?php
+    $vertx->undeploy($deploymentID, function ($res, $res_err) {
+        if ($res != null) {
+            echo "Undeployed ok\n";
+        } else {
+            echo "Undeploy failed!\n";
+        };
+    });
 
 ----
 
@@ -685,9 +720,11 @@ want to deploy:
 
 [source,jphp]
 ----
-/*variableDecl*/$options = DeploymentOptions(
-  instances = 16)
-$vertx.$deployVerticle("com.mycompany.MyOrderProcessorVerticle", $options)
+<?php
+    $options = array(
+        "instances" => 16
+    );
+    $vertx->deployVerticle("com.mycompany.MyOrderProcessorVerticle", $options);
 
 ----
 
@@ -726,10 +763,12 @@ Here's an example of using an isolation group to isolate a verticle deployment.
 
 [source,jphp]
 ----
-/*variableDecl*/$options = DeploymentOptions(
-  isolationGroup = "mygroup")
-$options.$isolatedClasses = listOf("com.mycompany.myverticle.*", "com.mycompany.somepkg.SomeClass", "org.somelibrary.*")
-$vertx.$deployVerticle("com.mycompany.myverticle.VerticleClass", $options)
+<?php
+    $options = array(
+        "isolationGroup" => "mygroup"
+    );
+    $options["isolatedClasses"] = array( "com.mycompany.myverticle.*",  "com.mycompany.somepkg.SomeClass",  "org.somelibrary.*");
+    $vertx->deployVerticle("com.mycompany.myverticle.VerticleClass", $options);
 
 ----
 
@@ -809,7 +848,8 @@ To retrieve the context, use the `link:../../apidocs/io/vertx/core/Vertx.html#ge
 
 [source, jphp]
 ----
-/*variableDecl*/$context = $vertx.$getOrCreateContext()
+<?php
+    $context = $vertx->getOrCreateContext();
 
 ----
 
@@ -818,16 +858,18 @@ context is created. You can test the _type_ of context you have retrieved:
 
 [source, jphp]
 ----
-/*variableDecl*/$context = $vertx.$getOrCreateContext()
-if ($context.$isEventLoopContext()) {
-  echo "Context attached to Event Loop"."\n";
-} else if ($context.$isWorkerContext()) {
-  echo "Context attached to Worker Thread"."\n";
-} else if ($context.$isMultiThreadedWorkerContext()) {
-  echo "Context attached to Worker Thread - multi threaded worker"."\n";
-} else if (!Context.$isOnVertxThread()) {
-  echo "Context not attached to a thread managed by vert.x"."\n";
-}
+<?php
+    use io\vertx\jphp\core\Context;
+    $context = $vertx->getOrCreateContext();
+    if ($context->isEventLoopContext()) {
+        echo "Context attached to Event Loop\n";
+    } else if ($context->isWorkerContext()) {
+        echo "Context attached to Worker Thread\n";
+    } else if ($context->isMultiThreadedWorkerContext()) {
+        echo "Context attached to Worker Thread - multi threaded worker\n";
+    } else if (!Context::isOnVertxThread()) {
+        echo "Context not attached to a thread managed by vert.x\n";
+    };
 
 ----
 
@@ -836,9 +878,10 @@ you submit a task that will be eventually run in the same context, but later:
 
 [source, jphp]
 ----
-$vertx.$getOrCreateContext().$runOnContext({ v ->
-  echo "This will be executed asynchronously in the same context"."\n";
-})
+<?php
+    $vertx->getOrCreateContext()->runOnContext(function ($v) {
+        echo "This will be executed asynchronously in the same context\n";
+    });
 
 ----
 
@@ -848,11 +891,12 @@ store and retrieve data shared in the context. For instance, it lets you pass da
 
 [source, jphp]
 ----
-/*variableDecl*/$context = $vertx.$getOrCreateContext()
-$context.$put("data", "hello")
-$context.$runOnContext({ v ->
-  /*variableDecl*/$hello = $context.$get<Any>("data")
-})
+<?php
+    $context = $vertx->getOrCreateContext();
+    $context->put("data", "hello");
+    $context->runOnContext(function ($v) {
+        $hello = $context->get("data");
+    });
 
 ----
 
@@ -875,11 +919,12 @@ To set a timer to fire once you use `link:../../apidocs/io/vertx/core/Vertx.html
 
 [source,jphp]
 ----
-/*variableDecl*/$timerID = $vertx.$setTimer(1000, { id ->
-  echo "And one second later this is printed"."\n";
-})
+<?php
+    $timerID = $vertx->setTimer(1000, function ($id) {
+        echo "And one second later this is printed\n";
+    });
 
-echo "First this is printed"."\n";
+    echo "First this is printed\n";
 
 ----
 
@@ -903,11 +948,12 @@ finished, you can set the next timer.
 
 [source,jphp]
 ----
-/*variableDecl*/$timerID = $vertx.$setPeriodic(1000, { id ->
-  echo "And every second this is printed"."\n";
-})
+<?php
+    $timerID = $vertx->setPeriodic(1000, function ($id) {
+        echo "And every second this is printed\n";
+    });
 
-echo "First this is printed"."\n";
+    echo "First this is printed\n";
 
 ----
 
@@ -917,7 +963,8 @@ To cancel a periodic timer, call `link:../../apidocs/io/vertx/core/Vertx.html#ca
 
 [source,jphp]
 ----
-$vertx.$cancelTimer($timerID)
+<?php
+    $vertx->cancelTimer($timerID);
 
 ----
 
@@ -935,8 +982,10 @@ A different worker pool can be specified in deployment options:
 
 [source,jphp]
 ----
-$vertx.$deployVerticle("the-verticle", DeploymentOptions(
-  workerPoolName = "the-specific-pool"))
+<?php
+    $vertx->deployVerticle("the-verticle", array(
+        "workerPoolName" => "the-specific-pool"
+    ));
 
 ----
 
@@ -1404,15 +1453,16 @@ which you then use for logging, e.g.
 
 [source,jphp]
 ----
+<?php
 
-// Note -these classes are Java only
+    // Note -these classes are Java only
 
-// You would normally maintain one static instance of Logger per Java class:
+    // You would normally maintain one static instance of Logger per Java class:
 
-/*variableDecl*/$logger = io.vertx.core.logging.LoggerFactory.$getLogger($className)
+    $logger = Java::type("io.vertx.core.logging.LoggerFactory")->getLogger($className);
 
-$logger.$info("something happened")
-$logger.$error("oops!", $exception)
+    $logger->info("something happened");
+    $logger->error("oops!", $exception);
 
 ----
 
@@ -1486,9 +1536,16 @@ DNS servers can be also configured when creating a `link:../../apidocs/io/vertx/
 
 [source,jphp]
 ----
-/*variableDecl*/$vertx = Vertx.$vertx(VertxOptions(
-  addressResolverOptions = AddressResolverOptions(
-    servers = listOf("192.168.0.1", "192.168.0.2:40000"))))
+<?php
+    use io\vertx\jphp\core\Vertx;
+    $vertx = Vertx::vertx(array(
+        "addressResolverOptions" => array(
+            "servers" => [
+                "192.168.0.1",
+                "192.168.0.2:40000"
+            ]
+        )
+    ));
 
 ----
 
@@ -1524,9 +1581,13 @@ An alternative _hosts_ file can be used instead:
 
 [source,jphp]
 ----
-/*variableDecl*/$vertx = Vertx.$vertx(VertxOptions(
-  addressResolverOptions = AddressResolverOptions(
-    hostsPath = "/path/to/hosts")))
+<?php
+    use io\vertx\jphp\core\Vertx;
+    $vertx = Vertx::vertx(array(
+        "addressResolverOptions" => array(
+            "hostsPath" => "/path/to/hosts"
+        )
+    ));
 
 ----
 
@@ -1537,9 +1598,16 @@ list can be provided:
 
 [source,jphp]
 ----
-/*variableDecl*/$vertx = Vertx.$vertx(VertxOptions(
-  addressResolverOptions = AddressResolverOptions(
-    searchDomains = listOf("foo.com", "bar.com"))))
+<?php
+    use io\vertx\jphp\core\Vertx;
+    $vertx = Vertx::vertx(array(
+        "addressResolverOptions" => array(
+            "searchDomains" => [
+                "foo.com",
+                "bar.com"
+            ]
+        )
+    ));
 
 ----
 
@@ -1693,12 +1761,15 @@ Vert.x can run with http://netty.io/wiki/native-transports.html[native transport
 
 [source,jphp]
 ----
-/*variableDecl*/$vertx = Vertx.$vertx(VertxOptions(
-  preferNativeTransport = true))
+<?php
+    use io\vertx\jphp\core\Vertx;
+    $vertx = Vertx::vertx(array(
+        "preferNativeTransport" => true
+    ));
 
-// True when native is available
-/*variableDecl*/$usingNative = $vertx.$isNativeTransportEnabled()
-echo "Running with native: ${$usingNative}"."\n";
+    // True when native is available
+    $usingNative = $vertx->isNativeTransportEnabled();
+    echo "Running with native: ".$usingNative."\n";
 
 ----
 
@@ -1728,12 +1799,14 @@ Native on Linux gives you extra networking options:
 
 [source,jphp]
 ----
-// Available on Linux
-$vertx.$createHttpServer(HttpServerOptions(
-  tcpFastOpen = $fastOpen,
-  tcpCork = $cork,
-  tcpQuickAck = $quickAck,
-  reusePort = $reusePort))
+<?php
+    // Available on Linux
+    $vertx->createHttpServer(array(
+        "tcpFastOpen" => $fastOpen,
+        "tcpCork" => $cork,
+        "tcpQuickAck" => $quickAck,
+        "reusePort" => $reusePort
+    ));
 
 ----
 
@@ -1759,9 +1832,11 @@ Native on BSD gives you extra networking options:
 
 [source,jphp]
 ----
-// Available on BSD
-$vertx.$createHttpServer(HttpServerOptions(
-  reusePort = $reusePort))
+<?php
+    // Available on BSD
+    $vertx->createHttpServer(array(
+        "reusePort" => $reusePort
+    ));
 
 ----
 
@@ -1771,10 +1846,12 @@ Natives provide support domain sockets for `NetServer`:
 
 [source,jphp]
 ----
-// Only available on BSD and Linux
-$vertx.$createNetServer().$connectHandler({ so ->
-  // Handle application
-}).$listen(SocketAddress.$domainSocketAddress("/var/tmp/myservice.sock"))
+<?php
+    use io\vertx\jphp\core\net\SocketAddress;
+    // Only available on BSD and Linux
+    $vertx->createNetServer()->connectHandler(function ($so) {
+        // Handle application
+    })->listen(SocketAddress::domainSocketAddress("/var/tmp/myservice.sock"));
 
 ----
 
@@ -1782,16 +1859,18 @@ As well as `NetClient`:
 
 [source,jphp]
 ----
-/*variableDecl*/$netClient = $vertx.$createNetClient()
+<?php
+    use io\vertx\jphp\core\net\SocketAddress;
+    $netClient = $vertx->createNetClient();
 
-// Only available on BSD and Linux
-$netClient.$connect(SocketAddress.$domainSocketAddress("/var/tmp/myservice.sock"), { ar ->
-  if (ar.succeeded()) {
-    // Connected
-  } else {
-    ar.cause().$printStackTrace()
-  }
-})
+    // Only available on BSD and Linux
+    $netClient->connect(SocketAddress::domainSocketAddress("/var/tmp/myservice.sock"), function ($ar, $ar_err) {
+        if ($ar != null) {
+            // Connected
+        } else {
+            $ar_err->printStackTrace();
+        };
+    });
 
 ----
 

@@ -12,9 +12,9 @@ import io.vertx.lang.jphp.wrapper.*;
 import io.vertx.lang.jphp.wrapper.extension.AsyncHandler;
 import php.runtime.Memory;
 import php.runtime.env.Environment;
-import php.runtime.memory.ArrayMemory;
-import php.runtime.memory.ObjectMemory;
-import php.runtime.memory.StringMemory;
+import php.runtime.lang.StdClass;
+import php.runtime.memory.*;
+import php.runtime.memory.support.ArrayMapEntryMemory;
 
 import java.util.List;
 import java.util.Map;
@@ -28,6 +28,9 @@ public class Utils {
         return value != null && value.isNotNull();
     }
 
+    /**
+     * {@link StringMemory}
+     */
     public static boolean isString(Environment env, Memory value) {
         return TypeConverter.STRING.accept(env, value);
     }
@@ -39,7 +42,9 @@ public class Utils {
     public static Memory convReturnString(Environment env, String value) {
         return TypeConverter.STRING.convReturn(env, value);
     }
-
+    /**
+     * {@link LongMemory}
+     */
     public static boolean isByte(Environment env, Memory value) {
         return TypeConverter.BYTE.accept(env, value);
     }
@@ -52,6 +57,9 @@ public class Utils {
         return TypeConverter.BYTE.convReturn(env, value);
     }
 
+    /**
+     * {@link StringMemory} or {@link LongMemory}
+     */
     @SuppressWarnings("unused")
     public static boolean isCharacter(Environment env, Memory value) {
         return TypeConverter.CHARACTER.accept(env, value);
@@ -66,7 +74,9 @@ public class Utils {
     public static Memory convReturnCharacter(Environment env, Character value) {
         return TypeConverter.CHARACTER.convReturn(env, value);
     }
-
+    /**
+     * {@link LongMemory}
+     */
     public static boolean isShort(Environment env, Memory value) {
         return TypeConverter.SHORT.accept(env, value);
     }
@@ -78,7 +88,9 @@ public class Utils {
     public static Memory convReturnShort(Environment env, Short value) {
         return TypeConverter.SHORT.convReturn(env, value);
     }
-
+    /**
+     * {@link LongMemory}
+     */
     public static boolean isInteger(Environment env, Memory value) {
         return TypeConverter.INTEGER.accept(env, value);
     }
@@ -90,7 +102,9 @@ public class Utils {
     public static Memory convReturnInteger(Environment env, Integer value) {
         return TypeConverter.INTEGER.convReturn(env, value);
     }
-
+    /**
+     * {@link LongMemory}
+     */
     public static boolean isLong(Environment env, Memory value) {
         return TypeConverter.LONG.accept(env, value);
     }
@@ -102,7 +116,9 @@ public class Utils {
     public static Memory convReturnLong(Environment env, Long value) {
         return TypeConverter.LONG.convReturn(env, value);
     }
-
+    /**
+     * {@link DoubleMemory}
+     */
     public static boolean isDouble(Environment env, Memory value) {
         return TypeConverter.DOUBLE.accept(env, value);
     }
@@ -114,7 +130,9 @@ public class Utils {
     public static Memory convReturnDouble(Environment env, Double value) {
         return TypeConverter.DOUBLE.convReturn(env, value);
     }
-
+    /**
+     * {@link DoubleMemory}
+     */
     public static boolean isFloat(Environment env, Memory value) {
         return TypeConverter.FLOAT.accept(env, value);
     }
@@ -126,7 +144,9 @@ public class Utils {
     public static Memory convReturnFloat(Environment env, Float value) {
         return TypeConverter.FLOAT.convReturn(env, value);
     }
-
+    /**
+     * {@link TrueMemory} or {@link FalseMemory}
+     */
     public static boolean isBoolean(Environment env, Memory value) {
         return TypeConverter.BOOLEAN.accept(env, value);
     }
@@ -139,6 +159,10 @@ public class Utils {
         return TypeConverter.BOOLEAN.convReturn(env, value);
     }
 
+    /**
+     * {@link ObjectMemory}<{@link StdClass}>
+     * {@link ArrayMemory}<{@link ArrayMapEntryMemory}>
+     */
     public static boolean isJsonObject(Environment env, Memory value) {
         return TypeConverter.JSON_OBJECT.accept(env, value);
     }
@@ -151,6 +175,9 @@ public class Utils {
         return TypeConverter.JSON_OBJECT.convReturn(env, value);
     }
 
+    /**
+     * {@link ArrayMemory}
+     */
     public static boolean isJsonArray(Environment env, Memory value) {
         return TypeConverter.JSON_ARRAY.accept(env, value);
     }
@@ -163,6 +190,9 @@ public class Utils {
         return TypeConverter.JSON_ARRAY.convReturn(env, value);
     }
 
+    /**
+     * {@link StringMemory}
+     */
     public static <E extends Enum<E>> boolean isEnum(Environment env, Class<E> clazz, Memory value) {
         return EnumConverter.create(clazz).accept(env, value);
     }
@@ -176,6 +206,9 @@ public class Utils {
         return StringMemory.valueOf(value.name());
     }
 
+    /**
+     * {@link ObjectMemory}<DATA_OBJECT>
+     */
     public static <D> boolean isDataObject(Environment env, Class<D> clazz, Function<JsonObject, D> function, Memory value) {
         return DataObjectConverter.create(clazz, function).accept(env, value);
     }
@@ -188,6 +221,9 @@ public class Utils {
         return DataObjectConverter.<D, B>create(clazz, function).convReturnNotNull(env, creator, value);
     }
 
+    /**
+     * {@link ObjectMemory}<{@link Throwable}>
+     */
     public static boolean isThrowable(Environment env, Memory value) {
         return TypeConverter.THROWABLE.accept(env, value);
     }
@@ -200,6 +236,17 @@ public class Utils {
         return TypeConverter.THROWABLE.convReturn(env, value);
     }
 
+    /**
+     * {@link Memory}
+     * {@link StringMemory}
+     * {@link ObjectMemory}<API>
+     * {@link ObjectMemory}<DATA_OBJECT>
+     * {@link ArrayMemory}
+     * {@link DoubleMemory}
+     * {@link LongMemory}
+     * {@link TrueMemory}
+     * {@link FalseMemory}
+     */
     public static boolean isVariable(Environment env, Memory value) {
         return TypeConverter.UNKNOWN_TYPE.accept(env, value);
     }
@@ -212,6 +259,17 @@ public class Utils {
         return convReturnObject(env, value);
     }
 
+    /**
+     * {@link Memory}
+     * {@link StringMemory}
+     * {@link ObjectMemory}<API>
+     * {@link ObjectMemory}<DATA_OBJECT>
+     * {@link ArrayMemory}
+     * {@link DoubleMemory}
+     * {@link LongMemory}
+     * {@link TrueMemory}
+     * {@link FalseMemory}
+     */
     public static boolean isObject(Environment env, Memory value) {
         return TypeConverter.UNKNOWN_TYPE.accept(env, value);
     }
@@ -224,6 +282,9 @@ public class Utils {
         return TypeConverter.UNKNOWN_TYPE.convReturn(env, value);
     }
 
+    /**
+     * {@link ObjectMemory}<API>
+     */
     public static boolean isVertxGen(Class<?> clazz, Class<? extends BaseWrapper> wClazz, Memory value) {
         return WrapperConverter.accept(clazz, wClazz, value);
     }
@@ -252,7 +313,9 @@ public class Utils {
     public static <A, B extends VertxGenVariable2Wrapper<A, V1, V2>, V1, V2> Memory convReturnVertxGenVariable2(Environment env, Class<?> clazz, Function4<Environment, A, TypeConverter<V1>, TypeConverter<V2>, B> creator, TypeConverter<V1> converter1, TypeConverter<V2> converter2, A value) {
         return VertxGenVariable0Converter.create2(clazz, creator, converter1, converter2).convReturn(env, value);
     }
-
+    /**
+     * {@link ArrayMemory}
+     */
     public static <T> boolean isList(Environment env, TypeConverter<T> converter, Memory value) {
         return ContainerConverter.createListConverter(converter).accept(env, value);
     }
@@ -264,7 +327,9 @@ public class Utils {
     public static <T> Memory convReturnList(Environment env, TypeConverter<T> converter, List<T> value) {
         return ContainerConverter.createListConverter(converter).convReturn(env, value);
     }
-
+    /**
+     * {@link ArrayMemory}
+     */
     public static <T> boolean isSet(Environment env, TypeConverter<T> converter, Memory value) {
         return ContainerConverter.createSetConverter(converter).accept(env, value);
     }
@@ -276,7 +341,9 @@ public class Utils {
     public static <T> Memory convReturnSet(Environment env, TypeConverter<T> converter, Set<T> value) {
         return ContainerConverter.createSetConverter(converter).convReturn(env, value);
     }
-
+    /**
+     * {@link ArrayMemory}<{@link ArrayMapEntryMemory}>
+     */
     public static <T> boolean isMap(Environment env, TypeConverter<T> converter, Memory value) {
         return ContainerConverter.createMapConverter(converter).accept(env, value);
     }
@@ -296,7 +363,9 @@ public class Utils {
     public static Class<Object> convParamClassType(Environment env, Memory value) {
         return TypeConverter.CLASS.convParam(env, value);
     }
-
+    /**
+     * {@link php.runtime.invoke.Invoker}
+     */
     public static boolean isHandler(Environment env, Memory value) {
         if (value instanceof ObjectMemory) {
             ObjectMemory objectMemory = (ObjectMemory) value;
@@ -331,7 +400,9 @@ public class Utils {
             return new io.vertx.lang.jphp.wrapper.extension.Handler<>(env, handler, converter).toMemory();
         }
     }
-
+    /**
+     * {@link php.runtime.invoke.Invoker}
+     */
     public static boolean isHandlerAsyncResult(Environment env, Memory value) {
         return value.toInvoker(env) != null;
     }
@@ -362,7 +433,9 @@ public class Utils {
         re.add("handle");
         return re;
     }
-
+    /**
+     * {@link php.runtime.invoke.Invoker}
+     */
     public static boolean isFunction(Environment env, Memory value) {
         return value.toInvoker(env) != null;
     }
