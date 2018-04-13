@@ -1,74 +1,218 @@
-@code{import java.util.HashSet;var lang = "php";}
-@includeNamed{'commons.templ';}
-<?php \n
-namespace @{namespace};\n
+<?php\n
+\n
+namespace @{type.translatePackageName("jphp").replace(".", "\\")};\n
+\n
+@code{
+	import java.util.HashSet;
+	import java.util.ArrayList;
 
-@foreach{importClass : importClassSet}
-use @{importClass.replace(".", "\\")};\n
+	var importClassSet = new HashSet();
+
+	def addImport(typeInfo){
+		if(typeInfo.isVariable) {
+			return
+		}
+		var typeKind = typeInfo.kind;
+		if(typeKind == CLASS_API || typeKind == CLASS_DATA_OBJECT) {
+			if(typeInfo.raw.packageName != ifacePackageName) {
+				importClassSet.add(typeInfo.raw.translatePackageName("jphp") + "." + typeInfo.raw.simpleName);
+			}
+		}
+	}
+
+	foreach(methodName : methodsByName.keySet()) {
+		var methods = methodsByName[methodName];
+		foreach(method : methods) {
+			addImport(method.returnType);
+			foreach(param : method.params) {
+				addImport(param.type);
+			}
+		}
+	}
+
+	def getParamName(min, max){
+		var res = '';
+		for(int k = 0; k < max; k++) {
+			if(res != '') {
+				res += ", ";
+			}
+			res += "$arg" + k;
+			if(k >= min) {
+				res += " = null";
+			}
+		}
+		return res;
+	}
+	def genPHPDocType(type) {
+		if(type.name == "void"){
+			return ["void"];
+		} else if (type.kind == CLASS_STRING) {
+			return ['string'];
+		} else if (type.kind == CLASS_PRIMITIVE || type.kind == CLASS_BOXED_PRIMITIVE) {
+			if (type.simpleName == 'boolean' || type.simpleName == 'Boolean') {
+				return ['bool'];
+			} else if (type.simpleName == 'char' || type.simpleName == 'Character') {
+				return ['string'];
+			} else if (type.simpleName == 'double' || type.simpleName == 'Double' || type.simpleName == 'float' || type.simpleName == 'Float') {
+				return ['float'];
+			} else {
+				return ['integer'];
+			}
+		} else if (type.kind == CLASS_JSON_OBJECT) {
+			return ['mixed'];
+		} else if (type.kind == CLASS_DATA_OBJECT) {
+			return [type.raw.simpleName, 'mixed'];
+		} else if (type.kind == CLASS_ENUM) {
+			return ['string'];
+		} else if (type.kind == CLASS_API) {
+			return [type.raw.simpleName];
+		} else if (type.kind.collection) {
+			return ['array'];
+		} else if (type.kind == CLASS_MAP) {
+			return ['array'];
+		} else if (type.kind == CLASS_OBJECT) {
+			return ['Object'];
+		} else if (type.kind == CLASS_HANDLER) {
+			return ['callable'];
+		} else if (type.kind == CLASS_FUNCTION) {
+			return ['callable'];
+		} else if (type.kind == CLASS_THROWABLE) {
+			return ['\\Exception'];
+		} else if (type.kind == CLASS_CLASS_TYPE) {
+			return ['string'];
+		} else {
+			return ['todo' + type.name];
+		}
+	}
+
+	def join(arr, joiner, start, end){
+		var first = true;
+		var result = "" + start;
+		foreach(value : arr) {
+			if(!first) {
+				result += " " + joiner + " ";
+			} else {
+				first = false;
+			}
+			result += value;
+		}
+		return result + end;
+	}
+}
+@if{importClassSet.size() > 0}
+	@foreach{importClass : importClassSet}
+		use @{importClass.replace(".", "\\")};\n
+	@end{}
+\n
 @end{}
-
-class @{className}\n
+/**\n
+@if{ifaceComment != null}
+@{helper.removeTags(ifaceComment)}\n
+@end{}
+*/\n
+class @{ifaceSimpleName}\n
 {\n
-	\n
     private function __construct()\n
     {\n
-		\n
+\n
     }\n
 
-@foreach{methodName : methodsMap.keySet()}
-    /**\n
-	@code{
-		var methodNum = 0;
-		var maxParamSize = 0;
-		var minParamSize = 999;
-		var isStatic = false;
-	}
-	@foreach{m:methodsMap[methodName]}
+	@foreach{methodName:methodsByName.keySet()}
 		@code{
-			var paramSize = m.params.size();
-			var paramKey = methodName + "-" + paramSize;
-			var methods = sameParamSizeMethod[paramKey];
-			if(paramSize > maxParamSize) {
-				maxParamSize = paramSize;
-			}
-			if(paramSize < minParamSize) {
-				minParamSize = paramSize;
-			}
-		}
-		@foreach{method : methods}
-			@code{
-				methodNum += 1;
-				if(!isStatic && method.isStaticMethod) {
-					isStatic = true;
+			var methods = methodsByName[methodName];
+			var returnType = null;
+			var minParamSize = 99;
+			var maxParamSize = 0;
+			var isStatic = false;
+			foreach(method : methods) {
+				if(returnType == null) {
+					if(method.isFluent) {
+						returnType = type;
+					} else {
+						returnType = method.returnType;
+					}
 				}
+				var methodParamsSize = method.params.size();
+				if(methodParamsSize > maxParamSize) {
+					maxParamSize = methodParamsSize;
+				}
+				if(methodParamsSize < minParamSize) {
+					minParamSize = methodParamsSize;
+				}
+				isStatic = method.isStaticMethod;
 			}
-		     * (@code{var first = true;}@foreach{param:method.params}@if{!first}, @else{}@code{first = false;}@end{}@{wrapSimpleType(param.type)} @{param.name}@end{})\n
-		@end{}
-	@end{}
-     * @return @{wrapSimpleType(methods.get(0).returnType)}\n
-     */\n
-    public @if{isStatic}static @end{}function @{methodName}(@{getParamName(minParamSize, maxParamSize)})\n
-    {\n
-		@code{
-			var returnType = methods.get(0).returnType;
-			var returnTypeKind = returnType.kind;
 		}
-		@if{returnType.name != "void"}
-			@if{returnTypeKind == CLASS_PRIMITIVE || returnTypeKind == CLASS_BOXED_PRIMITIVE}
+		\n
+	    /**\n
+		@code{
+			var paramTypes = new ArrayList();
+		}
+		@foreach{method:methods}
+			@if{method.doc != null}
+				@if{method.doc.firstSentence != null}
+			     * 	@{method.doc.firstSentence.value}\n
+			     *\n
+				@end{}
+				@if{method.doc.body != null}
+			     * 	@{method.doc.body.value}\n
+				@end{}
+			@end{}
+		     * <b>
+		     * @{methodName}(
 				@code{
-					var name = returnTypeKind == CLASS_PRIMITIVE ? returnType.boxed.simpleName : returnType.simpleName;
+					var index = 0;
 				}
-				@if{name == "Byte" || name == "Character" || name == "Short" || name == "Integer" || name == "Long" || name == "Double" || name == "Float"}
-			        return 0;\n
-				@else{name == "String"}
-			        return "";\n
-				@else{name == "Boolean"}
-			        return false;\n
+				@foreach{param : method.params}
+					@code{
+						var params = index < paramTypes.size() ? paramTypes.get(index) : null;
+						if(params == null) {
+							params = new HashSet();
+							paramTypes.add(params);
+						}
+						var paramType = genPHPDocType(param.type);
+						params.addAll(paramType);
+					}
+					@if{index > 0}
+						,
+					@end{}
+					@code{
+						index += 1;
+					}
+					@{join(paramType, "|", "[", "]")}
+				@end{}
+			)\n
+		     * </b>
+		     *\n
+		@end{}
+		@code{
+			var paramIndex = 0;
+		}
+		@foreach{paramType : paramTypes}
+		     * @param $$arg@{paramIndex} @{join(paramType, "|", "", "")} \n
+			@code{
+				paramIndex++;
+			}
+		@end{}
+	     * @return @{join(genPHPDocType(returnType), "|", "", "")}\n
+	     */\n
+	    public
+		@if{isStatic}
+ 			static
+		@end{}
+ 		function @{methodName}(@{getParamName(minParamSize, maxParamSize)})\n
+	    {\n
+	        @if{returnType.name == "void"}
+				\n
+			@else{returnType.kind.basic && returnType.kind != CLASS_STRING}
+				@if{returnType.name == "boolean" || (returnType.raw != null && returnType.raw.simpleName == "Boolean")}
+					return false;\n
+				@else{}
+					return 0;\n
 				@end{}
 			@else{}
-		        return null;\n
+				return null;\n
 			@end{}
-		@end{}
-    }\n
-@end{}
-}\n
+	    }\n
+	@end{}
+}
+
