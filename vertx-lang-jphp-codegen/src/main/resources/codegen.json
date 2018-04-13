@@ -12,7 +12,7 @@
     "kind": ["class","dataObject"],
     "incremental" : true,
     "fileName": "'extension/jphp-vertx-extension.properties'",
-    "templateFileName": "vertx-php/template/package.templ"
+    "templateFileName": "vertx-php/template/extension.templ"
   },{
     "kind": "class",
     "fileName": "'jphp/vertx-jphp/' + module.translateQualifiedName(fqn, 'jphp').replace('.', '/') + '.php'",

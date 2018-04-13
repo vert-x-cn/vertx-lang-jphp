@@ -10,6 +10,10 @@ import php.runtime.lang.StdClass;
 import php.runtime.memory.*;
 import php.runtime.memory.support.ArrayMapEntryMemory;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 
 @SuppressWarnings("unused")
@@ -48,6 +52,32 @@ public interface TypeConverter<T> {
                 return false;
             } else if (value instanceof ReferenceMemory) {
                 return convParam(env, value);
+            } else if (value instanceof ObjectMemory && ((ObjectMemory) value).value instanceof StdClass) {
+                String str = JsonFunctions.json_encode(value);
+                return str.charAt(0) == '{' ? new JsonObject(str) : new JsonArray(str);
+            } else if (value instanceof ArrayMemory) {
+                ArrayMemory array = (ArrayMemory) value;
+                if (array.isMap()) {
+                    Map<Object, Object> map = new HashMap<>();
+                    array.forEach(referenceMemory -> {
+                        ArrayMapEntryMemory mapEntryMemory = (ArrayMapEntryMemory) referenceMemory;
+                        Object k = mapEntryMemory.getKey();
+                        Object key;
+                        if (k instanceof LongMemory) {
+                            key = ((LongMemory) k).toLong();
+                        } else {
+                            key = k.toString();
+                        }
+                        map.put(key, convParam(env, mapEntryMemory.getValue()));
+                    });
+                    return map;
+                } else {
+                    List<Object> list = new ArrayList<>();
+                    array.forEach(referenceMemory ->
+                        list.add(convParam(env, referenceMemory.getValue()))
+                    );
+                    return list;
+                }
             } else {
                 String str = JsonFunctions.json_encode(value);
                 return str.charAt(0) == '{' ? new JsonObject(str) : new JsonArray(str);
@@ -62,7 +92,7 @@ public interface TypeConverter<T> {
                 return StringMemory.valueOf((Character) value);
             } else if (value instanceof Number) {
                 if (value instanceof Double || value instanceof Float) {
-                    return DoubleMemory.valueOf(((Number)value).doubleValue());
+                    return DoubleMemory.valueOf(((Number) value).doubleValue());
                 } else {
                     return LongMemory.valueOf(((Number) value).longValue());
                 }
@@ -72,6 +102,24 @@ public interface TypeConverter<T> {
                 return JsonFunctions.json_decode(env, ((JsonArray) value).encode(), true);
             } else if (value instanceof Boolean) {
                 return TrueMemory.valueOf((Boolean) value);
+            } else if (value instanceof List) {
+                ArrayMemory array = new ArrayMemory();
+                ((List<?>) value).forEach(v -> array.add(convReturn(env, v)));
+                return array;
+            } else if (value instanceof Map) {
+                ArrayMemory array = new ArrayMemory(true);
+                ((Map<?, ?>)value).forEach((k, v) -> {
+                    Object key;
+                    if (k instanceof LongMemory) {
+                        key = k;
+                    } else if (k instanceof Number && !(k instanceof Double) && !(k instanceof Float)) {
+                        key = LongMemory.valueOf(((Number) k).longValue());
+                    } else {
+                        key = k.toString();
+                    }
+                    array.put(key, convReturn(env, v));
+                });
+                return array;
             }
             return null;
         }
@@ -290,6 +338,7 @@ public interface TypeConverter<T> {
             }
         }
 
+        @SuppressWarnings("unchecked")
         @Override
         public Class<Object> convParamNotNull(Environment env, Memory value) {
             String name = value.toString();
