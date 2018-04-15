@@ -8,7 +8,7 @@ namespace @{type.raw.translatePackageName("jphp").replace(".", "\\")};\n
 }
 
 @if{superClass!=null && use}
-use ${superClass};\n
+use @{superClass};\n
 @end{}
 /**\n
 @if{doc != null}
@@ -25,77 +25,49 @@ use ${superClass};\n
 @end{}
  */
 \n
-@if{abs}abstract @end{}class ${type.simpleName} @if{superClass != null}extends @{superType.simpleName}@end{} \n
+@if{abs}abstract @end{}class @{type.simpleName} @if{superClass != null}extends @{superType.simpleName}@end{} \n
 { \n
-    public function __construct($$${type.getSimpleName(CASE_LOWER_CAMEL)})\n
+    public function __construct($$@{type.getSimpleName(CASE_LOWER_CAMEL)})\n
     { \n
         \n
     }\n
 @code{
-    def getReturnType(propertyType){
-       if(propertyType.startsWith("java.util")) {
-           return "array";
-       } else if(propertyType.equals("java.lang.String")){
-           return "String";
-       } else if(propertyType.equals("boolean")){
-           return "bool";
-       } else if(propertyType.equals("double") || propertyType.equals("float")){
-           return "float";
-       } else if(propertyType.equals("io.vertx.core.json.JsonObject")){
-           return "array json";
-       }else {
-           return "int";
-       }
-    }
 
-    def getReturnValue(propertyType){
-        if(propertyType.startsWith("java.util")) {
-            return "[]";
-        } else if(propertyType.equals("java.lang.String")){
-            return "\"\"";
-        } else if(propertyType.equals("boolean")){
-            return "false";
-        } else if(propertyType.equals("io.vertx.core.json.JsonObject")) {
-            return [];
-        }
-        else {
-            return "1";
-        }
-    }
+
 }
 @foreach{property:properties}
 @code{
     var propertyType = "";
-    var kindName = property.kind.name;
-    if(kindName == "VALUE") {
+    var propertyKind = property.kind;
+    if(propertyKind.isValue) {
         propertyType = property.type.name;
-    } else if(kindName == "LIST"){
+    } else if(propertyKind.isList){
         propertyType = "java.util.List<" + property.type.name + ">";
-    } else if(kindName == "SET"){
+    } else if(propertyKind.isSet){
         propertyType = "java.util.Set<" + property.type.name + ">";
-    } else if(kindName == "MAP"){
+    } else if(propertyKind.isMap){
         propertyType = "java.util.Map<" + property.type.name + ">";
     }
 }
 @if{property.adderMethod != null}
-    @if{kindName == "MAP"}
+    @if{propertyKind.isMap}
     \n
     /**\n
      * @param $$key String \n
      * @param $$value String\n
      * @return $this\n
      */\n
-    public function ${property.adderMethod}($$key, $$value) \n
+    public function @{property.adderMethod}($$key, $$value) \n
     {\n
         return $this;\n
     }\n
     @else{}
     \n
     /**\n
-     * @param $$${property.name} ${getReturnType(property.type.name)} \n
+     * @param $$@{property.name} @{join(genPHPDocType(property.type), "|", "", "")} \n
      * @return $this\n
      */\n
-    public function ${property.adderMethod}($$${property.name}) \n
+    public function @{property.adderMethod}($$@{property.name}) \n
     {\n
         return $this;\n
     }\n
@@ -104,20 +76,20 @@ use ${superClass};\n
 @if{property.getterMethod != null}
     \n
     /**\n
-     * @return ${getReturnType(propertyType)} \n
+     * @return @{join(genPHPDocType(property.type), "|", "", "")} \n
      */\n
-    public function ${property.getterMethod}()\n
+    public function @{property.getterMethod}()\n
     { \n
-        return @{getReturnValue(propertyType)};\n
+        return @{getReturnInfo(property.type)};\n
     }\n
 @end{}
 @if{property.setterMethod != null}
     \n
     /**\n
-     * @param $$${property.name} ${getReturnType(propertyType)} \n
+     * @param $$@{property.name} @{join(genPHPDocType(property.type), "|", "", "")} \n
      * @return $this\n
      */\n
-    public function ${property.setterMethod}($$${property.name})\n
+    public function @{property.setterMethod}($$@{property.name})\n
     { \n
         return $this;\n
     }\n

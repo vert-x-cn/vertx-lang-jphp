@@ -9,4 +9,76 @@
 		}
 		return list;
 	}
+
+	def genPHPDocType(type) {
+		if(type.name == "void"){
+			return ["void"];
+		} else if (type.kind == CLASS_STRING) {
+			return ['string'];
+		} else if (type.kind == CLASS_PRIMITIVE || type.kind == CLASS_BOXED_PRIMITIVE) {
+			if (type.simpleName == 'boolean' || type.simpleName == 'Boolean') {
+				return ['bool'];
+			} else if (type.simpleName == 'char' || type.simpleName == 'Character') {
+				return ['string'];
+			} else if (type.simpleName == 'double' || type.simpleName == 'Double' || type.simpleName == 'float' || type.simpleName == 'Float') {
+				return ['float'];
+			} else {
+				return ['integer'];
+			}
+		} else if (type.kind == CLASS_JSON_OBJECT) {
+			return ['mixed'];
+		} else if (type.kind == CLASS_DATA_OBJECT) {
+			return [type.raw.simpleName, 'mixed'];
+		} else if (type.kind == CLASS_ENUM) {
+			return ['string'];
+		} else if (type.kind == CLASS_API) {
+			return [type.raw.simpleName];
+		} else if (type.kind.collection) {
+			return ['array'];
+		} else if (type.kind == CLASS_MAP) {
+			return ['array'];
+		} else if (type.kind == CLASS_OBJECT) {
+			return ['Object'];
+		} else if (type.kind == CLASS_HANDLER) {
+			return ['callable'];
+		} else if (type.kind == CLASS_FUNCTION) {
+			return ['callable'];
+		} else if (type.kind == CLASS_THROWABLE) {
+			return ['\\Exception'];
+		} else if (type.kind == CLASS_CLASS_TYPE) {
+			return ['string'];
+		} else {
+			return ['todo' + type.name];
+		}
+	}
+	def join(arr, joiner, start, end){
+		var first = true;
+		var result = "" + start;
+		foreach(value : arr) {
+			if(!first) {
+				result += " " + joiner + " ";
+			} else {
+				first = false;
+			}
+			result += value;
+		}
+		return result + end;
+	}
+
+	def getReturnInfo(propertyType){
+		var propertyKind = propertyType.kind;
+		if(propertyKind.collection || propertyKind.json) {
+			return "[]";
+		} else if(propertyKind.basic){
+			if(propertyKind == CLASS_STRING) {
+				return "\"\"";
+			} else if(propertyType.simpleName == "Boolean" || propertyType.simpleName == "boolean") {
+				return "false";
+			} else {
+				return "0";
+			}
+		}else {
+			return null;
+		}
+	}
 }
