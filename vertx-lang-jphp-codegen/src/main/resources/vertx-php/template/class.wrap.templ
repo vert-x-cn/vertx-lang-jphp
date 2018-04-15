@@ -89,8 +89,6 @@
 	importClassSet.add("php.runtime.annotation.Reflection.Namespace");
 	importClassSet.add("php.runtime.annotation.Reflection.Signature");
 	importClassSet.add("php.runtime.env.Environment");
-	importClassSet.add("php.runtime.Memory");
-	importClassSet.add("io.vertx.lang.jphp.Utils");
 	if(typeParams.size() > 0) {
 		importClassSet.add("io.vertx.lang.jphp.converter.TypeConverter");
 	}
@@ -146,7 +144,7 @@
 				importClassSet.add("io.vertx.lang.jphp.converter.VertxGenVariable0Converter");
 			}
 		}
-		if(typeInfo.isParameterized) {
+		if(typeKind != CLASS_CLASS_TYPE && typeInfo.isParameterized) {
 			foreach(arg : typeInfo.args) {
 				addImport(arg, true, isParam);
 			}
@@ -157,16 +155,22 @@
 		importClassSet.add("io.vertx.lang.jphp.converter.TypeConverter");
 		addImport(type.handlerArg, true, true);
 	}
-
+	var noConverter = true;
 	foreach(methodName:methodsByName.keySet()) {
 		var methods = methodsByName[methodName];
 		foreach(m : methods){
+			if(noConverter && (m.returnType.name != "void" || m.params.size() > 0)) {
+				noConverter = false;
+			}
 			foreach(param : m.params) {
-
 				addImport(param.type, false, true);
 			}
 			addImport(m.returnType, false, false)
 		}
+	}
+	if(!noConverter) {
+		importClassSet.add("php.runtime.Memory");
+		importClassSet.add("io.vertx.lang.jphp.Utils");
 	}
 
 	importClassSet.add("io.vertx.lang.jphp.wrapper.VertxGenVariable" + typeParams.size() + "Wrapper");

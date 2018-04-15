@@ -1,3 +1,4 @@
+@includeNamed{"methods.templ"}
 <?php \n
 namespace @{type.raw.translatePackageName("jphp").replace(".", "\\")};\n
 @code{
@@ -9,6 +10,20 @@ namespace @{type.raw.translatePackageName("jphp").replace(".", "\\")};\n
 @if{superClass!=null && use}
 use ${superClass};\n
 @end{}
+/**\n
+@if{doc != null}
+	@if{doc.firstSentence != null}
+		@foreach{str : split(doc.firstSentence.value)}
+		 * @{str}\n
+		@end{}
+	@end{}
+	@if{doc.body != null}
+		@foreach{str : split(doc.body.value)}
+		 * @{str}\n
+		@end{}
+	@end{}
+@end{}
+ */
 \n
 @if{abs}abstract @end{}class ${type.simpleName} @if{superClass != null}extends @{superType.simpleName}@end{} \n
 { \n

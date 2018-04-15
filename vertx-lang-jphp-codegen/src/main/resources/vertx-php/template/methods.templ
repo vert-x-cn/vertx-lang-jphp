@@ -1,0 +1,12 @@
+@code{
+	var reline = new Character(10).toString();
+	def split(str){
+		var newStr = str.trim();
+		var array = newStr.split(reline);
+		var list = new ArrayList();
+		for(var i = 0; i < array.length; i++) {
+			list.add(array[i]);
+		}
+		return list;
+	}
+}

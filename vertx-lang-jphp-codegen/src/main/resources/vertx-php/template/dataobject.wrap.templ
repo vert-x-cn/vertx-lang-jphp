@@ -14,7 +14,6 @@ package @{type.raw.translatePackageName("jphp")};\n
 
 	var abs = type.abstract;
 	var superClass = superType == null ? null : translateClassName(superType);
-	var _import = superType != null && !superType.raw.packageName.equals(type.raw.packageName);
 	var importClassSet = new TreeSet();
 
 	importClassSet.add("io.vertx.lang.jphp.wrapper.DataObjectWrapper");
@@ -22,7 +21,7 @@ package @{type.raw.translatePackageName("jphp")};\n
 		importClassSet.add("io.vertx.core.json.JsonObject");
 		importClassSet.add("org.develnext.jphp.zend.ext.json.JsonFunctions");
 		importClassSet.add("php.runtime.Memory");
-		importClassSet.add("php.runtime.memory.ObjectMemory");
+		importClassSet.add("php.runtime.reflection.ClassEntity");
 	}
 
 	foreach(property : properties) {
@@ -58,7 +57,6 @@ package @{type.raw.translatePackageName("jphp")};\n
 @end{}
 
 import php.runtime.env.Environment;\n
-import php.runtime.reflection.ClassEntity;\n
 import php.runtime.annotation.Reflection.*;\n
 
 \n

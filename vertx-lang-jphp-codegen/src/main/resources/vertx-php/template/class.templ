@@ -1,3 +1,4 @@
+@includeNamed{"methods.templ"}
 <?php\n
 \n
 namespace @{type.translatePackageName("jphp").replace(".", "\\")};\n
@@ -98,18 +99,20 @@ namespace @{type.translatePackageName("jphp").replace(".", "\\")};\n
 		}
 		return result + end;
 	}
+
 }
 @if{importClassSet.size() > 0}
 	@foreach{importClass : importClassSet}
 		use @{importClass.replace(".", "\\")};\n
 	@end{}
-\n
 @end{}
 /**\n
 @if{ifaceComment != null}
-@{helper.removeTags(ifaceComment)}\n
+	@foreach{str : split(helper.removeTags(ifaceComment))}
+	 * @{str}\n
+	@end{}
 @end{}
-*/\n
+ */\n
 class @{ifaceSimpleName}\n
 {\n
     private function __construct()\n
@@ -121,6 +124,7 @@ class @{ifaceSimpleName}\n
 		@code{
 			var methods = methodsByName[methodName];
 			var returnType = null;
+			var returnDescription = "";
 			var minParamSize = 99;
 			var maxParamSize = 0;
 			var isStatic = false;
@@ -130,6 +134,9 @@ class @{ifaceSimpleName}\n
 						returnType = type;
 					} else {
 						returnType = method.returnType;
+					}
+					if(method.returnDescription != null) {
+						returnDescription = method.returnDescription.value;
 					}
 				}
 				var methodParamsSize = method.params.size();
@@ -150,14 +157,23 @@ class @{ifaceSimpleName}\n
 		@foreach{method:methods}
 			@if{method.doc != null}
 				@if{method.doc.firstSentence != null}
-			     * 	@{method.doc.firstSentence.value}\n
-			     *\n
+					@foreach{str : split(method.doc.firstSentence.value)}
+				     * @{str} \n
+					@end{}
+				     * \n
 				@end{}
 				@if{method.doc.body != null}
-			     * 	@{method.doc.body.value}\n
+					@foreach{str : split(method.doc.body.value)}
+				     * @{str} \n
+					@end{}
+				     * \n
 				@end{}
 			@end{}
-		     * <b>
+			@foreach{param : method.params}
+			     * $$@{param.name} @{join(genPHPDocType(param.type), "|", "[", "]")} @if{param.description != null}@{param.description.value}@end{} \n
+			     * \n
+			@end{}
+		     * <b>\n
 		     * @{methodName}(
 				@code{
 					var index = 0;
@@ -178,10 +194,10 @@ class @{ifaceSimpleName}\n
 					@code{
 						index += 1;
 					}
-					@{join(paramType, "|", "[", "]")}
+					$$@{param.name}
 				@end{}
 			)\n
-		     * </b>
+		     * </b>\n
 		     *\n
 		@end{}
 		@code{
@@ -193,7 +209,7 @@ class @{ifaceSimpleName}\n
 				paramIndex++;
 			}
 		@end{}
-	     * @return @{join(genPHPDocType(returnType), "|", "", "")}\n
+	     * @return @{join(genPHPDocType(returnType), "|", "", "")} @{returnDescription}\n
 	     */\n
 	    public
 		@if{isStatic}
