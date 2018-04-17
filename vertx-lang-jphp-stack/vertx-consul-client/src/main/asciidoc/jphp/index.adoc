@@ -72,7 +72,7 @@ therefore a lot of settings are available. Please see the documentation.
 
 == Using the API
 
-The client API is represented by `link:../../apidocs/io/vertx/ext/consul/ConsulClient.html[ConsulClient]`. The API is very similar to Consul's
+The client API is represented by `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.consul.ConsulClient.html[ConsulClient]`. The API is very similar to Consul's
 HTTP API that described in https://www.consul.io/docs/agent/http.html[Consul API docs]
 
 === Blocking queries

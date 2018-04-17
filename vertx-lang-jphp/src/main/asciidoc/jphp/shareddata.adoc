@@ -16,11 +16,11 @@ configuration. Refer to the cluster manager documentation as well as to the unde
 
 === Local shared maps
 
-`link:../../apidocs/io/vertx/core/shareddata/LocalMap.html[Local shared maps]`allow you to share data safely between different event
+`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.shareddata.LocalMap<K,V>.html[Local shared maps]`allow you to share data safely between different event
 loops (e.g. different verticles) in the same Vert.x instance.
 
 Local shared maps only allow certain data types to be used as keys and values. Those types must either be immutable,
-or certain other types that can be copied like `link:../../apidocs/io/vertx/core/buffer/Buffer.html[Buffer]`. In the latter case the key/value
+or certain other types that can be copied like `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.buffer.Buffer.html[Buffer]`. In the latter case the key/value
 will be copied before putting it in the map.
 
 This way we can ensure there is no _shared access to mutable state_ between different threads in your Vert.x application
@@ -66,8 +66,8 @@ Beware that the latency relative to asynchronous shared map operations can be mu
 This makes them really useful for things like storing session state in a farm of servers hosting a Vert.x web
 application.
 
-You get an instance of `link:../../apidocs/io/vertx/core/shareddata/AsyncMap.html[AsyncMap]` with
-`link:../../apidocs/io/vertx/core/shareddata/SharedData.html#getAsyncMap-java.lang.String-io.vertx.core.Handler-[getAsyncMap]`.
+You get an instance of `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.shareddata.AsyncMap<K,V>.html[AsyncMap]` with
+`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.shareddata.SharedData.html#method_SharedData[getAsyncMap]`.
 
 Getting the map is asynchronous and the result is returned to you in the handler that you specify. Here's an example:
 
@@ -90,7 +90,7 @@ Getting the map is asynchronous and the result is returned to you in the handler
 
 ==== Putting data in a map
 
-You put data in a map with `link:../../apidocs/io/vertx/core/shareddata/AsyncMap.html#put-java.lang.Object-java.lang.Object-io.vertx.core.Handler-[put]`.
+You put data in a map with `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.shareddata.AsyncMap<K,V>.html#method_AsyncMap[put]`.
 
 The actual put is asynchronous and the handler is notified once it is complete:
 
@@ -111,7 +111,7 @@ The actual put is asynchronous and the handler is notified once it is complete:
 
 ==== Getting data from a map
 
-You get data from a map with `link:../../apidocs/io/vertx/core/shareddata/AsyncMap.html#get-java.lang.Object-io.vertx.core.Handler-[get]`.
+You get data from a map with `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.shareddata.AsyncMap<K,V>.html#method_AsyncMap[get]`.
 
 The actual get is asynchronous and the handler is notified with the result some time later
 
@@ -135,24 +135,24 @@ The actual get is asynchronous and the handler is notified with the result some 
 
 You can also remove entries from an asynchronous map, clear them and get the size.
 
-See the `link:../../apidocs/io/vertx/core/shareddata/AsyncMap.html[API docs]` for more information.
+See the `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.shareddata.AsyncMap<K,V>.html[API docs]` for more information.
 
 === Asynchronous locks
 
-`link:../../apidocs/io/vertx/core/shareddata/Lock.html[Asynchronous locks]`allow you to obtain exclusive locks locally or across the cluster -
+`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.shareddata.Lock.html[Asynchronous locks]`allow you to obtain exclusive locks locally or across the cluster -
 this is useful when you want to do something or access a resource on only one node of a cluster at any one time.
 
 Asynchronous locks have an asynchronous API unlike most lock APIs which block the calling thread until the lock
 is obtained.
 
-To obtain a lock use `link:../../apidocs/io/vertx/core/shareddata/SharedData.html#getLock-java.lang.String-io.vertx.core.Handler-[getLock]`.
+To obtain a lock use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.shareddata.SharedData.html#method_SharedData[getLock]`.
 
-This won't block, but when the lock is available, the handler will be called with an instance of `link:../../apidocs/io/vertx/core/shareddata/Lock.html[Lock]`,
+This won't block, but when the lock is available, the handler will be called with an instance of `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.shareddata.Lock.html[Lock]`,
 signifying that you now own the lock.
 
 While you own the lock no other caller, anywhere on the cluster will be able to obtain the lock.
 
-When you've finished with the lock, you call `link:../../apidocs/io/vertx/core/shareddata/Lock.html#release--[release]` to release it, so
+When you've finished with the lock, you call `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.shareddata.Lock.html#method_Lock[release]` to release it, so
 another caller can obtain it.
 
 [source,php]
@@ -198,9 +198,9 @@ with a failure:
 
 It's often useful to maintain an atomic counter locally or across the different nodes of your application.
 
-You can do this with `link:../../apidocs/io/vertx/core/shareddata/Counter.html[Counter]`.
+You can do this with `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.shareddata.Counter.html[Counter]`.
 
-You obtain an instance with `link:../../apidocs/io/vertx/core/shareddata/SharedData.html#getCounter-java.lang.String-io.vertx.core.Handler-[getCounter]`:
+You obtain an instance with `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.shareddata.SharedData.html#method_SharedData[getCounter]`:
 
 [source,php]
 ----
@@ -218,4 +218,4 @@ You obtain an instance with `link:../../apidocs/io/vertx/core/shareddata/SharedD
 Once you have an instance you can retrieve the current count, atomically increment it, decrement and add a value to
 it using the various methods.
 
-See the `link:../../apidocs/io/vertx/core/shareddata/Counter.html[API docs]` for more information.
+See the `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.shareddata.Counter.html[API docs]` for more information.

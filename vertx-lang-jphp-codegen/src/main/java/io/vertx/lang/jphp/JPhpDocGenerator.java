@@ -1,22 +1,25 @@
 package io.vertx.lang.jphp;
 
+import io.vertx.codegen.type.ClassKind;
+import io.vertx.codegen.type.EnumTypeInfo;
+import io.vertx.codegen.type.TypeInfo;
+import io.vertx.codegen.type.TypeMirrorFactory;
 import io.vertx.codetrans.CodeTranslator;
 import io.vertx.codetrans.lang.jphp.JPhpLang;
 import io.vertx.docgen.Coordinate;
 import io.vertx.docgen.DocGenerator;
-import io.vertx.docgen.JavaDocGenerator;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.*;
 
 public class JPhpDocGenerator implements DocGenerator {
-    private JavaDocGenerator javaGen = new JavaDocGenerator();
     private CodeTranslator translator;
+    private TypeMirrorFactory factory;
 
     @Override
     public void init(ProcessingEnvironment processingEnv) {
         translator = new CodeTranslator(processingEnv);
-        javaGen.init(processingEnv);
+        factory = new TypeMirrorFactory(processingEnv.getElementUtils(), processingEnv.getTypeUtils());
     }
 
     @Override
@@ -37,22 +40,54 @@ public class JPhpDocGenerator implements DocGenerator {
 
     @Override
     public String resolveTypeLink(TypeElement elt, Coordinate coordinate) {
-        return javaGen.resolveTypeLink(elt, coordinate);
+        TypeInfo type;
+        try {
+            type = factory.create(elt.asType());
+        } catch (Exception e) {
+            System.out.println("Could not resolve doc link for type " + elt.getQualifiedName());
+            return null;
+        }
+        if ((type.getKind() == ClassKind.ENUM && ((EnumTypeInfo)type).isGen()) || (type.getKind() == ClassKind.DATA_OBJECT)) {
+            String baselink;
+            if (coordinate == null) {
+                baselink = "../";
+            } else {
+                baselink = "../../" + coordinate.getArtifactId() + "/";
+            }
+            String adocLink;
+            if (type.getKind() == ClassKind.DATA_OBJECT) {
+                adocLink = "enums.adoc";
+            } else {
+                adocLink = "dataobjects.adoc";
+            }
+            return baselink + adocLink + "#" + elt.getSimpleName().toString();
+        } else if (type.getKind() == ClassKind.API) {
+            return "https://vertx.okou.tk/phpdoc/classes/" + type.translateName("jphp") + ".html";
+        }
+        return null;
     }
 
     @Override
     public String resolveConstructorLink(ExecutableElement elt, Coordinate coordinate) {
-        return javaGen.resolveConstructorLink(elt, coordinate);
+        return toExecutableLink(elt, elt.getEnclosingElement().getSimpleName().toString());
     }
 
     @Override
     public String resolveMethodLink(ExecutableElement elt, Coordinate coordinate) {
-        return javaGen.resolveMethodLink(elt, coordinate);
+        return toExecutableLink(elt, elt.getEnclosingElement().getSimpleName().toString());
+    }
+
+    private String toExecutableLink(ExecutableElement elt, String name) {
+        TypeElement typeElt = (TypeElement) elt.getEnclosingElement();
+        String link = resolveTypeLink(typeElt, null);
+        StringBuilder anchor = new StringBuilder("#method_");
+        anchor.append(name);
+        return link + anchor;
     }
 
     @Override
     public String resolveLabel(Element elt, String defaultLabel) {
-        String result = javaGen.resolveLabel(elt, defaultLabel);
+        String result = defaultLabel;
         if (elt.getModifiers().contains(Modifier.STATIC)) {
             result = result.replace(".", "::");
         } else {
@@ -63,7 +98,7 @@ public class JPhpDocGenerator implements DocGenerator {
 
     @Override
     public String resolveFieldLink(VariableElement elt, Coordinate coordinate) {
-        System.err.println("=============" + elt.getEnclosingElement() + "." + elt.getSimpleName());
-        return javaGen.resolveFieldLink(elt, coordinate);
+//        return javaGen.resolveFieldLink(elt, coordinate);
+        return null;
     }
 }

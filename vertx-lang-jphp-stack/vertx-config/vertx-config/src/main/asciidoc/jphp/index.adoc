@@ -43,7 +43,7 @@ _dependencies_ section of your build descriptor:
 compile 'io.vertx:vertx-config:${maven.version}'
 ----
 
-Once done, you first need to instantiate the `link:../../apidocs/io/vertx/config/ConfigRetriever.html[ConfigRetriever]`:
+Once done, you first need to instantiate the `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.config.ConfigRetriever.html[ConfigRetriever]`:
 
 [source]
 ----
@@ -174,7 +174,7 @@ Each declared data store must specify the `type`. It can also define the `format
 not set JSON is used.
 
 Some configurations tore requires additional configuration (such a path...). This
-configuration is passed as a Json Object using `link:../../apidocs/io/vertx/config/ConfigStoreOptions.html#setConfig-io.vertx.core.json.JsonObject-[setConfig]`
+configuration is passed as a Json Object using `link:../enums.adoc#ConfigStoreOptions#method_ConfigStoreOptions[setConfig]`
 
 === File
 
@@ -429,14 +429,14 @@ using:
 
 == Reading configuration as a stream
 
-The `link:../../apidocs/io/vertx/config/ConfigRetriever.html[ConfigRetriever]` provide a way to access the stream of configuration.
-It's a `link:../../apidocs/io/vertx/core/streams/ReadStream.html[ReadStream]` of `link:../../apidocs/io/vertx/core/json/JsonObject.html[JsonObject]`. By registering the right
+The `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.config.ConfigRetriever.html[ConfigRetriever]` provide a way to access the stream of configuration.
+It's a `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.streams.ReadStream<T>.html[ReadStream]` of `JsonObject`. By registering the right
 set of handlers you are notified:
 
 * when a new configuration is retrieved
 * when an error occur while retrieving a configuration
 * when the configuration retriever is closed (the
-`link:../../apidocs/io/vertx/core/streams/ReadStream.html#endHandler-io.vertx.core.Handler-[endHandler]`is called).
+`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.streams.ReadStream<T>.html#method_ReadStream[endHandler]`is called).
 
 [source, php]
 ----
@@ -465,8 +465,8 @@ set of handlers you are notified:
 
 == Retrieving the configuration as a Future
 
-The `link:../../apidocs/io/vertx/config/ConfigRetriever.html[ConfigRetriever]` provide a way to retrieve the configuration as a
-`link:../../apidocs/io/vertx/core/Future.html[Future]`:
+The `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.config.ConfigRetriever.html[ConfigRetriever]` provide a way to retrieve the configuration as a
+`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.Future<T>.html[Future]`:
 
 [source, php]
 ----
@@ -487,9 +487,9 @@ The `link:../../apidocs/io/vertx/config/ConfigRetriever.html[ConfigRetriever]` p
 
 You can extend the configuration by implementing:
 
-* the `link:../../apidocs/io/vertx/config/spi/ConfigProcessor.html[ConfigProcessor]` SPI to add support for a
+* the `ConfigProcessor` SPI to add support for a
 format
-* the `link:../../apidocs/io/vertx/config/spi/ConfigStoreFactory.html[ConfigStoreFactory]` SPI to add support for
+* the `ConfigStoreFactory` SPI to add support for
 configuration store (place from where the configuration data is retrieved)
 
 == Additional formats

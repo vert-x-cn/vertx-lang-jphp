@@ -24,8 +24,8 @@ compile 'io.vertx:vertx-auth-shiro:${maven.version}'
 We provide out of the box support for properties and LDAP based auth using Shiro, and you can also plugin in any
 other Shiro Realm which expects username and password for credentials.
 
-To create an instance of the provider you use `link:../../apidocs/io/vertx/ext/auth/shiro/ShiroAuth.html[ShiroAuth]`. You specify the type of
-Shiro auth provider that you want with `link:../../apidocs/io/vertx/ext/auth/shiro/ShiroAuthRealmType.html[ShiroAuthRealmType]`, and you specify the
+To create an instance of the provider you use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.auth.shiro.ShiroAuth.html[ShiroAuth]`. You specify the type of
+Shiro auth provider that you want with `link:../dataobjects.adoc#ShiroAuthRealmType[ShiroAuthRealmType]`, and you specify the
 configuration in a JSON object.
 
 Here's an example of creating a Shiro auth provider by specifying the type:
@@ -75,7 +75,7 @@ implementation uses a familiar user/role/permission model, where a user can have
 can have zero or more permissions.
 
 If validating if a user has a particular permission simply pass the permission into.
-`link:../../apidocs/io/vertx/ext/auth/User.html#isAuthorised-java.lang.String-io.vertx.core.Handler-[isAuthorised]`as follows:
+`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.auth.User.html#method_User[isAuthorised]`as follows:
 
 [source,java]
 ----
@@ -108,7 +108,7 @@ If validating that a user has a particular _role_ then you should prefix the arg
 
 ----
 
-The default role prefix is `role:`. You can change this with `link:../../apidocs/io/vertx/ext/auth/shiro/ShiroAuth.html#setRolePrefix-java.lang.String-[setRolePrefix]`.
+The default role prefix is `role:`. You can change this with `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.auth.shiro.ShiroAuth.html#method_ShiroAuth[setRolePrefix]`.
 
 === The Shiro properties auth provider
 
@@ -116,7 +116,7 @@ This auth provider implementation uses Apache Shiro to get user/role/permission 
 
 Note that roles are not available directly on the API due to the fact that vertx-auth tries to be as portable as
 possible. However one can run assertions on role by using the prefix `role:` or by specifying the prefered prefix
-with `link:../../apidocs/io/vertx/ext/auth/shiro/ShiroAuth.html#setRolePrefix-java.lang.String-[setRolePrefix]`.
+with `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.auth.shiro.ShiroAuth.html#method_ShiroAuth[setRolePrefix]`.
 
 The implementation will, by default, look for a file called `vertx-users.properties` on the classpath.
 

@@ -1,6 +1,6 @@
 == .htdigest Auth Provider implementation
 
-We provide an implementation of `link:../../apidocs/io/vertx/ext/auth/AuthProvider.html[AuthProvider]` which uses the .digest file format
+We provide an implementation of `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.auth.AuthProvider.html[AuthProvider]` which uses the .digest file format
 to perform authentication. The provider will not watch for updates to the file after loading. If you need dynamic
 user management it would be more convenient to use dynamic providers such as jdbc or mongo providers.
 
@@ -27,7 +27,7 @@ compile 'io.vertx:vertx-auth-htdigest:${maven.version}'
 
 To create an instance you first need an .htdigest file. This file is created using the apache htdigest tool.
 
-Once you've got one of these you can create a `link:../../apidocs/io/vertx/ext/auth/htdigest/HtdigestAuth.html[HtdigestAuth]` instance as follows:
+Once you've got one of these you can create a `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.auth.htdigest.HtdigestAuth.html[HtdigestAuth]` instance as follows:
 
 [source,php]
 ----
@@ -37,7 +37,7 @@ Once you've got one of these you can create a `link:../../apidocs/io/vertx/ext/a
 
 ----
 
-Once you've got your instance you can authenticate with it just like any `link:../../apidocs/io/vertx/ext/auth/AuthProvider.html[AuthProvider]`.
+Once you've got your instance you can authenticate with it just like any `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.auth.AuthProvider.html[AuthProvider]`.
 
 The out of the box config assumes the usage of the file .htdigest in the root of the project.
 

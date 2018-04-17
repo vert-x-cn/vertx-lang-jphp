@@ -1,8 +1,8 @@
 == Using the file system with Vert.x
 
-The Vert.x `link:../../apidocs/io/vertx/core/file/FileSystem.html[FileSystem]` object provides many operations for manipulating the file system.
+The Vert.x `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.file.FileSystem.html[FileSystem]` object provides many operations for manipulating the file system.
 
-There is one file system object per Vert.x instance, and you obtain it with  `link:../../apidocs/io/vertx/core/Vertx.html#fileSystem--[fileSystem]`.
+There is one file system object per Vert.x instance, and you obtain it with  `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.Vertx.html#method_Vertx[fileSystem]`.
 
 A blocking and a non blocking version of each operation is provided. The non blocking versions take a handler
 which is called when the operation completes or an error occurs.
@@ -42,7 +42,7 @@ Here's the copy using the blocking API:
 ----
 
 Many operations exist to copy, move, truncate, chmod and many other file operations. We won't list them all here,
-please consult the `link:../../apidocs/io/vertx/core/file/FileSystem.html[API docs]` for the full list.
+please consult the `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.file.FileSystem.html[API docs]` for the full list.
 
 Let's see a couple of examples using asynchronous methods:
 
@@ -97,7 +97,7 @@ Let's see a couple of examples using asynchronous methods:
 
 Vert.x provides an asynchronous file abstraction that allows you to manipulate a file on the file system.
 
-You open an `link:../../apidocs/io/vertx/core/file/AsyncFile.html[AsyncFile]` as follows:
+You open an `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.file.AsyncFile.html[AsyncFile]` as follows:
 
 [source,php]
 ----
@@ -122,7 +122,7 @@ They also allow you to read and write directly to them.
 ==== Random access writes
 
 To use an `AsyncFile` for random access writing you use the
-`link:../../apidocs/io/vertx/core/file/AsyncFile.html#write-io.vertx.core.buffer.Buffer-long-io.vertx.core.Handler-[write]`method.
+`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.file.AsyncFile.html#method_AsyncFile[write]`method.
 
 The parameters to the method are:
 
@@ -164,7 +164,7 @@ Here is an example of random access writes:
 ==== Random access reads
 
 To use an `AsyncFile` for random access reads you use the
-`link:../../apidocs/io/vertx/core/file/AsyncFile.html#read-io.vertx.core.buffer.Buffer-int-long-int-io.vertx.core.Handler-[read]`
+`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.file.AsyncFile.html#method_AsyncFile[read]`
 method.
 
 The parameters to the method are:
@@ -206,23 +206,23 @@ Here's an example of random access reads:
 
 ==== Opening Options
 
-When opening an `AsyncFile`, you pass an `link:../../apidocs/io/vertx/core/file/OpenOptions.html[OpenOptions]` instance.
+When opening an `AsyncFile`, you pass an `link:../enums.adoc#OpenOptions[OpenOptions]` instance.
 These options describe the behavior of the file access. For instance, you can configure the file permissions with the
-`link:../../apidocs/io/vertx/core/file/OpenOptions.html#setRead-boolean-[setRead]`, `link:../../apidocs/io/vertx/core/file/OpenOptions.html#setWrite-boolean-[setWrite]`
-and `link:../../apidocs/io/vertx/core/file/OpenOptions.html#setPerms-java.lang.String-[setPerms]` methods.
+`link:../enums.adoc#OpenOptions#method_OpenOptions[setRead]`, `link:../enums.adoc#OpenOptions#method_OpenOptions[setWrite]`
+and `link:../enums.adoc#OpenOptions#method_OpenOptions[setPerms]` methods.
 
 You can also configure the behavior if the open file already exists with
-`link:../../apidocs/io/vertx/core/file/OpenOptions.html#setCreateNew-boolean-[setCreateNew]`and
-`link:../../apidocs/io/vertx/core/file/OpenOptions.html#setTruncateExisting-boolean-[setTruncateExisting]`.
+`link:../enums.adoc#OpenOptions#method_OpenOptions[setCreateNew]`and
+`link:../enums.adoc#OpenOptions#method_OpenOptions[setTruncateExisting]`.
 
 You can also mark the file to be deleted on
-close or when the JVM is shutdown with `link:../../apidocs/io/vertx/core/file/OpenOptions.html#setDeleteOnClose-boolean-[setDeleteOnClose]`.
+close or when the JVM is shutdown with `link:../enums.adoc#OpenOptions#method_OpenOptions[setDeleteOnClose]`.
 
 ==== Flushing data to underlying storage.
 
 In the `OpenOptions`, you can enable/disable the automatic synchronisation of the content on every write using
-`link:../../apidocs/io/vertx/core/file/OpenOptions.html#setDsync-boolean-[setDsync]`. In that case, you can manually flush any writes from the OS
-cache by calling the `link:../../apidocs/io/vertx/core/file/AsyncFile.html#flush--[flush]` method.
+`link:../enums.adoc#OpenOptions#method_OpenOptions[setDsync]`. In that case, you can manually flush any writes from the OS
+cache by calling the `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.file.AsyncFile.html#method_AsyncFile[flush]` method.
 
 This method can also be called with an handler which will be called when the flush is complete.
 
@@ -274,7 +274,7 @@ the filesystem is served directly from the filesystem. The original content
 is served even if the classpath resource changes (e.g. in a development
 system).
 
-This caching behaviour can be set on the `link:../../apidocs/io/vertx/core/VertxOptions.html#setFileResolverCachingEnabled-boolean-[setFileResolverCachingEnabled]`
+This caching behaviour can be set on the `link:../enums.adoc#VertxOptions#method_VertxOptions[setFileResolverCachingEnabled]`
 option. The default value of this option is `true` unless the system property `vertx.disableFileCaching` is
 defined.
 
@@ -289,5 +289,5 @@ these properties should be set before loading this class or as a JVM system prop
 
 ==== Closing an AsyncFile
 
-To close an `AsyncFile` call the `link:../../apidocs/io/vertx/core/file/AsyncFile.html#close--[close]` method. Closing is asynchronous and
+To close an `AsyncFile` call the `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.file.AsyncFile.html#method_AsyncFile[close]` method. Closing is asynchronous and
 if you want to be notified when the close has been completed you can specify a handler function as an argument.

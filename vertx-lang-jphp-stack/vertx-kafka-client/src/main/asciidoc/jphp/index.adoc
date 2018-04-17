@@ -41,8 +41,8 @@ Apache Kafka documentation, for the link:https://kafka.apache.org/documentation/
 for the link:https://kafka.apache.org/documentation/#producerconfigs[producer].
 
 To achieve that, a map can be configured with such properties passing it to one of the
-static creation methods exposed by `link:../../apidocs/io/vertx/kafka/client/consumer/KafkaConsumer.html[KafkaConsumer]` and
-`link:../../apidocs/io/vertx/kafka/client/producer/KafkaProducer.html[KafkaProducer]`
+static creation methods exposed by `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.kafka.client.consumer.KafkaConsumer<K,V>.html[KafkaConsumer]` and
+`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.kafka.client.producer.KafkaProducer<K,V>.html[KafkaProducer]`
 
 [source,php]
 ----
@@ -63,7 +63,7 @@ static creation methods exposed by `link:../../apidocs/io/vertx/kafka/client/con
 
 ----
 
-In the above example, a `link:../../apidocs/io/vertx/kafka/client/consumer/KafkaConsumer.html[KafkaConsumer]` instance is created using
+In the above example, a `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.kafka.client.consumer.KafkaConsumer<K,V>.html[KafkaConsumer]` instance is created using
 a map instance in order to specify the Kafka nodes list to connect (just one) and
 the deserializers to use for getting key and value from each received message.
 
@@ -87,7 +87,7 @@ Likewise a producer can be created
 ----
 
 ifdef::java,groovy,kotlin[]
-Another way is to use a `link:../../apidocs/java/util/Properties.html[Properties]` instance instead of the map.
+Another way is to use a `Properties` instance instead of the map.
 
 [source,php]
 ----
@@ -127,19 +127,19 @@ using the related properties for that
 
 ----
 
-Here the `link:../../apidocs/io/vertx/kafka/client/producer/KafkaProducer.html[KafkaProducer]` instance is created in using a `link:../../apidocs/java/util/Properties.html[Properties]` for
+Here the `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.kafka.client.producer.KafkaProducer<K,V>.html[KafkaProducer]` instance is created in using a `Properties` for
 specifying Kafka nodes list to connect (just one) and the acknowledgment mode; the key and value deserializers are
-specified as parameters of `link:../../apidocs/io/vertx/kafka/client/producer/KafkaProducer.html#create-io.vertx.core.Vertx-java.util.Properties-java.lang.Class-java.lang.Class-[KafkaProducer::/*aaa*/create]`.
+specified as parameters of `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.kafka.client.producer.KafkaProducer<K,V>.html#method_KafkaProducer[KafkaProducer::create]`.
 endif::[]
 
 == Receiving messages from a topic joining a consumer group
 
 In order to start receiving messages from Kafka topics, the consumer can use the
-`link:../../apidocs/io/vertx/kafka/client/consumer/KafkaConsumer.html#subscribe-java.util.Set-[subscribe]`method for
+`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.kafka.client.consumer.KafkaConsumer<K,V>.html#method_KafkaConsumer[subscribe]`method for
 subscribing to a set of topics being part of a consumer group (specified by the properties on creation).
 
 You also need to register a handler for handling incoming messages using the
-`link:../../apidocs/io/vertx/kafka/client/consumer/KafkaConsumer.html#handler-io.vertx.core.Handler-[handler]`.
+`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.kafka.client.consumer.KafkaConsumer<K,V>.html#method_KafkaConsumer[handler]`.
 
 [source,php]
 ----
@@ -208,10 +208,10 @@ consumers in the same consumer group, so that partitions can be spread across th
 The Kafka cluster handles partitions re-balancing when a consumer leaves the group (so assigned partitions are free
 to be assigned to other consumers) or a new consumer joins the group (so it wants partitions to read from).
 
-You can register handlers on a `link:../../apidocs/io/vertx/kafka/client/consumer/KafkaConsumer.html[KafkaConsumer]` to be notified
+You can register handlers on a `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.kafka.client.consumer.KafkaConsumer<K,V>.html[KafkaConsumer]` to be notified
 of the partitions revocations and assignments by the Kafka cluster using
-`link:../../apidocs/io/vertx/kafka/client/consumer/KafkaConsumer.html#partitionsRevokedHandler-io.vertx.core.Handler-[partitionsRevokedHandler]`and
-`link:../../apidocs/io/vertx/kafka/client/consumer/KafkaConsumer.html#partitionsAssignedHandler-io.vertx.core.Handler-[partitionsAssignedHandler]`.
+`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.kafka.client.consumer.KafkaConsumer<K,V>.html#method_KafkaConsumer[partitionsRevokedHandler]`and
+`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.kafka.client.consumer.KafkaConsumer<K,V>.html#method_KafkaConsumer[partitionsAssignedHandler]`.
 
 [source,php]
 ----
@@ -250,7 +250,7 @@ of the partitions revocations and assignments by the Kafka cluster using
 ----
 
 After joining a consumer group for receiving messages, a consumer can decide to leave the consumer group in order to
-not get messages anymore using `link:../../apidocs/io/vertx/kafka/client/consumer/KafkaConsumer.html#unsubscribe--[unsubscribe]`
+not get messages anymore using `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.kafka.client.consumer.KafkaConsumer<K,V>.html#method_KafkaConsumer[unsubscribe]`
 
 [source,php]
 ----
@@ -287,7 +287,7 @@ Besides being part of a consumer group for receiving messages from a topic, a co
 topic partition. When the consumer is not part part of a consumer group the overall application cannot
 rely on the re-balancing feature.
 
-You can use `link:../../apidocs/io/vertx/kafka/client/consumer/KafkaConsumer.html#assign-java.util.Set-io.vertx.core.Handler-[assign]`
+You can use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.kafka.client.consumer.KafkaConsumer<K,V>.html#method_KafkaConsumer[assign]`
 in order to ask for specific partitions.
 
 [source,php]
@@ -332,7 +332,7 @@ messages won't be consumed until both methods have been called. This allows you 
 `assign()`, then `seek()` and finally `handler()` in
 order to only consume messages starting from a particular offset, for example.
 
-Calling `link:../../apidocs/io/vertx/kafka/client/consumer/KafkaConsumer.html#assignment-io.vertx.core.Handler-[assignment]` provides
+Calling `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.kafka.client.consumer.KafkaConsumer<K,V>.html#method_KafkaConsumer[assignment]` provides
 the list of the current assigned partitions.
 
 == Changing the subscription or assignment
@@ -347,7 +347,7 @@ Once the completion handler has been called it will only observe messages read f
 
 == Getting topic partition information
 
-You can call the `link:../../apidocs/io/vertx/kafka/client/consumer/KafkaConsumer.html#partitionsFor-java.lang.String-io.vertx.core.Handler-[partitionsFor]` to get information about
+You can call the `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.kafka.client.consumer.KafkaConsumer<K,V>.html#method_KafkaConsumer[partitionsFor]` to get information about
 partitions for a specified topic
 
 [source,php]
@@ -367,7 +367,7 @@ partitions for a specified topic
 
 ----
 
-In addition `link:../../apidocs/io/vertx/kafka/client/consumer/KafkaConsumer.html#listTopics-io.vertx.core.Handler-[listTopics]` provides all available topics
+In addition `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.kafka.client.consumer.KafkaConsumer<K,V>.html#method_KafkaConsumer[listTopics]` provides all available topics
 with related partitions
 
 [source,php]
@@ -398,7 +398,7 @@ This is executed by the commit operation executed automatically every time a bun
 from a topic partition. The configuration parameter `enable.auto.commit` must be set to `true` when the
 consumer is created.
 
-Manual offset commit, can be achieved with `link:../../apidocs/io/vertx/kafka/client/consumer/KafkaConsumer.html#commit-io.vertx.core.Handler-[commit]`.
+Manual offset commit, can be achieved with `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.kafka.client.consumer.KafkaConsumer<K,V>.html#method_KafkaConsumer[commit]`.
 It can be used to achieve _at least once_ delivery to be sure that the read messages are processed before committing
 the offset.
 
@@ -423,7 +423,7 @@ the offset.
 Apache Kafka can retain messages for a long period of time and the consumer can seek inside a topic partition
 and obtain arbitrary access to the messages.
 
-You can use `link:../../apidocs/io/vertx/kafka/client/consumer/KafkaConsumer.html#seek-io.vertx.kafka.client.common.TopicPartition-long-[seek]` to change the offset for reading at a specific
+You can use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.kafka.client.consumer.KafkaConsumer<K,V>.html#method_KafkaConsumer[seek]` to change the offset for reading at a specific
 position
 
 [source,php]
@@ -446,7 +446,7 @@ position
 
 ----
 
-When the consumer needs to re-read the stream from the beginning, it can use `link:../../apidocs/io/vertx/kafka/client/consumer/KafkaConsumer.html#seekToBeginning-io.vertx.kafka.client.common.TopicPartition-[seekToBeginning]`
+When the consumer needs to re-read the stream from the beginning, it can use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.kafka.client.consumer.KafkaConsumer<K,V>.html#method_KafkaConsumer[seekToBeginning]`
 
 [source,php]
 ----
@@ -467,7 +467,7 @@ When the consumer needs to re-read the stream from the beginning, it can use `li
 
 ----
 
-Finally `link:../../apidocs/io/vertx/kafka/client/consumer/KafkaConsumer.html#seekToEnd-io.vertx.kafka.client.common.TopicPartition-[seekToEnd]` can be used to come back at the end of the partition
+Finally `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.kafka.client.consumer.KafkaConsumer<K,V>.html#method_KafkaConsumer[seekToEnd]` can be used to come back at the end of the partition
 
 [source,php]
 ----
@@ -496,7 +496,7 @@ handler has been called. This is not the case for messages observed by the batch
 == Offset lookup
 
 You can use the beginningOffsets API introduced in Kafka 0.10.1.1 to get the first offset
-for a given partition. In contrast to `link:../../apidocs/io/vertx/kafka/client/consumer/KafkaConsumer.html#seekToBeginning-io.vertx.kafka.client.common.TopicPartition-[seekToBeginning]`,
+for a given partition. In contrast to `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.kafka.client.consumer.KafkaConsumer<K,V>.html#method_KafkaConsumer[seekToBeginning]`,
 it does not change the consumer's offset.
 
 [source,php]
@@ -530,7 +530,7 @@ it does not change the consumer's offset.
 ----
 
 You can use the endOffsets API introduced in Kafka 0.10.1.1 to get the last offset
-for a given partition. In contrast to `link:../../apidocs/io/vertx/kafka/client/consumer/KafkaConsumer.html#seekToEnd-io.vertx.kafka.client.common.TopicPartition-[seekToEnd]`,
+for a given partition. In contrast to `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.kafka.client.consumer.KafkaConsumer<K,V>.html#method_KafkaConsumer[seekToEnd]`,
 it does not change the consumer's offset.
 
 [source,php]
@@ -605,8 +605,8 @@ A consumer can control the incoming message flow and pause/resume the read opera
 can pause the message flow when it needs more time to process the actual messages and then resume
 to continue message processing.
 
-To achieve that you can use `link:../../apidocs/io/vertx/kafka/client/consumer/KafkaConsumer.html#pause--[pause]` and
-`link:../../apidocs/io/vertx/kafka/client/consumer/KafkaConsumer.html#resume--[resume]`.
+To achieve that you can use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.kafka.client.consumer.KafkaConsumer<K,V>.html#method_KafkaConsumer[pause]` and
+`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.kafka.client.consumer.KafkaConsumer<K,V>.html#method_KafkaConsumer[resume]`.
 
 In the case of the partition-specific pause and resume it is possible that the record handler will continue to
 observe messages from a paused partition for a time _after_ the `pause()` method's completion
@@ -674,7 +674,7 @@ This handler will then be called when the close has fully completed.
 
 == Sending messages to a topic
 
-You can use  `link:../../apidocs/io/vertx/kafka/client/producer/KafkaProducer.html#write-io.vertx.kafka.client.producer.KafkaProducerRecord-[write]` to send messages (records) to a topic.
+You can use  `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.kafka.client.producer.KafkaProducer<K,V>.html#method_KafkaProducer[write]` to send messages (records) to a topic.
 
 The simplest way to send a message is to specify only the destination topic and the related value, omitting its key
 or partition, in this case the messages are sent in a round robin fashion across all the partitions of the topic.
@@ -766,7 +766,7 @@ shared producer usage must use the same configuration.
 
 Sometimes you want to share the same producer from within several verticles or contexts.
 
-Calling `link:../../apidocs/io/vertx/kafka/client/producer/KafkaProducer.html#createShared-io.vertx.core.Vertx-java.lang.String-java.util.Map-[KafkaProducer::/*aaa*/createShared]`
+Calling `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.kafka.client.producer.KafkaProducer<K,V>.html#method_KafkaProducer[KafkaProducer::createShared]`
 returns a producer that can be shared safely.
 
 [source,php]
@@ -811,7 +811,7 @@ This handler will then be called when the close has fully completed.
 
 == Getting topic partition information
 
-You can call the `link:../../apidocs/io/vertx/kafka/client/producer/KafkaProducer.html#partitionsFor-java.lang.String-io.vertx.core.Handler-[partitionsFor]` to get information about
+You can call the `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.kafka.client.producer.KafkaProducer<K,V>.html#method_KafkaProducer[partitionsFor]` to get information about
 partitions for a specified topic:
 
 [source,php]
@@ -834,8 +834,8 @@ partitions for a specified topic:
 == Handling errors
 
 Errors handling (e.g timeout) between a Kafka client (consumer or producer) and the Kafka cluster is done using
-`link:../../apidocs/io/vertx/kafka/client/consumer/KafkaConsumer.html#exceptionHandler-io.vertx.core.Handler-[exceptionHandler]`or
-`link:../../apidocs/io/vertx/kafka/client/producer/KafkaProducer.html#exceptionHandler-io.vertx.core.Handler-[exceptionHandler]`
+`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.kafka.client.consumer.KafkaConsumer<K,V>.html#method_KafkaConsumer[exceptionHandler]`or
+`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.kafka.client.producer.KafkaProducer<K,V>.html#method_KafkaProducer[exceptionHandler]`
 
 [source,php]
 ----
@@ -949,11 +949,11 @@ ifdef::java,groovy,kotlin[]
 When you want to operate on native Kafka records you can use a stream oriented
 implementation which handles native Kafka objects.
 
-The `link:../../apidocs/io/vertx/kafka/client/consumer/KafkaReadStream.html[KafkaReadStream]` shall be used for reading topic partitions, it is
-a read stream of `link:../../apidocs/org/apache/kafka/clients/consumer/ConsumerRecord.html[ConsumerRecord]` objects.
+The `KafkaReadStream` shall be used for reading topic partitions, it is
+a read stream of `ConsumerRecord` objects.
 
-The `link:../../apidocs/io/vertx/kafka/client/producer/KafkaWriteStream.html[KafkaWriteStream]` shall be used for writing to topics, it is a write
-stream of `link:../../apidocs/org/apache/kafka/clients/producer/ProducerRecord.html[ProducerRecord]`.
+The `KafkaWriteStream` shall be used for writing to topics, it is a write
+stream of `ProducerRecord`.
 
 The API exposed by these interfaces is mostly the same than the polyglot version.
 endif::[]

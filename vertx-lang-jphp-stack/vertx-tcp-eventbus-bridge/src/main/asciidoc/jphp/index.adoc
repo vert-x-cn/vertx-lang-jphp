@@ -73,5 +73,5 @@ An example on how to get started with this bridge could be:
 
 [source,php]
 ----
-`link:../../apidocs/examples/TCPBridgeExamples.html#example1-io.vertx.core.Vertx-[example1]`
+`link:null#method_TCPBridgeExamples[example1]`
 ----

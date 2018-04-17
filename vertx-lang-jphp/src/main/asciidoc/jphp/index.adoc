@@ -44,7 +44,7 @@ Let's discuss the different concepts and features in core.
 TODO Much of this is Java specific - need someway of swapping in language specific parts
 ////
 
-You can't do much in Vert.x-land unless you can communicate with a `link:../../apidocs/io/vertx/core/Vertx.html[Vertx]` object!
+You can't do much in Vert.x-land unless you can communicate with a `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.Vertx.html[Vertx]` object!
 
 It's the control centre of Vert.x and is how you do pretty much everything, including creating clients and servers,
 getting a reference to the event bus, setting timers, as well as many other things.
@@ -78,7 +78,7 @@ When creating a Vertx object you can also specify options if the defaults aren't
 
 ----
 
-The `link:../../apidocs/io/vertx/core/VertxOptions.html[VertxOptions]` object has many settings and allows you to configure things like clustering,
+The `link:../enums.adoc#VertxOptions[VertxOptions]` object has many settings and allows you to configure things like clustering,
 high availability, pool sizes and various other settings. The Javadoc describes all the settings in detail.
 
 === Creating a clustered Vert.x object
@@ -264,7 +264,7 @@ Thread vertx-eventloop-thread-3 has been blocked for 20458 ms
 Vert.x will also provide stack traces to pinpoint exactly where the blocking is occurring.
 
 If you want to turn off these warnings or change the settings, you can do that in the
-`link:../../apidocs/io/vertx/core/VertxOptions.html[VertxOptions]`object before creating the Vertx object.
+`link:../enums.adoc#VertxOptions[VertxOptions]`object before creating the Vertx object.
 
 [[blocking_code]]
 == Running blocking code
@@ -284,7 +284,7 @@ blocking APIs safely within a Vert.x application.
 As discussed before, you can't call blocking operations directly from an event loop, as that would prevent it
 from doing any other useful work. So how can you do this?
 
-It's done by calling `link:../../apidocs/io/vertx/core/Vertx.html#executeBlocking-io.vertx.core.Handler-boolean-io.vertx.core.Handler-[executeBlocking]` specifying both the blocking code to execute and a
+It's done by calling `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.Vertx.html#method_Vertx[executeBlocking]` specifying both the blocking code to execute and a
 result handler to be called back asynchronous when the blocking code has been executed.
 
 [source,php]
@@ -303,7 +303,7 @@ result handler to be called back asynchronous when the blocking code has been ex
 By default, if executeBlocking is called several times from the same context (e.g. the same verticle instance) then
 the different executeBlocking are executed _serially_ (i.e. one after another).
 
-If you don't care about ordering you can call `link:../../apidocs/io/vertx/core/Vertx.html#executeBlocking-io.vertx.core.Handler-boolean-io.vertx.core.Handler-[executeBlocking]`
+If you don't care about ordering you can call `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.Vertx.html#method_Vertx[executeBlocking]`
 specifying `false` as the argument to `ordered`. In this case any executeBlocking may be executed in parallel
 on the worker pool.
 
@@ -311,7 +311,7 @@ An alternative way to run blocking code is to use a <<worker_verticles, worker v
 
 A worker verticle is always executed with a thread from the worker pool.
 
-By default blocking code is executed on the Vert.x worker pool, configured with `link:../../apidocs/io/vertx/core/VertxOptions.html#setWorkerPoolSize-int-[setWorkerPoolSize]`.
+By default blocking code is executed on the Vert.x worker pool, configured with `link:../enums.adoc#VertxOptions#method_VertxOptions[setWorkerPoolSize]`.
 
 Additional pools can be created for different purposes:
 
@@ -364,13 +364,13 @@ NOTE: the configuration is set when the worker pool is created
 
 == Async coordination
 
-Coordination of multiple asynchronous results can be achieved with Vert.x `link:../../apidocs/io/vertx/core/Future.html[futures]`. It
+Coordination of multiple asynchronous results can be achieved with Vert.x `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.Future<T>.html[futures]`. It
 supports concurrent composition (run several async operations in parallel) and sequential composition
 (chain async operations).
 
 === Concurrent composition
 
-`link:../../apidocs/io/vertx/core/CompositeFuture.html#all-io.vertx.core.Future-io.vertx.core.Future-[CompositeFuture::all]`takes several futures arguments (up to 6) and returns a future that is
+`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.CompositeFuture.html#method_CompositeFuture[CompositeFuture::all]`takes several futures arguments (up to 6) and returns a future that is
 _succeeded_ when all the futures are and _failed_ when at least one of the futures is failed:
 
 [source,php]
@@ -394,7 +394,7 @@ _succeeded_ when all the futures are and _failed_ when at least one of the futur
 
 ----
 
-The operations run concurrently, the `link:../../apidocs/io/vertx/core/Handler.html[Handler]` attached to the returned future is invoked upon
+The operations run concurrently, the `Handler` attached to the returned future is invoked upon
 completion of the composition. When one of the operation fails (one of the passed future is marked as a failure),
 the resulting future is marked as failed too. When all the operations succeed, the resulting future is completed
 with a success.
@@ -410,7 +410,7 @@ Alternatively, you can pass a list (potentially empty) of futures:
 ----
 
 While the `all` composition _waits_ until all futures are successful (or one fails), the `any` composition
-_waits_ for the first succeeded future. `link:../../apidocs/io/vertx/core/CompositeFuture.html#any-io.vertx.core.Future-io.vertx.core.Future-[CompositeFuture::any]` takes several futures
+_waits_ for the first succeeded future. `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.CompositeFuture.html#method_CompositeFuture[CompositeFuture::any]` takes several futures
 arguments (up to 6) and returns a future that is succeeded when one of the futures is, and failed when
 all the futures are failed:
 
@@ -439,7 +439,7 @@ A list of futures can be used also:
 ----
 
 The `join` composition _waits_ until all futures are completed, either with a success or a failure.
-`link:../../apidocs/io/vertx/core/CompositeFuture.html#join-io.vertx.core.Future-io.vertx.core.Future-[CompositeFuture::join]`takes several futures arguments (up to 6) and returns a future that is
+`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.CompositeFuture.html#method_CompositeFuture[CompositeFuture::join]`takes several futures arguments (up to 6) and returns a future that is
 succeeded when all the futures are succeeded, and failed when all the futures are completed and at least one of
 them is failed:
 
@@ -469,7 +469,7 @@ A list of futures can be used also:
 
 === Sequential composition
 
-While `all` and `any` are implementing concurrent composition, `link:../../apidocs/io/vertx/core/Future.html#compose-io.vertx.core.Handler-io.vertx.core.Future-[compose]` can be used
+While `all` and `any` are implementing concurrent composition, `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.Future<T>.html#method_Future[compose]` can be used
 for chaining futures (so sequential composition).
 
 [source,php]
@@ -507,15 +507,15 @@ of the steps fails, the final future is failed.
 
 This example uses:
 
-* `link:../../apidocs/io/vertx/core/Future.html#compose-java.util.function.Function-[compose]`: when the current future completes,
+* `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.Future<T>.html#method_Future[compose]`: when the current future completes,
 run the given function, that returns a future. When this returned future completes, it completes the composition.
-* `link:../../apidocs/io/vertx/core/Future.html#compose-io.vertx.core.Handler-io.vertx.core.Future-[compose]`: when the current future
+* `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.Future<T>.html#method_Future[compose]`: when the current future
 completes, run the given handler that completes the given `future` (next).
 
-In this second case, the `link:../../apidocs/io/vertx/core/Handler.html[Handler]` should complete the `next` future to report its success or
+In this second case, the `Handler` should complete the `next` future to report its success or
 failure.
 
-You can use `link:../../apidocs/io/vertx/core/Future.html#completer--[completer]` that completes a future with the operation result or
+You can use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.Future<T>.html#method_Future[completer]` that completes a future with the operation result or
 failure. It avoids having to write the _traditional_: `if success then complete the future else fail the future`.
 
 == Verticles
@@ -577,7 +577,7 @@ Worker verticles are designed for calling blocking code, as they won't block any
 If you don't want to use a worker verticle to run blocking code, you can also run <<blocking_code, inline blocking code>>
 directly while on an event loop.
 
-If you want to deploy a verticle as a worker verticle you do that with `link:../../apidocs/io/vertx/core/DeploymentOptions.html#setWorker-boolean-[setWorker]`.
+If you want to deploy a verticle as a worker verticle you do that with `link:../enums.adoc#DeploymentOptions#method_DeploymentOptions[setWorker]`.
 
 [source,php]
 ----
@@ -603,7 +603,7 @@ using standard Java techniques for multi-threaded programming.
 
 === Deploying verticles programmatically
 
-You can deploy a verticle using one of the `link:../../apidocs/io/vertx/core/Vertx.html#deployVerticle-io.vertx.core.Verticle-[deployVerticle]` method, specifying a verticle
+You can deploy a verticle using one of the `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.Vertx.html#method_Vertx[deployVerticle]` method, specifying a verticle
 name or you can pass in a verticle instance you have already created yourself.
 
 NOTE: Deploying Verticle *instances* is Java only.
@@ -619,7 +619,7 @@ NOTE: Deploying Verticle *instances* is Java only.
 
 You can also deploy verticles by specifying the verticle *name*.
 
-The verticle name is used to look up the specific `link:../../apidocs/io/vertx/core/spi/VerticleFactory.html[VerticleFactory]` that will be used to
+The verticle name is used to look up the specific `VerticleFactory` that will be used to
 instantiate the actual verticle instance(s).
 
 Different verticle factories are available for instantiating verticles in different languages and for various other
@@ -668,8 +668,8 @@ and instantiate that.
 
 Most Verticle factories are loaded from the classpath and registered at Vert.x startup.
 
-You can also programmatically register and unregister verticle factories using `link:../../apidocs/io/vertx/core/Vertx.html#registerVerticleFactory-io.vertx.core.spi.VerticleFactory-[registerVerticleFactory]`
-and `link:../../apidocs/io/vertx/core/Vertx.html#unregisterVerticleFactory-io.vertx.core.spi.VerticleFactory-[unregisterVerticleFactory]` if you wish.
+You can also programmatically register and unregister verticle factories using `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.Vertx.html#method_Vertx[registerVerticleFactory]`
+and `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.Vertx.html#method_Vertx[unregisterVerticleFactory]` if you wish.
 
 === Waiting for deployment to complete
 
@@ -696,7 +696,7 @@ This deployment ID can be used later if you want to undeploy the deployment.
 
 === Undeploying verticle deployments
 
-Deployments can be undeployed with `link:../../apidocs/io/vertx/core/Vertx.html#undeploy-java.lang.String-[undeploy]`.
+Deployments can be undeployed with `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.Vertx.html#method_Vertx[undeploy]`.
 
 Un-deployment is itself asynchronous so if you want to be notified when un-deployment is complete you can deploy specifying a completion handler:
 
@@ -745,7 +745,7 @@ This might be the case, for example, if you want to deploy two different version
 in the same Vert.x instance, or if you have two different verticles which use different versions of the same jar library.
 
 When using an isolation group you provide a list of the class names that you want isolated using
-`link:../../apidocs/io/vertx/core/DeploymentOptions.html#setIsolatedClasses-java.util.List-[setIsolatedClasses]`-  an entry can be a fully qualified
+`link:../enums.adoc#DeploymentOptions#method_DeploymentOptions[setIsolatedClasses]`-  an entry can be a fully qualified
 classname such as `com.mycompany.myproject.engine.MyClass` or it can be a wildcard which will match any classes in a package and any
 sub-packages, e.g. `com.mycompany.myproject.*` would match any classes in the package `com.mycompany.myproject` or
 any sub-packages.
@@ -753,7 +753,7 @@ any sub-packages.
 Please note that _only_ the classes that match will be isolated - any other classes will be loaded by the current
 class loader.
 
-Extra classpath entries can also be provided with `link:../../apidocs/io/vertx/core/DeploymentOptions.html#setExtraClasspath-java.util.List-[setExtraClasspath]` so if
+Extra classpath entries can also be provided with `link:../enums.adoc#DeploymentOptions#method_DeploymentOptions[setExtraClasspath]` so if
 you want to load classes or resources that aren't already present on the main classpath you can add this.
 
 WARNING: Use this feature with caution. Class-loaders can be a can of worms, and can make debugging difficult, amongst
@@ -831,7 +831,7 @@ type `vertx` at the command line.
 
 Threads maintained by Vert.x instances are not daemon threads so they will prevent the JVM from exiting.
 
-If you are embedding Vert.x and you have finished with it, you can call `link:../../apidocs/io/vertx/core/Vertx.html#close--[close]` to close it
+If you are embedding Vert.x and you have finished with it, you can call `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.Vertx.html#method_Vertx[close]` to close it
 down.
 
 This will shut-down all internal thread pools and close other resources, and will allow the JVM to exit.
@@ -839,12 +839,12 @@ This will shut-down all internal thread pools and close other resources, and wil
 === The Context object
 
 When Vert.x provides an event to a handler or calls the start or stop methods of a
-`link:../../apidocs/io/vertx/core/Verticle.html[Verticle]`, the execution is associated with a `Context`. Usually a context is an
+`Verticle`, the execution is associated with a `Context`. Usually a context is an
 *event-loop context* and is tied to a specific event loop thread. So executions for that context always occur
 on that exact same event loop thread. In the case of worker verticles and running inline blocking code a
 worker context will be associated with the execution which will use a thread from the worker thread pool.
 
-To retrieve the context, use the `link:../../apidocs/io/vertx/core/Vertx.html#getOrCreateContext--[getOrCreateContext]` method:
+To retrieve the context, use the `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.Vertx.html#method_Vertx[getOrCreateContext]` method:
 
 [source, php]
 ----
@@ -887,7 +887,7 @@ you submit a task that will be eventually run in the same context, but later:
 
 When several handlers run in the same context, they may want to share data. The context object offers methods to
 store and retrieve data shared in the context. For instance, it lets you pass data to some action run with
-`link:../../apidocs/io/vertx/core/Context.html#runOnContext-io.vertx.core.Handler-[runOnContext]`:
+`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.Context.html#method_Context[runOnContext]`:
 
 [source, php]
 ----
@@ -900,7 +900,7 @@ store and retrieve data shared in the context. For instance, it lets you pass da
 
 ----
 
-The context object also let you access verticle configuration using the `link:../../apidocs/io/vertx/core/Context.html#config--[config]`
+The context object also let you access verticle configuration using the `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.Context.html#method_Context[config]`
 method. Check the <<Passing configuration to a verticle>> section for more details about this configuration.
 
 === Executing periodic and delayed actions
@@ -915,7 +915,7 @@ Instead you use Vert.x timers. Timers can be *one-shot* or *periodic*. We'll dis
 
 A one shot timer calls an event handler after a certain delay, expressed in milliseconds.
 
-To set a timer to fire once you use `link:../../apidocs/io/vertx/core/Vertx.html#setTimer-long-io.vertx.core.Handler-[setTimer]` method passing in the delay and a handler
+To set a timer to fire once you use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.Vertx.html#method_Vertx[setTimer]` method passing in the delay and a handler
 
 [source,php]
 ----
@@ -932,7 +932,7 @@ The return value is a unique timer id which can later be used to cancel the time
 
 ==== Periodic Timers
 
-You can also set a timer to fire periodically by using `link:../../apidocs/io/vertx/core/Vertx.html#setPeriodic-long-io.vertx.core.Handler-[setPeriodic]`.
+You can also set a timer to fire periodically by using `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.Vertx.html#method_Vertx[setPeriodic]`.
 
 There will be an initial delay equal to the period.
 
@@ -943,7 +943,7 @@ The argument passed into the timer event handler is also the unique timer id:
 Keep in mind that the timer will fire on a periodic basis. If your periodic treatment takes a long amount of time to proceed,
 your timer events could run continuously or even worse : stack up.
 
-In this case, you should consider using `link:../../apidocs/io/vertx/core/Vertx.html#setTimer-long-io.vertx.core.Handler-[setTimer]` instead. Once your treatment has
+In this case, you should consider using `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.Vertx.html#method_Vertx[setTimer]` instead. Once your treatment has
 finished, you can set the next timer.
 
 [source,php]
@@ -959,7 +959,7 @@ finished, you can set the next timer.
 
 ==== Cancelling timers
 
-To cancel a periodic timer, call `link:../../apidocs/io/vertx/core/Vertx.html#cancelTimer-long-[cancelTimer]` specifying the timer id. For example:
+To cancel a periodic timer, call `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.Vertx.html#method_Vertx[cancelTimer]` specifying the timer id. For example:
 
 [source,php]
 ----
@@ -975,7 +975,7 @@ when the verticle is undeployed.
 
 === Verticle worker pool
 
-Verticles use the Vert.x worker pool for executing blocking actions, i.e `link:../../apidocs/io/vertx/core/Context.html#executeBlocking-io.vertx.core.Handler-boolean-io.vertx.core.Handler-[executeBlocking]` or
+Verticles use the Vert.x worker pool for executing blocking actions, i.e `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.Context.html#method_Context[executeBlocking]` or
 worker verticle.
 
 A different worker pool can be specified in deployment options:
@@ -1018,8 +1018,8 @@ include::parsetools.adoc[]
 Most Vert.x objects are safe to access from different threads. _However_ performance is optimised when they are
 accessed from the same context they were created from.
 
-For example if you have deployed a verticle which creates a `link:../../apidocs/io/vertx/core/net/NetServer.html[NetServer]` which provides
-`link:../../apidocs/io/vertx/core/net/NetSocket.html[NetSocket]`instances in it's handler, then it's best to always access that socket instance
+For example if you have deployed a verticle which creates a `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.net.NetServer.html[NetServer]` which provides
+`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.net.NetSocket.html[NetSocket]`instances in it's handler, then it's best to always access that socket instance
 from the event loop of the verticle.
 
 If you stick to the standard Vert.x verticle deployment model and avoid sharing objects between verticles then this
@@ -1030,10 +1030,10 @@ should be the case without you having to think about it.
 By default Vert.x does not record any metrics. Instead it provides an SPI for others to implement which can be added
 to the classpath. The metrics SPI is an advanced feature which allows implementers to capture events from Vert.x in
 order to gather metrics. For more information on this, please consult the
-`link:../../apidocs/io/vertx/core/spi/metrics/VertxMetrics.html[API Documentation]`.
+`API Documentation`.
 
 You can also specify a metrics factory programmatically if embedding Vert.x using
-`link:../../apidocs/io/vertx/core/metrics/MetricsOptions.html#setFactory-io.vertx.core.spi.VertxMetricsFactory-[setFactory]`.
+`link:../enums.adoc#MetricsOptions#method_MetricsOptions[setFactory]`.
 
 == OSGi
 
@@ -1226,7 +1226,7 @@ java -jar my-application-fat.jar
 There is nothing really Vert.x specific about this, you could do this with any Java application
 
 You can either create your own main class and specify that in the manifest, but it's recommended that you write your
-code as verticles and use the Vert.x `link:../../apidocs/io/vertx/core/Launcher.html[Launcher]` class (`io.vertx.core.Launcher`) as your main
+code as verticles and use the Vert.x `Launcher` class (`io.vertx.core.Launcher`) as your main
 class. This is the same main class used when running Vert.x at the command line and therefore allows you to
 specify command line arguments, such as `-instances` in order to scale your application more easily.
 
@@ -1314,7 +1314,7 @@ The set of commands is extensible, refer to the <<Extending the vert.x Launcher>
 === Live Redeploy
 
 When developing it may be convenient to automatically redeploy your application upon file changes. The `vertx`
-command line tool and more generally the `link:../../apidocs/io/vertx/core/Launcher.html[Launcher]` class offers this feature. Here are some
+command line tool and more generally the `Launcher` class offers this feature. Here are some
 examples:
 
 [source]
@@ -1338,7 +1338,7 @@ configured using `--java-opts`. For instance, to pass the the `conf` parameter o
 use: `--java-opts="-conf=my-conf.json -Dkey=value"`
 
 The `--launcher-class` option determine with with _main_ class the application is launcher. It's generally
-`link:../../apidocs/io/vertx/core/Launcher.html[Launcher]`, but you have use you own _main_.
+`Launcher`, but you have use you own _main_.
 
 The redeploy feature can be used in your IDE:
 
@@ -1397,10 +1397,10 @@ Cluster managers _do not_ handle the event bus inter-node transport, this is don
 The default cluster manager used in the Vert.x distributions is one that uses http://hazelcast.com[Hazelcast] but this
 can be easily replaced by a different implementation as Vert.x cluster managers are pluggable.
 
-A cluster manager must implement the interface `link:../../apidocs/io/vertx/core/spi/cluster/ClusterManager.html[ClusterManager]`. Vert.x locates
+A cluster manager must implement the interface `ClusterManager`. Vert.x locates
 cluster managers at run-time by using the Java
 https://docs.oracle.com/javase/8/docs/api/java/util/ServiceLoader.html[Service Loader] functionality to locate
-instances of `link:../../apidocs/io/vertx/core/spi/cluster/ClusterManager.html[ClusterManager]` on the classpath.
+instances of `ClusterManager` on the classpath.
 
 If you are using Vert.x at the command line and you want to use clustering you should make sure the `lib` directory
 of the Vert.x installation contains your cluster manager jar.
@@ -1408,7 +1408,7 @@ of the Vert.x installation contains your cluster manager jar.
 If you are using Vert.x from a Maven or Gradle project just add the cluster manager jar as a dependency of your project.
 
 You can also specify cluster managers programmatically if embedding Vert.x using
-`link:../../apidocs/io/vertx/core/VertxOptions.html#setClusterManager-io.vertx.core.spi.cluster.ClusterManager-[setClusterManager]`.
+`link:../enums.adoc#VertxOptions#method_VertxOptions[setClusterManager]`.
 
 == Logging
 
@@ -1431,7 +1431,7 @@ If you don't want Vert.x to use JUL for it's own logging you can configure it to
 Log4J or SLF4J.
 
 To do this you should set a system property called `vertx.logger-delegate-factory-class-name` with the name of a Java
-class which implements the interface `link:../../apidocs/io/vertx/core/spi/logging/LogDelegateFactory.html[LogDelegateFactory]`. We provide pre-built
+class which implements the interface `LogDelegateFactory`. We provide pre-built
 implementations for Log4J (version 1), Log4J 2 and SLF4J with the class names
 `io.vertx.core.logging.Log4jLogDelegateFactory`, `io.vertx.core.logging.Log4j2LogDelegateFactory` and
 `io.vertx.core.logging.SLF4JLogDelegateFactory` respectively. If you want to use these implementations you should
@@ -1448,7 +1448,7 @@ using that logging library's API.
 However, if you prefer you can use the Vert.x logging facility as described above to provide logging for your
 application too.
 
-To do that you use `link:../../apidocs/io/vertx/core/logging/LoggerFactory.html[LoggerFactory]` to get an instance of `link:../../apidocs/io/vertx/core/logging/Logger.html[Logger]`
+To do that you use `LoggerFactory` to get an instance of `Logger`
 which you then use for logging, e.g.
 
 [source,php]
@@ -1532,7 +1532,7 @@ An host name resolves to an IP address using:
 By default it will use the list of the system DNS server addresses from the environment, if that list cannot be
 retrieved it will use Google's public DNS servers `"8.8.8.8"` and `"8.8.4.4"`.
 
-DNS servers can be also configured when creating a `link:../../apidocs/io/vertx/core/Vertx.html[Vertx]` instance:
+DNS servers can be also configured when creating a `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.Vertx.html[Vertx]` instance:
 
 [source,php]
 ----
@@ -1558,16 +1558,16 @@ _-Dvertx.disableDnsResolver=true_ activates this behavior
 === Failover
 
 When a server does not reply in a timely manner, the resolver will try the next one from the list, the search
-is limited by `link:../../apidocs/io/vertx/core/dns/AddressResolverOptions.html#setMaxQueries-int-[setMaxQueries]` (the default value is `4` queries).
+is limited by `link:../enums.adoc#AddressResolverOptions#method_AddressResolverOptions[setMaxQueries]` (the default value is `4` queries).
 
 A DNS query is considered as failed when the resolver has not received a correct answer within
-`link:../../apidocs/io/vertx/core/dns/AddressResolverOptions.html#getQueryTimeout--[getQueryTimeout]`milliseconds (the default value is `5` seconds).
+`link:../enums.adoc#AddressResolverOptions#method_AddressResolverOptions[getQueryTimeout]`milliseconds (the default value is `5` seconds).
 
 === Server list rotation
 
 By default the dns server selection uses the first one, the remaining servers are used for failover.
 
-You can configure `link:../../apidocs/io/vertx/core/dns/AddressResolverOptions.html#setRotateServers-boolean-[setRotateServers]` to `true` to let
+You can configure `link:../enums.adoc#AddressResolverOptions#method_AddressResolverOptions[setRotateServers]` to `true` to let
 the resolver perform a round-robin selection instead. It spreads the query load among the servers and avoids
 all lookup to hit the first server of the list.
 
@@ -1612,7 +1612,7 @@ list can be provided:
 ----
 
 When a search domain list is used, the threshold for the number of dots is {@code 1} or loaded from `/etc/resolv.conf`
-on Linux, it can be configured to a specific value with `link:../../apidocs/io/vertx/core/dns/AddressResolverOptions.html#setNdots-int-[setNdots]`.
+on Linux, it can be configured to a specific value with `link:../enums.adoc#AddressResolverOptions#method_AddressResolverOptions[setNdots]`.
 
 == High Availability and Fail-Over
 
@@ -1774,7 +1774,7 @@ Vert.x can run with http://netty.io/wiki/native-transports.html[native transport
 ----
 
 NOTE: preferring native transport will not prevent the application to execute, if your application requires native
-transport, you need to check `link:../../apidocs/io/vertx/core/Vertx.html#isNativeTransportEnabled--[isNativeTransportEnabled]`.
+transport, you need to check `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.Vertx.html#method_Vertx[isNativeTransportEnabled]`.
 
 === Native Linux Transport
 
@@ -1916,12 +1916,12 @@ include::cli.adoc[]
 
 == The vert.x Launcher
 
-The vert.x `link:../../apidocs/io/vertx/core/Launcher.html[Launcher]` is used in _fat jar_ as main class, and by the `vertx` command line
+The vert.x `Launcher` is used in _fat jar_ as main class, and by the `vertx` command line
 utility. It executes a set of _commands_ such as _run_, _bare_, _start_...
 
 === Extending the vert.x Launcher
 
-You can extend the set of command by implementing your own `link:../../apidocs/io/vertx/core/spi/launcher/Command.html[Command]` (in Java only):
+You can extend the set of command by implementing your own `Command` (in Java only):
 
 [source, java]
 ----
@@ -1943,7 +1943,7 @@ public class MyCommand extends DefaultCommand {
 }
 ----
 
-You also need an implementation of `link:../../apidocs/io/vertx/core/spi/launcher/CommandFactory.html[CommandFactory]`:
+You also need an implementation of `CommandFactory`:
 
 [source, java]
 ----
@@ -1975,7 +1975,7 @@ java -jar my-fat-jar.jar hello vert.x
 
 === Using the Launcher in fat jars
 
-To use the `link:../../apidocs/io/vertx/core/Launcher.html[Launcher]` class in a _fat-jar_ just set the `Main-Class` of the _MANIFEST_ to
+To use the `Launcher` class in a _fat-jar_ just set the `Main-Class` of the _MANIFEST_ to
 `io.vertx.core.Launcher`. In addition, set the `Main-Verticle` _MANIFEST_ entry to the name of your main verticle.
 
 By default, it executed the `run` command. However, you can configure the default command by setting the
@@ -1983,23 +1983,23 @@ By default, it executed the `run` command. However, you can configure the defaul
 
 === Sub-classing the Launcher
 
-You can also create a sub-class of `link:../../apidocs/io/vertx/core/Launcher.html[Launcher]` to start your application. The class has been
+You can also create a sub-class of `Launcher` to start your application. The class has been
 designed to be easily extensible.
 
-A `link:../../apidocs/io/vertx/core/Launcher.html[Launcher]` sub-class can:
+A `Launcher` sub-class can:
 
-* customize the vert.x configuration in `link:../../apidocs/io/vertx/core/Launcher.html#beforeStartingVertx-io.vertx.core.VertxOptions-[beforeStartingVertx]`
+* customize the vert.x configuration in `link:null#method_Launcher[beforeStartingVertx]`
 * retrieve the vert.x instance created by the "run" or "bare" command by
-overriding `link:../../apidocs/io/vertx/core/Launcher.html#afterStartingVertx-io.vertx.core.Vertx-[afterStartingVertx]`
+overriding `link:null#method_Launcher[afterStartingVertx]`
 * configure the default verticle and command with
-`link:../../apidocs/io/vertx/core/impl/launcher/VertxCommandLauncher.html#getMainVerticle--[getMainVerticle]`and
-`link:../../apidocs/io/vertx/core/impl/launcher/VertxCommandLauncher.html#getDefaultCommand--[getDefaultCommand]`
-* add / remove commands using `link:../../apidocs/io/vertx/core/impl/launcher/VertxCommandLauncher.html#register-java.lang.Class-[register]`
-and `link:../../apidocs/io/vertx/core/impl/launcher/VertxCommandLauncher.html#unregister-java.lang.String-[unregister]`
+`link:null#method_VertxCommandLauncher[getMainVerticle]`and
+`link:null#method_VertxCommandLauncher[getDefaultCommand]`
+* add / remove commands using `link:null#method_VertxCommandLauncher[register]`
+and `link:null#method_VertxCommandLauncher[unregister]`
 
 === Launcher and exit code
 
-When you use the `link:../../apidocs/io/vertx/core/Launcher.html[Launcher]` class as main class, it uses the following exit code:
+When you use the `Launcher` class as main class, it uses the following exit code:
 
 * {@code 0} if the process ends smoothly, or if an uncaught error is thrown
 * {@code 1} for general purpose error
