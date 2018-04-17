@@ -1,0 +1,60 @@
+=== Yaml Configuration Format
+
+The Yaml Configuration Format extends the Vert.x Configuration Retriever and provides the
+support for the Yaml Configuration Format format.
+
+==== Using the Yaml Configuration Format
+
+To use the Yaml Configuration Format, add the following dependency to the
+_dependencies_ section of your build descriptor:
+
+* Maven (in your `pom.xml`):
+
+[source,xml,subs="+attributes"]
+----
+<dependency>
+ <groupId>io.vertx</groupId>
+ <artifactId>vertx-config-yaml</artifactId>
+ <version>${maven.version}</version>
+</dependency>
+<dependency>
+ <groupId>io.vertx</groupId>
+ <artifactId>vertx-config</artifactId>
+ <version>${maven.version}</version>
+</dependency>
+----
+
+* Gradle (in your `build.gradle` file):
+
+[source,groovy,subs="+attributes"]
+----
+compile 'io.vertx:vertx-config:${maven.version}'
+compile 'io.vertx:vertx-config-yaml:${maven.version}'
+----
+
+==== Configuring the store to use YAML
+
+Once added to your classpath or dependencies, you need to configure the
+`link:../../apidocs/io/vertx/config/ConfigRetriever.html[ConfigRetriever]`to use this format:
+
+[source, php]
+----
+<?php
+    use io\vertx\jphp\config\ConfigRetriever;
+    $store = array(
+        "type" => "file",
+        "format" => "yaml",
+        "config" => array(
+            "path" => "my-config.yaml"
+        )
+    );
+
+    $retriever = ConfigRetriever::create($vertx, array(
+        "stores" => [
+            $store
+        ]
+    ));
+
+----
+
+You just need to set `format` to `yaml`.

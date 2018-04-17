@@ -8,7 +8,7 @@ necessary to accommodate any bytes written to it. You can perhaps think of a buf
 
 === Creating buffers
 
-Buffers can create by using one of the static `link:../../apidocs/io/vertx/core/buffer/Buffer.html#buffer--[Buffer.buffer]` methods.
+Buffers can create by using one of the static `link:../../apidocs/io/vertx/core/buffer/Buffer.html#buffer--[Buffer::buffer]` methods.
 
 Buffers can be initialised from strings or byte arrays, or empty buffers can be created.
 

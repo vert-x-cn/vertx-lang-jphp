@@ -7,10 +7,7 @@ import io.vertx.docgen.DocGenerator;
 import io.vertx.docgen.JavaDocGenerator;
 
 import javax.annotation.processing.ProcessingEnvironment;
-import javax.lang.model.element.Element;
-import javax.lang.model.element.ExecutableElement;
-import javax.lang.model.element.TypeElement;
-import javax.lang.model.element.VariableElement;
+import javax.lang.model.element.*;
 
 public class JPhpDocGenerator implements DocGenerator {
     private JavaDocGenerator javaGen = new JavaDocGenerator();
@@ -55,11 +52,18 @@ public class JPhpDocGenerator implements DocGenerator {
 
     @Override
     public String resolveLabel(Element elt, String defaultLabel) {
-        return javaGen.resolveLabel(elt, defaultLabel);
+        String result = javaGen.resolveLabel(elt, defaultLabel);
+        if (elt.getModifiers().contains(Modifier.STATIC)) {
+            result = result.replace(".", "::");
+        } else {
+            result = result.replace(".", "->");
+        }
+        return result;
     }
 
     @Override
     public String resolveFieldLink(VariableElement elt, Coordinate coordinate) {
+        System.err.println("=============" + elt.getEnclosingElement() + "." + elt.getSimpleName());
         return javaGen.resolveFieldLink(elt, coordinate);
     }
 }

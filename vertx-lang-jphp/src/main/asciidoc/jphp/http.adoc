@@ -2431,9 +2431,9 @@ followed by zero or more _continuation_ frames.
 The last frame in the message is marked as _final_.
 
 To send a message consisting of multiple frames you create frames using
-`link:../../apidocs/io/vertx/core/http/WebSocketFrame.html#binaryFrame-io.vertx.core.buffer.Buffer-boolean-[WebSocketFrame.binaryFrame]`
-, `link:../../apidocs/io/vertx/core/http/WebSocketFrame.html#textFrame-java.lang.String-boolean-[WebSocketFrame.textFrame]` or
-`link:../../apidocs/io/vertx/core/http/WebSocketFrame.html#continuationFrame-io.vertx.core.buffer.Buffer-boolean-[WebSocketFrame.continuationFrame]`and write them
+`link:../../apidocs/io/vertx/core/http/WebSocketFrame.html#binaryFrame-io.vertx.core.buffer.Buffer-boolean-[WebSocketFrame::binaryFrame]`
+, `link:../../apidocs/io/vertx/core/http/WebSocketFrame.html#textFrame-java.lang.String-boolean-[WebSocketFrame::textFrame]` or
+`link:../../apidocs/io/vertx/core/http/WebSocketFrame.html#continuationFrame-io.vertx.core.buffer.Buffer-boolean-[WebSocketFrame::continuationFrame]`and write them
 to the WebSocket using `link:../../apidocs/io/vertx/core/http/WebSocket.html#writeFrame-io.vertx.core.http.WebSocketFrame-[writeFrame]`.
 
 Here's an example for binary frames:

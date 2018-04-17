@@ -28,6 +28,8 @@
 			}
 		} else if (type.kind == CLASS_JSON_OBJECT) {
 			return ['mixed'];
+		} else if (type.kind == CLASS_JSON_ARRAY) {
+			return ['array'];
 		} else if (type.kind == CLASS_DATA_OBJECT) {
 			return [type.raw.simpleName, 'mixed'];
 		} else if (type.kind == CLASS_ENUM) {

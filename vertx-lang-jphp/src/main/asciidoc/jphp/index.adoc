@@ -370,7 +370,7 @@ supports concurrent composition (run several async operations in parallel) and s
 
 === Concurrent composition
 
-`link:../../apidocs/io/vertx/core/CompositeFuture.html#all-io.vertx.core.Future-io.vertx.core.Future-[CompositeFuture.all]`takes several futures arguments (up to 6) and returns a future that is
+`link:../../apidocs/io/vertx/core/CompositeFuture.html#all-io.vertx.core.Future-io.vertx.core.Future-[CompositeFuture::all]`takes several futures arguments (up to 6) and returns a future that is
 _succeeded_ when all the futures are and _failed_ when at least one of the futures is failed:
 
 [source,php]
@@ -410,7 +410,7 @@ Alternatively, you can pass a list (potentially empty) of futures:
 ----
 
 While the `all` composition _waits_ until all futures are successful (or one fails), the `any` composition
-_waits_ for the first succeeded future. `link:../../apidocs/io/vertx/core/CompositeFuture.html#any-io.vertx.core.Future-io.vertx.core.Future-[CompositeFuture.any]` takes several futures
+_waits_ for the first succeeded future. `link:../../apidocs/io/vertx/core/CompositeFuture.html#any-io.vertx.core.Future-io.vertx.core.Future-[CompositeFuture::any]` takes several futures
 arguments (up to 6) and returns a future that is succeeded when one of the futures is, and failed when
 all the futures are failed:
 
@@ -439,7 +439,7 @@ A list of futures can be used also:
 ----
 
 The `join` composition _waits_ until all futures are completed, either with a success or a failure.
-`link:../../apidocs/io/vertx/core/CompositeFuture.html#join-io.vertx.core.Future-io.vertx.core.Future-[CompositeFuture.join]`takes several futures arguments (up to 6) and returns a future that is
+`link:../../apidocs/io/vertx/core/CompositeFuture.html#join-io.vertx.core.Future-io.vertx.core.Future-[CompositeFuture::join]`takes several futures arguments (up to 6) and returns a future that is
 succeeded when all the futures are succeeded, and failed when all the futures are completed and at least one of
 them is failed:
 

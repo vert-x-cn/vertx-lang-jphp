@@ -47,7 +47,7 @@ describe options and arguments:
 ----
 
 As you can see, you can create a new `link:../../apidocs/io/vertx/core/cli/CLI.html[CLI]` using
-`link:../../apidocs/io/vertx/core/cli/CLI.html#create-java.lang.String-[CLI.create]`. The passed string is the name of the CLI. Once created you
+`link:../../apidocs/io/vertx/core/cli/CLI.html#create-java.lang.String-[CLI::create]`. The passed string is the name of the CLI. Once created you
 can set the summary and description. The summary is intended to be short (one line), while the description can
 contain more details. Each option and argument are also added on the {@code CLI} object using the
 `link:../../apidocs/io/vertx/core/cli/CLI.html#addArgument-io.vertx.core.cli.Argument-[addArgument]`and

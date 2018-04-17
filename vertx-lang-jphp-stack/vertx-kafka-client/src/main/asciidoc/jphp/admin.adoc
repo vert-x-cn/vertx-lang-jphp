@@ -1,0 +1,99 @@
+= Vert.x Kafka AdminUtils
+:toc: left
+:lang: php
+:php: php
+
+This component provides a vert.x wrapper around the most important functions of Kafka's AdminUtils.
+AdminUtils are used to create, modify, and delete topics. Other functionality covered by AdminUtils,
+but not this wrapper, includes Partition Management, Broker Configuration management, etc.
+
+== Using the AdminUtils
+
+=== Create a topic
+
+You can call `link:../../apidocs/io/vertx/kafka/admin/AdminUtils.html#createTopic-java.lang.String-int-int-io.vertx.core.Handler-[createTopic]` to create a topic.
+Parameters are: topic name, number of partitions, number of replicas, and the usual callback to handle the result.
+It might return an error, e.g. if the number of requested replicas is greater than the number of brokers.
+
+[source,php]
+----
+<?php
+    use io\vertx\jphp\core\Vertx;
+    use io\vertx\jphp\kafka\admin\AdminUtils;
+    $adminUtils = AdminUtils::create(Vertx::vertx(), "localhost:2181", true);
+    // Create topic 'myNewTopic' with 2 partition and 1 replicas
+    $adminUtils->createTopic("myNewTopic", 2, 1, function ($result, $result_err) {
+        if ($result != null) {
+            echo "Creation of topic myNewTopic successful!\n"} else {
+            echo "Creation of topic myNewTopic failed: ".$result_err->getLocalizedMessage()."\n"};
+    });
+
+----
+
+=== Delete a topic
+
+You can call `link:../../apidocs/io/vertx/kafka/admin/AdminUtils.html#deleteTopic-java.lang.String-io.vertx.core.Handler-[deleteTopic]` to delete a topic.
+Parameters are: topic name, and the usual callback to handle the result.
+It might return an error, e.g. if the topic does not exist.
+
+[source,php]
+----
+<?php
+    use io\vertx\jphp\core\Vertx;
+    use io\vertx\jphp\kafka\admin\AdminUtils;
+    $adminUtils = AdminUtils::create(Vertx::vertx(), "localhost:2181", true);
+    // Delete topic 'myNewTopic'
+    $adminUtils->deleteTopic("myNewTopic", function ($result, $result_err) {
+        if ($result != null) {
+            echo "Deletion of topic myNewTopic successful!\n"} else {
+            echo "Deletion of topic myNewTopic failed: ".$result_err->getLocalizedMessage()."\n"};
+    });
+
+----
+
+=== Change a topic's configuration
+
+If you need to update the configuration of a topic, e.g., you want to update the retention policy,
+you can call `link:../../apidocs/io/vertx/kafka/admin/AdminUtils.html#changeTopicConfig-java.lang.String-java.util.Map-io.vertx.core.Handler-[changeTopicConfig]` to update a topic.
+Parameters are: topic name, a Map (String -> String) with parameters to be changed,
+and the usual callback to handle the result.
+It might return an error, e.g. if the topic does not exist.
+
+[source,php]
+----
+<?php
+    use io\vertx\jphp\core\Vertx;
+    use io\vertx\jphp\kafka\admin\AdminUtils;
+    $adminUtils = AdminUtils::create(Vertx::vertx(), "localhost:2181", true);
+    // Set retention to 1000 ms and max size of the topic partition to 1 kiByte
+    $properties = array();
+    $properties["delete.retention.ms"] = "1000";
+    $properties["retention.bytes"] = "1024";
+    $adminUtils->changeTopicConfig("myNewTopic", $properties, function ($result, $result_err) {
+        if ($result != null) {
+            echo "Configuration change of topic myNewTopic successful!\n"} else {
+            echo "Configuration change of topic myNewTopic failed: ".$result_err->getLocalizedMessage()."\n"};
+    });
+}
+----
+
+=== Check if a topic exists
+
+If you want to check if a topic exists, you can call `link:../../apidocs/io/vertx/kafka/admin/AdminUtils.html#topicExists-java.lang.String-io.vertx.core.Handler-[topicExists]`.
+Parameters are: topic name, and the usual callback to handle the result.
+It might return an error, e.g. if the topic does not exist.
+
+[source,php]
+----
+<?php
+    use io\vertx\jphp\core\Vertx;
+    use io\vertx\jphp\kafka\admin\AdminUtils;
+    $adminUtils = AdminUtils::create(Vertx::vertx(), "localhost:2181", true);
+    $adminUtils->topicExists("myNewTopic", function ($result, $result_err) {
+        if ($result != null) {
+            echo "Topic myNewTopic exists: ".$result."\n";
+        } else {
+            echo "Failed to check if topic myNewTopic exists: ".$result_err->getLocalizedMessage()."\n"};
+    });
+
+----
