@@ -252,7 +252,7 @@ The counter part of _assertNull_.
 
 === assertInRange
 
-The `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.unit.TestContext.html#method_TestContext[assertInRange]` targets real numbers.
+The `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.unit.TestContext.html#method_assertInRange[assertInRange]` targets real numbers.
 
 ----
 <?php
@@ -300,7 +300,7 @@ JavaScript it is an _error_, for Ruby it is an _Exception_.
 === Using third-party assertion framework
 
 It is also possible to use any other assertion framework, like the popular _hamcrest_ and _assertj_.
-The recommended way to go is to use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.unit.TestContext.html#method_TestContext[verify]`
+The recommended way to go is to use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.unit.TestContext.html#method_verify[verify]`
 and perform the assertions within the supplied _Handler_. This way, asynchronous testing termination
 will be correctly handled.
 
@@ -341,8 +341,8 @@ callback, for instance:
 <1> The callback exits but the test case is not terminated
 <2> The event callback from the bus terminates the test
 
-Creating an `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.unit.Async.html[Async]` object with the `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.unit.TestContext.html#method_TestContext[async]` method marks the
-executed test case as non terminated. The test case terminates when the `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.unit.Async.html#method_Async[complete]`
+Creating an `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.unit.Async.html[Async]` object with the `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.unit.TestContext.html#method_async[async]` method marks the
+executed test case as non terminated. The test case terminates when the `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.unit.Async.html#method_complete[complete]`
 method is invoked.
 
 NOTE: When the `complete` callback is not invoked, the test case fails after a certain timeout.
@@ -420,7 +420,7 @@ to Java's count-down latch:
 WARNING: this should not be executed from the event loop!
 
 Async can also be created with an initial count value, it completes when the count-down reaches
-zero using `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.unit.Async.html#method_Async[countDown]`:
+zero using `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.unit.Async.html#method_countDown[countDown]`:
 
 .Wait until the complete count-down reaches zero
 [source, php]
@@ -451,7 +451,7 @@ Calling `complete()` on an async completes the async as usual, it actually sets 
 
 `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.unit.TestContext.html[TestContext]`provides useful methods that provides powerful constructs for async testing:
 
-The `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.unit.TestContext.html#method_TestContext[asyncAssertSuccess]` method returns an {@literal Handler<AsyncResult<T>>}
+The `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.unit.TestContext.html#method_asyncAssertSuccess[asyncAssertSuccess]` method returns an {@literal Handler<AsyncResult<T>>}
 instance that acts like `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.unit.Async.html[Async]`, resolving the `Async` on success and failing the test
 on failure with the failure cause.
 
@@ -471,7 +471,7 @@ vertx.deployVerticle("my.verticle", ar -> {
 vertx.deployVerticle("my.verticle", context.asyncAssertSuccess());
 ----
 
-The `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.unit.TestContext.html#method_TestContext[asyncAssertSuccess]` method returns an {@literal Handler<AsyncResult<T>>}
+The `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.unit.TestContext.html#method_asyncAssertSuccess[asyncAssertSuccess]` method returns an {@literal Handler<AsyncResult<T>>}
 instance that acts like `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.unit.Async.html[Async]`, invoking the delegating {@literal Handler<T>} on success
 and failing the test on failure with the failure cause.
 
@@ -526,7 +526,7 @@ vertx.deployVerticle("my.verticle", context.asyncAssertSuccess(id ->
 ));
 ----
 
-The `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.unit.TestContext.html#method_TestContext[asyncAssertFailure]` method returns an {@literal Handler<AsyncResult<T>>}
+The `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.unit.TestContext.html#method_asyncAssertFailure[asyncAssertFailure]` method returns an {@literal Handler<AsyncResult<T>>}
 instance that acts like `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.unit.Async.html[Async]`, resolving the `Async` on failure and failing the test
 on success.
 
@@ -546,7 +546,7 @@ vertx.deployVerticle("my.verticle", ar -> {
 vertx.deployVerticle("my.verticle", context.asyncAssertFailure());
 ----
 
-The `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.unit.TestContext.html#method_TestContext[asyncAssertFailure]` method returns an {@literal Handler<AsyncResult<T>>}
+The `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.unit.TestContext.html#method_asyncAssertFailure[asyncAssertFailure]` method returns an {@literal Handler<AsyncResult<T>>}
 instance that acts like `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.unit.Async.html[Async]`, invoking the delegating {@literal Handler<Throwable>} on
 failure and failing the test on success.
 
@@ -652,7 +652,7 @@ Other objects should be shared using the features of that language.
 
 == Running
 
-When a test suite is created, it won't be executed until the `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.unit.TestSuite.html#method_TestSuite[run]` method
+When a test suite is created, it won't be executed until the `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.unit.TestSuite.html#method_run[run]` method
 is called.
 
 .Running a test suite
@@ -689,7 +689,7 @@ Passed my_test_case
 End test suite my_suite , run: 1, Failures: 0, Errors: 0
 ----
 
-Such test suite just need to be executed via the `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.unit.TestSuite.html#method_TestSuite[run]` command, the
+Such test suite just need to be executed via the `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.unit.TestSuite.html#method_run[run]` command, the
 `vertx test` command takes care of configuring reporting, timeout, etc..., pretty much like in this
 example:
 
@@ -717,7 +717,7 @@ all suite executed.
 
 No assumptions can be made about when the test suite will be completed, and if some code needs to be executed
 after the test suite, it should either be in the test suite _after_ callback or as callback of the
-`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.unit.Completion<T>.html[Completion]`:
+`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.unit.Completion.html[Completion]`:
 
 .Test suite execution callback
 [source,php]
@@ -737,7 +737,7 @@ after the test suite, it should either be in the test suite _after_ callback or 
 
 ----
 
-The `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.unit.Completion<T>.html[Completion]` object provides also a `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.unit.Completion<T>.html#method_Completion[resolve]` method that
+The `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.unit.Completion.html[Completion]` object provides also a `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.unit.Completion.html#method_resolve[resolve]` method that
 takes a `Future` object, this `Future` will be notified of the test suite execution:
 
 .Resolving the start Future with the test suite
@@ -770,7 +770,7 @@ be used when the thread running the test suite is not the same than the current 
 
 The `await` throws an exception when the thread is interrupted or a timeout is fired.
 
-The `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.unit.Completion<T>.html#method_Completion[awaitSuccess]` is a variation that throws an exception when
+The `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.unit.Completion.html#method_awaitSuccess[awaitSuccess]` is a variation that throws an exception when
 the test suite fails.
 
 .Blocking until the test suite succeeds
@@ -810,7 +810,7 @@ of the previous task. These tasks should leverage Vert.x event loop when possibl
 current execution context (i.e the test suite is executed in a `main` or embedded in a `Verticle`) and
 wether or not a `Vertx` instance is configured.
 
-The `link:../enums.adoc#TestOptions#method_TestOptions[setUseEventLoop]` configures the usage of the event
+The `link:../enums.adoc#TestOptions#method_setUseEventLoop[setUseEventLoop]` configures the usage of the event
 loop:
 
 .Event loop usage

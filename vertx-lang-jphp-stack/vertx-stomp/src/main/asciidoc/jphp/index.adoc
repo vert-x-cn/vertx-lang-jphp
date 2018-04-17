@@ -50,7 +50,7 @@ The simplest way to create an STOMP server, using all default options is as foll
 
 This creates a STOMP server listening on `localhost:61613` that is compliant with the STOMP specification.
 
-You can configure the port and host in the `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.stomp.StompServer.html#method_StompServer[listen]`
+You can configure the port and host in the `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.stomp.StompServer.html#method_listen[listen]`
 method:
 
 [source,php]
@@ -142,7 +142,7 @@ The `link:../enums.adoc#StompServerOptions[StompServerOptions]` let you configur
 * the supported STOMP protocol versions (1.0, 1.1 and 1.2 by default)
 * the maximum number of frame allowed in a transaction (defaults to 1000)
 * the size of the transaction chunk - defaults to 1000 (see
-`link:../enums.adoc#StompServerOptions#method_StompServerOptions[setTransactionChunkSize]`)
+`link:../enums.adoc#StompServerOptions#method_setTransactionChunkSize[setTransactionChunkSize]`)
 * the maximum number of subscriptions a client can handle - defaults to 1000
 
 The STOMP heartbeat is configured using a JSON object as follows:
@@ -249,9 +249,9 @@ providing your own `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.
 
 The custom destination should call the
 
-`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.stomp.StompServerHandler.html#method_StompServerHandler[onAck]`
+`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.stomp.StompServerHandler.html#method_onAck[onAck]`
 and
-`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.stomp.StompServerHandler.html#method_StompServerHandler[onNack]`
+`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.stomp.StompServerHandler.html#method_onNack[onNack]`
 method in order to let the `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.stomp.StompServerHandler.html[StompServerHandler]` customizes the behavior:
 
 [source,php]
@@ -401,7 +401,7 @@ You can close a STOMP client:
 ----
 
 However, this way would not notify the server of the disconnection. To cleanly close the connection, you should
-use the `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.stomp.StompClientConnection.html#method_StompClientConnection[disconnect]` method:
+use the `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.stomp.StompClientConnection.html#method_disconnect[disconnect]` method:
 
 [source,php]
 ----
@@ -453,7 +453,7 @@ frames sent by the server. Notice that the server closes the connection with the
 The client can also be notified when a connection drop has been detected. Connection failures are detected using the
 STOMP heartbeat mechanism. When the server has not sent a message in the heartbeat time window, the connection is
 closed and the `connectionDroppedHandler` is called (if set). To configure a `connectionDroppedHandler`, call
-`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.stomp.StompClientConnection.html#method_StompClientConnection[connectionDroppedHandler]`. The handler can
+`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.stomp.StompClientConnection.html#method_connectionDroppedHandler[connectionDroppedHandler]`. The handler can
 for instance tries to reconnect to the server:
 
 [source,php]
@@ -486,7 +486,7 @@ You can configure various aspect by passing a
 STOMP client relies on a `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.net.NetClient.html[NetClient]`, you can configure the underlying Net Client from
 the `link:../enums.adoc#StompClientOptions[StompClientOptions]`. Alternatively, you can pass the `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.net.NetClient.html[NetClient]`
 you want to use in the
-`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.stomp.StompClient.html#method_StompClient[connect]`method:
+`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.stomp.StompClient.html#method_connect[connect]`method:
 
 [source,php]
 ----
@@ -755,8 +755,8 @@ HTML page, or as an npm module (https://www.npmjs.com/package/stompjs).
 3. Connect to the server
 
 To achieve the first step, you would need a HTTP server, and pass the
-`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.stomp.StompServer.html#method_StompServer[webSocketHandler]`result to
-`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.http.HttpServer.html#method_HttpServer[websocketHandler]`:
+`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.stomp.StompServer.html#method_webSocketHandler[webSocketHandler]`result to
+`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.http.HttpServer.html#method_websocketHandler[websocketHandler]`:
 
 [source,php]
 ----

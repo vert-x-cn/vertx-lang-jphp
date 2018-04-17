@@ -59,28 +59,28 @@ insert the row and fail if duplicate.
 
 You can also change all the defaults for the mongo collection and column names using any of the methods:
 
-`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.auth.mongo.MongoAuth.html#method_MongoAuth[setCollectionName]`
-`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.auth.mongo.MongoAuth.html#method_MongoAuth[setUsernameField]`
-`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.auth.mongo.MongoAuth.html#method_MongoAuth[setPasswordField]`
-`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.auth.mongo.MongoAuth.html#method_MongoAuth[setPermissionField]`
-`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.auth.mongo.MongoAuth.html#method_MongoAuth[setRoleField]`
+`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.auth.mongo.MongoAuth.html#method_setCollectionName[setCollectionName]`
+`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.auth.mongo.MongoAuth.html#method_setUsernameField[setUsernameField]`
+`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.auth.mongo.MongoAuth.html#method_setPasswordField[setPasswordField]`
+`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.auth.mongo.MongoAuth.html#method_setPermissionField[setPermissionField]`
+`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.auth.mongo.MongoAuth.html#method_setRoleField[setRoleField]`
 if you want to adapt that to your needs.
 
 The default implementation assumes that the password is stored in the database as a SHA-512 hash after being
 concatenated with a salt. It also assumes the salt is stored in the table too. The field, where the salt is
-stored can be set by `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.auth.mongo.MongoAuth.html#method_MongoAuth[setSaltField]`, the default is "salt".
-You are able to change this behaviour by using `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.auth.mongo.HashStrategy.html#method_HashStrategy[setSaltStyle]`.
-The HashStrategy you can retrieve by  `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.auth.mongo.MongoAuth.html#method_MongoAuth[getHashStrategy]`.
+stored can be set by `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.auth.mongo.MongoAuth.html#method_setSaltField[setSaltField]`, the default is "salt".
+You are able to change this behaviour by using `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.auth.mongo.HashStrategy.html#method_setSaltStyle[setSaltStyle]`.
+The HashStrategy you can retrieve by  `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.auth.mongo.MongoAuth.html#method_getHashStrategy[getHashStrategy]`.
 By using this, you are able to set:
 `NO_SALT`by which passwords are not crypted and stored
 in cleartext. ( see the warning below! )
 `COLUMN`, which will create a salt per user and store this
 inside the defined column of the user. ( see the warning below! )
 `EXTERNAL`, which will store only the crypted password in the
-database and will use a salt from external, which you will have to set by `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.auth.mongo.HashStrategy.html#method_HashStrategy[setExternalSalt]`
+database and will use a salt from external, which you will have to set by `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.auth.mongo.HashStrategy.html#method_setExternalSalt[setExternalSalt]`
 
 If you want to override this behaviour you can do so by providing an alternative hash strategy and setting it with
-`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.auth.mongo.MongoAuth.html#method_MongoAuth[setHashStrategy]`
+`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.auth.mongo.MongoAuth.html#method_setHashStrategy[setHashStrategy]`
 
 WARNING: It is strongly advised to use the `EXTERNAL` option.
 The NO_SALT option is existing for development phase only and even the COLUMN option is not recommended, cause
@@ -168,8 +168,8 @@ authentication info:
 
 ----
 Instead of the `username` and `password` field names used in the previous snippet, you should use:
-`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.auth.mongo.MongoAuth.html#method_MongoAuth[setUsernameCredentialField]`and
-`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.auth.mongo.MongoAuth.html#method_MongoAuth[setPasswordCredentialField]`
+`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.auth.mongo.MongoAuth.html#method_setUsernameCredentialField[setUsernameCredentialField]`and
+`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.auth.mongo.MongoAuth.html#method_setPasswordCredentialField[setPasswordCredentialField]`
 
 == Authorisation - Permission-Role Model
 
@@ -178,7 +178,7 @@ implementation assumes a familiar user/role/permission model, where a user can h
 can have zero or more permissions.
 
 If validating if a user has a particular permission simply pass the permission into.
-`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.auth.User.html#method_User[isAuthorised]`as follows:
+`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.auth.User.html#method_isAuthorised[isAuthorised]`as follows:
 
 [source,php]
 ----

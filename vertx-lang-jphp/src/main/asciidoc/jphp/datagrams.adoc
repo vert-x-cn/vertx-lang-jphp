@@ -79,8 +79,8 @@ Beside this you also want to set a `Handler` which will be called for each recei
 
 The `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.datagram.DatagramPacket.html[DatagramPacket]` has the following methods:
 
-- `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.datagram.DatagramPacket.html#method_DatagramPacket[sender]`: The InetSocketAddress which represent the sender of the packet
-- `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.datagram.DatagramPacket.html#method_DatagramPacket[data]`: The Buffer which holds the data which was received.
+- `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.datagram.DatagramPacket.html#method_sender[sender]`: The InetSocketAddress which represent the sender of the packet
+- `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.datagram.DatagramPacket.html#method_data[data]`: The Buffer which holds the data which was received.
 
 So to listen on a specific address and port you would do something like shown here:
 
@@ -248,18 +248,18 @@ like shown here:
 When creating a `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.datagram.DatagramSocket.html[DatagramSocket]` there are multiple properties you can set to
 change it's behaviour with the `link:../enums.adoc#DatagramSocketOptions[DatagramSocketOptions]` object. Those are listed here:
 
-- `link:../enums.adoc#DatagramSocketOptions#method_DatagramSocketOptions[setSendBufferSize]` Sets the send buffer size in bytes.
-- `link:../enums.adoc#DatagramSocketOptions#method_DatagramSocketOptions[setReceiveBufferSize]` Sets the TCP receive buffer size
+- `link:../enums.adoc#DatagramSocketOptions#method_setSendBufferSize[setSendBufferSize]` Sets the send buffer size in bytes.
+- `link:../enums.adoc#DatagramSocketOptions#method_setReceiveBufferSize[setReceiveBufferSize]` Sets the TCP receive buffer size
 in bytes.
-- `link:../enums.adoc#DatagramSocketOptions#method_DatagramSocketOptions[setReuseAddress]` If true then addresses in TIME_WAIT
+- `link:../enums.adoc#DatagramSocketOptions#method_setReuseAddress[setReuseAddress]` If true then addresses in TIME_WAIT
 state can be reused after they have been closed.
-- `link:../enums.adoc#DatagramSocketOptions#method_DatagramSocketOptions[setTrafficClass]`
-- `link:../enums.adoc#DatagramSocketOptions#method_DatagramSocketOptions[setBroadcast]` Sets or clears the SO_BROADCAST socket
+- `link:../enums.adoc#DatagramSocketOptions#method_setTrafficClass[setTrafficClass]`
+- `link:../enums.adoc#DatagramSocketOptions#method_setBroadcast[setBroadcast]` Sets or clears the SO_BROADCAST socket
 option. When this option is set, Datagram (UDP) packets may be sent to a local interface's broadcast address.
-- `link:../enums.adoc#DatagramSocketOptions#method_DatagramSocketOptions[setMulticastNetworkInterface]` Sets or clears
+- `link:../enums.adoc#DatagramSocketOptions#method_setMulticastNetworkInterface[setMulticastNetworkInterface]` Sets or clears
 the IP_MULTICAST_LOOP socket option. When this option is set, multicast packets will also be received on the
 local interface.
-- `link:../enums.adoc#DatagramSocketOptions#method_DatagramSocketOptions[setMulticastTimeToLive]` Sets the IP_MULTICAST_TTL socket
+- `link:../enums.adoc#DatagramSocketOptions#method_setMulticastTimeToLive[setMulticastTimeToLive]` Sets the IP_MULTICAST_TTL socket
 option. TTL stands for "Time to Live," but in this context it specifies the number of IP hops that a packet is
 allowed to go through, specifically for multicast traffic. Each router or gateway that forwards a packet decrements
 the TTL. If the TTL is decremented to 0 by a router, it will not be forwarded.
@@ -267,10 +267,10 @@ the TTL. If the TTL is decremented to 0 by a router, it will not be forwarded.
 ==== DatagramSocket Local Address
 
 You can find out the local address of the socket (i.e. the address of this side of the UDP Socket) by calling
-`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.datagram.DatagramSocket.html#method_DatagramSocket[localAddress]`. This will only return an `InetSocketAddress` if you
+`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.datagram.DatagramSocket.html#method_localAddress[localAddress]`. This will only return an `InetSocketAddress` if you
 bound the `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.datagram.DatagramSocket.html[DatagramSocket]` with `listen(...)` before, otherwise it will return null.
 
 ==== Closing a DatagramSocket
 
-You can close a socket by invoking the `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.datagram.DatagramSocket.html#method_DatagramSocket[close]` method. This will close
+You can close a socket by invoking the `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.datagram.DatagramSocket.html#method_close[close]` method. This will close
 the socket and release all resources

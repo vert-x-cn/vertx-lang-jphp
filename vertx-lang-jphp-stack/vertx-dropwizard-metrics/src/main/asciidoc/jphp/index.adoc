@@ -75,22 +75,22 @@ options must be set to `true`:
 java -jar your-fat-jar -Dvertx.metrics.options.enabled=true
 ----
 
-The `link:../enums.adoc#DropwizardMetricsOptions#method_DropwizardMetricsOptions[vertx.metrics.options.registryName]`
+The `link:../enums.adoc#DropwizardMetricsOptions#method_setRegistryName[vertx.metrics.options.registryName]`
 configures the <<dropwizard-registry,Dropwizard Registry>> to use:
 
 ----
 java -jar your-fat-jar -Dvertx.metrics.options.enabled=true -Dvertx.metrics.options.registryName=my-registry
 ----
 
-The `link:../enums.adoc#DropwizardMetricsOptions#method_DropwizardMetricsOptions[vertx.metrics.options.jmxEnabled]` and
-`link:../enums.adoc#DropwizardMetricsOptions#method_DropwizardMetricsOptions[vertx.metrics.options.jmxDomain]`
+The `link:../enums.adoc#DropwizardMetricsOptions#method_setJmxEnabled[vertx.metrics.options.jmxEnabled]` and
+`link:../enums.adoc#DropwizardMetricsOptions#method_setJmxDomain[vertx.metrics.options.jmxDomain]`
 configures the <<jmx,JMX>> registration:
 
 ----
 java -jar your-fat-jar -Dvertx.metrics.options.enabled=true -Dvertx.metrics.options.jmxEnabled=true ...
 ----
 
-The `link:../enums.adoc#DropwizardMetricsOptions#method_DropwizardMetricsOptions[vertx.metrics.options.configPath]`
+The `link:../enums.adoc#DropwizardMetricsOptions#method_setConfigPath[vertx.metrics.options.configPath]`
 option allows to reconfigure the metrics from a property file.
 
 == Metrics service
@@ -486,7 +486,7 @@ in this case the alias will be used as a part of the registry name instead of ur
 === Http client metrics
 
 Base name: `vertx.http.clients` (by default) or `vertx.http.clients.<id>` where `<id>` is a non empty string
-configured by `link:../enums.adoc#HttpClientOptions#method_HttpClientOptions[setMetricsName]`.
+configured by `link:../enums.adoc#HttpClientOptions#method_setMetricsName[setMetricsName]`.
 
 Http client includes all the metrics of a <<http-server-metrics,Http Server>> plus the following:
 
@@ -553,7 +553,7 @@ Base name: `vertx.net.servers.<host>:<port>`
 === Net client metrics
 
 Base name: `vertx.net.clients` (by default) or `vertx.net.clients.<id>` where `<id>` is a non empty string
-configured by `link:../enums.adoc#NetClientOptions#method_NetClientOptions[setMetricsName]`.
+configured by `link:../enums.adoc#NetClientOptions#method_setMetricsName[setMetricsName]`.
 
 Net client includes all the metrics of a <<net-server-metrics,Net Server>>
 

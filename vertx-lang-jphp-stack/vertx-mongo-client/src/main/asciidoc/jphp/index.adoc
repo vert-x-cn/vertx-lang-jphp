@@ -57,7 +57,7 @@ The simplest way to do this is as follows:
 
 ----
 
-The first call to `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.mongo.MongoClient.html#method_MongoClient[MongoClient::createShared]`
+The first call to `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.mongo.MongoClient.html#method_createShared[MongoClient::createShared]`
 will actually create the pool, and the specified config will be used.
 
 Subsequent calls will return a new client instance that uses the same pool, so the configuration won't be used.
@@ -77,7 +77,7 @@ You can create a client specifying a pool source name as follows
 If different clients are created using the same Vert.x instance and specifying the same pool name, they will
 share the same pool.
 
-The first call to `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.mongo.MongoClient.html#method_MongoClient[MongoClient::createShared]`
+The first call to `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.mongo.MongoClient.html#method_createShared[MongoClient::createShared]`
 will actually create the pool, and the specified config will be used.
 
 Subsequent calls will return a new client instance that uses the same pool, so the configuration won't be used.
@@ -90,7 +90,7 @@ interacting with different databases.
 In most cases you will want to share a pool between different client instances.
 However, it's possible you want to create a client instance that doesn't share its pool with any other client.
 
-In that case you can use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.mongo.MongoClient.html#method_MongoClient[MongoClient::createNonShared]`.
+In that case you can use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.mongo.MongoClient.html#method_createNonShared[MongoClient::createNonShared]`.
 
 [source,php]
 ----
@@ -100,7 +100,7 @@ In that case you can use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jph
 
 ----
 
-This is equivalent to calling `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.mongo.MongoClient.html#method_MongoClient[MongoClient::createShared]`
+This is equivalent to calling `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.mongo.MongoClient.html#method_createShared[MongoClient::createShared]`
 with a unique pool name each time.
 
 
@@ -110,7 +110,7 @@ The client API is represented by `link:https://vertx.okou.tk/phpdoc/classes/io.v
 
 === Saving documents
 
-To save a document you use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.mongo.MongoClient.html#method_MongoClient[save]`.
+To save a document you use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.mongo.MongoClient.html#method_save[save]`.
 
 If the document has no `\_id` field, it is inserted, otherwise, it is __upserted__.
 Upserted means it is inserted if it doesn't already exist, otherwise it is updated.
@@ -159,7 +159,7 @@ And here's an example of saving a document which already has an id.
 
 === Inserting documents
 
-To insert a document you use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.mongo.MongoClient.html#method_MongoClient[insert]`.
+To insert a document you use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.mongo.MongoClient.html#method_insert[insert]`.
 
 If the document is inserted and has no id, then the id field generated will be returned to the result handler.
 
@@ -203,7 +203,7 @@ If a document is inserted with an id, and a document with that id already exists
 
 === Updating documents
 
-To update a documents you use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.mongo.MongoClient.html#method_MongoClient[updateCollection]`.
+To update a documents you use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.mongo.MongoClient.html#method_updateCollection[updateCollection]`.
 
 This updates one or multiple documents in a collection.
 The json object that is passed in the `updateCollection` parameter must contain
@@ -238,7 +238,7 @@ Here's an example of updating a document in the books collection:
 ----
 
 To specify if the update should upsert or update multiple documents, use
-`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.mongo.MongoClient.html#method_MongoClient[updateCollectionWithOptions]`
+`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.mongo.MongoClient.html#method_updateCollectionWithOptions[updateCollectionWithOptions]`
 and pass in an instance of `link:../enums.adoc#UpdateOptions[UpdateOptions]`.
 
 This has the following fields:
@@ -275,7 +275,7 @@ This has the following fields:
 
 === Replacing documents
 
-To replace documents you use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.mongo.MongoClient.html#method_MongoClient[replaceDocuments]`.
+To replace documents you use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.mongo.MongoClient.html#method_replaceDocuments[replaceDocuments]`.
 
 This is similar to the update operation, however it does not take any operator.
 Instead it replaces the entire document with the one provided.
@@ -304,19 +304,19 @@ Here's an example of replacing a document in the books collection
 
 === Bulk operations
 
-To execute multiple insert, update, replace, or delete operations at once, use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.mongo.MongoClient.html#method_MongoClient[bulkWrite]`.
+To execute multiple insert, update, replace, or delete operations at once, use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.mongo.MongoClient.html#method_bulkWrite[bulkWrite]`.
 
 You can pass a list of `link:../enums.adoc#BulkOperation[BulkOperations]`, with each working similar to the matching single operation.
 You can pass as many operations, even of the same type, as you wish.
 
-To specify if the bulk operation should be executed in order, and with what write option, use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.mongo.MongoClient.html#method_MongoClient[bulkWriteWithOptions]`
+To specify if the bulk operation should be executed in order, and with what write option, use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.mongo.MongoClient.html#method_bulkWriteWithOptions[bulkWriteWithOptions]`
 and pass an instance of `link:../enums.adoc#BulkWriteOptions[BulkWriteOptions]`.
 For more explanation what ordered means, see
 https://docs.mongodb.com/manual/reference/method/db.collection.bulkWrite/#execution-of-operations[Execution of Operations].
 
 === Finding documents
 
-To find documents you use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.mongo.MongoClient.html#method_MongoClient[find]`.
+To find documents you use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.mongo.MongoClient.html#method_find[find]`.
 
 The `query` parameter is used to match the documents in the collection.
 
@@ -363,7 +363,7 @@ Here's another example that will match all books by Tolkien:
 
 The matching documents are returned as a list of json objects in the result handler.
 
-To specify things like what fields to return, how many results to return, etc use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.mongo.MongoClient.html#method_MongoClient[findWithOptions]`
+To specify things like what fields to return, how many results to return, etc use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.mongo.MongoClient.html#method_findWithOptions[findWithOptions]`
 and pass in the an instance of `link:../enums.adoc#FindOptions[FindOptions]`.
 
 This has the following fields:
@@ -376,9 +376,9 @@ This has the following fields:
 === Finding documents in batches
 
 When dealing with large data sets, it is not advised to use the
-`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.mongo.MongoClient.html#method_MongoClient[find]`and
-`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.mongo.MongoClient.html#method_MongoClient[findWithOptions]`methods.
-In order to avoid inflating the whole response into memory, use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.mongo.MongoClient.html#method_MongoClient[findBatch]`:
+`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.mongo.MongoClient.html#method_find[find]`and
+`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.mongo.MongoClient.html#method_findWithOptions[findWithOptions]`methods.
+In order to avoid inflating the whole response into memory, use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.mongo.MongoClient.html#method_findBatch[findBatch]`:
 
 [source,php]
 ----
@@ -397,7 +397,7 @@ In order to avoid inflating the whole response into memory, use `link:https://ve
 
 ----
 
-The matching documents are emitted one by one by the `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.streams.ReadStream<T>.html[ReadStream]` handler.
+The matching documents are emitted one by one by the `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.streams.ReadStream.html[ReadStream]` handler.
 
 `link:../enums.adoc#FindOptions[FindOptions]`has an extra parameter `batchSize` which you can use to set the number of documents to load at once:
 
@@ -425,13 +425,13 @@ By default, `batchSize` is set to 20.
 
 === Finding a single document
 
-To find a single document you use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.mongo.MongoClient.html#method_MongoClient[findOne]`.
+To find a single document you use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.mongo.MongoClient.html#method_findOne[findOne]`.
 
-This works just like `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.mongo.MongoClient.html#method_MongoClient[find]` but it returns just the first matching document.
+This works just like `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.mongo.MongoClient.html#method_find[find]` but it returns just the first matching document.
 
 === Removing documents
 
-To remove documents use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.mongo.MongoClient.html#method_MongoClient[removeDocuments]`.
+To remove documents use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.mongo.MongoClient.html#method_removeDocuments[removeDocuments]`.
 
 The `query` parameter is used to match the documents in the collection to determine which ones to remove.
 
@@ -455,13 +455,13 @@ Here's an example of removing all Tolkien books:
 
 === Removing a single document
 
-To remove a single document you use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.mongo.MongoClient.html#method_MongoClient[removeDocument]`.
+To remove a single document you use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.mongo.MongoClient.html#method_removeDocument[removeDocument]`.
 
-This works just like `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.mongo.MongoClient.html#method_MongoClient[removeDocuments]` but it removes just the first matching document.
+This works just like `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.mongo.MongoClient.html#method_removeDocuments[removeDocuments]` but it removes just the first matching document.
 
 === Counting documents
 
-To count documents use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.mongo.MongoClient.html#method_MongoClient[count]`.
+To count documents use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.mongo.MongoClient.html#method_count[count]`.
 
 Here's an example that counts the number of Tolkien books. The number is passed to the result handler.
 
@@ -485,7 +485,7 @@ Here's an example that counts the number of Tolkien books. The number is passed 
 
 All MongoDB documents are stored in collections.
 
-To get a list of all collections you can use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.mongo.MongoClient.html#method_MongoClient[getCollections]`
+To get a list of all collections you can use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.mongo.MongoClient.html#method_getCollections[getCollections]`
 
 [source,php]
 ----
@@ -500,7 +500,7 @@ To get a list of all collections you can use `link:https://vertx.okou.tk/phpdoc/
 
 ----
 
-To create a new collection you can use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.mongo.MongoClient.html#method_MongoClient[createCollection]`
+To create a new collection you can use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.mongo.MongoClient.html#method_createCollection[createCollection]`
 
 [source,php]
 ----
@@ -515,7 +515,7 @@ To create a new collection you can use `link:https://vertx.okou.tk/phpdoc/classe
 
 ----
 
-To drop a collection you can use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.mongo.MongoClient.html#method_MongoClient[dropCollection]`
+To drop a collection you can use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.mongo.MongoClient.html#method_dropCollection[dropCollection]`
 
 NOTE: Dropping a collection will delete all documents within it!
 
@@ -535,7 +535,7 @@ NOTE: Dropping a collection will delete all documents within it!
 
 === Running other MongoDB commands
 
-You can run arbitrary MongoDB commands with `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.mongo.MongoClient.html#method_MongoClient[runCommand]`.
+You can run arbitrary MongoDB commands with `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.mongo.MongoClient.html#method_runCommand[runCommand]`.
 
 Commands can be used to run more advanced MongoDB features, such as using MapReduce.
 For more information see the mongo docs for supported http://docs.mongodb.org/manual/reference/command[Commands].

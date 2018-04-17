@@ -48,7 +48,7 @@ You do this as follows:
 
 ----
 
-The first call to `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.jdbc.JDBCClient.html#method_JDBCClient[JDBCClient::createShared]`
+The first call to `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.jdbc.JDBCClient.html#method_createShared[JDBCClient::createShared]`
 will actually create the data source, and the specified config will be used.
 
 Subsequent calls will return a new client instance that uses the same data source, so the configuration won't be used.
@@ -71,7 +71,7 @@ You can create a client specifying a data source name as follows
 If different clients are created using the same Vert.x instance and specifying the same data source name, they will
 share the same data source.
 
-The first call to `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.jdbc.JDBCClient.html#method_JDBCClient[JDBCClient::createShared]`
+The first call to `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.jdbc.JDBCClient.html#method_createShared[JDBCClient::createShared]`
 will actually create the data source, and the specified config will be used.
 
 Subsequent calls will return a new client instance that uses the same data source, so the configuration won't be used.
@@ -84,7 +84,7 @@ interacting with different databases.
 In most cases you will want to share a data source between different client instances.
 However, it's possible you want to create a client instance that doesn't share its data source with any other client.
 
-In that case you can use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.jdbc.JDBCClient.html#method_JDBCClient[JDBCClient::createNonShared]`.
+In that case you can use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.jdbc.JDBCClient.html#method_createNonShared[JDBCClient::createNonShared]`.
 
 [source,java]
 ----
@@ -96,7 +96,7 @@ In that case you can use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jph
 
 ----
 
-This is equivalent to calling `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.jdbc.JDBCClient.html#method_JDBCClient[JDBCClient::createShared]`
+This is equivalent to calling `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.jdbc.JDBCClient.html#method_createShared[JDBCClient::createShared]`
 with a unique data source name each time.
 
 === Specifying a data source
@@ -127,7 +127,7 @@ If you're creating clients from inside verticles, the clients will be automatica
 
 == Getting a connection
 
-Once you've created a client you use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.sql.SQLClient.html#method_SQLClient[getConnection]` to get
+Once you've created a client you use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.sql.SQLClient.html#method_getConnection[getConnection]` to get
 a connection.
 
 This will return the connection in the handler when one is ready from the pool.

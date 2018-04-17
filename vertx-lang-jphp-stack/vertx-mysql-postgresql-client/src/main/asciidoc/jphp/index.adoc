@@ -88,8 +88,8 @@ You do this as follows:
 
 ----
 
-The first call to `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.asyncsql.MySQLClient.html#method_MySQLClient[MySQLClient::createShared]`
-or `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.asyncsql.PostgreSQLClient.html#method_PostgreSQLClient[PostgreSQLClient::createShared]`
+The first call to `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.asyncsql.MySQLClient.html#method_createShared[MySQLClient::createShared]`
+or `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.asyncsql.PostgreSQLClient.html#method_createShared[PostgreSQLClient::createShared]`
 will actually create the data source, and the specified config will be used.
 
 Subsequent calls will return a new client instance that uses the same data source, so the configuration won't be used.
@@ -124,8 +124,8 @@ You can create a client specifying a pool name as follows
 If different clients are created using the same Vert.x instance and specifying the same pool name, they will
 share the same data source.
 
-The first call to `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.asyncsql.MySQLClient.html#method_MySQLClient[MySQLClient::createShared]`
-or `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.asyncsql.PostgreSQLClient.html#method_PostgreSQLClient[PostgreSQLClient::createShared]`
+The first call to `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.asyncsql.MySQLClient.html#method_createShared[MySQLClient::createShared]`
+or `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.asyncsql.PostgreSQLClient.html#method_createShared[PostgreSQLClient::createShared]`
 will actually create the data source, and the specified config will be used.
 
 Subsequent calls will return a new client instance that uses the same pool, so the configuration won't be used.
@@ -138,8 +138,8 @@ interacting with different databases.
 In most cases you will want to share a pool between different client instances.
 However, it's possible you want to create a client instance that doesn't share its pool with any other client.
 
-In that case you can use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.asyncsql.MySQLClient.html#method_MySQLClient[MySQLClient::createNonShared]`
-or `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.asyncsql.PostgreSQLClient.html#method_PostgreSQLClient[PostgreSQLClient::createNonShared]`
+In that case you can use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.asyncsql.MySQLClient.html#method_createNonShared[MySQLClient::createNonShared]`
+or `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.asyncsql.PostgreSQLClient.html#method_createNonShared[PostgreSQLClient::createNonShared]`
 
 [source,java]
 ----
@@ -164,19 +164,19 @@ or `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.asyncsql.Postgre
 
 ----
 
-This is equivalent to calling `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.asyncsql.MySQLClient.html#method_MySQLClient[MySQLClient::createShared]`
-or `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.asyncsql.PostgreSQLClient.html#method_PostgreSQLClient[PostgreSQLClient::createShared]`
+This is equivalent to calling `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.asyncsql.MySQLClient.html#method_createShared[MySQLClient::createShared]`
+or `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.asyncsql.PostgreSQLClient.html#method_createShared[PostgreSQLClient::createShared]`
 with a unique pool name each time.
 
 == Closing the client
 
 You can hold on to the client for a long time (e.g. the life-time of your verticle), but once you have finished with
-it, you should close it using `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.sql.SQLClient.html#method_SQLClient[close]` or
-`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.sql.SQLClient.html#method_SQLClient[close]`
+it, you should close it using `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.sql.SQLClient.html#method_close[close]` or
+`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.sql.SQLClient.html#method_close[close]`
 
 == Getting a connection
 
-Use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.sql.SQLClient.html#method_SQLClient[getConnection]` to get a connection.
+Use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.sql.SQLClient.html#method_getConnection[getConnection]` to get a connection.
 
 This will return the connection in the handler when one is ready from the pool.
 
@@ -225,7 +225,7 @@ fail, which may be some time after the initial connection attempt.
 
 If `maxConnectionRetries` is set to `0`, the internal connection pool will not perform any reconnection (default). If
 `maxConnectionRetries` is set to `-1`, the internal connection pool will attempt to acquire new connections indefinitely,
-so any call to `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.sql.SQLClient.html#method_SQLClient[getConnection]`
+so any call to `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.sql.SQLClient.html#method_getConnection[getConnection]`
 may be indefinitely waiting for a successful acquisition.
 
 Once a full round of acquisition attempts fails, the internal connection pool will remain active, and will try

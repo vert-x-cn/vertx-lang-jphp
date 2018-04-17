@@ -5,7 +5,7 @@ number of failures and _opens the circuit_ when a threshold is reached. Optional
 
 Supported failures are:
 
-* failures reported by your code in a `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.Future<T>.html[Future]`
+* failures reported by your code in a `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.Future.html[Future]`
 * exception thrown by your code
 * uncompleted futures (timeout)
 
@@ -66,7 +66,7 @@ Here is an example:
 
 ----
 
-The executed block receives a `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.Future<T>.html[Future]` object as parameter, to denote the
+The executed block receives a `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.Future.html[Future]` object as parameter, to denote the
 success or failure of the operation as well as the result. For example in the following example, the result is the
 output of a REST endpoint invocation:
 
@@ -97,8 +97,8 @@ output of a REST endpoint invocation:
 
 The result of the operation is provided using the:
 
-* returned `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.Future<T>.html[Future]` when calling `execute` methods
-* provided `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.Future<T>.html[Future]` when calling the `executeAndReport` methods
+* returned `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.Future.html[Future]` when calling `execute` methods
+* provided `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.Future.html[Future]` when calling the `executeAndReport` methods
 
 Optionally, you can provide a fallback which is executed when the circuit is open:
 
@@ -131,7 +131,7 @@ Optionally, you can provide a fallback which is executed when the circuit is ope
 ----
 
 The fallback is called whenever the circuit is open, or if the
-`link:../enums.adoc#CircuitBreakerOptions#method_CircuitBreakerOptions[isFallbackOnFailure]`is enabled. When a fallback is
+`link:../enums.adoc#CircuitBreakerOptions#method_isFallbackOnFailure[isFallbackOnFailure]`is enabled. When a fallback is
 set, the result is using the output of the fallback function. The fallback function takes as parameter a
 `Throwable`object and returns an object of the expected type.
 
@@ -164,7 +164,7 @@ The fallback can also be set on the `link:https://vertx.okou.tk/phpdoc/classes/i
 ----
 
 You can also specify how often the circuit breaker should try your code before failing with
-`link:../enums.adoc#CircuitBreakerOptions#method_CircuitBreakerOptions[setMaxRetries]`.
+`link:../enums.adoc#CircuitBreakerOptions#method_setMaxRetries[setMaxRetries]`.
 If you set this to something higher than 0 your code gets executed several times before finally failing
 in the last execution. If the code succeeded in one of the retries your handler gets notified and any
 retries left are skipped. Retries are only supported when the circuit is closed.
@@ -203,13 +203,13 @@ You can also configures callbacks invoked when the circuit is opened or closed:
 ----
 
 You can also be notified when the circuit breaker decides to attempt to reset (half-open state). You can register
-such a callback with `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.circuitbreaker.CircuitBreaker.html#method_CircuitBreaker[halfOpenHandler]`.
+such a callback with `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.circuitbreaker.CircuitBreaker.html#method_halfOpenHandler[halfOpenHandler]`.
 
 == Event bus notification
 
 Every time the circuit state changes, an event is published on the event bus. The address on which the events are
 sent is configurable with
-`link:../enums.adoc#CircuitBreakerOptions#method_CircuitBreakerOptions[setNotificationAddress]`. If `null` is
+`link:../enums.adoc#CircuitBreakerOptions#method_setNotificationAddress[setNotificationAddress]`. If `null` is
 passed to this method, the notifications are disabled. By default, the used address is `vertx.circuit-breaker`.
 
 Each event contains a Json Object with:
@@ -223,7 +223,7 @@ Each event contains a Json Object with:
 
 When the circuit is "open", calls to the circuit breaker fail immediately, without any attempt to execute the real
 operation. After a suitable amount of time (configured from
-`link:../enums.adoc#CircuitBreakerOptions#method_CircuitBreakerOptions[setResetTimeout]`, the circuit breaker decides that the
+`link:../enums.adoc#CircuitBreakerOptions#method_setResetTimeout[setResetTimeout]`, the circuit breaker decides that the
 operation has a chance of succeeding, so it goes into the {@code half-open} state. In this state, the next call to the
 circuit breaker is allowed to execute the dangerous operation. Should the call succeed, the circuit breaker resets
 and returns to the {@code closed} state, ready for more routine operation. If this trial call fails, however, the circuit

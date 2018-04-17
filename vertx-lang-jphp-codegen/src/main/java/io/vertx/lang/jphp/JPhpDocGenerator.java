@@ -62,19 +62,19 @@ public class JPhpDocGenerator implements DocGenerator {
             }
             return baselink + adocLink + "#" + elt.getSimpleName().toString();
         } else if (type.getKind() == ClassKind.API) {
-            return "https://vertx.okou.tk/phpdoc/classes/" + type.translateName("jphp") + ".html";
+            return "https://vertx.okou.tk/phpdoc/classes/" + type.getRaw().translatePackageName("jphp") + "." + type.getRaw().getSimpleName() + ".html";
         }
         return null;
     }
 
     @Override
     public String resolveConstructorLink(ExecutableElement elt, Coordinate coordinate) {
-        return toExecutableLink(elt, elt.getEnclosingElement().getSimpleName().toString());
+        return toExecutableLink(elt, "__construct");
     }
 
     @Override
     public String resolveMethodLink(ExecutableElement elt, Coordinate coordinate) {
-        return toExecutableLink(elt, elt.getEnclosingElement().getSimpleName().toString());
+        return toExecutableLink(elt, elt.getSimpleName().toString());
     }
 
     private String toExecutableLink(ExecutableElement elt, String name) {

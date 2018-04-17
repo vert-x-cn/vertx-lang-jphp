@@ -14,8 +14,8 @@ memory exhaustion.
 
 To solve this problem a simple flow control (_back-pressure_) capability is provided by some objects in the Vert.x API.
 
-Any flow control aware object that can be _written-to_ implements `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.streams.WriteStream<T>.html[WriteStream]`,
-while any flow control object that can be _read-from_ is said to implement `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.streams.ReadStream<T>.html[ReadStream]`.
+Any flow control aware object that can be _written-to_ implements `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.streams.WriteStream.html[WriteStream]`,
+while any flow control object that can be _read-from_ is said to implement `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.streams.ReadStream.html[ReadStream]`.
 
 Let's take an example where we want to read from a `ReadStream` then write the data to a `WriteStream`.
 
@@ -114,7 +114,7 @@ it when the write queue has processed its backlog:
 
 ----
 
-And there we have it. The `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.streams.WriteStream<T>.html#method_WriteStream[drainHandler]` event handler will
+And there we have it. The `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.streams.WriteStream.html#method_drainHandler[drainHandler]` event handler will
 get called when the write queue is ready to accept more data, this resumes the `NetSocket` that
 allows more data to be read.
 
@@ -144,21 +144,21 @@ Let's now look at the methods on `ReadStream` and `WriteStream` in more detail:
 
 `ReadStream` is implemented by `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.http.HttpClientResponse.html[HttpClientResponse]`, `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.datagram.DatagramSocket.html[DatagramSocket]`,
 `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.http.HttpClientRequest.html[HttpClientRequest]`, `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.http.HttpServerFileUpload.html[HttpServerFileUpload]`,
-`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.http.HttpServerRequest.html[HttpServerRequest]`, `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.eventbus.MessageConsumer<T>.html[MessageConsumer]`,
+`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.http.HttpServerRequest.html[HttpServerRequest]`, `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.eventbus.MessageConsumer.html[MessageConsumer]`,
 `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.net.NetSocket.html[NetSocket]`, `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.http.WebSocket.html[WebSocket]`, `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.TimeoutStream.html[TimeoutStream]`,
 `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.file.AsyncFile.html[AsyncFile]`.
 
 Functions:
 
-- `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.streams.ReadStream<T>.html#method_ReadStream[handler]`:
+- `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.streams.ReadStream.html#method_handler[handler]`:
 set a handler which will receive items from the ReadStream.
-- `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.streams.ReadStream<T>.html#method_ReadStream[pause]`:
+- `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.streams.ReadStream.html#method_pause[pause]`:
 pause the handler. When paused no items will be received in the handler.
-- `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.streams.ReadStream<T>.html#method_ReadStream[resume]`:
+- `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.streams.ReadStream.html#method_resume[resume]`:
 resume the handler. The handler will be called if any item arrives.
-- `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.streams.ReadStream<T>.html#method_ReadStream[exceptionHandler]`:
+- `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.streams.ReadStream.html#method_exceptionHandler[exceptionHandler]`:
 Will be called if an exception occurs on the ReadStream.
-- `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.streams.ReadStream<T>.html#method_ReadStream[endHandler]`:
+- `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.streams.ReadStream.html#method_endHandler[endHandler]`:
 Will be called when end of stream is reached. This might be when EOF is reached if the ReadStream represents a file,
 or when end of request is reached if it's an HTTP request, or when the connection is closed if it's a TCP socket.
 
@@ -166,35 +166,35 @@ or when end of request is reached if it's an HTTP request, or when the connectio
 
 `WriteStream` is implemented by `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.http.HttpClientRequest.html[HttpClientRequest]`, `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.http.HttpServerResponse.html[HttpServerResponse]`
 `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.http.WebSocket.html[WebSocket]`, `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.net.NetSocket.html[NetSocket]`, `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.file.AsyncFile.html[AsyncFile]`,
-and `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.eventbus.MessageProducer<T>.html[MessageProducer]`
+and `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.eventbus.MessageProducer.html[MessageProducer]`
 
 Functions:
 
-- `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.streams.WriteStream<T>.html#method_WriteStream[write]`:
+- `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.streams.WriteStream.html#method_write[write]`:
 write an object to the WriteStream. This method will never block. Writes are queued internally and asynchronously
 written to the underlying resource.
-- `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.streams.WriteStream<T>.html#method_WriteStream[setWriteQueueMaxSize]`:
-set the number of object at which the write queue is considered _full_, and the method `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.streams.WriteStream<T>.html#method_WriteStream[writeQueueFull]`
+- `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.streams.WriteStream.html#method_setWriteQueueMaxSize[setWriteQueueMaxSize]`:
+set the number of object at which the write queue is considered _full_, and the method `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.streams.WriteStream.html#method_writeQueueFull[writeQueueFull]`
 returns `true`. Note that, when the write queue is considered full, if write is called the data will still be accepted
 and queued. The actual number depends on the stream implementation, for `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.buffer.Buffer.html[Buffer]` the size
 represents the actual number of bytes written and not the number of buffers.
-- `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.streams.WriteStream<T>.html#method_WriteStream[writeQueueFull]`:
+- `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.streams.WriteStream.html#method_writeQueueFull[writeQueueFull]`:
 returns `true` if the write queue is considered full.
-- `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.streams.WriteStream<T>.html#method_WriteStream[exceptionHandler]`:
+- `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.streams.WriteStream.html#method_exceptionHandler[exceptionHandler]`:
 Will be called if an exception occurs on the `WriteStream`.
-- `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.streams.WriteStream<T>.html#method_WriteStream[drainHandler]`:
+- `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.streams.WriteStream.html#method_drainHandler[drainHandler]`:
 The handler will be called if the `WriteStream` is considered no longer full.
 
 === Pump
 
 Instances of Pump have the following methods:
 
-- `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.streams.Pump.html#method_Pump[start]`:
+- `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.streams.Pump.html#method_start[start]`:
 Start the pump.
-- `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.streams.Pump.html#method_Pump[stop]`:
+- `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.streams.Pump.html#method_stop[stop]`:
 Stops the pump. When the pump starts it is in stopped mode.
-- `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.streams.Pump.html#method_Pump[setWriteQueueMaxSize]`:
-This has the same meaning as `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.streams.WriteStream<T>.html#method_WriteStream[setWriteQueueMaxSize]` on the `WriteStream`.
+- `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.streams.Pump.html#method_setWriteQueueMaxSize[setWriteQueueMaxSize]`:
+This has the same meaning as `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.streams.WriteStream.html#method_setWriteQueueMaxSize[setWriteQueueMaxSize]` on the `WriteStream`.
 
 A pump can be started and stopped multiple times.
 

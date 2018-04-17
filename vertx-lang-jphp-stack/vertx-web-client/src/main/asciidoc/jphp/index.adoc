@@ -171,7 +171,7 @@ Setting a request URI discards existing query parameters
 When you need to make a request with a body, you use the same API and call then `sendXXX` methods
 that expects a body to send.
 
-Use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.client.HttpRequest<T>.html#method_HttpRequest[sendBuffer]` to send a buffer body
+Use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.client.HttpRequest.html#method_sendBuffer[sendBuffer]` to send a buffer body
 
 [source,php]
 ----
@@ -188,7 +188,7 @@ Use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.client.Http
 Sending a single buffer is useful but often you don't want to load fully the content in memory because
 it may be too large or you want to handle many concurrent requests and want to use just the minimum
 for each request. For this purpose the web client can send `ReadStream<Buffer>` (e.g a
-`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.file.AsyncFile.html[AsyncFile]`is a ReadStream<Buffer>`) with the `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.client.HttpRequest<T>.html#method_HttpRequest[sendStream]` method
+`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.file.AsyncFile.html[AsyncFile]`is a ReadStream<Buffer>`) with the `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.client.HttpRequest.html#method_sendStream[sendStream]` method
 
 [source,php]
 ----
@@ -226,7 +226,7 @@ The POST will not be chunked.
 ==== Json bodies
 
 Often you¡¯ll want to send Json body requests, to send a `JsonObject`
-use the `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.client.HttpRequest<T>.html#method_HttpRequest[sendJsonObject]`
+use the `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.client.HttpRequest.html#method_sendJsonObject[sendJsonObject]`
 
 [source,php]
 ----
@@ -242,8 +242,8 @@ use the `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.client.
 
 ----
 
-In Java, Groovy or Kotlin, you can use the `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.client.HttpRequest<T>.html#method_HttpRequest[sendJson]` method that maps
-a POJO (Plain Old Java Object) to a Json object using `link:null#method_Json[Json::encode]`
+In Java, Groovy or Kotlin, you can use the `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.client.HttpRequest.html#method_sendJson[sendJson]` method that maps
+a POJO (Plain Old Java Object) to a Json object using `link:null#method_encode[Json::encode]`
 method
 
 [source,php]
@@ -257,12 +257,12 @@ method
 
 ----
 
-NOTE: the `link:null#method_Json[Json::encode]` uses the Jackson mapper to encode the object
+NOTE: the `link:null#method_encode[Json::encode]` uses the Jackson mapper to encode the object
 to Json.
 
 ==== Form submissions
 
-You can send http form submissions bodies with the `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.client.HttpRequest<T>.html#method_HttpRequest[sendForm]`
+You can send http form submissions bodies with the `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.client.HttpRequest.html#method_sendForm[sendForm]`
 variant.
 
 [source,php]
@@ -303,7 +303,7 @@ the `content-type` header to `multipart/form-data` instead
 ----
 
 If you want to upload files and send attributes, you can create a `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.multipart.MultipartForm.html[MultipartForm]` and
-use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.client.HttpRequest<T>.html#method_HttpRequest[sendMultipartForm]`.
+use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.client.HttpRequest.html#method_sendMultipartForm[sendMultipartForm]`.
 
 [source,php]
 ----
@@ -350,8 +350,8 @@ You can also write headers using putHeader
 
 === Reusing requests
 
-The `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.client.HttpRequest<T>.html#method_HttpRequest[send]` method can be called multiple times
-safely, making it very easy to configure and reuse `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.client.HttpRequest<T>.html[HttpRequest]` objects
+The `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.client.HttpRequest.html#method_send[send]` method can be called multiple times
+safely, making it very easy to configure and reuse `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.client.HttpRequest.html[HttpRequest]` objects
 
 [source,php]
 ----
@@ -372,8 +372,8 @@ safely, making it very easy to configure and reuse `link:https://vertx.okou.tk/p
 
 ----
 
-Beware though that `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.client.HttpRequest<T>.html[HttpRequest]` instances are mutable.
-Therefore you should call the `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.client.HttpRequest<T>.html#method_HttpRequest[copy]` method before modifying a cached instance.
+Beware though that `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.client.HttpRequest.html[HttpRequest]` instances are mutable.
+Therefore you should call the `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.client.HttpRequest.html#method_copy[copy]` method before modifying a cached instance.
 
 [source,php]
 ----
@@ -396,7 +396,7 @@ Therefore you should call the `link:https://vertx.okou.tk/phpdoc/classes/io.vert
 
 === Timeouts
 
-You can set a timeout for a specific http request using `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.client.HttpRequest<T>.html#method_HttpRequest[timeout]`.
+You can set a timeout for a specific http request using `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.client.HttpRequest.html#method_timeout[timeout]`.
 
 [source,php]
 ----
@@ -416,7 +416,7 @@ handler.
 
 == Handling http responses
 
-When the web client sends a request you always deal with a single async result `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.client.HttpResponse<T>.html[HttpResponse]`.
+When the web client sends a request you always deal with a single async result `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.client.HttpResponse.html[HttpResponse]`.
 
 On a success result the callback happens after the response has been received
 
@@ -436,7 +436,7 @@ On a success result the callback happens after the response has been received
 
 ----
 
-WARNING: responses are fully buffered, use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.codec.BodyCodec<T>.html#method_BodyCodec[BodyCodec::pipe]`
+WARNING: responses are fully buffered, use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.codec.BodyCodec.html#method_pipe[BodyCodec::pipe]`
 to pipe the response to a write stream
 
 === Decoding responses
@@ -444,17 +444,17 @@ to pipe the response to a write stream
 By default the web client provides an http response body as a {@code Buffer} and does not apply
 any decoding.
 
-Custom response body decoding can be achieved using `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.codec.BodyCodec<T>.html[BodyCodec]`:
+Custom response body decoding can be achieved using `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.codec.BodyCodec.html[BodyCodec]`:
 
 * Plain String
 * Json object
 * Json mapped POJO
-* `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.streams.WriteStream<T>.html[WriteStream]`
+* `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.streams.WriteStream.html[WriteStream]`
 
 A body codec can decode an arbitrary binary data stream into a specific object instance, saving you the decoding
 step in your response handlers.
 
-Use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.codec.BodyCodec<T>.html#method_BodyCodec[BodyCodec::jsonObject]` To decode a Json object:
+Use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.codec.BodyCodec.html#method_jsonObject[BodyCodec::jsonObject]` To decode a Json object:
 
 [source,php]
 ----
@@ -494,8 +494,8 @@ In Java, Groovy or Kotlin, custom Json mapped POJO can be decoded
 
 ----
 
-When large response are expected, use the `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.codec.BodyCodec<T>.html#method_BodyCodec[BodyCodec::pipe]`.
-This body codec pumps the response body buffers to a `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.streams.WriteStream<T>.html[WriteStream]`
+When large response are expected, use the `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.codec.BodyCodec.html#method_pipe[BodyCodec::pipe]`.
+This body codec pumps the response body buffers to a `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.streams.WriteStream.html[WriteStream]`
 and signals the success or the failure of the operation in the async result response
 
 [source,php]
@@ -515,7 +515,7 @@ and signals the success or the failure of the operation in the async result resp
 
 ----
 
-Finally if you are not interested at all by the response content, the `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.codec.BodyCodec<T>.html#method_BodyCodec[BodyCodec::none]`
+Finally if you are not interested at all by the response content, the `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.codec.BodyCodec.html#method_none[BodyCodec::none]`
 simply discards the entire response body
 
 [source,php]

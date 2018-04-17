@@ -47,11 +47,11 @@ describe options and arguments:
 ----
 
 As you can see, you can create a new `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.cli.CLI.html[CLI]` using
-`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.cli.CLI.html#method_CLI[CLI::create]`. The passed string is the name of the CLI. Once created you
+`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.cli.CLI.html#method_create[CLI::create]`. The passed string is the name of the CLI. Once created you
 can set the summary and description. The summary is intended to be short (one line), while the description can
 contain more details. Each option and argument are also added on the {@code CLI} object using the
-`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.cli.CLI.html#method_CLI[addArgument]`and
-`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.cli.CLI.html#method_CLI[addOption]`methods.
+`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.cli.CLI.html#method_addArgument[addArgument]`and
+`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.cli.CLI.html#method_addOption[addOption]`methods.
 
 ==== Options
 
@@ -59,8 +59,8 @@ An `link:../enums.adoc#Option[Option]` is a command line parameter identified by
 line. Options must have at least a long name or a short name. Long name are generally used using a `--` prefix,
 while short names are used with a single `-`. Options can get a description displayed in the usage (see below).
 Options can receive 0, 1 or several values. An option receiving 0 values is a `flag`, and must be declared using
-`link:../enums.adoc#Option#method_Option[setFlag]`. By default, options receive a single value, however, you can
-configure the option to receive several values using `link:../enums.adoc#Option#method_Option[setMultiValued]`:
+`link:../enums.adoc#Option#method_setFlag[setFlag]`. By default, options receive a single value, however, you can
+configure the option to receive several values using `link:../enums.adoc#Option#method_setMultiValued[setMultiValued]`:
 
 [source,php]
 ----
@@ -114,7 +114,7 @@ the command line:
 
 ----
 
-An option can be _hidden_ using the `link:../enums.adoc#Option#method_Option[setHidden]` method. Hidden option are
+An option can be _hidden_ using the `link:../enums.adoc#Option#method_setHidden[setHidden]` method. Hidden option are
 not listed in the usage, but can still be used in the user command line (for power-users).
 
 If the option value is contrained to a fixed set, you can set the different acceptable choices:
@@ -182,10 +182,10 @@ The `argName` is optional and used in the usage message.
 
 As options, `link:../enums.adoc#Argument[Argument]` can:
 
-* be hidden using `link:../enums.adoc#Argument#method_Argument[setHidden]`
-* be mandatory using `link:../enums.adoc#Argument#method_Argument[setRequired]`
-* have a default value using `link:../enums.adoc#Argument#method_Argument[setDefaultValue]`
-* receive several values using `link:../enums.adoc#Argument#method_Argument[setMultiValued]` - only the last argument
+* be hidden using `link:../enums.adoc#Argument#method_setHidden[setHidden]`
+* be mandatory using `link:../enums.adoc#Argument#method_setRequired[setRequired]`
+* have a default value using `link:../enums.adoc#Argument#method_setDefaultValue[setDefaultValue]`
+* receive several values using `link:../enums.adoc#Argument#method_setMultiValued[setMultiValued]` - only the last argument
 can be multi-valued.
 
 Arguments can also be instantiated from their JSON form.
@@ -243,19 +243,19 @@ each option and argument:
 
 ----
 
-The `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.cli.CLI.html#method_CLI[parse]` method returns a `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.cli.CommandLine.html[CommandLine]`
+The `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.cli.CLI.html#method_parse[parse]` method returns a `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.cli.CommandLine.html[CommandLine]`
 object containing the values. By default, it validates the user command line and checks that each mandatory options
 and arguments have been set as well as the number of values received by each option. You can disable the
-validation by passing `false` as second parameter of `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.cli.CLI.html#method_CLI[parse]`.
+validation by passing `false` as second parameter of `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.cli.CLI.html#method_parse[parse]`.
 This is useful if you want to check an argument or option is present even if the parsed command line is invalid.
 
 You can check whether or not the
-`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.cli.CommandLine.html[CommandLine]`is valid using `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.cli.CommandLine.html#method_CommandLine[isValid]`.
+`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.cli.CommandLine.html[CommandLine]`is valid using `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.cli.CommandLine.html#method_isValid[isValid]`.
 
 === Query / Interrogation Stage
 
 Once parsed, you can retrieve the values of the options and arguments from the
-`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.cli.CommandLine.html[CommandLine]`object returned by the `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.cli.CLI.html#method_CLI[parse]`
+`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.cli.CommandLine.html[CommandLine]`object returned by the `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.cli.CLI.html#method_parse[parse]`
 method:
 
 [source,php]

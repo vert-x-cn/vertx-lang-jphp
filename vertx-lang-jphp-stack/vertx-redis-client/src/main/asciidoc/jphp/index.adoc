@@ -96,8 +96,8 @@ password and/or database id to the config object, the properties names are:
 * `auth`
 * `select`
 
-If you do not do this and manually call the `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.redis.RedisClient.html#method_RedisClient[auth]`
-or `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.redis.RedisClient.html#method_RedisClient[select]` then the client will not know how to recover
+If you do not do this and manually call the `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.redis.RedisClient.html#method_auth[auth]`
+or `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.redis.RedisClient.html#method_select[select]` then the client will not know how to recover
 the connection in case of socket error.
 
 == Running commands

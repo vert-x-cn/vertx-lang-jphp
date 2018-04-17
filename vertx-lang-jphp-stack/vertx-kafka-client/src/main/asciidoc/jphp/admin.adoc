@@ -11,7 +11,7 @@ but not this wrapper, includes Partition Management, Broker Configuration manage
 
 === Create a topic
 
-You can call `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.kafka.admin.AdminUtils.html#method_AdminUtils[createTopic]` to create a topic.
+You can call `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.kafka.admin.AdminUtils.html#method_createTopic[createTopic]` to create a topic.
 Parameters are: topic name, number of partitions, number of replicas, and the usual callback to handle the result.
 It might return an error, e.g. if the number of requested replicas is greater than the number of brokers.
 
@@ -32,7 +32,7 @@ It might return an error, e.g. if the number of requested replicas is greater th
 
 === Delete a topic
 
-You can call `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.kafka.admin.AdminUtils.html#method_AdminUtils[deleteTopic]` to delete a topic.
+You can call `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.kafka.admin.AdminUtils.html#method_deleteTopic[deleteTopic]` to delete a topic.
 Parameters are: topic name, and the usual callback to handle the result.
 It might return an error, e.g. if the topic does not exist.
 
@@ -54,7 +54,7 @@ It might return an error, e.g. if the topic does not exist.
 === Change a topic's configuration
 
 If you need to update the configuration of a topic, e.g., you want to update the retention policy,
-you can call `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.kafka.admin.AdminUtils.html#method_AdminUtils[changeTopicConfig]` to update a topic.
+you can call `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.kafka.admin.AdminUtils.html#method_changeTopicConfig[changeTopicConfig]` to update a topic.
 Parameters are: topic name, a Map (String -> String) with parameters to be changed,
 and the usual callback to handle the result.
 It might return an error, e.g. if the topic does not exist.
@@ -79,7 +79,7 @@ It might return an error, e.g. if the topic does not exist.
 
 === Check if a topic exists
 
-If you want to check if a topic exists, you can call `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.kafka.admin.AdminUtils.html#method_AdminUtils[topicExists]`.
+If you want to check if a topic exists, you can call `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.kafka.admin.AdminUtils.html#method_topicExists[topicExists]`.
 Parameters are: topic name, and the usual callback to handle the result.
 It might return an error, e.g. if the topic does not exist.
 

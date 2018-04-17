@@ -42,9 +42,9 @@ Once you've got one of those you can create a `link:https://vertx.okou.tk/phpdoc
 Once you've got your instance you can authenticate and authorise with it just like any `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.auth.AuthProvider.html[AuthProvider]`.
 
 The out of the box config assumes certain queries for authentication and authorisation, these can easily be changed
-with the operations `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.auth.jdbc.JDBCAuth.html#method_JDBCAuth[setAuthenticationQuery]`,
-`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.auth.jdbc.JDBCAuth.html#method_JDBCAuth[setPermissionsQuery]`and
-`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.auth.jdbc.JDBCAuth.html#method_JDBCAuth[setRolesQuery]`, if you want to use them with a different
+with the operations `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.auth.jdbc.JDBCAuth.html#method_setAuthenticationQuery[setAuthenticationQuery]`,
+`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.auth.jdbc.JDBCAuth.html#method_setPermissionsQuery[setPermissionsQuery]`and
+`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.auth.jdbc.JDBCAuth.html#method_setRolesQuery[setRolesQuery]`, if you want to use them with a different
 database schema.
 
 The default implementation assumes that the password is stored in the database as a SHA-512 hash after being
@@ -88,7 +88,7 @@ WARNING: If you already have a running application switching the strategies will
 passwords, so you will need to migrate the passwords from one algorithm to the second.
 
 If you want to override this behaviour you can do so by providing an alternative hash strategy and setting it with
-`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.auth.jdbc.JDBCAuth.html#method_JDBCAuth[setHashStrategy]`.
+`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.auth.jdbc.JDBCAuth.html#method_setHashStrategy[setHashStrategy]`.
 
 WARNING: It is advised to always store your passwords as hashes in your database tables which have been created
 with a salt which should be stored in the row too. A strong hashing algorithm should be used. It is strongly advised
@@ -248,7 +248,7 @@ implementation assumes a familiar user/role/permission model, where a user can h
 can have zero or more permissions.
 
 If validating if a user has a particular permission simply pass the permission into.
-`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.auth.User.html#method_User[isAuthorised]`as follows:
+`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.auth.User.html#method_isAuthorised[isAuthorised]`as follows:
 
 [source,php]
 ----
@@ -282,7 +282,7 @@ If validating that a user has a particular _role_ then you should prefix the arg
 
 ----
 
-The default role prefix is `role:`. You can change this with `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.auth.jdbc.JDBCAuth.html#method_JDBCAuth[setRolePrefix]`.
+The default role prefix is `role:`. You can change this with `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.auth.jdbc.JDBCAuth.html#method_setRolePrefix[setRolePrefix]`.
 
 @author <a href="mailto:julien@julienviet.com">Julien Viet</a>
 @author <a href="http://tfox.org">Tim Fox</a>

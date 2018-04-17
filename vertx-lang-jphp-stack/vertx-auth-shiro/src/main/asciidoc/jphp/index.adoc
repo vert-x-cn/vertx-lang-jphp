@@ -75,7 +75,7 @@ implementation uses a familiar user/role/permission model, where a user can have
 can have zero or more permissions.
 
 If validating if a user has a particular permission simply pass the permission into.
-`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.auth.User.html#method_User[isAuthorised]`as follows:
+`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.auth.User.html#method_isAuthorised[isAuthorised]`as follows:
 
 [source,java]
 ----
@@ -108,7 +108,7 @@ If validating that a user has a particular _role_ then you should prefix the arg
 
 ----
 
-The default role prefix is `role:`. You can change this with `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.auth.shiro.ShiroAuth.html#method_ShiroAuth[setRolePrefix]`.
+The default role prefix is `role:`. You can change this with `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.auth.shiro.ShiroAuth.html#method_setRolePrefix[setRolePrefix]`.
 
 === The Shiro properties auth provider
 
@@ -116,7 +116,7 @@ This auth provider implementation uses Apache Shiro to get user/role/permission 
 
 Note that roles are not available directly on the API due to the fact that vertx-auth tries to be as portable as
 possible. However one can run assertions on role by using the prefix `role:` or by specifying the prefered prefix
-with `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.auth.shiro.ShiroAuth.html#method_ShiroAuth[setRolePrefix]`.
+with `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.auth.shiro.ShiroAuth.html#method_setRolePrefix[setRolePrefix]`.
 
 The implementation will, by default, look for a file called `vertx-users.properties` on the classpath.
 

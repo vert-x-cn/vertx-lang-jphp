@@ -80,7 +80,7 @@ Code not translatable
 
 A procedure is a function checking some aspect of the system to deduce the current health. It reports a
 `link:../enums.adoc#Status[Status]`indicating whether or not the test has passed or failed. This function
-must not block and report to the given `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.Future<T>.html[Future]` whether or not it succeed.
+must not block and report to the given `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.Future.html[Future]` whether or not it succeed.
 
 When you register a procedure, you give a name, and the function (handler) executing the check.
 

@@ -179,7 +179,7 @@ For every request that is routed there is a unique routing context instance, and
 all handlers for that request.
 
 Once we've set up the handler, we set the request handler of the HTTP server to pass all incoming requests
-to `link:null#method_Handler[handle]`.
+to `link:null#method_handle[handle]`.
 
 So, that's the basics. Now we'll look at things in more detail:
 
@@ -188,10 +188,10 @@ So, that's the basics. Now we'll look at things in more detail:
 When Vert.x-Web decides to route a request to a matching route, it calls the handler of the route passing in an instance
 of `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.RoutingContext.html[RoutingContext]`.
 
-If you don't end the response in your handler, you should call `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.RoutingContext.html#method_RoutingContext[next]` so another
+If you don't end the response in your handler, you should call `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.RoutingContext.html#method_next[next]` so another
 matching route can handle the request (if any).
 
-You don't have to call `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.RoutingContext.html#method_RoutingContext[next]` before the handler has finished executing.
+You don't have to call `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.RoutingContext.html#method_next[next]` before the handler has finished executing.
 You can do this some time later, if you want:
 
 [source,php]
@@ -252,7 +252,7 @@ You can't do that in a normal handler, so we provide the ability to set blocking
 A blocking handler looks just like a normal handler but it's called by Vert.x using a thread from the worker pool
 not using an event loop.
 
-You set a blocking handler on a route with `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.Route.html#method_Route[blockingHandler]`.
+You set a blocking handler on a route with `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.Route.html#method_blockingHandler[blockingHandler]`.
 Here's an example:
 
 [source,php]
@@ -274,7 +274,7 @@ Here's an example:
 By default, any blocking handlers executed on the same context (e.g. the same verticle instance) are _ordered_ - this
 means the next one won't be executed until the previous one has completed. If you don't care about orderering and
 don't mind your blocking handlers executing in parallel you can set the blocking handler specifying `ordered` as
-false using `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.Route.html#method_Route[blockingHandler]`.
+false using `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.Route.html#method_blockingHandler[blockingHandler]`.
 
 Note, if you need to process multipart form data from a blocking handler, you MUST use a non-blocking handler
      FIRST in order to call {@code setExpectMultipart(true)}. Here is an example:
@@ -369,7 +369,7 @@ With any path it can also be specified when creating the route:
 == Capturing path parameters
 
 It's possible to match paths using placeholders for parameters which are then available in the request
-`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.http.HttpServerRequest.html#method_HttpServerRequest[params]`.
+`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.http.HttpServerRequest.html#method_params[params]`.
 
 Here's an example
 
@@ -499,7 +499,7 @@ Additionally, you can still access group parameters as you would with normal gro
 
 By default a route will match all HTTP methods.
 
-If you want a route to only match for a specific HTTP method you can use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.Route.html#method_Route[method]`
+If you want a route to only match for a specific HTTP method you can use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.Route.html#method_method[method]`
 
 [source,php]
 ----
@@ -533,8 +533,8 @@ Or you can specify this with a path when creating the route:
 
 ----
 
-If you want to route for a specific HTTP method you can also use the methods such as `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.Router.html#method_Router[get]`,
-`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.Router.html#method_Router[post]`and `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.Router.html#method_Router[put]` named after the HTTP
+If you want to route for a specific HTTP method you can also use the methods such as `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.Router.html#method_get[get]`,
+`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.Router.html#method_post[post]`and `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.Router.html#method_put[put]` named after the HTTP
 method name. For example:
 
 [source,php]
@@ -566,7 +566,7 @@ method name. For example:
 
 ----
 
-If you want to specify a route will match for more than HTTP method you can call `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.Route.html#method_Route[method]`
+If you want to specify a route will match for more than HTTP method you can call `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.Route.html#method_method[method]`
 multiple times:
 
 [source,php]
@@ -591,7 +591,7 @@ By default routes are matched in the order they are added to the router.
 When a request arrives the router will step through each route and check if it matches, if it matches then
 the handler for that route will be called.
 
-If the handler subsequently calls `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.RoutingContext.html#method_RoutingContext[next]` the handler for the next
+If the handler subsequently calls `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.RoutingContext.html#method_next[next]` the handler for the next
 matching route (if any) will be called. And so on.
 
 Here's an example to illustrate this:
@@ -645,7 +645,7 @@ route3
 
 As the routes have been called in that order for any request that starts with `/some/path`.
 
-If you want to override the default ordering for routes, you can do so using `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.Route.html#method_Route[order]`,
+If you want to override the default ordering for routes, you can do so using `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.Route.html#method_order[order]`,
 specifying an integer value.
 
 Routes are assigned an order at creation time corresponding to the order in which they were added to the router, with
@@ -707,14 +707,14 @@ route3
 
 If two matching routes have the same value of order, then they will be called in the order they were added.
 
-You can also specify that a route is handled last, with `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.Route.html#method_Route[last]`
+You can also specify that a route is handled last, with `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.Route.html#method_last[last]`
 
 == Routing based on MIME type of request
 
-You can specify that a route will match against matching request MIME types using `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.Route.html#method_Route[consumes]`.
+You can specify that a route will match against matching request MIME types using `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.Route.html#method_consumes[consumes]`.
 
 In this case, the request will contain a `content-type` header specifying the MIME type of the request body.
-This will be matched against the value specified in `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.Route.html#method_Route[consumes]`.
+This will be matched against the value specified in `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.Route.html#method_consumes[consumes]`.
 
 Basically, `consumes` is describing which MIME types the handler can _consume_.
 
@@ -809,7 +809,7 @@ Accept: text/plain; q=0.9, text/html
 
 If the server can provide both text/plain and text/html it should provide the text/html in this case.
 
-By using `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.Route.html#method_Route[produces]` you define which MIME type(s) the route produces, e.g. the
+By using `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.Route.html#method_produces[produces]` you define which MIME type(s) the route produces, e.g. the
 following handler produces a response with MIME type `application/json`.
 
 [source,java]
@@ -836,7 +836,7 @@ Accept: application/json, text/html
 Accept: application/json;q=0.7, text/html;q=0.8, text/plain
 
 You can also mark your route as producing more than one MIME type. If this is the case, then you use
-`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.RoutingContext.html#method_RoutingContext[getAcceptableContentType]`to find out the actual MIME type that
+`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.RoutingContext.html#method_getAcceptableContentType[getAcceptableContentType]`to find out the actual MIME type that
 was accepted.
 
 [source,php]
@@ -887,9 +887,9 @@ You can combine all the above routing criteria in many different ways, for examp
 
 == Enabling and disabling routes
 
-You can disable a route with `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.Route.html#method_Route[disable]`. A disabled route will be ignored when matching.
+You can disable a route with `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.Route.html#method_disable[disable]`. A disabled route will be ignored when matching.
 
-You can re-enable a disabled route with `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.Route.html#method_Route[enable]`
+You can re-enable a disabled route with `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.Route.html#method_enable[enable]`
 
 == Context data
 
@@ -898,8 +898,8 @@ want to share between handlers for the lifetime of the request.
 
 Here's an example where one handler sets some data in the context data and a subsequent handler retrieves it:
 
-You can use the `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.RoutingContext.html#method_RoutingContext[put]` to put any object, and
-`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.RoutingContext.html#method_RoutingContext[get]`to retrieve any object from the context data.
+You can use the `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.RoutingContext.html#method_put[put]` to put any object, and
+`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.RoutingContext.html#method_get[get]`to retrieve any object from the context data.
 
 A request sent to path `/some/path/other` will match both routes.
 
@@ -1109,9 +1109,9 @@ locale for a client or the sorted list of preferred locales by quality.
 
 ----
 
-The main method `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.RoutingContext.html#method_RoutingContext[acceptableLocales]` will return the ordered list of locales the
+The main method `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.RoutingContext.html#method_acceptableLocales[acceptableLocales]` will return the ordered list of locales the
 user understands, if you're only interested in the user prefered locale then the helper:
-`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.RoutingContext.html#method_RoutingContext[preferredLocale]`will return the 1st element of the list or `null` if no
+`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.RoutingContext.html#method_preferredLocale[preferredLocale]`will return the 1st element of the list or `null` if no
 locale was provided by the user.
 
 == Default 404 Handling
@@ -1151,7 +1151,7 @@ to paths that start with `/somepath/`:
 ----
 
 Failure routing will occur if a handler throws an exception, or if a handler calls
-`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.RoutingContext.html#method_RoutingContext[fail]`specifying an HTTP status code to deliberately signal a failure.
+`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.RoutingContext.html#method_fail[fail]`specifying an HTTP status code to deliberately signal a failure.
 
 If an exception is caught from a handler this will result in a failure with status code `500` being signalled.
 
@@ -1226,13 +1226,13 @@ to install handlers to consume the HTTP request body and this must be done befor
 
 === Getting the request body
 
-If you know the request body is JSON, then you can use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.RoutingContext.html#method_RoutingContext[getBodyAsJson]`,
-if you know it's a string you can use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.RoutingContext.html#method_RoutingContext[getBodyAsString]`, or to
-retrieve it as a buffer use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.RoutingContext.html#method_RoutingContext[getBody]`.
+If you know the request body is JSON, then you can use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.RoutingContext.html#method_getBodyAsJson[getBodyAsJson]`,
+if you know it's a string you can use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.RoutingContext.html#method_getBodyAsString[getBodyAsString]`, or to
+retrieve it as a buffer use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.RoutingContext.html#method_getBody[getBody]`.
 
 === Limiting body size
 
-To limit the size of a request body, create the body handler then use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.handler.BodyHandler.html#method_BodyHandler[setBodyLimit]`
+To limit the size of a request body, create the body handler then use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.handler.BodyHandler.html#method_setBodyLimit[setBodyLimit]`
 to specifying the maximum body size, in bytes. This is useful to avoid running out of memory with very large bodies.
 
 If an attempt to send a body greater than the maximum size is made, an HTTP status code of 413 - `Request Entity Too Large`,
@@ -1243,7 +1243,7 @@ There is no body limit by default.
 === Merging form attributes
 
 By default, the body handler will merge any form attributes into the request parameters. If you don't want this behaviour
-you can use disable it with `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.handler.BodyHandler.html#method_BodyHandler[setMergeFormAttributes]`.
+you can use disable it with `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.handler.BodyHandler.html#method_setMergeFormAttributes[setMergeFormAttributes]`.
 
 === Handling file uploads
 
@@ -1253,7 +1253,7 @@ If a body handler is on a matching route for the request, any file uploads will 
 uploads directory, which is `file-uploads` by default.
 
 Each file will be given an automatically generated file name, and the file uploads will be available on the routing
-context with `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.RoutingContext.html#method_RoutingContext[fileUploads]`.
+context with `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.RoutingContext.html#method_fileUploads[fileUploads]`.
 
 Here's an example:
 
@@ -1295,12 +1295,12 @@ You should make sure a cookie handler is on a matching route for any requests th
 
 === Manipulating cookies
 
-You use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.RoutingContext.html#method_RoutingContext[getCookie]` to retrieve
-a cookie by name, or use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.RoutingContext.html#method_RoutingContext[cookies]` to retrieve the entire set.
+You use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.RoutingContext.html#method_getCookie[getCookie]` to retrieve
+a cookie by name, or use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.RoutingContext.html#method_cookies[cookies]` to retrieve the entire set.
 
-To remove a cookie, use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.RoutingContext.html#method_RoutingContext[removeCookie]`.
+To remove a cookie, use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.RoutingContext.html#method_removeCookie[removeCookie]`.
 
-To add a cookie use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.RoutingContext.html#method_RoutingContext[addCookie]`.
+To add a cookie use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.RoutingContext.html#method_addCookie[addCookie]`.
 
 The set of cookies will be written back in the response automatically when the response headers are written so the
 browser can store them.
@@ -1389,7 +1389,7 @@ requests might end up on a server which doesn't know about your session.
 Local session stores are implemented by using a shared local map, and have a reaper which clears out expired sessions.
 
 The reaper interval can be configured with
-`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.sstore.LocalSessionStore.html#method_LocalSessionStore[LocalSessionStore::create]`.
+`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.sstore.LocalSessionStore.html#method_create[LocalSessionStore::create]`.
 
 Here are some examples of creating a `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.sstore.LocalSessionStore.html[LocalSessionStore]`
 
@@ -1499,11 +1499,11 @@ from the session store and set on the routing context before it gets to your app
 
 === Using the session
 
-In your handlers you can access the session instance with `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.RoutingContext.html#method_RoutingContext[session]`.
+In your handlers you can access the session instance with `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.RoutingContext.html#method_session[session]`.
 
-You put data into the session with `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.Session.html#method_Session[put]`,
-you get data from the session with `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.Session.html#method_Session[get]`, and you remove
-data from the session with `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.Session.html#method_Session[remove]`.
+You put data into the session with `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.Session.html#method_put[put]`,
+you get data from the session with `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.Session.html#method_get[get]`, and you remove
+data from the session with `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.Session.html#method_remove[remove]`.
 
 The keys for items in the session are always strings. The values can be any type for a local session store, and for
 a clustered session store they can be any basic type, or `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.buffer.Buffer.html[Buffer]`, `JsonObject`,
@@ -1540,7 +1540,7 @@ Here's an example of manipulating session data:
 
 Sessions are automatically written back to the store after after responses are complete.
 
-You can manually destroy a session using `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.Session.html#method_Session[destroy]`. This will remove the session
+You can manually destroy a session using `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.Session.html#method_destroy[destroy]`. This will remove the session
 from the context and the session store. Note that if there is no session a new one will be automatically created
 for the next request from the browser that's routed through the session handler.
 
@@ -1552,7 +1552,7 @@ a session is timed out, it is removed from the store.
 Sessions are automatically marked as accessed when a request arrives and the session is looked up and and when the
 response is complete and the session is stored back in the store.
 
-You can also use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.Session.html#method_Session[setAccessed]` to manually mark a session as accessed.
+You can also use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.Session.html#method_setAccessed[setAccessed]` to manually mark a session as accessed.
 
 The session timeout can be configured when creating the session handler. Default timeout is 30 minutes.
 
@@ -1626,7 +1626,7 @@ your auth handler is before your application handlers on those paths:
 
 If the auth handler has successfully authenticated and authorised the user it will inject a `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.auth.User.html[User]`
 object into the `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.RoutingContext.html[RoutingContext]` so it's available in your handlers with:
-`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.RoutingContext.html#method_RoutingContext[user]`.
+`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.RoutingContext.html#method_user[user]`.
 
 If you want your User object to be stored in the session so it's available between requests so you don't have to
 authenticate on each request, then you should make sure you have a session handler and a user session handler on matching
@@ -1634,7 +1634,7 @@ routes before the auth handler.
 
 Once you have your user object you can also programmatically use the methods on it to authorise the user.
 
-If you want to cause the user to be logged out you can call `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.RoutingContext.html#method_RoutingContext[clearUser]`
+If you want to cause the user to be logged out you can call `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.RoutingContext.html#method_clearUser[clearUser]`
 on the routing context.
 
 === HTTP Basic Authentication
@@ -1969,12 +1969,12 @@ By default the static handler will set cache headers to enable browsers to effec
 Vert.x-Web sets the headers `cache-control`,`last-modified`, and `date`.
 
 `cache-control` is set to `max-age=86400` by default. This corresponds to one day. This can be configured with
-`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.handler.StaticHandler.html#method_StaticHandler[setMaxAgeSeconds]`if required.
+`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.handler.StaticHandler.html#method_setMaxAgeSeconds[setMaxAgeSeconds]`if required.
 
 If a browser sends a GET or a HEAD request with an `if-modified-since` header and the resource has not been modified
 since that date, a `304` status is returned which tells the browser to use its locally cached resource.
 
-If handling of cache headers is not required, it can be disabled with `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.handler.StaticHandler.html#method_StaticHandler[setCachingEnabled]`.
+If handling of cache headers is not required, it can be disabled with `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.handler.StaticHandler.html#method_setCachingEnabled[setCachingEnabled]`.
 
 When cache handling is enabled Vert.x-Web will cache the last modified date of resources in memory, this avoids a disk hit
 to check the actual last modified date every time.
@@ -1986,38 +1986,38 @@ If you know that your files never change on disk, then the cache entry will effe
 default.
 
 If you know that your files might change on disk when the server is running then you can set files read only to false with
-`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.handler.StaticHandler.html#method_StaticHandler[setFilesReadOnly]`.
+`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.handler.StaticHandler.html#method_setFilesReadOnly[setFilesReadOnly]`.
 
 To enable the maximum number of entries that can be cached in memory at any one time you can use
-`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.handler.StaticHandler.html#method_StaticHandler[setMaxCacheSize]`.
+`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.handler.StaticHandler.html#method_setMaxCacheSize[setMaxCacheSize]`.
 
-To configure the expiry time of cache entries you can use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.handler.StaticHandler.html#method_StaticHandler[setCacheEntryTimeout]`.
+To configure the expiry time of cache entries you can use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.handler.StaticHandler.html#method_setCacheEntryTimeout[setCacheEntryTimeout]`.
 
 === Configuring the index page
 
 Any requests to the root path `/` will cause the index page to be served. By default the index page is `index.html`.
-This can be configured with `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.handler.StaticHandler.html#method_StaticHandler[setIndexPage]`.
+This can be configured with `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.handler.StaticHandler.html#method_setIndexPage[setIndexPage]`.
 
 === Changing the web root
 
 By default static resources will be served from the directory `webroot`. To configure this use
-`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.handler.StaticHandler.html#method_StaticHandler[setWebRoot]`.
+`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.handler.StaticHandler.html#method_setWebRoot[setWebRoot]`.
 
 === Serving hidden files
 
 By default the serve will serve hidden files (files starting with `.`).
 
-If you do not want hidden files to be served you can configure it with `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.handler.StaticHandler.html#method_StaticHandler[setIncludeHidden]`.
+If you do not want hidden files to be served you can configure it with `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.handler.StaticHandler.html#method_setIncludeHidden[setIncludeHidden]`.
 
 === Directory listing
 
 The server can also perform directory listing. By default directory listing is disabled. To enabled it use
-`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.handler.StaticHandler.html#method_StaticHandler[setDirectoryListing]`.
+`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.handler.StaticHandler.html#method_setDirectoryListing[setDirectoryListing]`.
 
 When directory listing is enabled the content returned depends on the content type in the `accept` header.
 
 For `text/html` directory listing, the template used to render the directory listing page can be configured with
-`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.handler.StaticHandler.html#method_StaticHandler[setDirectoryTemplate]`.
+`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.handler.StaticHandler.html#method_setDirectoryTemplate[setDirectoryTemplate]`.
 
 === Disabling file caching on disk
 
@@ -2068,7 +2068,7 @@ Vert.x-Web includes dynamic page generation capabilities by including out of the
 engines. You can also easily add your own.
 
 Template engines are described by `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.templ.TemplateEngine.html[TemplateEngine]`. In order to render a template
-`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.templ.TemplateEngine.html#method_TemplateEngine[render]`is used.
+`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.templ.TemplateEngine.html#method_render[render]`is used.
 
 The simplest way to use templates is not to call the template engine directly but to use the
 `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.handler.TemplateHandler.html[TemplateHandler]`.
@@ -2160,7 +2160,7 @@ templates with the `.hbs` extension if no extension is specified in the file nam
 Handlebars templates are not able to call arbitrary methods in objects so we can't just pass the routing context
 into the template and let the template introspect it like we can with other template engines.
 
-Instead, the context `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.RoutingContext.html#method_RoutingContext[data]` is available in the template.
+Instead, the context `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.RoutingContext.html#method_data[data]` is available in the template.
 
 If you want to have access to other data like the request path, request params or session data you should
 add it the context data in a handler before the template handler. For example:
@@ -2371,7 +2371,7 @@ To avoid this situation, add the `ResponseContentTypeHandler` to the correspondi
 
 ----
 
-The handler gets the approriate content type from `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.RoutingContext.html#method_RoutingContext[getAcceptableContentType]`.
+The handler gets the approriate content type from `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.RoutingContext.html#method_getAcceptableContentType[getAcceptableContentType]`.
 As a consequence, you can easily share the same handler to produce data of different types:
 
 [source,php]
@@ -2412,7 +2412,7 @@ Please see the https://github.com/sockjs/sockjs-client[SockJS website] for more 
 Vert.x provides an out of the box handler called `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.handler.sockjs.SockJSHandler.html[SockJSHandler]` for
 using SockJS in your Vert.x-Web applications.
 
-You should create one handler per SockJS application using `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.handler.sockjs.SockJSHandler.html#method_SockJSHandler[SockJSHandler::create]`.
+You should create one handler per SockJS application using `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.handler.sockjs.SockJSHandler.html#method_create[SockJSHandler::create]`.
 You can also specify configuration options when creating the instance. The configuration options are described with
 an instance of `link:../enums.adoc#SockJSHandlerOptions[SockJSHandlerOptions]`.
 
@@ -2441,8 +2441,8 @@ this will be called every time a SockJS connection is made from a client:
 
 The object passed into the handler is a `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.handler.sockjs.SockJSSocket.html[SockJSSocket]`. This has a familiar
 socket-like interface which you can read and write to similarly to a `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.net.NetSocket.html[NetSocket]` or
-a `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.http.WebSocket.html[WebSocket]`. It also implements `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.streams.ReadStream<T>.html[ReadStream]` and
-`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.streams.WriteStream<T>.html[WriteStream]`so you can pump it to and from other read and write streams.
+a `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.http.WebSocket.html[WebSocket]`. It also implements `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.streams.ReadStream.html[ReadStream]` and
+`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.streams.WriteStream.html[WriteStream]`so you can pump it to and from other read and write streams.
 
 Here's an example of a simple SockJS handler that simply echoes back any back any data that it reads:
 
@@ -2547,7 +2547,7 @@ A special SockJS socket handler is then installed on the `link:https://vertx.oko
 handles the SockJS data and bridges it to and from the server side event bus.
 
 To activate the bridge you simply call
-`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.handler.sockjs.SockJSHandler.html#method_SockJSHandler[bridge]`on the
+`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.handler.sockjs.SockJSHandler.html#method_bridge[bridge]`on the
 SockJS handler.
 
 [source,php]
@@ -2686,11 +2686,11 @@ You can specify which _matches_ you want to allow for inbound and outbound traff
 
 Each match is a `link:../enums.adoc#PermittedOptions[PermittedOptions]` object:
 
-`link:../enums.adoc#PermittedOptions#method_PermittedOptions[setAddress]`:: This represents the exact address the message is being sent to. If you want to allow messages based on
+`link:../enums.adoc#PermittedOptions#method_setAddress[setAddress]`:: This represents the exact address the message is being sent to. If you want to allow messages based on
 an exact address you use this field.
-`link:../enums.adoc#PermittedOptions#method_PermittedOptions[setAddressRegex]`:: This is a regular expression that will be matched against the address. If you want to allow messages
+`link:../enums.adoc#PermittedOptions#method_setAddressRegex[setAddressRegex]`:: This is a regular expression that will be matched against the address. If you want to allow messages
 based on a regular expression you use this field. If the `address` field is specified this field will be ignored.
-`link:../enums.adoc#PermittedOptions#method_PermittedOptions[setMatch]`:: This allows you to allow messages based on their structure. Any fields in the match must exist in the
+`link:../enums.adoc#PermittedOptions#method_setMatch[setMatch]`:: This allows you to allow messages based on their structure. Any fields in the match must exist in the
 message with the same values for them to be allowed. This currently only works with JSON messages.
 
 If a message is _in-bound_ (i.e. being sent from client side JavaScript to the server) when it is received Vert.x-Web
@@ -2786,7 +2786,7 @@ To do this, you can add extra fields to the match described in the previous sect
 required for the match.
 
 To declare that a specific authority for the logged-in user is required in order to access allow the messages you use the
-`link:../enums.adoc#PermittedOptions#method_PermittedOptions[setRequiredAuthority]`field.
+`link:../enums.adoc#PermittedOptions#method_setRequiredAuthority[setRequiredAuthority]`field.
 
 Here's an example:
 
@@ -2859,7 +2859,7 @@ To handle the login and actually auth you can configure the normal Vert.x auth h
 === Handling event bus bridge events
 
 If you want to be notified when an event occurs on the bridge you can provide a handler when calling
-`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.handler.sockjs.SockJSHandler.html#method_SockJSHandler[bridge]`.
+`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.handler.sockjs.SockJSHandler.html#method_bridge[bridge]`.
 
 Whenever an event occurs on the bridge it will be passed to the handler. The event is described by an instance of
 `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.handler.sockjs.BridgeEvent.html[BridgeEvent]`.
@@ -2876,8 +2876,8 @@ RECEIVE:: This event will occur when a message is attempted to be delivered from
 REGISTER:: This event will occur when a client attempts to register a handler.
 UNREGISTER:: This event will occur when a client attempts to unregister a handler.
 
-The event enables you to retrieve the type using `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.bridge.BaseBridgeEvent.html#method_BaseBridgeEvent[type]` and
-inspect the raw message of the event using `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.bridge.BaseBridgeEvent.html#method_BaseBridgeEvent[getRawMessage]`.
+The event enables you to retrieve the type using `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.bridge.BaseBridgeEvent.html#method_type[type]` and
+inspect the raw message of the event using `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.bridge.BaseBridgeEvent.html#method_getRawMessage[getRawMessage]`.
 
 The raw message is a JSON object with the following structure:
 
@@ -2889,7 +2889,7 @@ The raw message is a JSON object with the following structure:
 }
 ----
 
-The event is also an instance of `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.Future<T>.html[Future]`. When you are finished handling the event you can
+The event is also an instance of `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.Future.html[Future]`. When you are finished handling the event you can
 complete the future with `true` to enable further processing.
 
 If you don't want the event to be processed you can complete the future with `false`. This is a useful feature that
