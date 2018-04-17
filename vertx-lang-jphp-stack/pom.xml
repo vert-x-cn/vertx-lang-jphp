@@ -197,7 +197,7 @@
                                 <optionMap>
                                     <outputDirectory>${project.basedir}/src/main</outputDirectory>
                                     <docgen.source>${project.build.directory}/sources/vertx/*.adoc</docgen.source>
-                                    <docgen.output>${asciidoc.dir}/php</docgen.output>
+                                    <docgen.output>${asciidoc.dir}/jphp</docgen.output>
                                 </optionMap>
                                 <sourceDirectory>${project.build.directory}/sources/vertx</sourceDirectory>
                             </configuration>
@@ -231,7 +231,7 @@
                                 </processors>
                                 <optionMap>
                                     <outputDirectory>${project.basedir}/src/main</outputDirectory>
-                                    <docgen.output>${asciidoc.dir}/php</docgen.output>
+                                    <docgen.output>${asciidoc.dir}/jphp</docgen.output>
                                     <maven.groupId>${project.groupId}</maven.groupId>
                                     <maven.artifactId>${project.artifactId}</maven.artifactId>
                                     <maven.version>${project.version}</maven.version>
@@ -252,12 +252,13 @@
                                 </processors>
                                 <optionMap>
                                     <outputDirectory>${project.basedir}/src/main</outputDirectory>
-                                    <docgen.output>${asciidoc.dir}/php</docgen.output>
+                                    <docgen.source>${project.basedir}/src/main/docoverride/*.adoc</docgen.source>
+                                    <docgen.output>${asciidoc.dir}/jphp</docgen.output>
                                     <maven.groupId>${project.groupId}</maven.groupId>
                                     <maven.artifactId>${project.artifactId}</maven.artifactId>
                                     <maven.version>${project.version}</maven.version>
                                 </optionMap>
-                                <sourceDirectory>${project.basedir}/src/main/docoverride</sourceDirectory>
+                                <sourceDirectory>${project.build.directory}/sources/vertx</sourceDirectory>
                             </configuration>
                         </execution>
                     </executions>
