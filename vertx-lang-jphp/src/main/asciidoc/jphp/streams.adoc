@@ -27,7 +27,7 @@ async files I/O, WebSockets, etc.
 A naive way to do this would be to directly take the data that has been read and immediately write it
 to the `NetSocket`:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $server = $vertx->createNetServer(array(
@@ -51,7 +51,7 @@ wasn't reading fast enough, effectively putting back-pressure on the connection.
 Since `NetSocket` implements `WriteStream`, we can check if the `WriteStream` is full before
 writing to it:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $server = $vertx->createNetServer(array(
@@ -72,7 +72,7 @@ writing to it:
 This example won't run out of RAM but we'll end up losing data if the write queue gets full. What we
 really want to do is pause the `NetSocket` when the write queue is full:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $server = $vertx->createNetServer(array(
@@ -93,7 +93,7 @@ really want to do is pause the `NetSocket` when the write queue is full:
 We're almost there, but not quite. The `NetSocket` now gets paused when the file is full, but we also need to unpause
 it when the write queue has processed its backlog:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $server = $vertx->createNetServer(array(
@@ -122,7 +122,7 @@ Wanting to do this is quite common while writing Vert.x applications, so we prov
 called `link:../../apidocs/io/vertx/core/streams/Pump.html[Pump]` that does all of this hard work for you.
 You just feed it the `ReadStream` plus the `WriteStream` then start it:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     use io\vertx\jphp\core\streams\Pump;

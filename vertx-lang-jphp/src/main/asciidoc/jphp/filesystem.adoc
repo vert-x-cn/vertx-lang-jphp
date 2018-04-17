@@ -9,7 +9,7 @@ which is called when the operation completes or an error occurs.
 
 Here's an example of an asynchronous copy of a file:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $fs = $vertx->fileSystem();
@@ -31,7 +31,7 @@ particular application before using them from an event loop, so as not to break 
 
 Here's the copy using the blocking API:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $fs = $vertx->fileSystem();
@@ -46,7 +46,7 @@ please consult the `link:../../apidocs/io/vertx/core/file/FileSystem.html[API do
 
 Let's see a couple of examples using asynchronous methods:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     use io\vertx\jphp\core\Vertx;
@@ -99,7 +99,7 @@ Vert.x provides an asynchronous file abstraction that allows you to manipulate a
 
 You open an `link:../../apidocs/io/vertx/core/file/AsyncFile.html[AsyncFile]` as follows:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $options = array(
@@ -133,7 +133,7 @@ of the file, the file will be enlarged to accommodate the offset.
 
 Here is an example of random access writes:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     use io\vertx\jphp\core\Vertx;
@@ -177,7 +177,7 @@ The parameters to the method are:
 
 Here's an example of random access reads:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     use io\vertx\jphp\core\Vertx;
@@ -232,7 +232,7 @@ This method can also be called with an handler which will be called when the flu
 use them with a _pump_ to pump data to and from other read and write streams. For example, this would
 copy the content to another `AsyncFile`:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     use io\vertx\jphp\core\Vertx;

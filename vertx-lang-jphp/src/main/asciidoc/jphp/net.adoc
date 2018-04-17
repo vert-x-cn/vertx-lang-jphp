@@ -6,7 +6,7 @@ Vert.x allows you to easily write non blocking TCP clients and servers.
 
 The simplest way to create a TCP server, using all default options is as follows:
 
-[source,jphp]
+[source,php]
 ----
 <?php
 
@@ -19,7 +19,7 @@ The simplest way to create a TCP server, using all default options is as follows
 If you don't want the default, a server can be configured by passing in a `link:../../apidocs/io/vertx/core/net/NetServerOptions.html[NetServerOptions]`
 instance when creating it:
 
-[source,jphp]
+[source,php]
 ----
 <?php
 
@@ -37,7 +37,7 @@ alternatives.
 
 To tell the server to listen at the host and port as specified in the options:
 
-[source,jphp]
+[source,php]
 ----
 <?php
 
@@ -48,7 +48,7 @@ To tell the server to listen at the host and port as specified in the options:
 
 Or to specify the host and port in the call to listen, ignoring what is configured in the options:
 
-[source,jphp]
+[source,php]
 ----
 <?php
 
@@ -66,7 +66,7 @@ listen has returned.
 If you want to be notified when the server is actually listening you can provide a handler to the `listen` call.
 For example:
 
-[source,jphp]
+[source,php]
 ----
 <?php
 
@@ -87,7 +87,7 @@ If `0` is used as the listening port, the server will find an unused random port
 
 To find out the real port the server is listening on you can call `link:../../apidocs/io/vertx/core/net/NetServer.html#actualPort--[actualPort]`.
 
-[source,jphp]
+[source,php]
 ----
 <?php
 
@@ -106,7 +106,7 @@ To find out the real port the server is listening on you can call `link:../../ap
 
 To be notified when a connection is made you need to set a `link:../../apidocs/io/vertx/core/net/NetServer.html#connectHandler-io.vertx.core.Handler-[connectHandler]`:
 
-[source,jphp]
+[source,php]
 ----
 <?php
 
@@ -130,7 +130,7 @@ socket.
 This handler will be called with an instance of `link:../../apidocs/io/vertx/core/buffer/Buffer.html[Buffer]` every time data is received on
 the socket.
 
-[source,jphp]
+[source,php]
 ----
 <?php
 
@@ -147,7 +147,7 @@ the socket.
 
 You write to a socket using one of `link:../../apidocs/io/vertx/core/net/NetSocket.html#write-io.vertx.core.buffer.Buffer-[write]`.
 
-[source,jphp]
+[source,php]
 ----
 <?php
     use io\vertx\jphp\core\buffer\Buffer;
@@ -173,7 +173,7 @@ Write operations are asynchronous and may not occur until some time after the ca
 If you want to be notified when a socket is closed, you can set a `link:../../apidocs/io/vertx/core/net/NetSocket.html#closeHandler-io.vertx.core.Handler-[closeHandler]`
 on it:
 
-[source,jphp]
+[source,php]
 ----
 <?php
 
@@ -217,7 +217,7 @@ efficient way to send files, as it can be handled by the OS kernel directly wher
 Please see the chapter about <<classpath, serving files from the classpath>> for restrictions of the
 classpath resolution or disabling it.
 
-[source,jphp]
+[source,php]
 ----
 <?php
 
@@ -250,7 +250,7 @@ If you want to be notified when the actual close has completed then you can pass
 
 This handler will then be called when the close has fully completed.
 
-[source,jphp]
+[source,php]
 ----
 <?php
 
@@ -280,7 +280,7 @@ In order to utilise more cores of your server you will need to deploy more insta
 
 You can instantiate more instances programmatically in your code:
 
-[source,jphp]
+[source,php]
 ----
 <?php
 
@@ -306,7 +306,7 @@ vertx run com.mycompany.MyVerticle -instances 10
 
 or when programmatically deploying your verticle
 
-[source,jphp]
+[source,php]
 ----
 <?php
 
@@ -337,7 +337,7 @@ Consequently Vert.x TCP servers can scale over available cores while each instan
 
 The simplest way to create a TCP client, using all default options is as follows:
 
-[source,jphp]
+[source,php]
 ----
 <?php
 
@@ -350,7 +350,7 @@ The simplest way to create a TCP client, using all default options is as follows
 If you don't want the default, a client can be configured by passing in a `link:../../apidocs/io/vertx/core/net/NetClientOptions.html[NetClientOptions]`
 instance when creating it:
 
-[source,jphp]
+[source,php]
 ----
 <?php
 
@@ -367,7 +367,7 @@ To make a connection to a server you use `link:../../apidocs/io/vertx/core/net/N
 specifying the port and host of the server and a handler that will be called with a result containing the
 `link:../../apidocs/io/vertx/core/net/NetSocket.html[NetSocket]`when connection is successful or with a failure if connection failed.
 
-[source,jphp]
+[source,php]
 ----
 <?php
 
@@ -395,7 +395,7 @@ This is configured with `link:../../apidocs/io/vertx/core/net/NetClientOptions.h
 NOTE: Currently Vert.x will not attempt to reconnect if a connection fails, reconnect attempts and interval
 only apply to creating initial connections.
 
-[source,jphp]
+[source,php]
 ----
 <?php
 
@@ -415,7 +415,7 @@ By default, multiple connection attempts are disabled.
 
 For debugging purposes, network activity can be logged:
 
-[source,jphp]
+[source,php]
 ----
 <?php
 
@@ -429,7 +429,7 @@ For debugging purposes, network activity can be logged:
 
 for the client
 
-[source,jphp]
+[source,php]
 ----
 <?php
 
@@ -478,7 +478,7 @@ utility which ships with the JDK.
 
 The password for the key store should also be provided:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $options = array(
@@ -494,7 +494,7 @@ The password for the key store should also be provided:
 
 Alternatively you can read the key store yourself as a buffer and provide that directly:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $myKeyStoreAsABuffer = $vertx->fileSystem()->readFileBlocking("/path/to/your/server-keystore.jks");
@@ -513,7 +513,7 @@ Alternatively you can read the key store yourself as a buffer and provide that d
 Key/certificate in PKCS#12 format (http://en.wikipedia.org/wiki/PKCS_12), usually with the `.pfx`  or the `.p12`
 extension can also be loaded in a similar fashion than JKS key stores:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $options = array(
@@ -529,7 +529,7 @@ extension can also be loaded in a similar fashion than JKS key stores:
 
 Buffer configuration is also supported:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $myKeyStoreAsABuffer = $vertx->fileSystem()->readFileBlocking("/path/to/your/server-keystore.pfx");
@@ -547,7 +547,7 @@ Buffer configuration is also supported:
 
 Another way of providing server private key and certificate separately using `.pem` files.
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $options = array(
@@ -563,7 +563,7 @@ Another way of providing server private key and certificate separately using `.p
 
 Buffer configuration is also supported:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $myKeyAsABuffer = $vertx->fileSystem()->readFileBlocking("/path/to/your/server-key.pem");
@@ -595,7 +595,7 @@ utility which ships with the JDK.
 
 The password for the trust store should also be provided:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $options = array(
@@ -612,7 +612,7 @@ The password for the trust store should also be provided:
 
 Alternatively you can read the trust store yourself as a buffer and provide that directly:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $myTrustStoreAsABuffer = $vertx->fileSystem()->readFileBlocking("/path/to/your/truststore.jks");
@@ -631,7 +631,7 @@ Alternatively you can read the trust store yourself as a buffer and provide that
 Certificate authority in PKCS#12 format (http://en.wikipedia.org/wiki/PKCS_12), usually with the `.pfx`  or the `.p12`
 extension can also be loaded in a similar fashion than JKS trust stores:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $options = array(
@@ -648,7 +648,7 @@ extension can also be loaded in a similar fashion than JKS trust stores:
 
 Buffer configuration is also supported:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $myTrustStoreAsABuffer = $vertx->fileSystem()->readFileBlocking("/path/to/your/truststore.pfx");
@@ -666,7 +666,7 @@ Buffer configuration is also supported:
 
 Another way of providing server certificate authority using a list `.pem` files.
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $options = array(
@@ -684,7 +684,7 @@ Another way of providing server certificate authority using a list `.pem` files.
 
 Buffer configuration is also supported:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $myCaAsABuffer = $vertx->fileSystem()->readFileBlocking("/path/to/your/server-ca.pfx");
@@ -713,7 +713,7 @@ If the `link:../../apidocs/io/vertx/core/net/ClientOptionsBase.html#setTrustAll-
 trust all server certificates. The connection will still be encrypted but this mode is vulnerable to 'man in the middle' attacks. I.e. you can't
 be sure who you are connecting to. Use this with caution. Default value is false.
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $options = array(
@@ -731,7 +731,7 @@ By default, host verification is disabled on the client.
 To enable host verification, set the algorithm to use on your client (only HTTPS and LDAPS is currently supported):
 
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $options = array(
@@ -751,7 +751,7 @@ trust store location is set by using the function `link:../../apidocs/io/vertx/c
 `link:../../apidocs/io/vertx/core/net/JksOptions.html[jks options]`. If a server presents a certificate during connection which is not
 in the client trust store, the connection attempt will not succeed.
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $options = array(
@@ -767,7 +767,7 @@ in the client trust store, the connection attempt will not succeed.
 
 Buffer configuration is also supported:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $myTrustStoreAsABuffer = $vertx->fileSystem()->readFileBlocking("/path/to/your/truststore.jks");
@@ -785,7 +785,7 @@ Buffer configuration is also supported:
 Certificate authority in PKCS#12 format (http://en.wikipedia.org/wiki/PKCS_12), usually with the `.pfx`  or the `.p12`
 extension can also be loaded in a similar fashion than JKS trust stores:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $options = array(
@@ -801,7 +801,7 @@ extension can also be loaded in a similar fashion than JKS trust stores:
 
 Buffer configuration is also supported:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $myTrustStoreAsABuffer = $vertx->fileSystem()->readFileBlocking("/path/to/your/truststore.pfx");
@@ -818,7 +818,7 @@ Buffer configuration is also supported:
 
 Another way of providing server certificate authority using a list `.pem` files.
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $options = array(
@@ -835,7 +835,7 @@ Another way of providing server certificate authority using a list `.pem` files.
 
 Buffer configuration is also supported:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $myTrustStoreAsABuffer = $vertx->fileSystem()->readFileBlocking("/path/to/your/ca-cert.pem");
@@ -861,7 +861,7 @@ Again it's just a regular Java key store. The client keystore location is set by
 `link:../../apidocs/io/vertx/core/net/JksOptions.html#setPath-java.lang.String-[path]`on the
 `link:../../apidocs/io/vertx/core/net/JksOptions.html[jks options]`.
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $options = array(
@@ -877,7 +877,7 @@ Again it's just a regular Java key store. The client keystore location is set by
 
 Buffer configuration is also supported:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $myKeyStoreAsABuffer = $vertx->fileSystem()->readFileBlocking("/path/to/your/client-keystore.jks");
@@ -896,7 +896,7 @@ Buffer configuration is also supported:
 Key/certificate in PKCS#12 format (http://en.wikipedia.org/wiki/PKCS_12), usually with the `.pfx`  or the `.p12`
 extension can also be loaded in a similar fashion than JKS key stores:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $options = array(
@@ -912,7 +912,7 @@ extension can also be loaded in a similar fashion than JKS key stores:
 
 Buffer configuration is also supported:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $myKeyStoreAsABuffer = $vertx->fileSystem()->readFileBlocking("/path/to/your/client-keystore.pfx");
@@ -930,7 +930,7 @@ Buffer configuration is also supported:
 
 Another way of providing server private key and certificate separately using `.pem` files.
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $options = array(
@@ -946,7 +946,7 @@ Another way of providing server private key and certificate separately using `.p
 
 Buffer configuration is also supported:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $myKeyAsABuffer = $vertx->fileSystem()->readFileBlocking("/path/to/your/client-key.pem");
@@ -975,7 +975,7 @@ running a development version of an application.
 `link:../../apidocs/io/vertx/core/net/SelfSignedCertificate.html[SelfSignedCertificate]`can be used to provide self-signed PEM certificate helpers and
 give `link:../../apidocs/io/vertx/core/net/KeyCertOptions.html[KeyCertOptions]` and `link:../../apidocs/io/vertx/core/net/TrustOptions.html[TrustOptions]` configurations:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     use io\vertx\jphp\core\net\SelfSignedCertificate;
@@ -1012,7 +1012,7 @@ give `link:../../apidocs/io/vertx/core/net/KeyCertOptions.html[KeyCertOptions]` 
 
 The client can also be configured to trust all certificates:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $clientOptions = array(
@@ -1024,7 +1024,7 @@ The client can also be configured to trust all certificates:
 
 Note that self-signed certificates also work for other TCP protocols like HTTPS:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     use io\vertx\jphp\core\net\SelfSignedCertificate;
@@ -1046,7 +1046,7 @@ Trust can be configured to use a certificate revocation list (CRL) for revoked c
 longer be trusted. The `link:../../apidocs/io/vertx/core/net/NetClientOptions.html#addCrlPath-java.lang.String-[crlPath]` configures
 the crl list to use:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $options = array(
@@ -1062,7 +1062,7 @@ the crl list to use:
 
 Buffer configuration is also supported:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $myCrlAsABuffer = $vertx->fileSystem()->readFileBlocking("/path/to/your/crl.pem");
@@ -1082,7 +1082,7 @@ Buffer configuration is also supported:
 By default, the TLS configuration will use the Cipher suite of the JVM running Vert.x. This Cipher suite can be
 configured with a suite of enabled ciphers:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $options = array(
@@ -1106,7 +1106,7 @@ Cipher suite can be specified on the `link:../../apidocs/io/vertx/core/net/NetSe
 By default, the TLS configuration will use the following protocol versions: SSLv2Hello, TLSv1, TLSv1.1 and TLSv1.2. Protocol versions can be
 configured by explicitly adding enabled protocols:
 
-[source,jphp]
+[source,php]
 ----
 Code not translatable
 ----
@@ -1123,7 +1123,7 @@ The engine options to use is
 - the `link:../../apidocs/io/vertx/core/net/TCPSSLOptions.html#getSslEngineOptions--[getSslEngineOptions]` options when it is set
 - otherwise `link:../../apidocs/io/vertx/core/net/JdkSSLEngineOptions.html[JdkSSLEngineOptions]`
 
-[source,jphp]
+[source,php]
 ----
 <?php
 
@@ -1177,7 +1177,7 @@ configured the server with multiple key/certificate pairs.
 
 Java KeyStore files or PKCS12 files can store multiple key/cert pairs out of the box.
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $keyCertOptions = array(
@@ -1195,7 +1195,7 @@ Java KeyStore files or PKCS12 files can store multiple key/cert pairs out of the
 
 `link:../../apidocs/io/vertx/core/net/PemKeyCertOptions.html[PemKeyCertOptions]`can be configured to hold multiple entries:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $keyCertOptions = array(
@@ -1215,7 +1215,7 @@ The client implicitly sends the connecting host as an SNI server name for Fully 
 
 You can provide an explicit server name when connecting a socket
 
-[source,jphp]
+[source,php]
 ----
 <?php
 
@@ -1301,7 +1301,7 @@ The proxy can be configured in the `link:../../apidocs/io/vertx/core/net/NetClie
 
 Here's an example:
 
-[source,jphp]
+[source,php]
 
 ----
 <?php

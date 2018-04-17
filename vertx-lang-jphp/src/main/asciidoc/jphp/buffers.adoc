@@ -16,7 +16,7 @@ Here are some examples of creating buffers:
 
 Create a new empty buffer:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     use io\vertx\jphp\core\buffer\Buffer;
@@ -26,7 +26,7 @@ Create a new empty buffer:
 
 Create a buffer from a String. The String will be encoded in the buffer using UTF-8.
 
-[source,jphp]
+[source,php]
 ----
 <?php
     use io\vertx\jphp\core\buffer\Buffer;
@@ -36,7 +36,7 @@ Create a buffer from a String. The String will be encoded in the buffer using UT
 
 Create a buffer from a String: The String will be encoded using the specified encoding, e.g:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     use io\vertx\jphp\core\buffer\Buffer;
@@ -52,7 +52,7 @@ more efficient than the buffer automatically resizing multiple times as data is 
 
 Note that buffers created this way *are empty*. It does not create a buffer filled with zeros up to the specified size.
 
-[source,jphp]
+[source,php]
 ----
 <?php
     use io\vertx\jphp\core\buffer\Buffer;
@@ -73,7 +73,7 @@ Append methods exist for appending various different types.
 
 The return value of the {@code appendXXX} methods is the buffer itself, so these can be chained:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     use io\vertx\jphp\core\buffer\Buffer;
@@ -93,7 +93,7 @@ represents the position in the buffer where to start writing the data.
 
 The buffer will always expand as necessary to accommodate the data.
 
-[source,jphp]
+[source,php]
 ----
 <?php
     use io\vertx\jphp\core\buffer\Buffer;
@@ -109,7 +109,7 @@ The buffer will always expand as necessary to accommodate the data.
 Data is read from a buffer using the {@code getXXX} methods. Get methods exist for various datatypes.
 The first argument to these methods is an index in the buffer from where to get the data.
 
-[source,jphp]
+[source,php]
 ----
 <?php
     use io\vertx\jphp\core\buffer\Buffer;
@@ -131,7 +131,7 @@ network protocol optimized to minimize bandwidth consumption.
 
 In the following example, value 200 is set at specified position with just one byte:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     use io\vertx\jphp\core\buffer\Buffer;

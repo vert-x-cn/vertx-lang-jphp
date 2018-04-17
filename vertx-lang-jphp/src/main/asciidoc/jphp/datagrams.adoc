@@ -29,7 +29,7 @@ and NetClient (see above).
 To use UDP you first need t create a `link:../../apidocs/io/vertx/core/datagram/DatagramSocket.html[DatagramSocket]`. It does not matter here if you only want to send data or send
 and receive.
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $socket = $vertx->createDatagramSocket(array(
@@ -49,7 +49,7 @@ This means each packet can be sent to a different remote peer.
 
 Sending packets is as easy as shown here:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     use io\vertx\jphp\core\buffer\Buffer;
@@ -84,7 +84,7 @@ The `link:../../apidocs/io/vertx/core/datagram/DatagramPacket.html[DatagramPacke
 
 So to listen on a specific address and port you would do something like shown here:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $socket = $vertx->createDatagramSocket(array(
@@ -120,7 +120,7 @@ in a multicast group address to the send method.
 
 This is show here:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     use io\vertx\jphp\core\buffer\Buffer;
@@ -154,7 +154,7 @@ The `link:../../apidocs/io/vertx/core/datagram/DatagramPacket.html[DatagramPacke
 So to listen on a specific address and port and also receive packets for the Multicast group 230.0.0.1 you
 would do something like shown here:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $socket = $vertx->createDatagramSocket(array(
@@ -184,7 +184,7 @@ In this situations you can first start to listen for them and then later unliste
 
 This is shown here:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $socket = $vertx->createDatagramSocket(array(
@@ -228,7 +228,7 @@ This an expert feature.
 To block multicast from a specific address you can call `blockMulticastGroup(...)` on the DatagramSocket
 like shown here:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $socket = $vertx->createDatagramSocket(array(

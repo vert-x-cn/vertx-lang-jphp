@@ -6,7 +6,7 @@ this Vert.x offers it's own API for DNS resolution which is fully asynchronous.
 
 To obtain a DnsClient instance you will create a new via the Vertx instance.
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $client = $vertx->createDnsClient(53, "10.0.0.1");
@@ -15,7 +15,7 @@ To obtain a DnsClient instance you will create a new via the Vertx instance.
 
 You can also create the client with options and configure the query timeout.
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $client = $vertx->createDnsClient(array(
@@ -29,7 +29,7 @@ You can also create the client with options and configure the query timeout.
 Creating the client with no arguments or omitting the server address will use the address of the server used internally
 for non blocking address resolution.
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $client1 = $vertx->createDnsClient();
@@ -48,7 +48,7 @@ so it behaves the same way as you may be used from when using "nslookup" on your
 
 To lookup the A / AAAA record for "vertx.io" you would typically use it like:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $client = $vertx->createDnsClient(53, "9.9.9.9");
@@ -69,7 +69,7 @@ the same way as you may be used from when using "nslookup" on your operation sys
 
 To lookup the A record for "vertx.io" you would typically use it like:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $client = $vertx->createDnsClient(53, "9.9.9.9");
@@ -90,7 +90,7 @@ same way as you may be used from when using "nslookup" on your operation system.
 
 To lookup the A record for "vertx.io" you would typically use it like:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $client = $vertx->createDnsClient(53, "9.9.9.9");
@@ -111,7 +111,7 @@ systems.
 
 To lookup all the A records for "vertx.io" you would typically do:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $client = $vertx->createDnsClient(53, "9.9.9.9");
@@ -135,7 +135,7 @@ operation systems.
 
 To lookup all the AAAAA records for "vertx.io" you would typically do:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $client = $vertx->createDnsClient(53, "9.9.9.9");
@@ -159,7 +159,7 @@ systems.
 
 To lookup all the CNAME records for "vertx.io" you would typically do:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $client = $vertx->createDnsClient(53, "9.9.9.9");
@@ -183,7 +183,7 @@ emails for a given domain.
 
 To lookup all the MX records for "vertx.io" you would typically do:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $client = $vertx->createDnsClient(53, "9.9.9.9");
@@ -205,7 +205,7 @@ means MX records with smaller priority coming first in the List.
 
 The `link:../../apidocs/io/vertx/core/dns/MxRecord.html[MxRecord]` allows you to access the priority and the name of the MX record by offer methods for it like:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $record->priority();
@@ -219,7 +219,7 @@ Try to resolve all TXT records for a given name. TXT records are often used to d
 
 To resolve all the TXT records for "vertx.io" you could use something along these lines:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $client = $vertx->createDnsClient(53, "9.9.9.9");
@@ -243,7 +243,7 @@ for a given domain.
 
 To resolve all the NS records for "vertx.io" you could use something along these lines:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $client = $vertx->createDnsClient(53, "9.9.9.9");
@@ -267,7 +267,7 @@ hostname of services. Some protocols need this extra informations.
 
 To lookup all the SRV records for "vertx.io" you would typically do:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $client = $vertx->createDnsClient(53, "9.9.9.9");
@@ -289,7 +289,7 @@ with smaller priority coming first in the List.
 
 The `link:../../apidocs/io/vertx/core/dns/SrvRecord.html[SrvRecord]` allows you to access all informations contained in the SRV record itself:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $record->priority();
@@ -310,7 +310,7 @@ Try to resolve the PTR record for a given name. The PTR record maps an ipaddress
 
 To resolve the PTR record for the ipaddress 10.0.0.1 you would use the PTR notion of "1.0.0.10.in-addr.arpa"
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $client = $vertx->createDnsClient(53, "9.9.9.9");
@@ -332,7 +332,7 @@ just pass in the ipaddress and not a valid PTR query string.
 
 To do a reverse lookup for the ipaddress 10.0.0.1 do something similar like this:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $client = $vertx->createDnsClient(53, "9.9.9.9");

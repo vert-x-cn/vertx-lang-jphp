@@ -53,7 +53,7 @@ So how do you get an instance?
 
 If you're embedding Vert.x then you simply create an instance as follows:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     use io\vertx\jphp\core\Vertx;
@@ -68,7 +68,7 @@ require, for example, isolation between the event bus or different groups of ser
 
 When creating a Vertx object you can also specify options if the defaults aren't right for you:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     use io\vertx\jphp\core\Vertx;
@@ -95,7 +95,7 @@ You may have noticed that in the previous examples a *fluent* API was used.
 
 A fluent API is where multiple methods calls can be chained together. For example:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $request->response()->putHeader("Content-Type", "text/plain")->write("some text")->end();
@@ -108,7 +108,7 @@ Chaining calls like this allows you to write code that's a little bit less verbo
 like the fluent approach *we don't force you* to do it that way, you can happily ignore it if you prefer and write
 your code like this:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $response = $request->response();
@@ -134,7 +134,7 @@ Some example events are:
 You handle events by providing _handlers_ to the Vert.x APIs. For example to receive a timer event every second you
 would do:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $vertx->setPeriodic(1000, function ($id) {
@@ -146,7 +146,7 @@ would do:
 
 Or to receive an HTTP request:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     // Respond to each http request with "Hello World"
@@ -287,7 +287,7 @@ from doing any other useful work. So how can you do this?
 It's done by calling `link:../../apidocs/io/vertx/core/Vertx.html#executeBlocking-io.vertx.core.Handler-boolean-io.vertx.core.Handler-[executeBlocking]` specifying both the blocking code to execute and a
 result handler to be called back asynchronous when the blocking code has been executed.
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $vertx->executeBlocking(function ($future) {
@@ -315,7 +315,7 @@ By default blocking code is executed on the Vert.x worker pool, configured with 
 
 Additional pools can be created for different purposes:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $executor = $vertx->createSharedWorkerExecutor("my-worker-pool");
@@ -331,7 +331,7 @@ Additional pools can be created for different purposes:
 
 The worker executor must be closed when it's not necessary anymore:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $executor->close();
@@ -346,7 +346,7 @@ is undeployed.
 
 Worker executors can be configured when created:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     //
@@ -373,7 +373,7 @@ supports concurrent composition (run several async operations in parallel) and s
 `link:../../apidocs/io/vertx/core/CompositeFuture.html#all-io.vertx.core.Future-io.vertx.core.Future-[CompositeFuture.all]`takes several futures arguments (up to 6) and returns a future that is
 _succeeded_ when all the futures are and _failed_ when at least one of the futures is failed:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     use io\vertx\jphp\core\CompositeFuture;
@@ -401,7 +401,7 @@ with a success.
 
 Alternatively, you can pass a list (potentially empty) of futures:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     use io\vertx\jphp\core\CompositeFuture;
@@ -414,7 +414,7 @@ _waits_ for the first succeeded future. `link:../../apidocs/io/vertx/core/Compos
 arguments (up to 6) and returns a future that is succeeded when one of the futures is, and failed when
 all the futures are failed:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     use io\vertx\jphp\core\CompositeFuture;
@@ -430,7 +430,7 @@ all the futures are failed:
 
 A list of futures can be used also:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     use io\vertx\jphp\core\CompositeFuture;
@@ -443,7 +443,7 @@ The `join` composition _waits_ until all futures are completed, either with a su
 succeeded when all the futures are succeeded, and failed when all the futures are completed and at least one of
 them is failed:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     use io\vertx\jphp\core\CompositeFuture;
@@ -459,7 +459,7 @@ them is failed:
 
 A list of futures can be used also:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     use io\vertx\jphp\core\CompositeFuture;
@@ -472,7 +472,7 @@ A list of futures can be used also:
 While `all` and `any` are implementing concurrent composition, `link:../../apidocs/io/vertx/core/Future.html#compose-io.vertx.core.Handler-io.vertx.core.Future-[compose]` can be used
 for chaining futures (so sequential composition).
 
-[source,jphp]
+[source,php]
 ----
 <?php
     use io\vertx\jphp\core\buffer\Buffer;
@@ -579,7 +579,7 @@ directly while on an event loop.
 
 If you want to deploy a verticle as a worker verticle you do that with `link:../../apidocs/io/vertx/core/DeploymentOptions.html#setWorker-boolean-[setWorker]`.
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $options = array(
@@ -629,7 +629,7 @@ This allows you to deploy verticles written in any language from any other langu
 
 Here's an example of deploying some different types of verticles:
 
-[source,jphp]
+[source,php]
 ----
 <?php
 
@@ -677,7 +677,7 @@ Verticle deployment is asynchronous and may complete some time after the call to
 
 If you want to be notified when deployment is complete you can deploy specifying a completion handler:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $vertx->deployVerticle("com.mycompany.MyOrderProcessorVerticle", function ($res, $res_err) {
@@ -700,7 +700,7 @@ Deployments can be undeployed with `link:../../apidocs/io/vertx/core/Vertx.html#
 
 Un-deployment is itself asynchronous so if you want to be notified when un-deployment is complete you can deploy specifying a completion handler:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $vertx->undeploy($deploymentID, function ($res, $res_err) {
@@ -718,7 +718,7 @@ Un-deployment is itself asynchronous so if you want to be notified when un-deplo
 When deploying a verticle using a verticle name, you can specify the number of verticle instances that you
 want to deploy:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $options = array(
@@ -761,7 +761,7 @@ other things.
 
 Here's an example of using an isolation group to isolate a verticle deployment.
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $options = array(
@@ -846,7 +846,7 @@ worker context will be associated with the execution which will use a thread fro
 
 To retrieve the context, use the `link:../../apidocs/io/vertx/core/Vertx.html#getOrCreateContext--[getOrCreateContext]` method:
 
-[source, jphp]
+[source, php]
 ----
 <?php
     $context = $vertx->getOrCreateContext();
@@ -856,7 +856,7 @@ To retrieve the context, use the `link:../../apidocs/io/vertx/core/Vertx.html#ge
 If the current thread has a context associated with it, it reuses the context object. If not a new instance of
 context is created. You can test the _type_ of context you have retrieved:
 
-[source, jphp]
+[source, php]
 ----
 <?php
     use io\vertx\jphp\core\Context;
@@ -876,7 +876,7 @@ context is created. You can test the _type_ of context you have retrieved:
 When you have retrieved the context object, you can run code in this context asynchronously. In other words,
 you submit a task that will be eventually run in the same context, but later:
 
-[source, jphp]
+[source, php]
 ----
 <?php
     $vertx->getOrCreateContext()->runOnContext(function ($v) {
@@ -889,7 +889,7 @@ When several handlers run in the same context, they may want to share data. The 
 store and retrieve data shared in the context. For instance, it lets you pass data to some action run with
 `link:../../apidocs/io/vertx/core/Context.html#runOnContext-io.vertx.core.Handler-[runOnContext]`:
 
-[source, jphp]
+[source, php]
 ----
 <?php
     $context = $vertx->getOrCreateContext();
@@ -917,7 +917,7 @@ A one shot timer calls an event handler after a certain delay, expressed in mill
 
 To set a timer to fire once you use `link:../../apidocs/io/vertx/core/Vertx.html#setTimer-long-io.vertx.core.Handler-[setTimer]` method passing in the delay and a handler
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $timerID = $vertx->setTimer(1000, function ($id) {
@@ -946,7 +946,7 @@ your timer events could run continuously or even worse : stack up.
 In this case, you should consider using `link:../../apidocs/io/vertx/core/Vertx.html#setTimer-long-io.vertx.core.Handler-[setTimer]` instead. Once your treatment has
 finished, you can set the next timer.
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $timerID = $vertx->setPeriodic(1000, function ($id) {
@@ -961,7 +961,7 @@ finished, you can set the next timer.
 
 To cancel a periodic timer, call `link:../../apidocs/io/vertx/core/Vertx.html#cancelTimer-long-[cancelTimer]` specifying the timer id. For example:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $vertx->cancelTimer($timerID);
@@ -980,7 +980,7 @@ worker verticle.
 
 A different worker pool can be specified in deployment options:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $vertx->deployVerticle("the-verticle", array(
@@ -1272,7 +1272,7 @@ You can also start an application in background using:
 
 [source]
 ----
-java -jar my-verticle-fat.jar start -Dvertx-id=my-app-name
+java -jar my-verticle-fat.jar start --vertx-id=my-app-name
 ----
 
 If `my-app-name` is not set, a random id will be generated, and printed on the command prompt. You can pass `run`
@@ -1280,7 +1280,7 @@ options to the `start` command:
 
 [source]
 ----
-java -jar my-verticle-fat.jar start -Dvertx-id=my-app-name -cluster
+java -jar my-verticle-fat.jar start ?-vertx-id=my-app-name -cluster
 ----
 
 Once launched in background, you can stop it with the `stop` command:
@@ -1451,7 +1451,7 @@ application too.
 To do that you use `link:../../apidocs/io/vertx/core/logging/LoggerFactory.html[LoggerFactory]` to get an instance of `link:../../apidocs/io/vertx/core/logging/Logger.html[Logger]`
 which you then use for logging, e.g.
 
-[source,jphp]
+[source,php]
 ----
 <?php
 
@@ -1534,7 +1534,7 @@ retrieved it will use Google's public DNS servers `"8.8.8.8"` and `"8.8.4.4"`.
 
 DNS servers can be also configured when creating a `link:../../apidocs/io/vertx/core/Vertx.html[Vertx]` instance:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     use io\vertx\jphp\core\Vertx;
@@ -1579,7 +1579,7 @@ The _hosts_ file of the operating system is used to perform an hostname lookup f
 
 An alternative _hosts_ file can be used instead:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     use io\vertx\jphp\core\Vertx;
@@ -1596,7 +1596,7 @@ An alternative _hosts_ file can be used instead:
 By default the resolver will use the system DNS search domains from the environment. Alternatively an explicit search domain
 list can be provided:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     use io\vertx\jphp\core\Vertx;
@@ -1759,7 +1759,7 @@ group.
 
 Vert.x can run with http://netty.io/wiki/native-transports.html[native transports] (when available) on BSD (OSX) and Linux:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     use io\vertx\jphp\core\Vertx;
@@ -1797,7 +1797,7 @@ Native on Linux gives you extra networking options:
 * TCP_CORK
 * TCP_FASTOPEN
 
-[source,jphp]
+[source,php]
 ----
 <?php
     // Available on Linux
@@ -1830,7 +1830,7 @@ Native on BSD gives you extra networking options:
 
 * SO_REUSEPORT
 
-[source,jphp]
+[source,php]
 ----
 <?php
     // Available on BSD
@@ -1844,7 +1844,7 @@ Native on BSD gives you extra networking options:
 
 Natives provide support domain sockets for `NetServer`:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     use io\vertx\jphp\core\net\SocketAddress;
@@ -1857,7 +1857,7 @@ Natives provide support domain sockets for `NetServer`:
 
 As well as `NetClient`:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     use io\vertx\jphp\core\net\SocketAddress;

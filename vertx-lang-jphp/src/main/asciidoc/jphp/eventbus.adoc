@@ -98,7 +98,7 @@ Let's jump into the API
 
 You get a reference to the event bus as follows:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $eb = $vertx->eventBus();
@@ -112,7 +112,7 @@ There is a single instance of the event bus per Vert.x instance.
 This simplest way to register a handler is using `link:../../apidocs/io/vertx/core/eventbus/EventBus.html#consumer-java.lang.String-io.vertx.core.Handler-[consumer]`.
 Here's an example:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $eb = $vertx->eventBus();
@@ -132,7 +132,7 @@ This object can subsequently be used to unregister the handler, or use the handl
 Alternatively you can use `link:../../apidocs/io/vertx/core/eventbus/EventBus.html#consumer-java.lang.String-io.vertx.core.Handler-[consumer]` to
 to return a +MessageConsumer+ with no handler set, and then set the handler on that. For example:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $eb = $vertx->eventBus();
@@ -150,7 +150,7 @@ nodes of the cluster.
 If you want to be notified when this has completed, you can register a `link:../../apidocs/io/vertx/core/eventbus/MessageConsumer.html#completionHandler-io.vertx.core.Handler-[completion handler]`
 on the +MessageConsumer+ object.
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $consumer->completionHandler(function ($res, $res_err) {
@@ -170,7 +170,7 @@ To unregister a handler, call `link:../../apidocs/io/vertx/core/eventbus/Message
 If you are on a clustered event bus, un-registering can take some time to propagate across the nodes, if you want to
 be notified when this is complete use `link:../../apidocs/io/vertx/core/eventbus/MessageConsumer.html#unregister-io.vertx.core.Handler-[unregister]`.
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $consumer->unregister(function ($res, $res_err) {
@@ -188,7 +188,7 @@ be notified when this is complete use `link:../../apidocs/io/vertx/core/eventbus
 Publishing a message is simple. Just use `link:../../apidocs/io/vertx/core/eventbus/EventBus.html#publish-java.lang.String-java.lang.Object-[publish]` specifying the
 address to publish it to.
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $eventBus->publish("news.uk.sport", "Yay! Someone kicked a ball");
@@ -204,7 +204,7 @@ This is the point to point messaging pattern. The handler is chosen in a non-str
 
 You can send a message with `link:../../apidocs/io/vertx/core/eventbus/EventBus.html#send-java.lang.String-java.lang.Object-[send]`
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $eventBus->send("news.uk.sport", "Yay! Someone kicked a ball");
@@ -240,7 +240,7 @@ An example will make this clear:
 
 The receiver:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $consumer = $eventBus->consumer("news.uk.sport");
@@ -253,7 +253,7 @@ The receiver:
 
 The sender:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $eventBus->send("news.uk.sport", "Yay! Someone kicked a ball across a patch of grass", function ($ar, $ar_err) {
@@ -307,7 +307,7 @@ your network they can form a single, distributed, event bus.
 If you're creating your Vert.x instance programmatically you get a clustered event bus by configuring the Vert.x
 instance as clustered;
 
-[source,jphp]
+[source,php]
 ----
 <?php
     use io\vertx\jphp\core\Vertx;
@@ -347,7 +347,7 @@ the event bus uses TCP connections to send and receive message, so the
 the event bus acts as a server and client, the configuration is close to
 `link:../../apidocs/io/vertx/core/net/NetClientOptions.html[NetClientOptions]`and `link:../../apidocs/io/vertx/core/net/NetServerOptions.html[NetServerOptions]`.
 
-[source,jphp]
+[source,php]
 ----
 <?php
     use io\vertx\jphp\core\Vertx;
@@ -393,7 +393,7 @@ clustered, the port and host, as you would do with `link:../../apidocs/io/vertx/
 
 When used in containers, you can also configure the public host and port:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     use io\vertx\jphp\core\Vertx;

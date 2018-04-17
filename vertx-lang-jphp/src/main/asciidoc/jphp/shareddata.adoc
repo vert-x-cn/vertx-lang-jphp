@@ -28,7 +28,7 @@ so you don't have to worry about protecting that state by synchronising access t
 
 Here's an example of using a shared local map:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     use io\vertx\jphp\core\buffer\Buffer;
@@ -71,7 +71,7 @@ You get an instance of `link:../../apidocs/io/vertx/core/shareddata/AsyncMap.htm
 
 Getting the map is asynchronous and the result is returned to you in the handler that you specify. Here's an example:
 
-[source,jphp]
+[source,php]
 ----
 <?php
 
@@ -94,7 +94,7 @@ You put data in a map with `link:../../apidocs/io/vertx/core/shareddata/AsyncMap
 
 The actual put is asynchronous and the handler is notified once it is complete:
 
-[source,jphp]
+[source,php]
 ----
 <?php
 
@@ -115,7 +115,7 @@ You get data from a map with `link:../../apidocs/io/vertx/core/shareddata/AsyncM
 
 The actual get is asynchronous and the handler is notified with the result some time later
 
-[source,jphp]
+[source,php]
 ----
 <?php
 
@@ -155,7 +155,7 @@ While you own the lock no other caller, anywhere on the cluster will be able to 
 When you've finished with the lock, you call `link:../../apidocs/io/vertx/core/shareddata/Lock.html#release--[release]` to release it, so
 another caller can obtain it.
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $sd->getLock("mylock", function ($res, $res_err) {
@@ -179,7 +179,7 @@ another caller can obtain it.
 You can also get a lock with a timeout. If it fails to obtain the lock within the timeout the handler will be called
 with a failure:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $sd->getLockWithTimeout("mylock", 10000, function ($res, $res_err) {
@@ -202,7 +202,7 @@ You can do this with `link:../../apidocs/io/vertx/core/shareddata/Counter.html[C
 
 You obtain an instance with `link:../../apidocs/io/vertx/core/shareddata/SharedData.html#getCounter-java.lang.String-io.vertx.core.Handler-[getCounter]`:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $sd->getCounter("mycounter", function ($res, $res_err) {

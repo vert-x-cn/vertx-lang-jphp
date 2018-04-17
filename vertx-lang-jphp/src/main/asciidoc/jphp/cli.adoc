@@ -25,7 +25,7 @@ Each command line interface must define the set of options and arguments that wi
 name. The CLI API uses the `link:../../apidocs/io/vertx/core/cli/Option.html[Option]` and `link:../../apidocs/io/vertx/core/cli/Argument.html[Argument]` classes to
 describe options and arguments:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     use io\vertx\jphp\core\cli\CLI;
@@ -62,7 +62,7 @@ Options can receive 0, 1 or several values. An option receiving 0 values is a `f
 `link:../../apidocs/io/vertx/core/cli/Option.html#setFlag-boolean-[setFlag]`. By default, options receive a single value, however, you can
 configure the option to receive several values using `link:../../apidocs/io/vertx/core/cli/Option.html#setMultiValued-boolean-[setMultiValued]`:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     use io\vertx\jphp\core\cli\CLI;
@@ -87,7 +87,7 @@ configure the option to receive several values using `link:../../apidocs/io/vert
 Options can be marked as mandatory. A mandatory option not set in the user command line throws an exception during
 the parsing:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     use io\vertx\jphp\core\cli\CLI;
@@ -102,7 +102,7 @@ the parsing:
 Non-mandatory options can have a _default value_. This value would be used if the user does not set the option in
 the command line:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     use io\vertx\jphp\core\cli\CLI;
@@ -119,7 +119,7 @@ not listed in the usage, but can still be used in the user command line (for pow
 
 If the option value is contrained to a fixed set, you can set the different acceptable choices:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     use io\vertx\jphp\core\cli\CLI;
@@ -146,7 +146,7 @@ Unlike options, arguments do not have a _key_ and are identified by their _index
 Arguments do not have a name, there are identified using a 0-based index. The first parameter has the
 index `0`:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     use io\vertx\jphp\core\cli\CLI;
@@ -164,7 +164,7 @@ index `0`:
 
 If you don't set the argument indexes, it computes it automatically by using the declaration order.
 
-[source,jphp]
+[source,php]
 ----
 <?php
     use io\vertx\jphp\core\cli\CLI;
@@ -194,7 +194,7 @@ Arguments can also be instantiated from their JSON form.
 
 Once your `link:../../apidocs/io/vertx/core/cli/CLI.html[CLI]` instance is configured, you can generate the _usage_ message:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     use io\vertx\jphp\core\cli\CLI;
@@ -236,7 +236,7 @@ If you need to tune the usage message, check the `link:../../apidocs/io/vertx/co
 Once your `link:../../apidocs/io/vertx/core/cli/CLI.html[CLI]` instance is configured, you can parse the user command line to evaluate
 each option and argument:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $commandLine = $cli->parse($userCommandLineArguments);
@@ -258,7 +258,7 @@ Once parsed, you can retrieve the values of the options and arguments from the
 `link:../../apidocs/io/vertx/core/cli/CommandLine.html[CommandLine]`object returned by the `link:../../apidocs/io/vertx/core/cli/CLI.html#parse-java.util.List-[parse]`
 method:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     $commandLine = $cli->parse($userCommandLineArguments);
@@ -271,7 +271,7 @@ method:
 One of your option can have been marked as "help". If a user command line enabled a "help" option, the validation
 won't failed, but give you the opportunity to check if the user asks for help:
 
-[source,jphp]
+[source,php]
 ----
 <?php
     use io\vertx\jphp\core\cli\CLI;
