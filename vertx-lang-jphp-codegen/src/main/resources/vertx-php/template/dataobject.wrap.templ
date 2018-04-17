@@ -7,6 +7,8 @@ package @{type.raw.translatePackageName("jphp")};\n
 	def translateParamType(classType){
 		if(classType.kind == CLASS_STRING) {
 			return "String";
+		} else if(classType.kind == CLASS_API || classType.kind == CLASS_DATA_OBJECT) {
+			return classType.raw.translatePackageName("jphp") + "." + classType.raw.simpleName;
 		} else {
 			return classType.name;
 		}
@@ -156,7 +158,13 @@ public  class ${type.simpleName} extends DataObjectWrapper<@{type.name}> { \n
 			\n
 		    @Signature\n
 		    public ${type.simpleName} ${property.adderMethod}(${translateParamType(property.type)} ${property.name}){ \n
-		        this.getWrappedObject().${property.adderMethod}(${property.name});\n
+		        this.getWrappedObject().${property.adderMethod}(
+				@if{property.type.kind == CLASS_API || property.type.kind == CLASS_DATA_OBJECT}
+					${property.name}.getWrappedObject()
+				@else{}
+					${property.name}
+				@end{}
+				);\n
 		        return this;\n
 		    }\n
 			@end{}

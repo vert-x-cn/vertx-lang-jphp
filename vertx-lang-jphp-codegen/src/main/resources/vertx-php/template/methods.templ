@@ -1,4 +1,5 @@
 @code{
+	import java.util.ArrayList;
 	var reline = new Character(10).toString();
 	def split(str){
 		var newStr = str.trim();
@@ -79,6 +80,17 @@
 			}
 		}else {
 			return null;
+		}
+	}
+	def addImport(typeInfo){
+		if(typeInfo.isVariable) {
+			return
+		}
+		var typeKind = typeInfo.kind;
+		if(typeKind == CLASS_API || typeKind == CLASS_DATA_OBJECT) {
+			if(typeInfo.raw.packageName != type.raw.packageName) {
+				importClassSet.add(typeInfo.raw.translatePackageName("jphp") + "." + typeInfo.raw.simpleName);
+			}
 		}
 	}
 }

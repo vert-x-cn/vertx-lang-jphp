@@ -5,10 +5,19 @@ namespace @{type.raw.translatePackageName("jphp").replace(".", "\\")};\n
     var abs = type.abstract;
     var superClass = superType == null ? null : superType.raw.translatePackageName("jphp").replace(".", "\\") + "\\" + superType.simpleName;
     var use = superType != null && !superType.raw.packageName.equals(type.raw.packageName);
+
+    import java.util.TreeSet;
+    var importClassSet = new TreeSet();
+    if(superType != null) {
+    	addImport(superType);
+    }
+    for(property : properties) {
+    	addImport(property.type);
+    }
 }
 
-@if{superClass!=null && use}
-use @{superClass};\n
+@foreach{importClass : importClassSet}
+	use @{importClass.replace(".", "\\")};\n
 @end{}
 /**\n
 @if{doc != null}
@@ -27,7 +36,7 @@ use @{superClass};\n
 \n
 @if{abs}abstract @end{}class @{type.simpleName} @if{superClass != null}extends @{superType.simpleName}@end{} \n
 { \n
-    public function __construct($$@{type.getSimpleName(CASE_LOWER_CAMEL)})\n
+    public function __construct($$@{type.getSimpleName(CASE_LOWER_CAMEL)} = null)\n
     { \n
         \n
     }\n

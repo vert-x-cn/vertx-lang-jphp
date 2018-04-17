@@ -4,22 +4,11 @@
 namespace @{type.translatePackageName("jphp").replace(".", "\\")};\n
 \n
 @code{
+	import java.util.TreeSet;
 	import java.util.HashSet;
 	import java.util.ArrayList;
 
-	var importClassSet = new HashSet();
-
-	def addImport(typeInfo){
-		if(typeInfo.isVariable) {
-			return
-		}
-		var typeKind = typeInfo.kind;
-		if(typeKind == CLASS_API || typeKind == CLASS_DATA_OBJECT) {
-			if(typeInfo.raw.packageName != ifacePackageName) {
-				importClassSet.add(typeInfo.raw.translatePackageName("jphp") + "." + typeInfo.raw.simpleName);
-			}
-		}
-	}
+	var importClassSet = new TreeSet();
 
 	foreach(methodName : methodsByName.keySet()) {
 		var methods = methodsByName[methodName];

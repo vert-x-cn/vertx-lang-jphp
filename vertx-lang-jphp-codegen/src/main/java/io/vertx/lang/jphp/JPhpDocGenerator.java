@@ -24,7 +24,7 @@ public class JPhpDocGenerator implements DocGenerator {
 
     @Override
     public String getName() {
-        return "jphp";
+        return "php";
     }
 
     @Override
