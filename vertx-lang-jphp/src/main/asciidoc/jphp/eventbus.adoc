@@ -1,9 +1,9 @@
 == The Event Bus
 :toc: left
 
-The `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.eventbus.EventBus.html[event bus]` is the *nervous system* of Vert.x.
+The `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.eventbus.EventBus.html[event bus]` is the *nervous system* of Vert.x.
 
-There is a single event bus instance for every Vert.x instance and it is obtained using the method `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.Vertx.html#method_eventBus[eventBus]`.
+There is a single event bus instance for every Vert.x instance and it is obtained using the method `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.Vertx.html#method_eventBus[eventBus]`.
 
 The event bus allows different parts of your application to communicate with each other irrespective of what language they are written in,
 and whether they're in the same Vert.x instance, or in a different Vert.x instance.
@@ -77,7 +77,7 @@ to retry after recovery.
 
 ==== Types of messages
 
-Out of the box Vert.x allows any primitive/simple type, String, or `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.buffer.Buffer.html[buffers]` to
+Out of the box Vert.x allows any primitive/simple type, String, or `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.buffer.Buffer.html[buffers]` to
 be sent as messages.
 
 However it's a convention and common practice in Vert.x to send messages as http://json.org/[JSON]
@@ -109,7 +109,7 @@ There is a single instance of the event bus per Vert.x instance.
 
 ==== Registering Handlers
 
-This simplest way to register a handler is using `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.eventbus.EventBus.html#method_consumer[consumer]`.
+This simplest way to register a handler is using `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.eventbus.EventBus.html#method_consumer[consumer]`.
 Here's an example:
 
 [source,php]
@@ -123,13 +123,13 @@ Here's an example:
 
 ----
 
-When a message arrives for your handler, your handler will be called, passing in the `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.eventbus.Message.html[message]`.
+When a message arrives for your handler, your handler will be called, passing in the `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.eventbus.Message.html[message]`.
 
-The object returned from call to +consumer()+ is an instance of `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.eventbus.MessageConsumer.html[MessageConsumer]`
+The object returned from call to +consumer()+ is an instance of `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.eventbus.MessageConsumer.html[MessageConsumer]`
 
 This object can subsequently be used to unregister the handler, or use the handler as a stream.
 
-Alternatively you can use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.eventbus.EventBus.html#method_consumer[consumer]` to
+Alternatively you can use `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.eventbus.EventBus.html#method_consumer[consumer]` to
 to return a +MessageConsumer+ with no handler set, and then set the handler on that. For example:
 
 [source,php]
@@ -147,7 +147,7 @@ to return a +MessageConsumer+ with no handler set, and then set the handler on t
 When registering a handler on a clustered event bus, it can take some time for the registration to reach all
 nodes of the cluster.
 
-If you want to be notified when this has completed, you can register a `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.eventbus.MessageConsumer.html#method_completionHandler[completion handler]`
+If you want to be notified when this has completed, you can register a `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.eventbus.MessageConsumer.html#method_completionHandler[completion handler]`
 on the +MessageConsumer+ object.
 
 [source,php]
@@ -165,10 +165,10 @@ on the +MessageConsumer+ object.
 
 ==== Un-registering Handlers
 
-To unregister a handler, call `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.eventbus.MessageConsumer.html#method_unregister[unregister]`.
+To unregister a handler, call `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.eventbus.MessageConsumer.html#method_unregister[unregister]`.
 
 If you are on a clustered event bus, un-registering can take some time to propagate across the nodes, if you want to
-be notified when this is complete use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.eventbus.MessageConsumer.html#method_unregister[unregister]`.
+be notified when this is complete use `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.eventbus.MessageConsumer.html#method_unregister[unregister]`.
 
 [source,php]
 ----
@@ -185,7 +185,7 @@ be notified when this is complete use `link:https://vertx.okou.tk/phpdoc/classes
 
 ==== Publishing messages
 
-Publishing a message is simple. Just use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.eventbus.EventBus.html#method_publish[publish]` specifying the
+Publishing a message is simple. Just use `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.eventbus.EventBus.html#method_publish[publish]` specifying the
 address to publish it to.
 
 [source,php]
@@ -202,7 +202,7 @@ That message will then be delivered to all handlers registered against the addre
 Sending a message will result in only one handler registered at the address receiving the message.
 This is the point to point messaging pattern. The handler is chosen in a non-strict round-robin fashion.
 
-You can send a message with `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.eventbus.EventBus.html#method_send[send]`
+You can send a message with `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.eventbus.EventBus.html#method_send[send]`
 
 [source,php]
 ----
@@ -219,20 +219,20 @@ Vert.x will deliver messages to any particular handler in the same order they we
 
 ==== The Message object
 
-The object you receive in a message handler is a `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.eventbus.Message.html[Message]`.
+The object you receive in a message handler is a `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.eventbus.Message.html[Message]`.
 
-The `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.eventbus.Message.html#method_body[body]` of the message corresponds to the object that was sent or published.
+The `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.eventbus.Message.html#method_body[body]` of the message corresponds to the object that was sent or published.
 
-The headers of the message are available with `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.eventbus.Message.html#method_headers[headers]`.
+The headers of the message are available with `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.eventbus.Message.html#method_headers[headers]`.
 
 ==== Acknowledging messages / sending replies
 
-When using `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.eventbus.EventBus.html#method_send[send]` the event bus attempts to deliver the message to a
-`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.eventbus.MessageConsumer.html[MessageConsumer]`registered with the event bus.
+When using `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.eventbus.EventBus.html#method_send[send]` the event bus attempts to deliver the message to a
+`link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.eventbus.MessageConsumer.html[MessageConsumer]`registered with the event bus.
 
 In some cases it's useful for the sender to know when the consumer has received the message and "processed" it.
 
-To acknowledge that the message has been processed the consumer can reply to the message by calling `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.eventbus.Message.html#method_reply[reply]`.
+To acknowledge that the message has been processed the consumer can reply to the message by calling `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.eventbus.Message.html#method_reply[reply]`.
 
 When this happens it causes a reply to be sent back to the sender and the reply handler is invoked with the reply.
 
@@ -280,7 +280,7 @@ so it can be deleted from the database
 
 ==== Sending with timeouts
 
-When sending a message with a reply handler you can specify a timeout in the `link:../enums.adoc#DeliveryOptions[DeliveryOptions]`.
+When sending a message with a reply handler you can specify a timeout in the `link:../vertx-jphp/enums.adoc#DeliveryOptions[DeliveryOptions]`.
 
 If a reply is not received within that time, the reply handler will be called with a failure.
 
@@ -291,7 +291,7 @@ The default timeout is 30 seconds.
 Message sends can fail for other reasons, including:
 
 * There are no handlers available to send the message to
-* The recipient has explicitly failed the message using `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.eventbus.Message.html#method_fail[fail]`
+* The recipient has explicitly failed the message using `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.eventbus.Message.html#method_fail[fail]`
 
 In all cases the reply handler will be called with the specific failure.
 
@@ -343,9 +343,9 @@ when the verticle is undeployed.
 
 The event bus can be configured. It is particularly useful when the event bus is clustered. Under the hood
 the event bus uses TCP connections to send and receive message, so the
-`link:../enums.adoc#EventBusOptions[EventBusOptions]`let you configure all aspects of these TCP connections. As
+`link:../vertx-jphp/enums.adoc#EventBusOptions[EventBusOptions]`let you configure all aspects of these TCP connections. As
 the event bus acts as a server and client, the configuration is close to
-`link:../enums.adoc#NetClientOptions[NetClientOptions]`and `link:../enums.adoc#NetServerOptions[NetServerOptions]`.
+`link:../vertx-jphp/enums.adoc#NetClientOptions[NetClientOptions]`and `link:../vertx-jphp/enums.adoc#NetServerOptions[NetServerOptions]`.
 
 [source,php]
 ----
@@ -387,9 +387,9 @@ manager for further details.
 
 The event bus configuration needs to be consistent in all the cluster nodes.
 
-The `link:../enums.adoc#EventBusOptions[EventBusOptions]` also lets you specify whether or not the event bus is
-clustered, the port and host, as you would do with `link:../enums.adoc#VertxOptions#method_setClustered[setClustered]`,
-`link:../enums.adoc#VertxOptions#method_getClusterHost[getClusterHost]` and `link:../enums.adoc#VertxOptions#method_getClusterPort[getClusterPort]`.
+The `link:../vertx-jphp/enums.adoc#EventBusOptions[EventBusOptions]` also lets you specify whether or not the event bus is
+clustered, the port and host, as you would do with `link:../vertx-jphp/enums.adoc#VertxOptions#method_setClustered[setClustered]`,
+`link:../vertx-jphp/enums.adoc#VertxOptions#method_getClusterHost[getClusterHost]` and `link:../vertx-jphp/enums.adoc#VertxOptions#method_getClusterPort[getClusterPort]`.
 
 When used in containers, you can also configure the public host and port:
 

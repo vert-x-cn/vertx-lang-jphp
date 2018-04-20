@@ -52,7 +52,7 @@ You can also produce fixed sized chunks as follows:
 
 ----
 
-For more details, check out the `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.parsetools.RecordParser.html[RecordParser]` class.
+For more details, check out the `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.parsetools.RecordParser.html[RecordParser]` class.
 
 == Json Parser
 
@@ -158,4 +158,4 @@ The parser also parses json streams:
 - concatenated json streams: `{"temperature":30}{"temperature":50}`
 - line delimited json streams: `{"an":"object"}\r\n3\r\n"a string"\r\nnull`
 
-For more details, check out the `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.parsetools.JsonParser.html[JsonParser]` class.
+For more details, check out the `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.parsetools.JsonParser.html[JsonParser]` class.

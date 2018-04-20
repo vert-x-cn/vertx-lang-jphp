@@ -48,7 +48,7 @@ compile 'io.vertx:vertx-redis-client:${maven.version}'
 
 == Connecting to Redis
 
-In order to connect to Redis there is a config required. This config is provided in the form of `link:../enums.adoc#RedisOptions[RedisOptions]`
+In order to connect to Redis there is a config required. This config is provided in the form of `link:../vertx-redis-jphp/enums.adoc#RedisOptions[RedisOptions]`
 containing the following values:
 
 * `host`: default is `localhost`
@@ -96,8 +96,8 @@ password and/or database id to the config object, the properties names are:
 * `auth`
 * `select`
 
-If you do not do this and manually call the `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.redis.RedisClient.html#method_auth[auth]`
-or `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.redis.RedisClient.html#method_select[select]` then the client will not know how to recover
+If you do not do this and manually call the `link:https://vertx.okou.tk/phpdoc/vertx-redis-jphp/classes/io.vertx.jphp.redis.RedisClient.html#method_auth[auth]`
+or `link:https://vertx.okou.tk/phpdoc/vertx-redis-jphp/classes/io.vertx.jphp.redis.RedisClient.html#method_select[select]` then the client will not know how to recover
 the connection in case of socket error.
 
 == Running commands
@@ -274,7 +274,7 @@ In this case the return value will be a json array with the value 10 on index 0.
 == Redis Sentinel
 
 This client support the Redis Sentinel API with the API interface:
-`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.redis.sentinel.RedisSentinel.html[RedisSentinel]`.
+`link:https://vertx.okou.tk/phpdoc/vertx-redis-jphp/classes/io.vertx.jphp.redis.sentinel.RedisSentinel.html[RedisSentinel]`.
 
 The API exposes the sentinel commands:
 

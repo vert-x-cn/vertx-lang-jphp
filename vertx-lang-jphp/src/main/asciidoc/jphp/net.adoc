@@ -16,7 +16,7 @@ The simplest way to create a TCP server, using all default options is as follows
 
 === Configuring a TCP server
 
-If you don't want the default, a server can be configured by passing in a `link:../enums.adoc#NetServerOptions[NetServerOptions]`
+If you don't want the default, a server can be configured by passing in a `link:../vertx-jphp/enums.adoc#NetServerOptions[NetServerOptions]`
 instance when creating it:
 
 [source,php]
@@ -32,7 +32,7 @@ instance when creating it:
 
 === Start the Server Listening
 
-To tell the server to listen for incoming requests you use one of the `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.net.NetServer.html#method_listen[listen]`
+To tell the server to listen for incoming requests you use one of the `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.net.NetServer.html#method_listen[listen]`
 alternatives.
 
 To tell the server to listen at the host and port as specified in the options:
@@ -85,7 +85,7 @@ For example:
 
 If `0` is used as the listening port, the server will find an unused random port to listen on.
 
-To find out the real port the server is listening on you can call `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.net.NetServer.html#method_actualPort[actualPort]`.
+To find out the real port the server is listening on you can call `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.net.NetServer.html#method_actualPort[actualPort]`.
 
 [source,php]
 ----
@@ -104,7 +104,7 @@ To find out the real port the server is listening on you can call `link:https://
 
 === Getting notified of incoming connections
 
-To be notified when a connection is made you need to set a `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.net.NetServer.html#method_connectHandler[connectHandler]`:
+To be notified when a connection is made you need to set a `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.net.NetServer.html#method_connectHandler[connectHandler]`:
 
 [source,php]
 ----
@@ -117,17 +117,17 @@ To be notified when a connection is made you need to set a `link:https://vertx.o
 
 ----
 
-When a connection is made the handler will be called with an instance of `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.net.NetSocket.html[NetSocket]`.
+When a connection is made the handler will be called with an instance of `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.net.NetSocket.html[NetSocket]`.
 
 This is a socket-like interface to the actual connection, and allows you to read and write data as well as do various
 other things like close the socket.
 
 === Reading data from the socket
 
-To read data from the socket you set the `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.net.NetSocket.html#method_handler[handler]` on the
+To read data from the socket you set the `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.net.NetSocket.html#method_handler[handler]` on the
 socket.
 
-This handler will be called with an instance of `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.buffer.Buffer.html[Buffer]` every time data is received on
+This handler will be called with an instance of `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.buffer.Buffer.html[Buffer]` every time data is received on
 the socket.
 
 [source,php]
@@ -145,7 +145,7 @@ the socket.
 
 === Writing data to a socket
 
-You write to a socket using one of `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.net.NetSocket.html#method_write[write]`.
+You write to a socket using one of `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.net.NetSocket.html#method_write[write]`.
 
 [source,php]
 ----
@@ -170,7 +170,7 @@ Write operations are asynchronous and may not occur until some time after the ca
 
 === Closed handler
 
-If you want to be notified when a socket is closed, you can set a `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.net.NetSocket.html#method_closeHandler[closeHandler]`
+If you want to be notified when a socket is closed, you can set a `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.net.NetSocket.html#method_closeHandler[closeHandler]`
 on it:
 
 [source,php]
@@ -185,11 +185,11 @@ on it:
 
 === Handling exceptions
 
-You can set an `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.net.NetSocket.html#method_exceptionHandler[exceptionHandler]` to receive any
+You can set an `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.net.NetSocket.html#method_exceptionHandler[exceptionHandler]` to receive any
 exceptions that happen on the socket.
 
-You can set an `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.net.NetServer.html#method_exceptionHandler[exceptionHandler]` to receive any
-exceptions that happens before the connection is passed to the `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.net.NetServer.html#method_connectHandler[connectHandler]`
+You can set an `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.net.NetServer.html#method_exceptionHandler[exceptionHandler]` to receive any
+exceptions that happens before the connection is passed to the `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.net.NetServer.html#method_connectHandler[connectHandler]`
 , e.g during the TLS handshake.
 
 === Event bus write handler
@@ -200,18 +200,18 @@ it writes them to itself.
 This enables you to write data to a socket which is potentially in a completely different verticle or even in a
 different Vert.x instance by sending the buffer to the address of that handler.
 
-The address of the handler is given by `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.net.NetSocket.html#method_writeHandlerID[writeHandlerID]`
+The address of the handler is given by `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.net.NetSocket.html#method_writeHandlerID[writeHandlerID]`
 
 === Local and remote addresses
 
-The local address of a `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.net.NetSocket.html[NetSocket]` can be retrieved using `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.net.NetSocket.html#method_localAddress[localAddress]`.
+The local address of a `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.net.NetSocket.html[NetSocket]` can be retrieved using `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.net.NetSocket.html#method_localAddress[localAddress]`.
 
-The remote address, (i.e. the address of the other end of the connection) of a `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.net.NetSocket.html[NetSocket]`
-can be retrieved using `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.net.NetSocket.html#method_remoteAddress[remoteAddress]`.
+The remote address, (i.e. the address of the other end of the connection) of a `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.net.NetSocket.html[NetSocket]`
+can be retrieved using `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.net.NetSocket.html#method_remoteAddress[remoteAddress]`.
 
 === Sending files or resources from the classpath
 
-Files and classpath resources can be written to the socket directly using `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.net.NetSocket.html#method_sendFile[sendFile]`. This can be a very
+Files and classpath resources can be written to the socket directly using `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.net.NetSocket.html#method_sendFile[sendFile]`. This can be a very
 efficient way to send files, as it can be handled by the OS kernel directly where supported by the operating system.
 
 Please see the chapter about <<classpath, serving files from the classpath>> for restrictions of the
@@ -227,22 +227,22 @@ classpath resolution or disabling it.
 
 === Streaming sockets
 
-Instances of `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.net.NetSocket.html[NetSocket]` are also `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.streams.ReadStream.html[ReadStream]` and
-`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.streams.WriteStream.html[WriteStream]`instances so they can be used to pump data to or from other
+Instances of `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.net.NetSocket.html[NetSocket]` are also `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.streams.ReadStream.html[ReadStream]` and
+`link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.streams.WriteStream.html[WriteStream]`instances so they can be used to pump data to or from other
 read and write streams.
 
 See the chapter on <<streams, streams and pumps>> for more information.
 
 === Upgrading connections to SSL/TLS
 
-A non SSL/TLS connection can be upgraded to SSL/TLS using `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.net.NetSocket.html#method_upgradeToSsl[upgradeToSsl]`.
+A non SSL/TLS connection can be upgraded to SSL/TLS using `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.net.NetSocket.html#method_upgradeToSsl[upgradeToSsl]`.
 
 The server or client must be configured for SSL/TLS for this to work correctly. Please see the <<ssl, chapter on SSL/TLS>>
 for more information.
 
 === Closing a TCP Server
 
-Call `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.net.NetServer.html#method_close[close]` to close the server. Closing the server closes any open connections
+Call `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.net.NetServer.html#method_close[close]` to close the server. Closing the server closes any open connections
 and releases all server resources.
 
 The close is actually asynchronous and might not complete until some time after the call has returned.
@@ -347,7 +347,7 @@ The simplest way to create a TCP client, using all default options is as follows
 
 === Configuring a TCP client
 
-If you don't want the default, a client can be configured by passing in a `link:../enums.adoc#NetClientOptions[NetClientOptions]`
+If you don't want the default, a client can be configured by passing in a `link:../vertx-jphp/enums.adoc#NetClientOptions[NetClientOptions]`
 instance when creating it:
 
 [source,php]
@@ -363,9 +363,9 @@ instance when creating it:
 
 === Making connections
 
-To make a connection to a server you use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.net.NetClient.html#method_connect[connect]`,
+To make a connection to a server you use `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.net.NetClient.html#method_connect[connect]`,
 specifying the port and host of the server and a handler that will be called with a result containing the
-`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.net.NetSocket.html[NetSocket]`when connection is successful or with a failure if connection failed.
+`link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.net.NetSocket.html[NetSocket]`when connection is successful or with a failure if connection failed.
 
 [source,php]
 ----
@@ -389,8 +389,8 @@ specifying the port and host of the server and a handler that will be called wit
 === Configuring connection attempts
 
 A client can be configured to automatically retry connecting to the server in the event that it cannot connect.
-This is configured with `link:../enums.adoc#NetClientOptions#method_setReconnectInterval[setReconnectInterval]` and
-`link:../enums.adoc#NetClientOptions#method_setReconnectAttempts[setReconnectAttempts]`.
+This is configured with `link:../vertx-jphp/enums.adoc#NetClientOptions#method_setReconnectInterval[setReconnectInterval]` and
+`link:../vertx-jphp/enums.adoc#NetClientOptions#method_setReconnectAttempts[setReconnectAttempts]`.
 
 NOTE: Currently Vert.x will not attempt to reconnect if a connection fails, reconnect attempts and interval
 only apply to creating initial connections.
@@ -456,12 +456,12 @@ TCP clients and servers can be configured to use http://en.wikipedia.org/wiki/Tr
 - earlier versions of TLS were known as SSL.
 
 The APIs of the servers and clients are identical whether or not SSL/TLS is used, and it's enabled by configuring
-the `link:../enums.adoc#NetClientOptions[NetClientOptions]` or `link:../enums.adoc#NetServerOptions[NetServerOptions]` instances used
+the `link:../vertx-jphp/enums.adoc#NetClientOptions[NetClientOptions]` or `link:../vertx-jphp/enums.adoc#NetServerOptions[NetServerOptions]` instances used
 to create the servers or clients.
 
 ==== Enabling SSL/TLS on the server
 
-SSL/TLS is enabled with  `link:../enums.adoc#NetServerOptions#method_setSsl[ssl]`.
+SSL/TLS is enabled with  `link:../vertx-jphp/enums.adoc#NetServerOptions#method_setSsl[ssl]`.
 
 By default it is disabled.
 
@@ -709,7 +709,7 @@ To enable SSL on a NetClient the function setSSL(true) is called.
 
 ==== Client trust configuration
 
-If the `link:../enums.adoc#ClientOptionsBase#method_setTrustAll[trustALl]` is set to true on the client, then the client will
+If the `link:../vertx-jphp/enums.adoc#ClientOptionsBase#method_setTrustAll[trustALl]` is set to true on the client, then the client will
 trust all server certificates. The connection will still be encrypted but this mode is vulnerable to 'man in the middle' attacks. I.e. you can't
 be sure who you are connecting to. Use this with caution. Default value is false.
 
@@ -724,7 +724,7 @@ be sure who you are connecting to. Use this with caution. Default value is false
 
 ----
 
-If `link:../enums.adoc#ClientOptionsBase#method_setTrustAll[trustAll]` is not set then a client trust store must be
+If `link:../vertx-jphp/enums.adoc#ClientOptionsBase#method_setTrustAll[trustAll]` is not set then a client trust store must be
 configured and should contain the certificates of the servers that the client trusts.
 
 By default, host verification is disabled on the client.
@@ -747,8 +747,8 @@ Likewise server configuration, the client trust can be configured in several way
 The first method is by specifying the location of a Java trust-store which contains the certificate authority.
 
 It is just a standard Java key store, the same as the key stores on the server side. The client
-trust store location is set by using the function `link:../enums.adoc#JksOptions#method_setPath[path]` on the
-`link:../enums.adoc#JksOptions[jks options]`. If a server presents a certificate during connection which is not
+trust store location is set by using the function `link:../vertx-jphp/enums.adoc#JksOptions#method_setPath[path]` on the
+`link:../vertx-jphp/enums.adoc#JksOptions[jks options]`. If a server presents a certificate during connection which is not
 in the client trust store, the connection attempt will not succeed.
 
 [source,php]
@@ -858,8 +858,8 @@ connecting. The client can be configured in several ways:
 
 The first method is by specifying the location of a Java key-store which contains the key and certificate.
 Again it's just a regular Java key store. The client keystore location is set by using the function
-`link:../enums.adoc#JksOptions#method_setPath[path]`on the
-`link:../enums.adoc#JksOptions[jks options]`.
+`link:../vertx-jphp/enums.adoc#JksOptions#method_setPath[path]`on the
+`link:../vertx-jphp/enums.adoc#JksOptions[jks options]`.
 
 [source,php]
 ----
@@ -972,7 +972,7 @@ CAUTION: Do not use this in production settings, and note that the generated key
 It is very often the case that self-signed certificates are required, be it for unit / integration tests or for
 running a development version of an application.
 
-`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.net.SelfSignedCertificate.html[SelfSignedCertificate]`can be used to provide self-signed PEM certificate helpers and
+`link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.net.SelfSignedCertificate.html[SelfSignedCertificate]`can be used to provide self-signed PEM certificate helpers and
 give `KeyCertOptions` and `TrustOptions` configurations:
 
 [source,php]
@@ -1043,7 +1043,7 @@ Note that self-signed certificates also work for other TCP protocols like HTTPS:
 ==== Revoking certificate authorities
 
 Trust can be configured to use a certificate revocation list (CRL) for revoked certificates that should no
-longer be trusted. The `link:../enums.adoc#NetClientOptions#method_addCrlPath[crlPath]` configures
+longer be trusted. The `link:../vertx-jphp/enums.adoc#NetClientOptions#method_addCrlPath[crlPath]` configures
 the crl list to use:
 
 [source,php]
@@ -1099,7 +1099,7 @@ configured with a suite of enabled ciphers:
 
 ----
 
-Cipher suite can be specified on the `link:../enums.adoc#NetServerOptions[NetServerOptions]` or `link:../enums.adoc#NetClientOptions[NetClientOptions]` configuration.
+Cipher suite can be specified on the `link:../vertx-jphp/enums.adoc#NetServerOptions[NetServerOptions]` or `link:../vertx-jphp/enums.adoc#NetClientOptions[NetClientOptions]` configuration.
 
 ==== Configuring TLS protocol versions
 
@@ -1111,7 +1111,7 @@ configured by explicitly adding enabled protocols:
 Code not translatable
 ----
 
-Protocol versions can be specified on the `link:../enums.adoc#NetServerOptions[NetServerOptions]` or `link:../enums.adoc#NetClientOptions[NetClientOptions]` configuration.
+Protocol versions can be specified on the `link:../vertx-jphp/enums.adoc#NetServerOptions[NetServerOptions]` or `link:../vertx-jphp/enums.adoc#NetClientOptions[NetClientOptions]` configuration.
 
 ==== SSL engine
 
@@ -1120,8 +1120,8 @@ OpenSSL provides better performances and CPU usage than the JDK engine, as well 
 
 The engine options to use is
 
-- the `link:../enums.adoc#TCPSSLOptions#method_getSslEngineOptions[getSslEngineOptions]` options when it is set
-- otherwise `link:../enums.adoc#JdkSSLEngineOptions[JdkSSLEngineOptions]`
+- the `link:../vertx-jphp/enums.adoc#TCPSSLOptions#method_getSslEngineOptions[getSslEngineOptions]` options when it is set
+- otherwise `link:../vertx-jphp/enums.adoc#JdkSSLEngineOptions[JdkSSLEngineOptions]`
 
 [source,php]
 ----
@@ -1167,12 +1167,12 @@ When SNI is active the server uses
 
 When the server additionally requires client authentication:
 
-* if `link:../enums.adoc#JksOptions[JksOptions]` were used to set the trust options
-(`link:../enums.adoc#NetServerOptions#method_setTrustOptions[options]`) then an exact match with the trust store
+* if `link:../vertx-jphp/enums.adoc#JksOptions[JksOptions]` were used to set the trust options
+(`link:../vertx-jphp/enums.adoc#NetServerOptions#method_setTrustOptions[options]`) then an exact match with the trust store
 alias is done
 * otherwise the available CA certificates are used in the same way as if no SNI is in place
 
-You can enable SNI on the server by setting `link:../enums.adoc#NetServerOptions#method_setSni[setSni]` to `true` and
+You can enable SNI on the server by setting `link:../vertx-jphp/enums.adoc#NetServerOptions#method_setSni[setSni]` to `true` and
 configured the server with multiple key/certificate pairs.
 
 Java KeyStore files or PKCS12 files can store multiple key/cert pairs out of the box.
@@ -1193,7 +1193,7 @@ Java KeyStore files or PKCS12 files can store multiple key/cert pairs out of the
 
 ----
 
-`link:../enums.adoc#PemKeyCertOptions[PemKeyCertOptions]`can be configured to hold multiple entries:
+`link:../vertx-jphp/enums.adoc#PemKeyCertOptions[PemKeyCertOptions]`can be configured to hold multiple entries:
 
 [source,php]
 ----
@@ -1257,16 +1257,16 @@ Java 8 does not supports ALPN out of the box, so ALPN should be enabled by other
 
 The engine options to use is
 
-- the `link:../enums.adoc#TCPSSLOptions#method_getSslEngineOptions[getSslEngineOptions]` options when it is set
-- `link:../enums.adoc#JdkSSLEngineOptions[JdkSSLEngineOptions]` when ALPN is available for JDK
-- `link:../enums.adoc#OpenSSLEngineOptions[OpenSSLEngineOptions]` when ALPN is available for OpenSSL
+- the `link:../vertx-jphp/enums.adoc#TCPSSLOptions#method_getSslEngineOptions[getSslEngineOptions]` options when it is set
+- `link:../vertx-jphp/enums.adoc#JdkSSLEngineOptions[JdkSSLEngineOptions]` when ALPN is available for JDK
+- `link:../vertx-jphp/enums.adoc#OpenSSLEngineOptions[OpenSSLEngineOptions]` when ALPN is available for OpenSSL
 - otherwise it fails
 
 ===== OpenSSL ALPN support
 
 OpenSSL provides native ALPN support.
 
-OpenSSL requires to configure `link:../enums.adoc#TCPSSLOptions#method_setOpenSslEngineOptions[setOpenSslEngineOptions]`
+OpenSSL requires to configure `link:../vertx-jphp/enums.adoc#TCPSSLOptions#method_setOpenSslEngineOptions[setOpenSslEngineOptions]`
 and use http://netty.io/wiki/forked-tomcat-native.html[netty-tcnative] jar on the classpath. Using tcnative may require
 OpenSSL to be installed on your OS depending on the tcnative implementation.
 
@@ -1294,10 +1294,10 @@ ALPN version for the JVM running it:
 
 === Using a proxy for client connections
 
-The `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.net.NetClient.html[NetClient]` supports either a HTTP/1.x _CONNECT_, _SOCKS4a_ or _SOCKS5_ proxy.
+The `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.net.NetClient.html[NetClient]` supports either a HTTP/1.x _CONNECT_, _SOCKS4a_ or _SOCKS5_ proxy.
 
-The proxy can be configured in the `link:../enums.adoc#NetClientOptions[NetClientOptions]` by setting a
-`link:../enums.adoc#ProxyOptions[ProxyOptions]`object containing proxy type, hostname, port and optionally username and password.
+The proxy can be configured in the `link:../vertx-jphp/enums.adoc#NetClientOptions[NetClientOptions]` by setting a
+`link:../vertx-jphp/enums.adoc#ProxyOptions[ProxyOptions]`object containing proxy type, hostname, port and optionally username and password.
 
 Here's an example:
 

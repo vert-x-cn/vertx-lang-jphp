@@ -5,9 +5,9 @@ https://github.com/dropwizard/metrics[Dropwizard metrics] library.
 
 == Features
 
-A fairly simple API to retrieve metrics via the `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.metrics.Measured.html[Measured]`
-interface which is implemented by various Vert.x components like `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.http.HttpServer.html[HttpServer]`,
-`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.net.NetServer.html[NetServer]`, and even `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.Vertx.html[Vertx]` itself.
+A fairly simple API to retrieve metrics via the `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.metrics.Measured.html[Measured]`
+interface which is implemented by various Vert.x components like `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.http.HttpServer.html[HttpServer]`,
+`link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.net.NetServer.html[NetServer]`, and even `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.Vertx.html[Vertx]` itself.
 
 Configurable JMX reporting based on Dropwizard implementation, exposing Vert.x as JMX MBeans.
 
@@ -33,7 +33,7 @@ To enable metrics, add the following dependency to the _dependencies_ section of
 compile 'io.vertx:vertx-dropwizard-metrics:${maven.version}'
 ----
 
-Then when you create vertx enable metrics using the `link:../enums.adoc#DropwizardMetricsOptions[DropwizardMetricsOptions]`:
+Then when you create vertx enable metrics using the `link:../vertx-dropwizard-jphp/enums.adoc#DropwizardMetricsOptions[DropwizardMetricsOptions]`:
 
 [source,php]
 ----
@@ -75,22 +75,22 @@ options must be set to `true`:
 java -jar your-fat-jar -Dvertx.metrics.options.enabled=true
 ----
 
-The `link:../enums.adoc#DropwizardMetricsOptions#method_setRegistryName[vertx.metrics.options.registryName]`
+The `link:../vertx-dropwizard-jphp/enums.adoc#DropwizardMetricsOptions#method_setRegistryName[vertx.metrics.options.registryName]`
 configures the <<dropwizard-registry,Dropwizard Registry>> to use:
 
 ----
 java -jar your-fat-jar -Dvertx.metrics.options.enabled=true -Dvertx.metrics.options.registryName=my-registry
 ----
 
-The `link:../enums.adoc#DropwizardMetricsOptions#method_setJmxEnabled[vertx.metrics.options.jmxEnabled]` and
-`link:../enums.adoc#DropwizardMetricsOptions#method_setJmxDomain[vertx.metrics.options.jmxDomain]`
+The `link:../vertx-dropwizard-jphp/enums.adoc#DropwizardMetricsOptions#method_setJmxEnabled[vertx.metrics.options.jmxEnabled]` and
+`link:../vertx-dropwizard-jphp/enums.adoc#DropwizardMetricsOptions#method_setJmxDomain[vertx.metrics.options.jmxDomain]`
 configures the <<jmx,JMX>> registration:
 
 ----
 java -jar your-fat-jar -Dvertx.metrics.options.enabled=true -Dvertx.metrics.options.jmxEnabled=true ...
 ----
 
-The `link:../enums.adoc#DropwizardMetricsOptions#method_setConfigPath[vertx.metrics.options.configPath]`
+The `link:../vertx-dropwizard-jphp/enums.adoc#DropwizardMetricsOptions#method_setConfigPath[vertx.metrics.options.configPath]`
 option allows to reconfigure the metrics from a property file.
 
 == Metrics service
@@ -98,7 +98,7 @@ option allows to reconfigure the metrics from a property file.
 While Vert.x core defines an SPI for reporting metrics (implemented for instance in this project), it does not define
 an API for retrieving metrics (because some metrics collectors just do reporting and nothing more).
 
-The `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.dropwizard.MetricsService.html[MetricsService]` provides an API in front of the Dropwizard Registry to get
+The `link:https://vertx.okou.tk/phpdoc/vertx-dropwizard-jphp/classes/io.vertx.jphp.ext.dropwizard.MetricsService.html[MetricsService]` provides an API in front of the Dropwizard Registry to get
 metrics data snapshots.
 
 === Naming
@@ -152,8 +152,8 @@ Metrics names can also be listed:
 
 === Retrieving metrics
 
-Once enabled, the `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.dropwizard.MetricsService.html[MetricsService]` allows to retrieve metrics snapshots from any
-`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.metrics.Measured.html[Measured]`object which provides a map of the metric name to the data,
+Once enabled, the `link:https://vertx.okou.tk/phpdoc/vertx-dropwizard-jphp/classes/io.vertx.jphp.ext.dropwizard.MetricsService.html[MetricsService]` allows to retrieve metrics snapshots from any
+`link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.metrics.Measured.html[Measured]`object which provides a map of the metric name to the data,
 represented by a `JsonObject`. So for example if we were to print out all metrics
 for a particular Vert.x instance:
 [source,php]
@@ -172,7 +172,7 @@ consult the implementation documentation like https://github.com/vert-x3/vertx-m
 Often it is desired that you only want to capture specific metrics for a particular component, like an http server
 without having to know the details of the naming scheme of every metric (something which is left to the implementers of the SPI).
 
-Since `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.http.HttpServer.html[HttpServer]` implements `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.metrics.Measured.html[Measured]`, you can easily grab all metrics
+Since `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.http.HttpServer.html[HttpServer]` implements `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.metrics.Measured.html[Measured]`, you can easily grab all metrics
 that are specific for that particular http server.
 
 [source,php]
@@ -389,7 +389,7 @@ The monitored event bus handlers is configurable via a match performed on the ha
 Vert.x can have potentially a huge amount of registered event bus, therefore the only good default for this
 setting is to monitor zero handlers.
 
-The monitored handlers can be configured in the `link:../enums.adoc#DropwizardMetricsOptions[DropwizardMetricsOptions]` via
+The monitored handlers can be configured in the `link:../vertx-dropwizard-jphp/enums.adoc#DropwizardMetricsOptions[DropwizardMetricsOptions]` via
 a specific address match or a regex match:
 
 [source,php]
@@ -486,7 +486,7 @@ in this case the alias will be used as a part of the registry name instead of ur
 === Http client metrics
 
 Base name: `vertx.http.clients` (by default) or `vertx.http.clients.<id>` where `<id>` is a non empty string
-configured by `link:../enums.adoc#HttpClientOptions#method_setMetricsName[setMetricsName]`.
+configured by `link:../vertx-jphp/enums.adoc#HttpClientOptions#method_setMetricsName[setMetricsName]`.
 
 Http client includes all the metrics of a <<http-server-metrics,Http Server>> plus the following:
 
@@ -514,7 +514,7 @@ where <host> is the endpoint host name possibly unresolved and <port> the TCP po
 The monitored endpoints are configurable via a match performed on the server `$host:$port`.
 The default for this setting is to monitor no endpoints.
 
-The monitored endpoints can be configured in the `link:../enums.adoc#DropwizardMetricsOptions[DropwizardMetricsOptions]` via
+The monitored endpoints can be configured in the `link:../vertx-dropwizard-jphp/enums.adoc#DropwizardMetricsOptions[DropwizardMetricsOptions]` via
 a specific hostname match or a regex match:
 
 [source,php]
@@ -553,7 +553,7 @@ Base name: `vertx.net.servers.<host>:<port>`
 === Net client metrics
 
 Base name: `vertx.net.clients` (by default) or `vertx.net.clients.<id>` where `<id>` is a non empty string
-configured by `link:../enums.adoc#NetClientOptions#method_setMetricsName[setMetricsName]`.
+configured by `link:../vertx-jphp/enums.adoc#NetClientOptions#method_setMetricsName[setMetricsName]`.
 
 Net client includes all the metrics of a <<net-server-metrics,Net Server>>
 
@@ -573,7 +573,7 @@ Base name: `vertx.pools.<type>.<name>` where `type` is the type of the pool (e.g
 `name` is the name of the pool (e.g `vert.x-worker-thread`).
 
 Pools of type _worker_ are blocking worker pools. Vert.x exposes its worker as _vert.x-worker-thread_ and
-_vert.x-internal-blocking_. Named worker executor created with `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.WorkerExecutor.html[WorkerExecutor]` are exposed.
+_vert.x-internal-blocking_. Named worker executor created with `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.WorkerExecutor.html[WorkerExecutor]` are exposed.
 
 Datasource created with Vert.x JDBC clients are exposed as _datasource_.
 

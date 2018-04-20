@@ -1,13 +1,13 @@
 === Typed options and arguments
 
-The described `link:../enums.adoc#Option[Option]` and `link:../enums.adoc#Argument[Argument]` classes are _untyped_,
+The described `link:../vertx-jphp/enums.adoc#Option[Option]` and `link:../vertx-jphp/enums.adoc#Argument[Argument]` classes are _untyped_,
 meaning that the only get String values.
 `TypedOption`and `TypedArgument` let you specify a _type_, so the
 (String) raw value is converted to the specified type.
 
 Instead of
-`link:../enums.adoc#Option[Option]`and `link:../enums.adoc#Argument[Argument]`, use `TypedOption`
-and `TypedArgument` in the `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.cli.CLI.html[CLI]` definition:
+`link:../vertx-jphp/enums.adoc#Option[Option]`and `link:../vertx-jphp/enums.adoc#Argument[Argument]`, use `TypedOption`
+and `TypedArgument` in the `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.cli.CLI.html[CLI]` definition:
 
 [source,java]
 ----
@@ -97,7 +97,7 @@ public void setArg(String arg) {
 }
 ----
 
-Once annotated, you can define the `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.cli.CLI.html[CLI]` and inject the values using:
+Once annotated, you can define the `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.cli.CLI.html[CLI]` and inject the values using:
 
 [source,java]
 ----

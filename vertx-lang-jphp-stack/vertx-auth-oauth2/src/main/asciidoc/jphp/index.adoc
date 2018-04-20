@@ -280,22 +280,22 @@ When you've done with the token or you want to log out, you can revoke the acces
 
 For convenience there are several helpers to assist your with your configuration. Currently we provide:
 
-* Azure Active Directory `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.auth.oauth2.providers.AzureADAuth.html[AzureADAuth]`
-* Box.com `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.auth.oauth2.providers.BoxAuth.html[BoxAuth]`
-* Dropbox `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.auth.oauth2.providers.DropboxAuth.html[DropboxAuth]`
-* Facebook `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.auth.oauth2.providers.FacebookAuth.html[FacebookAuth]`
-* Foursquare `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.auth.oauth2.providers.FoursquareAuth.html[FoursquareAuth]`
-* Github `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.auth.oauth2.providers.GithubAuth.html[GithubAuth]`
-* Google `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.auth.oauth2.providers.GoogleAuth.html[GoogleAuth]`
-* Instagram `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.auth.oauth2.providers.InstagramAuth.html[InstagramAuth]`
-* Keycloak `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.auth.oauth2.providers.KeycloakAuth.html[KeycloakAuth]`
-* LinkedIn `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.auth.oauth2.providers.LinkedInAuth.html[LinkedInAuth]`
-* Mailchimp `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.auth.oauth2.providers.MailchimpAuth.html[MailchimpAuth]`
-* Salesforce `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.auth.oauth2.providers.SalesforceAuth.html[SalesforceAuth]`
-* Shopify `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.auth.oauth2.providers.ShopifyAuth.html[ShopifyAuth]`
-* Soundcloud `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.auth.oauth2.providers.SoundcloudAuth.html[SoundcloudAuth]`
-* Stripe `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.auth.oauth2.providers.StripeAuth.html[StripeAuth]`
-* Twitter `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.auth.oauth2.providers.TwitterAuth.html[TwitterAuth]`
+* Azure Active Directory `link:https://vertx.okou.tk/phpdoc/vertx-auth-oauth2-jphp/classes/io.vertx.jphp.ext.auth.oauth2.providers.AzureADAuth.html[AzureADAuth]`
+* Box.com `link:https://vertx.okou.tk/phpdoc/vertx-auth-oauth2-jphp/classes/io.vertx.jphp.ext.auth.oauth2.providers.BoxAuth.html[BoxAuth]`
+* Dropbox `link:https://vertx.okou.tk/phpdoc/vertx-auth-oauth2-jphp/classes/io.vertx.jphp.ext.auth.oauth2.providers.DropboxAuth.html[DropboxAuth]`
+* Facebook `link:https://vertx.okou.tk/phpdoc/vertx-auth-oauth2-jphp/classes/io.vertx.jphp.ext.auth.oauth2.providers.FacebookAuth.html[FacebookAuth]`
+* Foursquare `link:https://vertx.okou.tk/phpdoc/vertx-auth-oauth2-jphp/classes/io.vertx.jphp.ext.auth.oauth2.providers.FoursquareAuth.html[FoursquareAuth]`
+* Github `link:https://vertx.okou.tk/phpdoc/vertx-auth-oauth2-jphp/classes/io.vertx.jphp.ext.auth.oauth2.providers.GithubAuth.html[GithubAuth]`
+* Google `link:https://vertx.okou.tk/phpdoc/vertx-auth-oauth2-jphp/classes/io.vertx.jphp.ext.auth.oauth2.providers.GoogleAuth.html[GoogleAuth]`
+* Instagram `link:https://vertx.okou.tk/phpdoc/vertx-auth-oauth2-jphp/classes/io.vertx.jphp.ext.auth.oauth2.providers.InstagramAuth.html[InstagramAuth]`
+* Keycloak `link:https://vertx.okou.tk/phpdoc/vertx-auth-oauth2-jphp/classes/io.vertx.jphp.ext.auth.oauth2.providers.KeycloakAuth.html[KeycloakAuth]`
+* LinkedIn `link:https://vertx.okou.tk/phpdoc/vertx-auth-oauth2-jphp/classes/io.vertx.jphp.ext.auth.oauth2.providers.LinkedInAuth.html[LinkedInAuth]`
+* Mailchimp `link:https://vertx.okou.tk/phpdoc/vertx-auth-oauth2-jphp/classes/io.vertx.jphp.ext.auth.oauth2.providers.MailchimpAuth.html[MailchimpAuth]`
+* Salesforce `link:https://vertx.okou.tk/phpdoc/vertx-auth-oauth2-jphp/classes/io.vertx.jphp.ext.auth.oauth2.providers.SalesforceAuth.html[SalesforceAuth]`
+* Shopify `link:https://vertx.okou.tk/phpdoc/vertx-auth-oauth2-jphp/classes/io.vertx.jphp.ext.auth.oauth2.providers.ShopifyAuth.html[ShopifyAuth]`
+* Soundcloud `link:https://vertx.okou.tk/phpdoc/vertx-auth-oauth2-jphp/classes/io.vertx.jphp.ext.auth.oauth2.providers.SoundcloudAuth.html[SoundcloudAuth]`
+* Stripe `link:https://vertx.okou.tk/phpdoc/vertx-auth-oauth2-jphp/classes/io.vertx.jphp.ext.auth.oauth2.providers.StripeAuth.html[StripeAuth]`
+* Twitter `link:https://vertx.okou.tk/phpdoc/vertx-auth-oauth2-jphp/classes/io.vertx.jphp.ext.auth.oauth2.providers.TwitterAuth.html[TwitterAuth]`
 
 ==== JBoss Keycloak
 

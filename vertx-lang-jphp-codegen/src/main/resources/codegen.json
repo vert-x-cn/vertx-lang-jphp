@@ -2,7 +2,7 @@
   "name": "JPhp",
   "generators": [{
     "kind": "dataObject",
-    "fileName": "'jphp/vertx-jphp/' + module.translateQualifiedName(fqn, 'jphp').replace('.', '/') + '.php'",
+    "fileName": "'jphp/' + module.name + '-jphp/' + module.translateQualifiedName(fqn, 'jphp').replace('.', '/') + '.php'",
     "templateFileName": "vertx-php/template/dataobject.templ"
   },{
     "kind": "dataObject",
@@ -15,7 +15,7 @@
     "templateFileName": "vertx-php/template/extension.templ"
   },{
     "kind": "class",
-    "fileName": "'jphp/vertx-jphp/' + module.translateQualifiedName(fqn, 'jphp').replace('.', '/') + '.php'",
+    "fileName": "'jphp/' + module.name + '-jphp/' + module.translateQualifiedName(fqn, 'jphp').replace('.', '/') + '.php'",
     "templateFileName": "vertx-php/template/class.templ"
   },{
     "kind": "class",

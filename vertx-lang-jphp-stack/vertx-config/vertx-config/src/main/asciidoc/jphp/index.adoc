@@ -43,7 +43,7 @@ _dependencies_ section of your build descriptor:
 compile 'io.vertx:vertx-config:${maven.version}'
 ----
 
-Once done, you first need to instantiate the `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.config.ConfigRetriever.html[ConfigRetriever]`:
+Once done, you first need to instantiate the `link:https://vertx.okou.tk/phpdoc/vertx-config-jphp/classes/io.vertx.jphp.config.ConfigRetriever.html[ConfigRetriever]`:
 
 [source]
 ----
@@ -174,7 +174,7 @@ Each declared data store must specify the `type`. It can also define the `format
 not set JSON is used.
 
 Some configurations tore requires additional configuration (such a path...). This
-configuration is passed as a Json Object using `link:../enums.adoc#ConfigStoreOptions#method_setConfig[setConfig]`
+configuration is passed as a Json Object using `link:../vertx-config-jphp/enums.adoc#ConfigStoreOptions#method_setConfig[setConfig]`
 
 === File
 
@@ -429,14 +429,14 @@ using:
 
 == Reading configuration as a stream
 
-The `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.config.ConfigRetriever.html[ConfigRetriever]` provide a way to access the stream of configuration.
-It's a `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.streams.ReadStream.html[ReadStream]` of `JsonObject`. By registering the right
+The `link:https://vertx.okou.tk/phpdoc/vertx-config-jphp/classes/io.vertx.jphp.config.ConfigRetriever.html[ConfigRetriever]` provide a way to access the stream of configuration.
+It's a `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.streams.ReadStream.html[ReadStream]` of `JsonObject`. By registering the right
 set of handlers you are notified:
 
 * when a new configuration is retrieved
 * when an error occur while retrieving a configuration
 * when the configuration retriever is closed (the
-`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.streams.ReadStream.html#method_endHandler[endHandler]`is called).
+`link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.streams.ReadStream.html#method_endHandler[endHandler]`is called).
 
 [source, php]
 ----
@@ -465,8 +465,8 @@ set of handlers you are notified:
 
 == Retrieving the configuration as a Future
 
-The `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.config.ConfigRetriever.html[ConfigRetriever]` provide a way to retrieve the configuration as a
-`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.Future.html[Future]`:
+The `link:https://vertx.okou.tk/phpdoc/vertx-config-jphp/classes/io.vertx.jphp.config.ConfigRetriever.html[ConfigRetriever]` provide a way to retrieve the configuration as a
+`link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.Future.html[Future]`:
 
 [source, php]
 ----

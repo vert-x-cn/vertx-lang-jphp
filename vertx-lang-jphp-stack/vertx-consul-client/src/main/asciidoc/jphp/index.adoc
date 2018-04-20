@@ -72,7 +72,7 @@ therefore a lot of settings are available. Please see the documentation.
 
 == Using the API
 
-The client API is represented by `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.consul.ConsulClient.html[ConsulClient]`. The API is very similar to Consul's
+The client API is represented by `link:https://vertx.okou.tk/phpdoc/vertx-consul-jphp/classes/io.vertx.jphp.ext.consul.ConsulClient.html[ConsulClient]`. The API is very similar to Consul's
 HTTP API that described in https://www.consul.io/docs/agent/http.html[Consul API docs]
 
 === Blocking queries
@@ -507,7 +507,7 @@ The list of check options that supported by Consul client is:
 `tcp`:: TCP address to check. Also you should set checking interval
 `interval`:: checking interval in Go's time format which is sequence of decimal numbers,
 each with optional fraction and a unit suffix, such as "300ms", "-1.5h" or "2h45m".
-Valid time units are "ns", "us" (or "?s"), "ms", "s", "m", "h"
+Valid time units are "ns", "us" (or "µs"), "ms", "s", "m", "h"
 `notes`:: the check notes
 `serviceId`:: the service ID to associate the registered check with an existing service provided by the agent.
 `deregisterAfter`:: deregister timeout. This is optional field, which is a timeout in the same time format as Interval and TTL.

@@ -9,7 +9,7 @@ Vert.x Shell can be extended with custom commands in any language supported by V
 
 == Using Vert.x Shell
 
-Vert.x Shell is a Vert.x Service and can be started programmatically via the `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.shell.ShellService.html[ShellService]`
+Vert.x Shell is a Vert.x Service and can be started programmatically via the `link:https://vertx.okou.tk/phpdoc/vertx-shell-jphp/classes/io.vertx.jphp.ext.shell.ShellService.html[ShellService]`
 or deployed as a service.
 
 === Shell service
@@ -121,7 +121,7 @@ or `maven:io.vertx:vertx-shell:${maven.version}`
 
 === Programmatic service
 
-The `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.shell.ShellService.html[ShellService]` takes care of starting an instance of Vert.x Shell.
+The `link:https://vertx.okou.tk/phpdoc/vertx-shell-jphp/classes/io.vertx.jphp.ext.shell.ShellService.html[ShellService]` takes care of starting an instance of Vert.x Shell.
 
 Starting a shell service available via SSH:
 
@@ -165,7 +165,7 @@ Starting a shell service available via Telnet:
 
 ----
 
-The `link:../enums.adoc#TelnetTermOptions[TelnetTermOptions]` extends the Vert.x Core `NetServerOptions` as the Telnet server
+The `link:../vertx-shell-jphp/enums.adoc#TelnetTermOptions[TelnetTermOptions]` extends the Vert.x Core `NetServerOptions` as the Telnet server
 implementation is based on a `NetServer`.
 
 CAUTION: Telnet does not provide any authentication nor encryption at all.
@@ -195,11 +195,11 @@ providers:
 - _jdbc_ : JDBC backend
 - _mongo_ : MongoDB backend
 
-These options can be created directly using directly `link:../../vertx-auth-common/enums.adoc#AuthOptions[AuthOptions]`:
+These options can be created directly using directly `link:../../vertx-auth-common/vertx-auth-common-jphp/enums.adoc#AuthOptions[AuthOptions]`:
 
-- `link:../../vertx-auth-shiro/enums.adoc#ShiroAuthOptions[ShiroAuthOptions]` for Shiro
-- `link:../../vertx-auth-jdbc/enums.adoc#JDBCAuthOptions[JDBCAuthOptions]` for JDBC
-- `link:../../vertx-auth-mongo/enums.adoc#MongoAuthOptions[MongoAuthOptions]` for Mongo
+- `link:../../vertx-auth-shiro/vertx-auth-shiro-jphp/enums.adoc#ShiroAuthOptions[ShiroAuthOptions]` for Shiro
+- `link:../../vertx-auth-jdbc/vertx-auth-jdbc-jphp/enums.adoc#JDBCAuthOptions[JDBCAuthOptions]` for JDBC
+- `link:../../vertx-auth-mongo/vertx-auth-mongo-jphp/enums.adoc#MongoAuthOptions[MongoAuthOptions]` for Mongo
 
 As for external service configuration in Json, the `authOptions` uses the `provider` property to distinguish:
 
@@ -218,27 +218,27 @@ As for external service configuration in Json, the `authOptions` uses the `provi
 
 == Telnet term configuration
 
-Telnet terms are configured by `link:../enums.adoc#ShellServiceOptions#method_setTelnetOptions[setTelnetOptions]`,
-the `link:../enums.adoc#TelnetTermOptions[TelnetTermOptions]` extends the `link:../../vertx-core/enums.adoc#NetServerOptions[NetServerOptions]` so they
+Telnet terms are configured by `link:../vertx-shell-jphp/enums.adoc#ShellServiceOptions#method_setTelnetOptions[setTelnetOptions]`,
+the `link:../vertx-shell-jphp/enums.adoc#TelnetTermOptions[TelnetTermOptions]` extends the `link:../../vertx-core/vertx-jphp/enums.adoc#NetServerOptions[NetServerOptions]` so they
 have the exact same configuration.
 
 == SSH term configuration
 
-SSH terms are configured by `link:../enums.adoc#ShellServiceOptions#method_setSSHOptions[setSSHOptions]`:
+SSH terms are configured by `link:../vertx-shell-jphp/enums.adoc#ShellServiceOptions#method_setSSHOptions[setSSHOptions]`:
 
-- `link:../enums.adoc#SSHTermOptions#method_setPort[setPort]`: port
-- `link:../enums.adoc#SSHTermOptions#method_setHost[setHost]`: host
+- `link:../vertx-shell-jphp/enums.adoc#SSHTermOptions#method_setPort[setPort]`: port
+- `link:../vertx-shell-jphp/enums.adoc#SSHTermOptions#method_setHost[setHost]`: host
 
 Only username/password authentication is supported at the moment, it can be configured with property file
 or LDAP, see Vert.x Auth for more info:
 
-- `link:../enums.adoc#SSHTermOptions#method_setAuthOptions[setAuthOptions]`: configures user authentication
+- `link:../vertx-shell-jphp/enums.adoc#SSHTermOptions#method_setAuthOptions[setAuthOptions]`: configures user authentication
 
 The server key configuration reuses the key pair store configuration scheme provided by _Vert.x Core_:
 
-- `link:../enums.adoc#SSHTermOptions#method_setKeyPairOptions[setKeyPairOptions]`: set `.jks` key pair store
-- `link:../enums.adoc#SSHTermOptions#method_setPfxKeyPairOptions[setPfxKeyPairOptions]`: set `.pfx` key pair store
-- `link:../enums.adoc#SSHTermOptions#method_setPemKeyPairOptions[setPemKeyPairOptions]`: set `.pem` key pair store
+- `link:../vertx-shell-jphp/enums.adoc#SSHTermOptions#method_setKeyPairOptions[setKeyPairOptions]`: set `.jks` key pair store
+- `link:../vertx-shell-jphp/enums.adoc#SSHTermOptions#method_setPfxKeyPairOptions[setPfxKeyPairOptions]`: set `.pfx` key pair store
+- `link:../vertx-shell-jphp/enums.adoc#SSHTermOptions#method_setPemKeyPairOptions[setPemKeyPairOptions]`: set `.pem` key pair store
 
 
 .Deploying the Shell Service on SSH with Mongo authentication
@@ -343,14 +343,14 @@ The server key configuration reuses the key pair store configuration scheme prov
 
 == HTTP term configuration
 
-HTTP terms are configured by `link:../enums.adoc#ShellServiceOptions#method_setHttpOptions[setHttpOptions]`, the http options
-extends the `link:../../vertx-core/enums.adoc#HttpServerOptions[HttpServerOptions]` so they expose the exact same configuration.
+HTTP terms are configured by `link:../vertx-shell-jphp/enums.adoc#ShellServiceOptions#method_setHttpOptions[setHttpOptions]`, the http options
+extends the `link:../../vertx-core/vertx-jphp/enums.adoc#HttpServerOptions[HttpServerOptions]` so they expose the exact same configuration.
 
 In addition there are extra options for configuring an HTTP term:
 
-- `link:../enums.adoc#HttpTermOptions#method_setAuthOptions[setAuthOptions]`: configures user authentication
-- `link:../enums.adoc#HttpTermOptions#method_setSockJSHandlerOptions[setSockJSHandlerOptions]`: configures SockJS
-- `link:../enums.adoc#HttpTermOptions#method_setSockJSPath[setSockJSPath]`: the SockJS path in the router
+- `link:../vertx-shell-jphp/enums.adoc#HttpTermOptions#method_setAuthOptions[setAuthOptions]`: configures user authentication
+- `link:../vertx-shell-jphp/enums.adoc#HttpTermOptions#method_setSockJSHandlerOptions[setSockJSHandlerOptions]`: configures SockJS
+- `link:../vertx-shell-jphp/enums.adoc#HttpTermOptions#method_setSockJSPath[setSockJSPath]`: the SockJS path in the router
 
 .Deploying the Shell Service on HTTP with Mongo authentication
 [source,php,subs="+attributes"]
@@ -451,9 +451,9 @@ In addition there are extra options for configuring an HTTP term:
 The shell uses a default keymap configuration that can be overriden using the `inputrc` property of the various
 term configuration object:
 
-- `link:../enums.adoc#TelnetTermOptions#method_setIntputrc[setIntputrc]`
-- `link:../enums.adoc#SSHTermOptions#method_setIntputrc[setIntputrc]`
-- `link:../enums.adoc#HttpTermOptions#method_setIntputrc[setIntputrc]`
+- `link:../vertx-shell-jphp/enums.adoc#TelnetTermOptions#method_setIntputrc[setIntputrc]`
+- `link:../vertx-shell-jphp/enums.adoc#SSHTermOptions#method_setIntputrc[setIntputrc]`
+- `link:../vertx-shell-jphp/enums.adoc#HttpTermOptions#method_setIntputrc[setIntputrc]`
 
 The `inputrc` must point to a file available via the classloader or the filesystem.
 
@@ -522,8 +522,8 @@ Vert.x Shell, for instance Dropwizard Metrics.
 
 Vert.x Shell can be extended with custom commands in any of the languages supporting code generation.
 
-A command is created by the `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.shell.command.CommandBuilder.html#method_command[CommandBuilder::command]` method: the command process handler is called
-by the shell when the command is executed, this handler can be set with the `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.shell.command.CommandBuilder.html#method_processHandler[processHandler]`
+A command is created by the `link:https://vertx.okou.tk/phpdoc/vertx-shell-jphp/classes/io.vertx.jphp.ext.shell.command.CommandBuilder.html#method_command[CommandBuilder::command]` method: the command process handler is called
+by the shell when the command is executed, this handler can be set with the `link:https://vertx.okou.tk/phpdoc/vertx-shell-jphp/classes/io.vertx.jphp.ext.shell.command.CommandBuilder.html#method_processHandler[processHandler]`
 method:
 
 [source,php]
@@ -548,20 +548,20 @@ method:
 
 ----
 
-After a command is created, it needs to be registed to a `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.shell.command.CommandRegistry.html[CommandRegistry]`. The
+After a command is created, it needs to be registed to a `link:https://vertx.okou.tk/phpdoc/vertx-shell-jphp/classes/io.vertx.jphp.ext.shell.command.CommandRegistry.html[CommandRegistry]`. The
 command registry holds all the commands for a Vert.x instance.
 
-A command is registered until it is unregistered with the `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.shell.command.CommandRegistry.html#method_unregisterCommand[unregisterCommand]`.
+A command is registered until it is unregistered with the `link:https://vertx.okou.tk/phpdoc/vertx-shell-jphp/classes/io.vertx.jphp.ext.shell.command.CommandRegistry.html#method_unregisterCommand[unregisterCommand]`.
 When a command is registered from a Verticle, this command is unregistered when this verticle is undeployed.
 
 NOTE: Command callbacks are invoked in the {@literal io.vertx.core.Context} when the command is registered in the
 registry. Keep this in mind if you maintain state in a command.
 
-The `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.shell.command.CommandProcess.html[CommandProcess]` object can be used for interacting with the shell.
+The `link:https://vertx.okou.tk/phpdoc/vertx-shell-jphp/classes/io.vertx.jphp.ext.shell.command.CommandProcess.html[CommandProcess]` object can be used for interacting with the shell.
 
 === Command arguments
 
-The `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.shell.command.CommandProcess.html#method_args[args]` returns the command arguments:
+The `link:https://vertx.okou.tk/phpdoc/vertx-shell-jphp/classes/io.vertx.jphp.ext.shell.command.CommandProcess.html#method_args[args]` returns the command arguments:
 
 [source,php]
 ----
@@ -578,7 +578,7 @@ The `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.shell.command.C
 
 ----
 
-Besides it is also possible to create commands using `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.core.cli.CLI.html[Vert.x CLI]`: it makes easier to
+Besides it is also possible to create commands using `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.cli.CLI.html[Vert.x CLI]`: it makes easier to
 write command line argument parsing:
 
 - _option_ and _argument_ parsing
@@ -632,15 +632,15 @@ when the option is activated:
 
 ----
 
-When the command executes the `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.shell.command.CommandProcess.html[process]` is provided for interacting
-with the shell. A `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.shell.command.CommandProcess.html[CommandProcess]` extends `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.shell.term.Tty.html[Tty]`
+When the command executes the `link:https://vertx.okou.tk/phpdoc/vertx-shell-jphp/classes/io.vertx.jphp.ext.shell.command.CommandProcess.html[process]` is provided for interacting
+with the shell. A `link:https://vertx.okou.tk/phpdoc/vertx-shell-jphp/classes/io.vertx.jphp.ext.shell.command.CommandProcess.html[CommandProcess]` extends `link:https://vertx.okou.tk/phpdoc/vertx-shell-jphp/classes/io.vertx.jphp.ext.shell.term.Tty.html[Tty]`
 which is used for interacting with the terminal.
 
 === Terminal usage
 
 ==== terminal I/O
 
-The `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.shell.term.Tty.html#method_stdinHandler[stdinHandler]` handler is used to be notified when the terminal
+The `link:https://vertx.okou.tk/phpdoc/vertx-shell-jphp/classes/io.vertx.jphp.ext.shell.term.Tty.html#method_stdinHandler[stdinHandler]` handler is used to be notified when the terminal
 receives data, e.g the user uses his keyboard:
 
 [source,php]
@@ -652,7 +652,7 @@ receives data, e.g the user uses his keyboard:
 
 ----
 
-A command can use the `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.shell.term.Tty.html#method_write[write]` to write to the standard output.
+A command can use the `link:https://vertx.okou.tk/phpdoc/vertx-shell-jphp/classes/io.vertx.jphp.ext.shell.term.Tty.html#method_write[write]` to write to the standard output.
 
 [source,php]
 ----
@@ -663,8 +663,8 @@ A command can use the `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.e
 
 ==== Terminal size
 
-The current terminal size can be obtained using `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.shell.term.Tty.html#method_width[width]` and
-`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.shell.term.Tty.html#method_height[height]`.
+The current terminal size can be obtained using `link:https://vertx.okou.tk/phpdoc/vertx-shell-jphp/classes/io.vertx.jphp.ext.shell.term.Tty.html#method_width[width]` and
+`link:https://vertx.okou.tk/phpdoc/vertx-shell-jphp/classes/io.vertx.jphp.ext.shell.term.Tty.html#method_height[height]`.
 
 [source,php]
 ----
@@ -675,9 +675,9 @@ The current terminal size can be obtained using `link:https://vertx.okou.tk/phpd
 
 ==== Resize event
 
-When the size of the terminal changes the `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.shell.term.Tty.html#method_resizehandler[resizehandler]`
-is called, the new terminal size can be obtained with `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.shell.term.Tty.html#method_width[width]` and
-`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.shell.term.Tty.html#method_height[height]`.
+When the size of the terminal changes the `link:https://vertx.okou.tk/phpdoc/vertx-shell-jphp/classes/io.vertx.jphp.ext.shell.term.Tty.html#method_resizehandler[resizehandler]`
+is called, the new terminal size can be obtained with `link:https://vertx.okou.tk/phpdoc/vertx-shell-jphp/classes/io.vertx.jphp.ext.shell.term.Tty.html#method_width[width]` and
+`link:https://vertx.okou.tk/phpdoc/vertx-shell-jphp/classes/io.vertx.jphp.ext.shell.term.Tty.html#method_height[height]`.
 
 [source,php]
 ----
@@ -690,7 +690,7 @@ is called, the new terminal size can be obtained with `link:https://vertx.okou.t
 
 ==== Terminal type
 
-The terminal type is useful for sending escape codes to the remote terminal: `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.shell.term.Tty.html#method_type[type]`
+The terminal type is useful for sending escape codes to the remote terminal: `link:https://vertx.okou.tk/phpdoc/vertx-shell-jphp/classes/io.vertx.jphp.ext.shell.term.Tty.html#method_type[type]`
 returns the current terminal type, it can be null if the terminal has not advertised the value.
 
 [source,php]
@@ -703,7 +703,7 @@ returns the current terminal type, it can be null if the terminal has not advert
 === Shell session
 
 The shell is a connected service that naturally maintains a session with the client, this session can be
-used in commands to scope data. A command can get the session with `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.shell.command.CommandProcess.html#method_session[session]`:
+used in commands to scope data. A command can get the session with `link:https://vertx.okou.tk/phpdoc/vertx-shell-jphp/classes/io.vertx.jphp.ext.shell.command.CommandProcess.html#method_session[session]`:
 
 [source,php]
 ----
@@ -723,7 +723,7 @@ used in commands to scope data. A command can get the session with `link:https:/
 
 === Process termination
 
-Calling `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.shell.command.CommandProcess.html#method_end[end]` ends the current process. It can be called directly
+Calling `link:https://vertx.okou.tk/phpdoc/vertx-shell-jphp/classes/io.vertx.jphp.ext.shell.command.CommandProcess.html#method_end[end]` ends the current process. It can be called directly
 in the invocation of the command handler or any time later:
 
 [source,php]
@@ -748,7 +748,7 @@ A command can subscribe to a few process events.
 
 ==== Interrupt event
 
-The `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.shell.command.CommandProcess.html#method_interruptHandler[interruptHandler]` is called when the process
+The `link:https://vertx.okou.tk/phpdoc/vertx-shell-jphp/classes/io.vertx.jphp.ext.shell.command.CommandProcess.html#method_interruptHandler[interruptHandler]` is called when the process
 is interrupted, this event is fired when the user press _Ctrl+C_ during the execution of a command. This handler can
 be used for interrupting commands _blocking_ the CLI and gracefully ending the command process:
 
@@ -777,7 +777,7 @@ will be delayed and will likely be handled by the shell, like printing a new lin
 
 ==== Suspend/resume events
 
-The `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.shell.command.CommandProcess.html#method_suspendHandler[suspendHandler]` is called when the process
+The `link:https://vertx.okou.tk/phpdoc/vertx-shell-jphp/classes/io.vertx.jphp.ext.shell.command.CommandProcess.html#method_suspendHandler[suspendHandler]` is called when the process
 is running and the user press _Ctrl+Z_, the command is _suspended_:
 
 - the command can receive the suspend event when it has registered an handler for this event
@@ -785,7 +785,7 @@ is running and the user press _Ctrl+Z_, the command is _suspended_:
 - the shell prompt the user for input
 - the command can receive interrupts event or end events
 
-The `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.shell.command.CommandProcess.html#method_resumeHandler[resumeHandler]` is called when the process
+The `link:https://vertx.okou.tk/phpdoc/vertx-shell-jphp/classes/io.vertx.jphp.ext.shell.command.CommandProcess.html#method_resumeHandler[resumeHandler]` is called when the process
 is resumed, usually when the user types _fg_:
 
 - the command can receive the resume event when it has registered an handler for this event
@@ -811,7 +811,7 @@ is resumed, usually when the user types _fg_:
 
 ==== End events
 
-The `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.shell.command.CommandProcess.html#method_endHandler[endHandler]` (io.vertx.core.Handler)} is
+The `link:https://vertx.okou.tk/phpdoc/vertx-shell-jphp/classes/io.vertx.jphp.ext.shell.command.CommandProcess.html#method_endHandler[endHandler]` (io.vertx.core.Handler)} is
 called when the process is running or suspended and the command terminates, for instance the shell session is closed,
 the command is _terminated_.
 
@@ -828,7 +828,7 @@ the command is _terminated_.
 
 ----
 
-The end handler is called even when the command invokes `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.shell.command.CommandProcess.html#method_end[end]`.
+The end handler is called even when the command invokes `link:https://vertx.okou.tk/phpdoc/vertx-shell-jphp/classes/io.vertx.jphp.ext.shell.command.CommandProcess.html#method_end[end]`.
 
 This handler is useful for cleaning up resources upon command termination, for instance closing a client or a timer.
 
@@ -836,22 +836,22 @@ This handler is useful for cleaning up resources upon command termination, for i
 
 A command can provide a completion handler when it wants to provide contextual command line interface completion.
 
-Like the process handler, the `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.shell.command.CommandBuilder.html#method_completionHandler[completion
+Like the process handler, the `link:https://vertx.okou.tk/phpdoc/vertx-shell-jphp/classes/io.vertx.jphp.ext.shell.command.CommandBuilder.html#method_completionHandler[completion
 handler]` is non blocking because the implementation may use Vert.x services, e.g the file system.
 
-The `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.shell.cli.Completion.html#method_lineTokens[lineTokens]` returns a list of `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.shell.cli.CliToken.html[tokens]`
+The `link:https://vertx.okou.tk/phpdoc/vertx-shell-jphp/classes/io.vertx.jphp.ext.shell.cli.Completion.html#method_lineTokens[lineTokens]` returns a list of `link:https://vertx.okou.tk/phpdoc/vertx-shell-jphp/classes/io.vertx.jphp.ext.shell.cli.CliToken.html[tokens]`
 from the beginning of the line to the cursor position. The list can be empty if the cursor when the cursor is at the
 beginning of the line.
 
-The `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.shell.cli.Completion.html#method_rawLine[rawLine]` returns the current completed from the beginning
+The `link:https://vertx.okou.tk/phpdoc/vertx-shell-jphp/classes/io.vertx.jphp.ext.shell.cli.Completion.html#method_rawLine[rawLine]` returns the current completed from the beginning
 of the line to the cursor position, in raw format, i.e without any char escape performed.
 
-Completion ends with a call to `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.shell.cli.Completion.html#method_complete[complete]`.
+Completion ends with a call to `link:https://vertx.okou.tk/phpdoc/vertx-shell-jphp/classes/io.vertx.jphp.ext.shell.cli.Completion.html#method_complete[complete]`.
 
 == Shell server
 
 The Shell service is a convenient facade for starting a preconfigured shell either programmatically or as a Vert.x service.
-When more flexibility is needed, a `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.shell.ShellServer.html[ShellServer]` can be used instead of the service.
+When more flexibility is needed, a `link:https://vertx.okou.tk/phpdoc/vertx-shell-jphp/classes/io.vertx.jphp.ext.shell.ShellServer.html[ShellServer]` can be used instead of the service.
 
 For instance the shell http term can be configured to use an existing router instead of starting its own http server.
 
@@ -891,7 +891,7 @@ steps:
 
 Besides, the shell server can also be used for creating in process shell session: it provides a programmatic interactive shell.
 
-In process shell session can be created with `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.shell.ShellServer.html#method_createShell[createShell]`:
+In process shell session can be created with `link:https://vertx.okou.tk/phpdoc/vertx-shell-jphp/classes/io.vertx.jphp.ext.shell.ShellServer.html#method_createShell[createShell]`:
 
 [source,php]
 ----
@@ -930,30 +930,30 @@ The main use case is running or testing a command:
 
 ----
 
-The `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.shell.term.Pty.html[Pty]` pseudo terminal is the main interface for interacting with the command
+The `link:https://vertx.okou.tk/phpdoc/vertx-shell-jphp/classes/io.vertx.jphp.ext.shell.term.Pty.html[Pty]` pseudo terminal is the main interface for interacting with the command
 when it's running:
 
 - uses standard input/output for writing or reading strings
 - resize the terminal
 
-The `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.shell.system.JobController.html#method_close[close]` closes the shell, it will terminate all jobs in the current shell
+The `link:https://vertx.okou.tk/phpdoc/vertx-shell-jphp/classes/io.vertx.jphp.ext.shell.system.JobController.html#method_close[close]` closes the shell, it will terminate all jobs in the current shell
 session.
 
 == Terminal servers
 
 Vert.x Shell also provides bare terminal servers for those who need to write pure terminal applications.
 
-A `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.shell.term.Term.html[Term]` handler must be set on a term server before starting it. This handler will
+A `link:https://vertx.okou.tk/phpdoc/vertx-shell-jphp/classes/io.vertx.jphp.ext.shell.term.Term.html[Term]` handler must be set on a term server before starting it. This handler will
 handle each term when the user connects.
 
-An `link:../../vertx-auth-common/enums.adoc#AuthOptions[AuthOptions]` can be set on `link:../enums.adoc#SSHTermOptions[SSHTermOptions]` and `link:../enums.adoc#HttpTermOptions[HttpTermOptions]`.
-Alternatively, an `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.auth.AuthProvider.html[AuthProvider]` can be `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.shell.term.TermServer.html#method_authProvider[set]`
+An `link:../../vertx-auth-common/vertx-auth-common-jphp/enums.adoc#AuthOptions[AuthOptions]` can be set on `link:../vertx-shell-jphp/enums.adoc#SSHTermOptions[SSHTermOptions]` and `link:../vertx-shell-jphp/enums.adoc#HttpTermOptions[HttpTermOptions]`.
+Alternatively, an `link:https://vertx.okou.tk/phpdoc/vertx-auth-common-jphp/classes/io.vertx.jphp.ext.auth.AuthProvider.html[AuthProvider]` can be `link:https://vertx.okou.tk/phpdoc/vertx-shell-jphp/classes/io.vertx.jphp.ext.shell.term.TermServer.html#method_authProvider[set]`
 directly on the term server before starting it.
 
 === SSH term
 
-The terminal server `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.shell.term.Term.html[Term]` handler accepts incoming terminal connections.
-When a remote terminal connects, the `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.shell.term.Term.html[Term]` can be used to interact with connected
+The terminal server `link:https://vertx.okou.tk/phpdoc/vertx-shell-jphp/classes/io.vertx.jphp.ext.shell.term.Term.html[Term]` handler accepts incoming terminal connections.
+When a remote terminal connects, the `link:https://vertx.okou.tk/phpdoc/vertx-shell-jphp/classes/io.vertx.jphp.ext.shell.term.Term.html[Term]` can be used to interact with connected
 terminal.
 
 [source,php]
@@ -973,7 +973,7 @@ terminal.
 
 ----
 
-The `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.shell.term.Term.html[Term]` is also a `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.shell.term.Tty.html[Tty]`, this section explains
+The `link:https://vertx.okou.tk/phpdoc/vertx-shell-jphp/classes/io.vertx.jphp.ext.shell.term.Term.html[Term]` is also a `link:https://vertx.okou.tk/phpdoc/vertx-shell-jphp/classes/io.vertx.jphp.ext.shell.term.Tty.html[Tty]`, this section explains
 how to use the tty.
 
 === Telnet term
@@ -997,7 +997,7 @@ how to use the tty.
 
 === HTTP term
 
-The `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.shell.term.TermServer.html#method_createHttpTermServer[TermServer::createHttpTermServer]` method creates an HTTP term server, built
+The `link:https://vertx.okou.tk/phpdoc/vertx-shell-jphp/classes/io.vertx.jphp.ext.shell.term.TermServer.html#method_createHttpTermServer[TermServer::createHttpTermServer]` method creates an HTTP term server, built
 on top of Vert.x Web using the SockJS protocol.
 
 [source,php]
@@ -1017,7 +1017,7 @@ on top of Vert.x Web using the SockJS protocol.
 
 ----
 
-An HTTP term can start its own HTTP server, or it can reuse an existing Vert.x Web `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.web.Router.html[Router]`.
+An HTTP term can start its own HTTP server, or it can reuse an existing Vert.x Web `link:https://vertx.okou.tk/phpdoc/vertx-web-jphp/classes/io.vertx.jphp.ext.web.Router.html[Router]`.
 
 The shell can be found at `/shell.html`.
 
@@ -1106,7 +1106,7 @@ The shell service discovery using the service loader mechanism:
 my.CustomCommands
 ----
 
-This is only valid for the `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.shell.ShellService.html[ShellService]`. `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.shell.ShellServer.html[ShellServer]`
+This is only valid for the `link:https://vertx.okou.tk/phpdoc/vertx-shell-jphp/classes/io.vertx.jphp.ext.shell.ShellService.html[ShellService]`. `link:https://vertx.okou.tk/phpdoc/vertx-shell-jphp/classes/io.vertx.jphp.ext.shell.ShellServer.html[ShellServer]`
 don't use this mechanism.
 
 == Command pack

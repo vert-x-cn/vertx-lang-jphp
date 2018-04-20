@@ -30,7 +30,7 @@ compile 'io.vertx:vertx-sql-common:${maven.version}'
 There are times when you will want to run a single SQL operation, e.g.: a single select of a row, or a update to a
 set of rows which do not require to be part of a transaction or have dependencies on the previous or next operation.
 
-For these cases, clients provide a boilerplate-less API `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.sql.SQLOperations.html[SQLOperations]`. This interface will
+For these cases, clients provide a boilerplate-less API `link:https://vertx.okou.tk/phpdoc/vertx-sql-jphp/classes/io.vertx.jphp.ext.sql.SQLOperations.html[SQLOperations]`. This interface will
 perform the following steps for you:
 
 1. acquire a connection from the connection pool
@@ -58,21 +58,21 @@ An example where users get loaded from the `USERS` table could be:
 
 You can perform the following operations as a simple one "shot" method call:
 
-* `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.sql.SQLClient.html#method_query[query]`
-* `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.sql.SQLClient.html#method_queryWithParams[queryWithParams]`
-* `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.sql.SQLOperations.html#method_querySingle[querySingle]`
-* `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.sql.SQLOperations.html#method_querySingleWithParams[querySingleWithParams]`
-* `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.sql.SQLClient.html#method_update[update]`
-* `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.sql.SQLClient.html#method_updateWithParams[updateWithParams]`
-* `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.sql.SQLClient.html#method_call[call]`
-* `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.sql.SQLClient.html#method_callWithParams[callWithParams]`
+* `link:https://vertx.okou.tk/phpdoc/vertx-sql-jphp/classes/io.vertx.jphp.ext.sql.SQLClient.html#method_query[query]`
+* `link:https://vertx.okou.tk/phpdoc/vertx-sql-jphp/classes/io.vertx.jphp.ext.sql.SQLClient.html#method_queryWithParams[queryWithParams]`
+* `link:https://vertx.okou.tk/phpdoc/vertx-sql-jphp/classes/io.vertx.jphp.ext.sql.SQLOperations.html#method_querySingle[querySingle]`
+* `link:https://vertx.okou.tk/phpdoc/vertx-sql-jphp/classes/io.vertx.jphp.ext.sql.SQLOperations.html#method_querySingleWithParams[querySingleWithParams]`
+* `link:https://vertx.okou.tk/phpdoc/vertx-sql-jphp/classes/io.vertx.jphp.ext.sql.SQLClient.html#method_update[update]`
+* `link:https://vertx.okou.tk/phpdoc/vertx-sql-jphp/classes/io.vertx.jphp.ext.sql.SQLClient.html#method_updateWithParams[updateWithParams]`
+* `link:https://vertx.okou.tk/phpdoc/vertx-sql-jphp/classes/io.vertx.jphp.ext.sql.SQLClient.html#method_call[call]`
+* `link:https://vertx.okou.tk/phpdoc/vertx-sql-jphp/classes/io.vertx.jphp.ext.sql.SQLClient.html#method_callWithParams[callWithParams]`
 
-For further details on these API please refer to the `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.sql.SQLOperations.html[SQLOperations]` interface.
+For further details on these API please refer to the `link:https://vertx.okou.tk/phpdoc/vertx-sql-jphp/classes/io.vertx.jphp.ext.sql.SQLOperations.html[SQLOperations]` interface.
 
 
 == The SQL Connection
 
-A connection to the database is represented by `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.sql.SQLConnection.html[SQLConnection]`.
+A connection to the database is represented by `link:https://vertx.okou.tk/phpdoc/vertx-sql-jphp/classes/io.vertx.jphp.ext.sql.SQLConnection.html[SQLConnection]`.
 
 === Auto-commit
 
@@ -80,7 +80,7 @@ When you obtain a connection auto commit is set to `true`. This means that each 
 execute in its own transaction.
 
 If you wish to perform multiple operations in a single transaction you should set auto commit to false with
-`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.sql.SQLConnection.html#method_setAutoCommit[setAutoCommit]`.
+`link:https://vertx.okou.tk/phpdoc/vertx-sql-jphp/classes/io.vertx.jphp.ext.sql.SQLConnection.html#method_setAutoCommit[setAutoCommit]`.
 
 When the operation is complete, the handler will be called:
 
@@ -99,11 +99,11 @@ When the operation is complete, the handler will be called:
 
 === Executing queries
 
-To execute a query use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.sql.SQLConnection.html#method_query[query]`
+To execute a query use `link:https://vertx.okou.tk/phpdoc/vertx-sql-jphp/classes/io.vertx.jphp.ext.sql.SQLConnection.html#method_query[query]`
 
 The query string is raw SQL that is passed through without changes to the actual database.
 
-The handler will be called with the results, represented by `link:../enums.adoc#ResultSet[ResultSet]` when the query has
+The handler will be called with the results, represented by `link:../vertx-sql-jphp/enums.adoc#ResultSet[ResultSet]` when the query has
 been run.
 
 [source,php]
@@ -120,10 +120,10 @@ been run.
 
 ----
 
-The `link:../enums.adoc#ResultSet[ResultSet]` instance represents the results of a query.
+The `link:../vertx-sql-jphp/enums.adoc#ResultSet[ResultSet]` instance represents the results of a query.
 
-The list of column names are available with `link:../enums.adoc#ResultSet#method_getColumnNames[getColumnNames]`, and the actual results
-available with `link:../enums.adoc#ResultSet#method_getResults[getResults]`
+The list of column names are available with `link:../vertx-sql-jphp/enums.adoc#ResultSet#method_getColumnNames[getColumnNames]`, and the actual results
+available with `link:../vertx-sql-jphp/enums.adoc#ResultSet#method_getResults[getResults]`
 
 The results are a list of `JsonArray` instances, one for each row of the results.
 
@@ -147,9 +147,9 @@ The results are a list of `JsonArray` instances, one for each row of the results
 
 ----
 
-You can also retrieve the rows as a list of Json object instances with `link:../enums.adoc#ResultSet#method_getRows[getRows]` -
+You can also retrieve the rows as a list of Json object instances with `link:../vertx-sql-jphp/enums.adoc#ResultSet#method_getRows[getRows]` -
 this can give you a somewhat simpler API to work with, but please be aware that SQL results can contain duplicate
-column names - if that's the case you should use `link:../enums.adoc#ResultSet#method_getResults[getResults]` instead.
+column names - if that's the case you should use `link:../vertx-sql-jphp/enums.adoc#ResultSet#method_getResults[getResults]` instead.
 
 Here's an example of iterating through the results as Json object instances:
 
@@ -174,7 +174,7 @@ Here's an example of iterating through the results as Json object instances:
 === Prepared statement queries
 
 To execute a prepared statement query you can use
-`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.sql.SQLConnection.html#method_queryWithParams[queryWithParams]`.
+`link:https://vertx.okou.tk/phpdoc/vertx-sql-jphp/classes/io.vertx.jphp.ext.sql.SQLConnection.html#method_queryWithParams[queryWithParams]`.
 
 This takes the query, containing the parameter place holders, and a `JsonArray` or parameter
 values.
@@ -204,15 +204,15 @@ values.
 
 === Executing INSERT, UPDATE or DELETE
 
-To execute an operation which updates the database use `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.sql.SQLConnection.html#method_update[update]`.
+To execute an operation which updates the database use `link:https://vertx.okou.tk/phpdoc/vertx-sql-jphp/classes/io.vertx.jphp.ext.sql.SQLConnection.html#method_update[update]`.
 
 The update string is raw SQL that is passed through without changes to the actual database.
 
-The handler will be called with the results, represented by `link:../enums.adoc#UpdateResult[UpdateResult]` when the update has
+The handler will be called with the results, represented by `link:../vertx-sql-jphp/enums.adoc#UpdateResult[UpdateResult]` when the update has
 been run.
 
-The update result holds the number of rows updated with `link:../enums.adoc#UpdateResult#method_getUpdated[getUpdated]`, and
-if the update generated keys, they are available with `link:../enums.adoc#UpdateResult#method_getKeys[getKeys]`.
+The update result holds the number of rows updated with `link:../vertx-sql-jphp/enums.adoc#UpdateResult#method_getUpdated[getUpdated]`, and
+if the update generated keys, they are available with `link:../vertx-sql-jphp/enums.adoc#UpdateResult#method_getKeys[getKeys]`.
 
 [source,php]
 ----
@@ -237,7 +237,7 @@ if the update generated keys, they are available with `link:../enums.adoc#Update
 === Prepared statement updates
 
 To execute a prepared statement update you can use
-`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.sql.SQLConnection.html#method_updateWithParams[updateWithParams]`.
+`link:https://vertx.okou.tk/phpdoc/vertx-sql-jphp/classes/io.vertx.jphp.ext.sql.SQLConnection.html#method_updateWithParams[updateWithParams]`.
 
 This takes the update, containing the parameter place holders, and a `JsonArray` or parameter
 values.
@@ -272,7 +272,7 @@ values.
 === Callable statements
 
 To execute a callable statement (either SQL functions or SQL procedures) you can use
-`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.sql.SQLConnection.html#method_callWithParams[callWithParams]`.
+`link:https://vertx.okou.tk/phpdoc/vertx-sql-jphp/classes/io.vertx.jphp.ext.sql.SQLConnection.html#method_callWithParams[callWithParams]`.
 
 This takes the callable statement using the standard JDBC format `{ call func_proc_name() }`, optionally including
 parameter place holders e.g.: `{ call func_proc_name(?, ?) }`, a `JsonArray` containing the
@@ -379,9 +379,9 @@ The registered `OUT` parameters will be available as an array in the result set 
 
 The SQL common interface also defines how to execute batch operations. There are 3 types of batch operations:
 
-* Batched statements `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.sql.SQLConnection.html#method_batch[batch]`
-* Batched prepared statements `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.sql.SQLConnection.html#method_batchWithParams[batchWithParams]`
-* Batched callable statements `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.sql.SQLConnection.html#method_batchCallableWithParams[batchCallableWithParams]`
+* Batched statements `link:https://vertx.okou.tk/phpdoc/vertx-sql-jphp/classes/io.vertx.jphp.ext.sql.SQLConnection.html#method_batch[batch]`
+* Batched prepared statements `link:https://vertx.okou.tk/phpdoc/vertx-sql-jphp/classes/io.vertx.jphp.ext.sql.SQLConnection.html#method_batchWithParams[batchWithParams]`
+* Batched callable statements `link:https://vertx.okou.tk/phpdoc/vertx-sql-jphp/classes/io.vertx.jphp.ext.sql.SQLConnection.html#method_batchCallableWithParams[batchCallableWithParams]`
 
 A batches statement will exeucte a list of sql statements as for example:
 
@@ -430,7 +430,7 @@ While a prepared or callable statement batch will reuse the sql statement and ta
 === Executing other operations
 
 To execute any other database operation, e.g. a `CREATE TABLE` you can use
-`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.sql.SQLConnection.html#method_execute[execute]`.
+`link:https://vertx.okou.tk/phpdoc/vertx-sql-jphp/classes/io.vertx.jphp.ext.sql.SQLConnection.html#method_execute[execute]`.
 
 The string is passed through without changes to the actual database. The handler is called when the operation
 is complete
@@ -513,11 +513,11 @@ data the stream handler will receive the new data, otherwise the end handler is 
 
 === Using transactions
 
-To use transactions first set auto-commit to false with `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.sql.SQLConnection.html#method_setAutoCommit[setAutoCommit]`.
+To use transactions first set auto-commit to false with `link:https://vertx.okou.tk/phpdoc/vertx-sql-jphp/classes/io.vertx.jphp.ext.sql.SQLConnection.html#method_setAutoCommit[setAutoCommit]`.
 
 You then do your transactional operations and when you want to commit or rollback use
-`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.sql.SQLConnection.html#method_commit[commit]`or
-`link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.sql.SQLConnection.html#method_rollback[rollback]`.
+`link:https://vertx.okou.tk/phpdoc/vertx-sql-jphp/classes/io.vertx.jphp.ext.sql.SQLConnection.html#method_commit[commit]`or
+`link:https://vertx.okou.tk/phpdoc/vertx-sql-jphp/classes/io.vertx.jphp.ext.sql.SQLConnection.html#method_rollback[rollback]`.
 
 Once the commit/rollback is complete the handler will be called and the next transaction will be automatically started.
 
@@ -542,4 +542,4 @@ Once the commit/rollback is complete the handler will be called and the next tra
 
 === Closing connections
 
-When you've done with the connection you should return it to the pool with `link:https://vertx.okou.tk/phpdoc/classes/io.vertx.jphp.ext.sql.SQLConnection.html#method_close[close]`.
+When you've done with the connection you should return it to the pool with `link:https://vertx.okou.tk/phpdoc/vertx-sql-jphp/classes/io.vertx.jphp.ext.sql.SQLConnection.html#method_close[close]`.

@@ -170,6 +170,7 @@
                             </processors>
                             <optionMap>
                                 <codegen.output>${project.basedir}/src/main</codegen.output>
+                                <!--<codegen.output>${totalPHP}</codegen.output>-->
                                 <docgen.source>${project.build.directory}/sources/vertx/*.adoc</docgen.source>
                                 <docgen.output>${asciidoc.dir}/jphp</docgen.output>
                             </optionMap>
