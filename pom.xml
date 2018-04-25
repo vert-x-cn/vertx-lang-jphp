@@ -49,6 +49,7 @@
         <module>vertx-lang-jphp-codegen</module>
         <module>vertx-lang-jphp-compiler</module>
         <module>vertx-lang-jphp-stack</module>
+        <module>vertx-lang-jphp-ext</module>
     </modules>
 
     <properties>
