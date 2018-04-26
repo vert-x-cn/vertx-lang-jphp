@@ -6,8 +6,12 @@ $httpServerOptions = array(
     "port"  =>  8998,
     "host"  =>  "localhost",
 );
+$a = [
+    "port"  =>  8998,
+    "host"  =>  "localhost",
+];
 
-$httpServer = $vertx->createHttpServer($httpServerOptions);
+$httpServer = $vertx->createHttpServer($a);
 $httpServer->requestHandler(function ($res) {
     $res->response()->end("Hello from Vert.x!");
 });
