@@ -53,6 +53,17 @@
             <groupId>io.vertx</groupId>
             <artifactId>vertx-codetrans</artifactId>
             <optional>true</optional>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.jetbrains.kotlin</groupId>
+                    <artifactId>kotlin-stdlib</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-stdlib</artifactId>
+            <version>${kotlin.version}</version>
         </dependency>
         <dependency>
             <groupId>tk.okou</groupId>
@@ -195,7 +206,7 @@
                                     <processor>io.vertx.docgen.DocGenProcessor</processor>
                                 </processors>
                                 <optionMap>
-                                    <outputDirectory>${project.basedir}/src/main</outputDirectory>
+                                    <codegen.output>${project.basedir}/src/main</codegen.output>
                                     <!--<codegen.output>${totalPHP}</codegen.output>-->
                                     <docgen.source>${project.build.directory}/sources/vertx/*.adoc</docgen.source>
                                     <docgen.output>${asciidoc.dir}/jphp</docgen.output>
@@ -214,7 +225,7 @@
                                     <processor>io.vertx.codegen.CodeGenProcessor</processor>
                                 </processors>
                                 <optionMap>
-                                    <outputDirectory>${project.basedir}/src/test</outputDirectory>
+                                    <codegen.output>${project.basedir}/src/test</codegen.output>
                                 </optionMap>
                                 <sourceDirectory>${project.build.directory}/sources/codegen</sourceDirectory>
                             </configuration>
@@ -231,7 +242,7 @@
                                     <processor>io.vertx.docgen.DocGenProcessor</processor>
                                 </processors>
                                 <optionMap>
-                                    <outputDirectory>${project.basedir}/src/main</outputDirectory>
+                                    <codegen.output>${project.basedir}/src/main</codegen.output>
                                     <docgen.output>${asciidoc.dir}/jphp</docgen.output>
                                     <maven.groupId>${project.groupId}</maven.groupId>
                                     <maven.artifactId>${project.artifactId}</maven.artifactId>
@@ -252,7 +263,7 @@
                                     <processor>io.vertx.docgen.DocGenProcessor</processor>
                                 </processors>
                                 <optionMap>
-                                    <outputDirectory>${project.basedir}/src/main</outputDirectory>
+                                    <codegen.output>${project.basedir}/src/main</codegen.output>
                                     <docgen.source>${project.basedir}/src/main/docoverride/*.adoc</docgen.source>
                                     <docgen.output>${asciidoc.dir}/jphp</docgen.output>
                                     <maven.groupId>${project.groupId}</maven.groupId>

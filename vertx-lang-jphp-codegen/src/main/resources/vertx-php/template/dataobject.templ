@@ -2,18 +2,22 @@
 <?php \n
 namespace @{type.raw.translatePackageName("jphp").replace(".", "\\")};\n
 @code{
-    var abs = type.abstract;
-    var superClass = superType == null ? null : superType.raw.translatePackageName("jphp").replace(".", "\\") + "\\" + superType.simpleName;
-    var use = superType != null && !superType.raw.packageName.equals(type.raw.packageName);
-
-    import java.util.TreeSet;
-    var importClassSet = new TreeSet();
-    if(superType != null) {
-    	addImport(superType);
-    }
-    for(property : properties) {
-    	addImport(property.type);
-    }
+	var abs = type.abstract;
+	import java.util.TreeSet;
+	var importClassSet = new TreeSet();
+	var superClass = null;
+	if(superType != null) {
+		if(type.simpleName == superType.simpleName) {
+			importClassSet.add(superType.raw.translatePackageName("jphp").replace(".", "\\") + "\\" + superType.simpleName + " as J" + superType.simpleName);
+			superClass = "J" + superType.simpleName;
+		} else {
+			addImport(superType);
+			superClass = superType.simpleName;
+		}
+	}
+	for(property : properties) {
+		addImport(property.type);
+	}
 }
 
 @foreach{importClass : importClassSet}
@@ -32,9 +36,12 @@ namespace @{type.raw.translatePackageName("jphp").replace(".", "\\")};\n
 		@end{}
 	@end{}
 @end{}
+@if{deprecated}
+ * @deprecated=1\n
+@end{}
  */
 \n
-@if{abs}abstract @end{}class @{type.simpleName} @if{superClass != null}extends @{superType.simpleName}@end{} \n
+@if{abs}abstract @end{}class @{type.simpleName} @if{superClass != null}extends @{superClass}@end{} \n
 { \n
     public function __construct($$@{type.getSimpleName(CASE_LOWER_CAMEL)} = null)\n
     { \n

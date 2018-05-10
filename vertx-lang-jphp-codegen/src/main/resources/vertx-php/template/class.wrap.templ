@@ -156,6 +156,7 @@
 		addImport(type.handlerArg, true, true);
 	}
 	var noConverter = true;
+	var cacheMap = false;
 	foreach(methodName:methodsByName.keySet()) {
 		var methods = methodsByName[methodName];
 		foreach(m : methods){
@@ -165,8 +166,15 @@
 			foreach(param : m.params) {
 				addImport(param.type, false, true);
 			}
-			addImport(m.returnType, false, false)
+			addImport(m.returnType, false, false);
+			if(m.cacheReturn) {
+				cacheMap = true;
+			}
 		}
+	}
+	if(cacheMap) {
+		importClassSet.add("java.util.HashMap");
+		importClassSet.add("java.util.Map");
 	}
 	if(!noConverter) {
 		importClassSet.add("php.runtime.Memory");
@@ -581,6 +589,9 @@ package @{packageName};\n
 @Name("@{ifaceSimpleName}")\n
 @Namespace("@{packageName.replace(".", "\\\\")}")\n
 @SuppressWarnings("ALL")\n
+@if{deprecated}
+	@Deprecated\n
+@end{}
 public class @{ifaceSimpleName}
 	@includeNamed{'typeParamInfo';front=true;back=true}
  	extends VertxGenVariable@{typeParams.size()}Wrapper<@{ifaceFQCN}
@@ -592,6 +603,9 @@ public class @{ifaceSimpleName}
 		implements Handler<@{type.handlerArg.name}>
 	@end{}
 	{\n
+	@if{cacheMap}
+	    private Map<String, Memory> cacheMap = new HashMap<>();
+	@end{}
     \n
     private @{ifaceSimpleName}(Environment env, @{ifaceFQCN} wrappedObject
 		@foreach{typeParam : typeParams}
@@ -768,7 +782,12 @@ public class @{ifaceSimpleName}
 			var convReturnStart = "";
 			var convReturnEnd = "";
 			if(returnInfo != "void" && !method.isFluent) {
-				convReturnStart += "return " + invokerObj + "." + convInfo.get(0) + "(__ENV__, " + convInfo.get(1);
+				convReturnStart += "return ";
+				if(method.cacheReturn) {
+					convReturnStart += "cacheMap.computeIfAbsent(\"" + method.name + "\", key -> ";
+					convReturnEnd = ")" + convReturnEnd;
+				}
+				convReturnStart += invokerObj + "." + convInfo.get(0) + "(__ENV__, " + convInfo.get(1);
 				convReturnEnd = ")" + convReturnEnd;
 			}
 			if(method.isStaticMethod) {

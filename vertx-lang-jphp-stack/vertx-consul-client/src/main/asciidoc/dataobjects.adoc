@@ -417,6 +417,7 @@ Set whether pipe-lining is enabled on the client
 +++
 Set the limit of pending requests a pipe-lined HTTP/1 connection can send.
 +++
+|[[poolCleanerPeriod]]`poolCleanerPeriod`|`Number (int)`|-
 |[[protocolVersion]]`protocolVersion`|`link:enums.html#HttpVersion[HttpVersion]`|
 +++
 Set the protocol version.

@@ -12,10 +12,6 @@ Circuit breaker configuration options. All time are given in milliseconds.
 [frame="topbot"]
 |===
 ^|Name | Type ^| Description
-|[[failuresRollingWindow]]`failuresRollingWindow`|`Number (long)`|
-+++
-Sets the rolling window used for metrics.
-+++
 |[[fallbackOnFailure]]`fallbackOnFailure`|`Boolean`|
 +++
 Sets whether or not the fallback is executed on failure, even when the circuit is closed.

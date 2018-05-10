@@ -86,7 +86,10 @@
 	}
 	def addImport(typeInfo){
 		if(typeInfo.isVariable) {
-			return
+			return;
+		}
+		if(type.simpleName == typeInfo.simpleName) {
+			return;
 		}
 		var typeKind = typeInfo.kind;
 		if(typeKind == CLASS_API || typeKind == CLASS_DATA_OBJECT) {

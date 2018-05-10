@@ -3,7 +3,7 @@ package io.vertx.lang.jphp;
 
 import io.vertx.core.Vertx;
 import io.vertx.core.VertxException;
-import io.vertx.core.impl.FileResolver;
+import io.vertx.core.file.impl.FileResolver;
 
 import java.io.File;
 import java.io.InputStream;
