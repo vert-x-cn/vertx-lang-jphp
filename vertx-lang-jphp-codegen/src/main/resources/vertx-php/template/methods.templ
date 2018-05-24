@@ -35,7 +35,7 @@
 		} else if (type.kind == CLASS_ENUM) {
 			return ['string'];
 		} else if (type.kind == CLASS_API) {
-			return [type.raw.simpleName];
+			return type.raw.handler ? [type.raw.simpleName, "callable"] : [type.raw.simpleName];
 		} else if (type.kind.collection) {
 			return ['array'];
 		} else if (type.kind == CLASS_MAP) {
