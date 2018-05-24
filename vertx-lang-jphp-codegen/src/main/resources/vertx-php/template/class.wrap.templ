@@ -110,7 +110,7 @@
 				importClassSet.add(typeInfo.raw.translatePackageName("jphp") + "." + typeInfo.raw.simpleName);
 			}
 		} else if(typeKind == CLASS_JSON_OBJECT) {
-			if(isParameterized) {
+			if(isParameterized && !isParam) {
 				importClassSet.add("io.vertx.core.json.JsonObject");
 			}
 		} else if(typeKind == CLASS_JSON_ARRAY) {

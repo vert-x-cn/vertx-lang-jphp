@@ -354,9 +354,10 @@ Worker executors can be configured when created:
     $poolSize = 10;
 
     // 2 minutes
-    $maxExecuteTime = 120000;
+    $maxExecuteTime = 2;
+    $maxExecuteTimeUnit = "SECONDS";
 
-    $executor = $vertx->createSharedWorkerExecutor("my-worker-pool", $poolSize, $maxExecuteTime);
+    $executor = $vertx->createSharedWorkerExecutor("my-worker-pool", $poolSize, $maxExecuteTime, $maxExecuteTimeUnit);
 
 ----
 

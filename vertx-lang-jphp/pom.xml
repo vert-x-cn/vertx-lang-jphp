@@ -7,7 +7,6 @@
         <!--<groupId>io.vertx</groupId>-->
         <artifactId>vertx-lang-jphp-parent</artifactId>
         <version>3.6.0-SNAPSHOT</version>
-        <!--<relativePath></relativePath>-->
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -70,6 +69,11 @@
             <artifactId>kotlin-stdlib</artifactId>
             <version>${kotlin.version}</version>
         </dependency>
+        <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-lang-kotlin</artifactId>
+            <version>${stack.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -80,22 +84,29 @@
             <resource>
                 <directory>${project.basedir}/src/main/resources</directory>
             </resource>
-            <resource>
-                <directory>${project.basedir}/src/main/extension</directory>
-            </resource>
         </resources>
 
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <configuration>
+                    <excludes>
+                        <exclude>vertx-jphp/**</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-antrun-plugin</artifactId>
                 <executions>
                     <execution>
                         <id>createAsciiDocD</id>
-                        <phase>process-resources</phase>
+                        <phase>generate-sources</phase>
                         <configuration>
                             <tasks>
                                 <mkdir dir="${asciidoc.dir}"/>
+                                <mkdir dir="${generated-dir}"/>
                             </tasks>
                         </configuration>
                         <goals>
@@ -117,8 +128,7 @@
                         </goals>
                         <configuration>
                             <sources>
-                                <source>src/main/data</source>
-                                <source>src/main/api</source>
+                                <source>src/main/generated</source>
                             </sources>
                         </configuration>
                     </execution>
@@ -180,7 +190,7 @@
                                 <processor>io.vertx.docgen.DocGenProcessor</processor>
                             </processors>
                             <optionMap>
-                                <codegen.output>${project.basedir}/src/main</codegen.output>
+                                <codegen.output>${project.basedir}/src/main/generated</codegen.output>
                                 <!--<codegen.output>${totalPHP}</codegen.output>-->
                                 <docgen.source>${project.build.directory}/sources/vertx/*.adoc</docgen.source>
                                 <docgen.output>${asciidoc.dir}/jphp</docgen.output>
@@ -199,7 +209,7 @@
                                 <processor>io.vertx.codegen.CodeGenProcessor</processor>
                             </processors>
                             <optionMap>
-                                <codegen.output>${project.basedir}/src/test</codegen.output>
+                                <codegen.output>${project.basedir}/src/test/generated</codegen.output>
                             </optionMap>
                             <sourceDirectory>${project.build.directory}/sources/codegen</sourceDirectory>
                         </configuration>
@@ -272,16 +282,10 @@
                         <configuration>
                             <filesets>
                                 <fileset>
-                                    <directory>src/main/api</directory>
-                                </fileset>
-                                <fileset>
-                                    <directory>src/main/data</directory>
-                                </fileset>
-                                <fileset>
                                     <directory>src/main/jphp</directory>
                                 </fileset>
                                 <fileset>
-                                    <directory>src/main/extension</directory>
+                                    <directory>src/main/generated</directory>
                                 </fileset>
                                 <fileset>
                                     <directory>${asciidoc.dir}</directory>

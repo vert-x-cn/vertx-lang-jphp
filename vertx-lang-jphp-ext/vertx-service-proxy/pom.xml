@@ -11,5 +11,11 @@
 
     <artifactId>vertx-service-proxy-jphp</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-service-proxy</artifactId>
+        </dependency>
+    </dependencies>
 
 </project>
