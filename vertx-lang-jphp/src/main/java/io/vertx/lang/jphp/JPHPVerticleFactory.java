@@ -23,6 +23,7 @@ import io.vertx.core.spi.VerticleFactory;
 import io.vertx.lang.jphp.converter.TypeConverter;
 import io.vertx.lang.jphp.wrapper.IMemory;
 import org.develnext.jphp.scripting.JPHPScriptEngine;
+import org.develnext.jphp.zend.ext.json.JsonFunctions;
 import php.runtime.Memory;
 import php.runtime.env.Environment;
 import php.runtime.reflection.FunctionEntity;
@@ -108,6 +109,7 @@ public class JPHPVerticleFactory implements VerticleFactory {
             }
             jvertx = m.toMemory();
             engine.put("vertx", jvertx);
+            engine.put("config", JsonFunctions.json_decode(env, context.config().encode(), true));
         }
 
         @Override
