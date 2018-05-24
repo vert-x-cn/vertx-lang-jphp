@@ -1,5 +1,6 @@
+[![Build Status](https://travis-ci.org/okou19900722/vertx-lang-jphp.svg?branch=master)](http://travis-ci.org/okou19900722/vertx-lang-jphp)
 # vertx-lang-jphp
-Vert.x JPHP support [![Build Status](https://travis-ci.org/okou19900722/vertx-lang-jphp.svg?branch=master)](http://travis-ci.org/okou19900722/vertx-lang-jphp)
+Vert.x JPHP support 
 
 [phpdoc](https://vertx.okou.tk/phpdoc/vertx-jphp/index.html)
 
