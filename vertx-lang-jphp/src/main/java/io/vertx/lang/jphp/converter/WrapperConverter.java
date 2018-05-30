@@ -23,9 +23,9 @@ public abstract class WrapperConverter<S, W extends BaseWrapper<S>> implements T
             return false;
         }
         ObjectMemory objectMemory = (ObjectMemory) value;
-        if (!(wrapperClass.isInstance(objectMemory.value))) {
-            return false;
-        }
+//        if (!(wrapperClass.isInstance(objectMemory.value))) {
+//            return false;
+//        }
         BaseWrapper wrapper = (BaseWrapper) objectMemory.value;
         return clazz.isInstance(wrapper.getWrappedObject());
     }
