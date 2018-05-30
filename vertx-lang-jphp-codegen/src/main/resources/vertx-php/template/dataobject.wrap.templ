@@ -1,188 +1,203 @@
-@includeNamed{'php-methods.templ'}
-package @{type.raw.translatePackageName("jphp")};\n
-\n
+@includeNamed{"methods.templ"}
 @code{
 	import java.util.TreeSet;
-	/**/
-	def translateParamType(classType){
-		if(classType.kind == CLASS_STRING) {
-			return "String";
-		} else if(classType.kind == CLASS_API || classType.kind == CLASS_DATA_OBJECT) {
-			return classType.raw.translatePackageName("jphp") + "." + classType.raw.simpleName;
-		} else {
-			return classType.name;
-		}
-	}
-
-	var abs = type.abstract;
-	var superClass = superType == null ? null : translateClassName(superType);
+	var packageName = type.translatePackageName("jphp");
+	var ifaceSimpleName = type.simpleName;
 	var importClassSet = new TreeSet();
-
 	importClassSet.add("io.vertx.lang.jphp.wrapper.DataObjectWrapper");
-	if(!abs) {
-		importClassSet.add("io.vertx.core.json.JsonObject");
-		importClassSet.add("org.develnext.jphp.zend.ext.json.JsonFunctions");
-		importClassSet.add("php.runtime.Memory");
-		importClassSet.add("php.runtime.reflection.ClassEntity");
+	importClassSet.add("php.runtime.env.Environment");
+	importClassSet.add("io.vertx.lang.jphp.Utils");
+	importClassSet.add("php.runtime.annotation.Reflection.Signature");
+	importClassSet.add("php.runtime.Memory");
+	importClassSet.add("io.vertx.core.json.JsonObject");
+	importClassSet.add("org.develnext.jphp.zend.ext.json.JsonFunctions");
+	importClassSet.add("io.vertx.lang.jphp.converter.TypeConverter");
+	importClassSet.add("io.vertx.lang.jphp.converter.VertxGenVariable0Converter");
+	importClassSet.add("io.vertx.lang.jphp.converter.EnumConverter");
+	importClassSet.add("io.vertx.lang.jphp.converter.DataObjectConverter");
+
+	def translateParamType(typeInfo){
+		var typeKind = typeInfo.kind;
+		if(typeKind.basic || typeKind == CLASS_ENUM) {
+			return typeInfo.simpleName;
+		} else {
+			return "Memory";
+		}
 	}
 
-	foreach(property : properties) {
-		var propertyType = property.type;
-		var typeKind = propertyType.kind;
-		var typeName = property.type.name;
-		if(typeKind == CLASS_DATA_OBJECT || typeKind == CLASS_API) {
-			if(!propertyType.raw.packageName.equals(type.raw.packageName)) {
-				importClassSet.add(translateClassName(propertyType));
-			}
-			if(!property.value) {
-				importClassSet.add("java.util.stream.Collectors");
-			}
-		} else if(typeKind != CLASS_PRIMITIVE && !propertyType.name.startsWith("java.lang")){
-			importClassSet.add(propertyType.name);
-			if(typeKind == CLASS_JSON_OBJECT) {
-				importClassSet.add("org.develnext.jphp.zend.ext.json.JsonFunctions");
-			}
-		}
-		if(property.set) {
-			importClassSet.add("java.util.Set");
-		} else if(property.list) {
-			importClassSet.add("java.util.List");
-		} else if(property.map) {
-			if(property.getterMethod != null || property.setterMethod != null) {
-				importClassSet.add("java.util.Map");
-			}
-		}
+	for(property : properties) {
+		addImport(property.type);
 	}
 }
-@foreach{im : importClassSet}
-	import ${im};\n
+
+package @{packageName};\n
+
+@foreach{importClass : importClassSet}
+	import @{importClass};\n
 @end{}
 
-import php.runtime.env.Environment;\n
-import php.runtime.annotation.Reflection.*;\n
-
+@SuppressWarnings("ALL")\n
+public class @{ifaceSimpleName} extends DataObjectWrapper<@{type.name}>{\n
 \n
-@SuppressWarnings("unused")\n
-@Name("${type.simpleName}")\n
-@Namespace("@{type.raw.translatePackageName("jphp").replace(".", "\\\\")}")\n
-//@{abs}\n
-public  class ${type.simpleName} extends DataObjectWrapper<@{type.name}> { \n
-    public ${type.simpleName}(Environment env, @{type.name} wrappedObject) {\n
+    public @{ifaceSimpleName}(Environment env, @{type.name} wrappedObject){\n
         super(env, wrappedObject);\n
     }\n
-\n
-	@if{!abs}
-	    public ${type.simpleName}(Environment env, ClassEntity clazz) {\n
-	        super(env, clazz);\n
-	    }\n
-	@end{}
-	@if{!abs}
+	@if{!type.abstract}
 		@if{hasEmptyConstructor}
-			\n
 		    @Signature\n
 		    public Memory __construct(){\n
 		        this.__wrappedObject = new @{type.name}();\n
 		        return Memory.NULL;
 		    }\n
 		@end{}
-	\n
-    @Signature\n
-    public Memory __construct(Memory memory) {\n
-        this.__wrappedObject = new @{type.name}(new JsonObject(JsonFunctions.json_encode(memory)));\n
-        return Memory.NULL;\n
-    }\n
+	    @Signature\n
+	    public Memory __construct(Memory memory) {\n
+	        this.__wrappedObject = new @{type.name}(new JsonObject(JsonFunctions.json_encode(memory)));\n
+	        return Memory.NULL;\n
+		}\n
 	@end{}
-	@foreach{property:properties}
+
+	@foreach{property : properties}
 		@code{
-			var propertyType = "";
-			var propertyKind = property.kind;
+			var getterMethod = property.getterMethod;
+			var setterMethod = property.setterMethod;
+			var adderMethod = property.adderMethod;
+			var propertyType = property.type;
+			var typeKind = propertyType.kind;
+			var typeConverter = getTypeConverter(propertyType);
+			var propertyTypeStr = propertyType.simpleName;
 			var getterBody = "";
 			var setterBody = "";
-			if(propertyKind.value) {
-				if(property.type.kind == CLASS_STRING) {
-					propertyType = "String";
-				} else if(property.type.kind == CLASS_PRIMITIVE) {
-					propertyType = property.type.name;
-				} else if(property.type.kind == CLASS_JSON_OBJECT){
-					propertyType = "Memory";
-				}else {
-					propertyType = property.type.simpleName;
-				}
-				if(property.type.kind == CLASS_API || property.type.kind == CLASS_DATA_OBJECT) {
-					if(property.type.kind == CLASS_API) {
-						getterBody = propertyType + ".__create(__env__, this.getWrappedObject()." + property.getterMethod + "())";
-					} else {
-						getterBody = "new " + propertyType + "(__env__, this.getWrappedObject()." + property.getterMethod + "())";
+			var adderBody = "";
+			var adderParamType = "";
+
+			var simpleName = property.value ? "" : property.list ? "List" : property.set ? "Set" : "Map";
+			if(!property.value) {
+				getterBody = getterMethod == null ? getterBody : "Utils.convReturn" + simpleName + "(__ENV__, " + typeConverter + ", this.getWrappedObject()." + getterMethod + "())";
+				setterBody = setterMethod == null ? setterBody : "this.getWrappedObject()." + setterMethod + "(Utils.convParam" + simpleName + "(__ENV__, " + typeConverter + ", " + property.name + "))";
+				propertyTypeStr = "Memory";
+			}
+
+			if(property.value || adderMethod != null) {
+				if(typeKind.basic) {
+					if(property.value && getterMethod != null) {
+						getterBody = "getWrappedObject()." + getterMethod + "()";
 					}
-					setterBody = "this.getWrappedObject()." + property.setterMethod + "(" + property.name + ".getWrappedObject())";
-				} else if(property.type.kind == CLASS_JSON_OBJECT){
-					getterBody = "JsonFunctions.json_decode(__env__, this.getWrappedObject()." + property.getterMethod + "().encode())";
-					setterBody = "this.getWrappedObject()." + property.setterMethod + "(new JsonObject(JsonFunctions.json_encode(" + property.name + ")))";
-				}else {
-					getterBody = "this.getWrappedObject()." + property.getterMethod + "()";
-					setterBody = "this.getWrappedObject()." + property.setterMethod + "(" + property.name + ")";
-				}
-				/*propertyType = property.type.name;*/
-			} else if(propertyKind.map){
-				propertyType = "Map<String, String>";
-				getterBody = "this.getWrappedObject()." + property.getterMethod + "()";
-				setterBody = "this.getWrappedObject()." + property.setterMethod + "(" + property.name + ")";
-			} else {
-				if(propertyKind.list){
-					propertyType = "List<" + property.type.simpleName + ">";
-				} else if(propertyKind.set){
-					propertyType = "Set<" + property.type.simpleName + ">";
-				}
-				if(property.type.kind == CLASS_API || property.type.kind == CLASS_DATA_OBJECT) {
-					if(property.type.kind == CLASS_API){
-						getterBody = "this.getWrappedObject()." + property.getterMethod + "().stream().map(v -> " + property.type.simpleName + ".__create(__env__, v)).collect(Collectors.toList())";
-					} else {
-						getterBody = "this.getWrappedObject()." + property.getterMethod + "().stream().map(v -> new " + property.type.simpleName + "(__env__, v)).collect(Collectors.toList())";
+					if(property.value && setterMethod != null) {
+						setterBody = "getWrappedObject()." + setterMethod + "(" + property.name + ")";
 					}
-					setterBody = "this.getWrappedObject()." + property.setterMethod + "((" + property.name + ".stream().map(" + property.type.simpleName + "::getWrappedObject).collect(Collectors.toList())))";
+					if(adderMethod != null) {
+						adderBody = "this.getWrappedObject()." + adderMethod + "(" + property.name + ")";
+						adderParamType = propertyType.simpleName;
+					}
 				} else {
-					getterBody = "this.getWrappedObject()." + property.getterMethod + "()";
-					setterBody = "this.getWrappedObject()." + property.setterMethod + "(" + property.name + ")";
+					propertyTypeStr = "Memory";
+					adderParamType = propertyTypeStr;
+					if(typeKind == CLASS_ENUM){
+						getterBody = (!property.value || getterMethod == null) ? "" : "Utils.convReturnEnum(__ENV__, ";
+						if(setterMethod != null || adderMethod != null) {
+							var temp = "Utils.convParamEnum(__ENV__, " + propertyType.simpleName + ".class, ";
+							setterBody = (!property.value || setterMethod == null) ? "" : temp;
+							adderBody = adderMethod == null ? "" : temp;
+						}
+					} else {
+						if(typeKind == CLASS_API){
+							var typeParamSize = 0;
+							var typeConverterStr = "";
+							if(propertyType.isParameterized) {
+								var args = propertyType.args;
+								typeParamSize = args.size();
+								foreach(arg : args) {
+									typeConverterStr += ", " + getTypeConverter(arg);
+								}
+							}
+							var typeParamInfo = "";
+							if(propertyType.isParameterized) {
+								var first = true;
+								foreach(arg : propertyType.args) {
+									if(!first) {
+										typeParamInfo += ", ";
+									} else {
+										first = false;
+									}
+									if(arg.isVariable) {
+										typeParamInfo += "Object";
+									} else {
+										var argKind = arg.kind;
+										if(argKind == CLASS_API || argKind == CLASS_DATA_OBJECT) {
+											typeParamInfo += arg.raw.packageName + "." + arg.raw.simpleName;
+										} else {
+											typeParamInfo += arg.raw.simpleName;
+										}
+									}
+								}
+							}
+							var typeParamInfo2 = typeParamInfo == "" ? "" : "<" + typeParamInfo + ">";
+							getterBody = (!property.value || getterMethod == null) ? getterBody : "Utils.<" + propertyType.raw.packageName + "." + propertyType.raw.simpleName + typeParamInfo2 + ", " + propertyType.raw.simpleName + typeParamInfo2 + (typeParamInfo == "" ? "" : ", ") + typeParamInfo + ">convReturnVertxGenVariable" + typeParamSize + "(__ENV__, " + propertyType.raw.simpleName + ".class, " + propertyType.raw.simpleName + "::__create" + typeConverterStr + ", ";
+							if(setterMethod != null || adderMethod != null) {
+								var temp = "Utils.<" + propertyType.raw.packageName + "." + propertyType.raw.simpleName + typeParamInfo2 + ", " + propertyType.raw.simpleName + typeParamInfo2 + (typeParamInfo == "" ? "" : ", ") + typeParamInfo + ">convParamVertxGenVariable" + typeParamSize + "(__ENV__, " + propertyType.raw.simpleName + ".class, " + propertyType.raw.simpleName + "::__create" + typeConverterStr + ", ";
+								setterBody = (!property.value || setterMethod == null) ? setterBody : temp;
+								adderBody = adderMethod == null ? adderBody : temp;
+							}
+						} else if(typeKind.json) {
+							getterBody = (!property.value || getterMethod == null) ? getterBody : "Utils.convReturn" + propertyType.simpleName + "(__ENV__, ";
+							if(setterMethod != null || adderMethod != null) {
+								var temp = "Utils.convParam" + propertyType.simpleName + "(__ENV__, ";
+								setterBody = (!property.value || setterMethod == null) ? setterBody : temp;
+								adderBody = adderMethod == null ? adderBody : temp;
+							}
+						} else if(typeKind == CLASS_DATA_OBJECT) {
+							var propertyCreator = propertyType.abstract ? "null, " : propertyType.name + "::new, ";
+							getterBody = (!property.value || getterMethod == null) ? getterBody : "Utils.convReturnDataObject(__ENV__, " + propertyType.name + ".class, " + propertyType.simpleName + "::new, " + propertyCreator;
+							if(setterMethod != null || adderMethod != null) {
+								var temp = "Utils.convParamDataObject(__ENV__, " + propertyType.name + ".class, " + propertyType.name + "::new, " + propertyType.simpleName + "::new, ";
+								setterBody = (!property.value || setterMethod == null) ? setterBody : temp;
+								adderBody = adderMethod == null ? adderBody : temp;
+							}
+						} else if(typeKind == CLASS_OTHER) {
+							getterBody = "error";
+						} else {
+							getterBody = "error";
+						}
+					}
+					getterBody += (!property.value || getterMethod == null) ? "" : "this.getWrappedObject()." + getterMethod + "())";
+					setterBody = (!property.value || setterMethod == null) ? setterBody : "this.getWrappedObject()." + setterMethod + "(" + setterBody + property.name + "))";
+					adderBody = adderMethod == null ? adderBody : "this.getWrappedObject()." + adderMethod + "(" + adderBody + property.name + "))";
 				}
 			}
 		}
 		@if{property.adderMethod != null}
-			@if{propertyKind.map}
 			\n
 		    @Signature\n
-		    public ${type.simpleName} ${property.adderMethod}(String key, String value){ \n
-		        this.getWrappedObject().${property.adderMethod}(key, value);\n
-		        return this;\n
-		    }\n
+			@if{property.map}
+			    public Memory @{property.adderMethod}(String key, String value) {\n
+			        this.getWrappedObject().${property.adderMethod}(key, value);\n
+			        return toMemory();\n
+			    }\n
 			@else{}
-			\n
-		    @Signature\n
-		    public ${type.simpleName} ${property.adderMethod}(${translateParamType(property.type)} ${property.name}){ \n
-		        this.getWrappedObject().${property.adderMethod}(
-				@if{property.type.kind == CLASS_API || property.type.kind == CLASS_DATA_OBJECT}
-					${property.name}.getWrappedObject()
-				@else{}
-					${property.name}
-				@end{}
-				);\n
-		        return this;\n
-		    }\n
+			    public Memory @{property.adderMethod}(Environment __ENV__, @{adderParamType} @{property.name}){ \n
+			        @{adderBody};\n
+			        return toMemory();\n
+				}\n
 			@end{}
 		@end{}
+
 		@if{property.getterMethod != null}
 			\n
 		    @Signature\n
-		    public ${propertyType} ${property.getterMethod}(){ \n
+		    public @{propertyTypeStr} @{property.getterMethod}(Environment __ENV__) {\n
 		        return @{getterBody};\n
 		    }\n
 		@end{}
+
 		@if{property.setterMethod != null}
 			\n
 		    @Signature\n
-		    public ${type.simpleName} ${property.setterMethod}(${propertyType} ${property.name}){ \n
+		    public Memory @{property.setterMethod}(Environment __ENV__, @{propertyTypeStr} @{property.name}) {\n
 		        @{setterBody};\n
-		        return this;\n
+		        return toMemory();\n
 		    }\n
 		@end{}
 	@end{}
+
 }\n
