@@ -109,10 +109,10 @@ $httpServerOptions->setHost("localhost");
 
 当然你也可以直接使用数组，比如`Hello Vert.x!`例子中
 ```php
-$httpServerOptions = array(
+$httpServerOptions = [
     "port"  =>  8998,
     "host"  =>  "localhost",
-);
+];
 
 $httpServer = $vertx->createHttpServer($httpServerOptions);
 $httpServer->requestHandler(function ($res) {
@@ -120,7 +120,7 @@ $httpServer->requestHandler(function ($res) {
 });
 $httpServer->listen();
 ```
-
+![Note](asset/note.png) 注意，DataObject目前只支持类和接口，所以java的api中参数为接口的，php中不支持数组写法，只能创建实现类的对象
 
 
 ;TODO
