@@ -264,16 +264,16 @@ public interface TypeConverter<T> {
             ArrayMemory array = value.toValue(ArrayMemory.class);
             for (ReferenceMemory reference : array) {
                 Memory raw = reference.getValue();
-                if (!raw.isNumber() && !raw.isString() && !(raw.type == Memory.Type.BOOL) && !raw.isNull()) {
-                    return false;
-                }
                 if (raw.isObject()) {
                     ObjectMemory obj = raw.toValue(ObjectMemory.class);
                     if (!(obj.value instanceof StdClass)) {
                         return false;
                     }
-                }
-                if (!accept(env, raw)) {
+                } else if (raw.isArray()) {
+                    if (!accept(env, raw)) {
+                        return false;
+                    }
+                } else if (!raw.isNumber() && !raw.isString() && raw.type != Memory.Type.BOOL && !raw.isNull()) {
                     return false;
                 }
             }
