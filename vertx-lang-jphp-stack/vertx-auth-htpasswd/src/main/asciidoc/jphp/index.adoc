@@ -74,35 +74,4 @@ object which we refer from now on as authentication info:
 <p>
 == Autorization
 <p>
-Apache htpasswd file is a pure authentication mechanism and not authorization but still it is possible to configure
-default authorization response for all users and for all authorities. It can ether allow or deny all.
-<p>
-* Configuration example:
-<p>
-[source,php]
-----
-<?php
-    use io\vertx\jphp\ext\auth\htpasswd\HtpasswdAuth;
-    $authProviderUsersAuthorizedForNothing = HtpasswdAuth::create($vertx, array(
-        "usersAuthorizedForEverything" => false
-    ));
-    $authProviderUsersAuthorizedForEverything = HtpasswdAuth::create($vertx, array(
-        "usersAuthorizedForEverything" => true
-    ));
-
-----
-<p>
-* Authorization checking:
-<p>
-[source,php]
-----
-<?php
-    $user->isAuthorised("anyAuthority", function ($res, $res_err) {
-        if ($res != null) {
-            $hasRole = $res;
-        } else {
-            // Failed
-        };
-    });
-
-----
+Apache htpasswd file is a pure authentication mechanism and not authorization. This means that permission checks will always be `false`.
