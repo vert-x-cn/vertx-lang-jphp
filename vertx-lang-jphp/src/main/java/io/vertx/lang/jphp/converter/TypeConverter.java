@@ -79,8 +79,9 @@ public interface TypeConverter<T> {
                     return list;
                 }
             } else {
-                String str = JsonFunctions.json_encode(value);
-                return str.charAt(0) == '{' ? new JsonObject(str) : new JsonArray(str);
+//                String str = JsonFunctions.json_encode(value);
+//                return str.charAt(0) == '{' ? new JsonObject(str) : new JsonArray(str);
+                return value;
             }
         }
 
@@ -120,6 +121,8 @@ public interface TypeConverter<T> {
                     array.put(key, convReturn(env, v));
                 });
                 return array;
+            } else if (value instanceof Memory) {
+                return (Memory) value;
             }
             return null;
         }

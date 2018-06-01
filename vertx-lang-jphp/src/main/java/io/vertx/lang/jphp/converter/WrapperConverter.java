@@ -18,6 +18,7 @@ public abstract class WrapperConverter<S, W extends BaseWrapper<S>> implements T
         this.creator = creator;
     }
 
+    @SuppressWarnings("unused")
     public static <S> boolean accept(Class<S> clazz, Class<? extends BaseWrapper> wrapperClass, Memory value) {
         if (!(value instanceof ObjectMemory)) {
             return false;

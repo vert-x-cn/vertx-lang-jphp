@@ -23,7 +23,10 @@ public class TestJava {
 
     @Before
     public void before() throws Exception {
-        testDir = new File(new File("target").getAbsoluteFile(), "00");
+        testDir = new File(new File("src\\\\test").getAbsoluteFile(), "generated");
+        if(!testDir.exists()) {
+            testDir.mkdirs();
+        }
 //        int count = 0;
 //        while (true) {
 //            String suffix = "testgen_" + name.getMethodName();
@@ -45,11 +48,11 @@ public class TestJava {
         compiler.addOption("-Acodegen.generators=" + gen);
         compiler.addOption("-Acodegen.output=" + testDir.getAbsolutePath());
         File[] fs = new File[]{
-//                new File("src\\\\test\\\\java\\\\io\\\\vertx\\\\model\\\\TestApi.java"),
-                new File("target\\sources\\vertx-core\\io\\vertx\\core\\Future.java"),
-                new File("target\\sources\\vertx-core\\io\\vertx\\core\\Vertx.java"),
-                new File("target\\sources\\vertx-core\\io\\vertx\\core\\CompositeFuture.java"),
-                new File("target\\sources\\vertx-core\\io\\vertx\\core\\http\\HttpClient.java"),
+                new File("src\\\\test\\\\generated\\\\io\\\\TestDataObject.java"),
+//                new File("target\\sources\\vertx-core\\io\\vertx\\core\\Future.java"),
+//                new File("target\\sources\\vertx-core\\io\\vertx\\core\\Vertx.java"),
+//                new File("target\\sources\\vertx-core\\io\\vertx\\core\\CompositeFuture.java"),
+//                new File("target\\sources\\vertx-core\\io\\vertx\\core\\http\\HttpClient.java"),
         };
         Stream.of(fs).filter(r -> !r.exists()).map(File::getAbsolutePath).forEach(System.out::println);
 //        File f1 = new File("target\\sources\\java\\io\\vertx\\core\\buffer\\Buffer.java");
@@ -61,9 +64,9 @@ public class TestJava {
 //        props.load(new FileInputStream(f));
 //        return props;
     }
-    @Test
-    public void test() throws Exception {
-//        assertCompile("Php");
-    }
+//    @Test
+//    public void test() throws Exception {
+//        assertCompile("JPhp");
+//    }
 
 }
