@@ -1,6 +1,7 @@
 package io.vertx.lang.jphp;
 
 import io.vertx.codegen.Case;
+import io.vertx.codegen.Helper;
 import io.vertx.codegen.Model;
 import io.vertx.codegen.ModuleInfo;
 
@@ -30,10 +31,18 @@ class PhpExtensionGenerator extends PhpGenerator<Model> {
 
     @Override
     void render(Model model, int index, int size, Map<String, Object> session, PrintWriter writer) {
-        importClassSet.add(model.getFqn());
-        registerClassSet.add(model.getFqn());
+        ModuleInfo module = model.getModule();
+        importClassSet.add(module.translateQualifiedName(model.getFqn(), "jphp"));
+        registerClassSet.add(Helper.getSimpleName(model.getFqn()));
         if (index == size - 1) {
-            ModuleInfo module = model.getModule();
+            if ("vertx".equals(module.getName())) {
+                importClassSet.add("io.vertx.lang.jphp.wrapper.extension.AsyncHandler");
+                importClassSet.add("io.vertx.lang.jphp.wrapper.extension.BaseThrowable");
+                importClassSet.add("io.vertx.lang.jphp.wrapper.extension.Handler");
+                registerClassSet.add("AsyncHandler");
+                registerClassSet.add("BaseThrowable");
+                registerClassSet.add("Handler");
+            }
             String packageName = module.translatePackageName("jphp");
             String simpleName = simpleName(module);
             writer.print("package ");
