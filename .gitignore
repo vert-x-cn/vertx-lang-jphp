@@ -1,10 +1,9 @@
 .idea
 *.iml
 target
-api
-data
-extension
-jphp
+generated
+vertx-*-jphp
+jphp-vertx-extension.properties
 changeGitInfo.sh
 TestUnit.java
 FirstUnitTest.php
