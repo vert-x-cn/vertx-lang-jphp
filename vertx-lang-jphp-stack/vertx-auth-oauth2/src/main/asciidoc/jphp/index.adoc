@@ -1,7 +1,7 @@
 == The OAuth2 auth provider
 
-This component contains an out of the box OAuth2 Relay Party implementation. To use this project, add the following
-dependency to the _dependencies_ section of your build descriptor:
+This component contains an out of the box OAuth2 (and to some extent OpenID Connect) relying party implementation.
+To use this project, add the following dependency to the _dependencies_ section of your build descriptor:
 
 * Maven (in your `pom.xml`):
 
@@ -29,6 +29,10 @@ Vert.x OAuth2 supports the following flows.
 * Authorization Code Flow (for apps with servers that can store persistent information).
 * Password Credentials Flow (when previous flow can't be used or during development).
 * Client Credentials Flow (the client can request an access token using only its client credentials)
+
+The same code will work with OpenID Connect https://openid.net/connect/ servers and supports the Discovery protocol
+as specified in http://openid.net/specs/openid-connect-discovery-1_0.html .
+
 
 === Authorization Code Flow
 
@@ -237,6 +241,47 @@ This flow is suitable when client is requesting access to the protected resource
 
 ----
 
+=== OpenID Connect Discovery
+
+There is limited support for OpenID Discovery servers. Using OIDC Discovery will simplify the configuration of your
+auth module into a single line of code, for example, consider setting up your auth using Google:
+
+[source,php]
+----
+<?php
+    use io\vertx\jphp\ext\auth\oauth2\providers\OpenIDConnectAuth;
+
+    OpenIDConnectAuth::discover($vertx, array(
+        "site" => "https://accounts.google.com",
+        "clientID" => "clientId"
+    ), function ($res, $res_err) {
+        if ($res != null) {
+            // the setup call succeeded.
+            // at this moment your auth is ready to use and
+            // google signature keys are loaded so tokens can be decoded and verified.
+        } else {
+            // the setup failed.
+        };
+    });
+
+----
+
+Behind the scenes a couple of actions are performed:
+
+1. HTTP get request to the `.well-known/openid-configuration` resource
+2. Validation of the response `issuer` field as mandated by the spec (the issuer value must match the request one)
+3. If the JWK uri is present, keys are loaded from the server and added to the auth keychain
+4. the auth module is configure and returned to the user.
+
+A couple of well known OpenID Connect Discovery providers are:
+
+* Keycloak: `http://keycloakhost:keycloakport/auth/realms/{realm}`
+* Google: `https://accounts.google.com`
+* SalesForce: `https://login.salesforce.com`
+* Microsoft: `https://login.windows.net/common`
+
+This and the given `client id` is enough to configure your auth provider object.
+
 === AccessToken object
 
 When a token expires we need to refresh it. OAuth2 offers the AccessToken class that add a couple of useful methods
@@ -333,7 +378,7 @@ This information is quite valuable since it allows to do authorization at the AP
             $token = $res;
 
             // now check for permissions
-            $token->isAuthorised("account:manage-account", function ($r, $r_err) {
+            $token->isAuthorized("account:manage-account", function ($r, $r_err) {
                 if ($r) {
                     // this user is authorized to manage its account
                 };
@@ -359,6 +404,31 @@ data (e.g. `preferred_username`) from the Keycloak principal. For example:
 
 ----
 
+Please remember that Keycloak **does** implement OpenID Connect, so you can configure it just by using it's discovery url:
+
+[source,php]
+----
+<?php
+    use io\vertx\jphp\ext\auth\oauth2\providers\OpenIDConnectAuth;
+
+    OpenIDConnectAuth::discover($vertx, array(
+        "site" => "http://server:port/auth/realms/your_realm",
+        "clientID" => "clientId"
+    ), function ($res, $res_err) {
+        if ($res != null) {
+            // the setup call succeeded.
+            // at this moment your auth is ready to use and
+            // google signature keys are loaded so tokens can be decoded and verified.
+        } else {
+            // the setup failed.
+        };
+    });
+
+----
+
+Since you can deploy your Keycloak server anywhere, just replace `server:port` with the correct value and the `your_realm`
+value with your application realm.
+
 ==== Google Server to Server
 
 The provider also supports Server to Server or the RFC7523 extension. This is a feature present on Google with their
@@ -366,7 +436,7 @@ service account.
 
 === Token Introspection
 
-Tokens can be introspected in order to assert that they are still valid. Although there is RFC7660 for this purpose
+Tokens can be introspected in order to assert that they are still valid. Although there is RFC7662 for this purpose
 not many providers implement it. Instead there are variations also known as `TokenInfo` end points. The OAuth2
 provider will accept both end points as a configuration. Currently we are known to work with `Google` and `Keycloak`.
 
@@ -415,7 +485,7 @@ this specific case one needs to use the token introspection if the provider supp
 
 ----
 
-Until now we covered mostly authentication, although the implementation is relay party (that means that the real
+Until now we covered mostly authentication, although the implementation is relying party (that means that the real
 authentication happens somewhere else), there is more you can do with the handler. For example you can also do
 authorization if the provider is known to support JSON web tokens. This is a common feature if your provider is a
 OpenId Connect provider or if the provider does support `access_token`s as JWTs.
@@ -448,7 +518,7 @@ example you want to see if the user can `print` in the current application:
 [source,php]
 ----
 <?php
-    $user->isAuthorised("print", function ($res, $res_err) {
+    $user->isAuthorized("print", function ($res, $res_err) {
         // in this case it is assumed that the role is the current application
         if ($res != null && $res) {
             // Yes the user can print
@@ -462,7 +532,7 @@ However this is quite specific, you might want to verify if the user can `add-us
 [source,php]
 ----
 <?php
-    $user->isAuthorised("realm:add-user", function ($res, $res_err) {
+    $user->isAuthorized("realm:add-user", function ($res, $res_err) {
         // the role is "realm"
         // the authority is "add-user"
         if ($res != null && $res) {
@@ -477,7 +547,7 @@ Or if the user can access the `year-report` in the `finance` department:
 [source,php]
 ----
 <?php
-    $user->isAuthorised("finance:year-report", function ($res, $res_err) {
+    $user->isAuthorized("finance:year-report", function ($res, $res_err) {
         // the role is "finance"
         // the authority is "year-report"
         if ($res != null && $res) {

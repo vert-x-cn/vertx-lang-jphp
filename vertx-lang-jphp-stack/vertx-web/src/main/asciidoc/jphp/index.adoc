@@ -186,7 +186,8 @@ So, that's the basics. Now we'll look at things in more detail:
 == Handling requests and calling the next handler
 
 When Vert.x-Web decides to route a request to a matching route, it calls the handler of the route passing in an instance
-of `link:https://vertx.okou.tk/phpdoc/vertx-web-jphp/classes/io.vertx.jphp.ext.web.RoutingContext.html[RoutingContext]`.
+of `link:https://vertx.okou.tk/phpdoc/vertx-web-jphp/classes/io.vertx.jphp.ext.web.RoutingContext.html[RoutingContext]`. A route can have different handlers, that you can append using
+`link:https://vertx.okou.tk/phpdoc/vertx-web-jphp/classes/io.vertx.jphp.ext.web.Route.html#method_handler[handler]`
 
 If you don't end the response in your handler, you should call `link:https://vertx.okou.tk/phpdoc/vertx-web-jphp/classes/io.vertx.jphp.ext.web.RoutingContext.html#method_next[next]` so another
 matching route can handle the request (if any).
@@ -198,7 +199,8 @@ You can do this some time later, if you want:
 ----
 <?php
 
-    $route1 = $router->route("/some/path/")->handler(function ($routingContext) {
+    $route = $router->route("/some/path/");
+    $route->handler(function ($routingContext) {
 
         $response = $routingContext->response();
         // enable chunked responses because we will be adding data as
@@ -214,7 +216,7 @@ You can do this some time later, if you want:
         });
     });
 
-    $route2 = $router->route("/some/path/")->handler(function ($routingContext) {
+    $route->handler(function ($routingContext) {
 
         $response = $routingContext->response();
         $response->write("route2\n");
@@ -225,7 +227,7 @@ You can do this some time later, if you want:
         });
     });
 
-    $route3 = $router->route("/some/path/")->handler(function ($routingContext) {
+    $route->handler(function ($routingContext) {
 
         $response = $routingContext->response();
         $response->write("route3");
@@ -3083,6 +3085,45 @@ or the header name they have chosen during the instantiation of the `CSRFHandler
 
     });
 
+----
+
+=== Using AJAX
+
+When accessing protected routes via ajax both the csrf token will need to be passed in the request. Typically this is
+done using a request header, as adding a request header can typically be done at a central location easily without
+payload modification.
+
+The CSRF token is obtained from the server side context under the key `X-XSRF-TOKEN` (unless you specified a different
+name). This token needs to be exposed to the client-side, typically by including it in the initial page content. One
+possibility is to store it in an HTML <meta> tag, where value can then be retrieved at the time of the request by
+JavaScript.
+
+The following can be included in your view (handlebar example below):
+
+[source,html]
+----
+<meta name="csrf-token" content="${X-XSRF-TOKEN}">
+----
+
+The following is an example of using the Fetch API to post to the /process route with the CSRF token from the <meta>
+tag on the page:
+
+[source,js]
+----
+// Read the CSRF token from the <meta> tag
+var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+
+// Make a request using the Fetch API
+fetch('/process', {
+ credentials: 'same-origin', // <-- includes cookies in the request
+ headers: {
+   'X-XSRF-TOKEN': token // <-- is the csrf token as a header
+ },
+ method: 'POST',
+ body: {
+   key: 'value'
+ }
+})
 ----
 
 == VirtualHost Handler

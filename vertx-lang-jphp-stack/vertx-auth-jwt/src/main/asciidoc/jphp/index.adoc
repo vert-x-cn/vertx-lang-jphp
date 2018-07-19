@@ -464,7 +464,7 @@ user has a specific authority. In this case one needs to to:
 [source,php]
 ----
 <?php
-    $user->isAuthorised("create-report", function ($res, $res_err) {
+    $user->isAuthorized("create-report", function ($res, $res_err) {
         if ($res != null && $res) {
             // Yes the user can create reports
         };
@@ -480,16 +480,7 @@ configured to use something else than `permissions`, for example one can even lo
 
 [source,php]
 ----
-<?php
-    use io\vertx\jphp\ext\auth\jwt\JWTAuth;
-
-    $config = array(
-        "public-key" => "BASE64-ENCODED-PUBLIC_KEY",
-        "permissionsClaimKey" => "realm_access/roles"
-    );
-
-    $provider = JWTAuth::create($vertx, $config);
-
+Code not translatable
 ----
 
 So in this example we configure the JWT to work with Keycloak token format. In this case the claims will be checked

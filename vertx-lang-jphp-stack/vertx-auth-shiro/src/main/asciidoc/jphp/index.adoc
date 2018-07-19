@@ -39,7 +39,10 @@ Here's an example of creating a Shiro auth provider by specifying the type:
         "properties_path" => "classpath:test-auth.properties"
     );
 
-    $provider = ShiroAuth::create($vertx, "PROPERTIES", $config);
+    $provider = ShiroAuth::create($vertx, array(
+        "type" => "PROPERTIES",
+        "config" => $config
+    ));
 
 
 ----
@@ -81,7 +84,7 @@ If validating if a user has a particular permission simply pass the permission i
 ----
 <?php
 
-    $user->isAuthorised("newsletter:edit:13", function ($res, $res_err) {
+    $user->isAuthorized("newsletter:edit:13", function ($res, $res_err) {
         if ($res != null) {
             $hasPermission = $res;
         } else {
@@ -97,7 +100,7 @@ If validating that a user has a particular _role_ then you should prefix the arg
 ----
 <?php
 
-    $user->isAuthorised("role:manager", function ($res, $res_err) {
+    $user->isAuthorized("role:manager", function ($res, $res_err) {
         if ($res != null) {
             $hasRole = $res;
         } else {

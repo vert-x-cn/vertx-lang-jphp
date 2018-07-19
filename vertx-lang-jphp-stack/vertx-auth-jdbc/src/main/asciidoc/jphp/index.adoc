@@ -254,7 +254,7 @@ If validating if a user has a particular permission simply pass the permission i
 ----
 <?php
 
-    $user->isAuthorised("commit_code", function ($res, $res_err) {
+    $user->isAuthorized("commit_code", function ($res, $res_err) {
         if ($res != null) {
             $hasPermission = $res;
         } else {
@@ -271,7 +271,7 @@ If validating that a user has a particular _role_ then you should prefix the arg
 ----
 <?php
 
-    $user->isAuthorised("role:manager", function ($res, $res_err) {
+    $user->isAuthorized("role:manager", function ($res, $res_err) {
         if ($res != null) {
             $hasRole = $res;
         } else {

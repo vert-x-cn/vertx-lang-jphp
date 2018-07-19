@@ -100,7 +100,7 @@ Here's an example of authorising a user:
 ----
 <?php
 
-    $user->isAuthorised("printers:printer1234", function ($res, $res_err) {
+    $user->isAuthorized("printers:printer1234", function ($res, $res_err) {
         if ($res != null) {
 
             $hasAuthority = $res;
