@@ -1,6 +1,8 @@
-package io.vertx.lang.jphp;
+package io.vertx.lang.jphp.generator;
 
 import io.vertx.codegen.ModuleModel;
+import io.vertx.lang.jphp.generator.PhpExtensionGenerator;
+import io.vertx.lang.jphp.generator.PhpGenerator;
 
 import java.io.PrintWriter;
 import java.util.Collections;
@@ -8,9 +10,9 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-class ServiceLoaderGenerator extends PhpGenerator<ModuleModel> {
+public class ServiceLoaderGenerator extends PhpGenerator<ModuleModel> {
 
-    ServiceLoaderGenerator() {
+    public ServiceLoaderGenerator() {
         this.kinds = Collections.singleton("module");
         this.incremental = true;
     }
@@ -23,7 +25,7 @@ class ServiceLoaderGenerator extends PhpGenerator<ModuleModel> {
     private Set<String> extensions = new HashSet<>();
 
     @Override
-    void render(ModuleModel model, int index, int size, Map<String, Object> session, PrintWriter writer) {
+    protected void render(ModuleModel model, int index, int size, Map<String, Object> session, PrintWriter writer) {
         extensions.add(PhpExtensionGenerator.fcq(model));
         if (index == size - 1) {
             for (String extension : extensions) {

@@ -1,7 +1,7 @@
 .idea
 *.iml
 target
-generated
+**/generated/**/*.java
 vertx-*-jphp
 jphp-vertx-extension.properties
 changeGitInfo.sh

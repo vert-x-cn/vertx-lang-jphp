@@ -1,4 +1,4 @@
-package io.vertx.lang.jphp;
+package io.vertx.lang.jphp.generator;
 
 import io.vertx.codegen.Case;
 import io.vertx.codegen.Helper;
@@ -8,16 +8,14 @@ import io.vertx.codegen.ModuleInfo;
 import java.io.PrintWriter;
 import java.util.*;
 
-class PhpExtensionGenerator extends PhpGenerator<Model> {
-    PhpExtensionGenerator() {
+public class PhpExtensionGenerator extends PhpGenerator<Model> {
+    public PhpExtensionGenerator() {
         this.kinds = new HashSet<>(Arrays.asList("class", "dataObject"));
         this.incremental = true;
     }
 
     @Override
     public String filename(Model model) {
-//        ModuleInfo module = model.getModule();
-//        return module.translatePackageName("jphp") + "." + name(module) + ".java";
         return fcq(model) + ".java";
     }
 
@@ -30,7 +28,7 @@ class PhpExtensionGenerator extends PhpGenerator<Model> {
     }
 
     @Override
-    void render(Model model, int index, int size, Map<String, Object> session, PrintWriter writer) {
+    protected void render(Model model, int index, int size, Map<String, Object> session, PrintWriter writer) {
         ModuleInfo module = model.getModule();
         importClassSet.add(module.translateQualifiedName(model.getFqn(), "jphp"));
         registerClassSet.add(Helper.getSimpleName(model.getFqn()));
@@ -43,7 +41,7 @@ class PhpExtensionGenerator extends PhpGenerator<Model> {
                 registerClassSet.add("BaseThrowable");
                 registerClassSet.add("Handler");
             }
-            String packageName = module.translatePackageName("jphp");
+            String packageName = module.translatePackageName(id);
             String simpleName = simpleName(module);
             writer.print("package ");
             writer.print(packageName);
@@ -87,7 +85,7 @@ class PhpExtensionGenerator extends PhpGenerator<Model> {
     static String fcq(Model model) {
         ModuleInfo module = model.getModule();
         String className = simpleName(module);
-        return module.translatePackageName("jphp") + "." + className;
+        return module.translatePackageName(id) + "." + className;
     }
 
     private static String simpleName(ModuleInfo model) {

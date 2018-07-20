@@ -1,25 +1,20 @@
 {
   "name": "JPhp",
   "generators": [{
-    "kind": "dataObject",
+    "kind": "//dataObject",
     "fileName": "'../jphp/' + module.name + '-jphp/' + module.translateQualifiedName(fqn, 'jphp').replace('.', '/') + '.php'",
     "templateFileName": "vertx-php/template/dataobject.templ"
   },{
-    "kind": "dataObject",
-    "fileName": "module.translateQualifiedName(fqn, 'jphp').replace('.', '/') + '.java'",
+    "kind": "//dataObject",
+    "fileName": "module.translateQualifiedName(fqn, 'jphp')+ '.java'",
     "templateFileName": "vertx-php/template/dataobject.wrap.templ"
   },{
-    "kind": ["class","dataObject"],
-    "incremental" : true,
-    "fileName": "'../jphp/jphp-vertx-extension.properties'",
-    "templateFileName": "vertx-php/template/extension.templ"
-  },{
-    "kind": "class",
+    "kind": "//class",
     "fileName": "'../jphp/' + module.name + '-jphp/' + module.translateQualifiedName(fqn, 'jphp').replace('.', '/') + '.php'",
     "templateFileName": "vertx-php/template/class.templ"
   },{
-    "kind": "class",
-    "fileName": "module.translateQualifiedName(fqn, 'jphp').replace('.', '/') + '.java'",
+    "kind": "//class",
+    "fileName": "module.translateQualifiedName(fqn, 'jphp') + '.java'",
     "templateFileName": "vertx-php/template/class.wrap.templ"
   }]
 }
