@@ -54,10 +54,13 @@ public abstract class AbstractClassGenerator<M extends Model> extends PhpGenerat
         ClassKind kind = type.getKind();
         if (kind == API || kind == DATA_OBJECT) {
             String packageName = Helper.getPackageName(model.getFqn());
+            if (!packageName.equals(type.getRaw().getPackageName())) {
+                importClassSet.add(type.translateName(id));
+            }
         } else if (kind == ENUM) {
-
+//            importClassSet.add(type.getName());
         } else if (kind.json) {
-
+//            importClassSet.add(type.getName());
         } else {
             importClassSet.add(type.getRaw().getName());
         }

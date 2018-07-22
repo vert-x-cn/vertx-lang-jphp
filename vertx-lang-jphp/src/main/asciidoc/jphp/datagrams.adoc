@@ -26,18 +26,16 @@ and NetClient (see above).
 
 === Creating a DatagramSocket
 
-To use UDP you first need t create a `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.datagram.DatagramSocket.html[DatagramSocket]`. It does not matter here if you only want to send data or send
+To use UDP you first need t create a `link:../../scaladocs/io/vertx/scala/core/datagram/DatagramSocket.html[DatagramSocket]`. It does not matter here if you only want to send data or send
 and receive.
 
-[source,php]
+[source,scala]
 ----
-<?php
-    $socket = $vertx->createDatagramSocket(array(
-    ));
+var socket = vertx.createDatagramSocket(DatagramSocketOptions())
 
 ----
 
-The returned `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.datagram.DatagramSocket.html[DatagramSocket]` will not be bound to a specific port. This is not a
+The returned `link:../../scaladocs/io/vertx/scala/core/datagram/DatagramSocket.html[DatagramSocket]` will not be bound to a specific port. This is not a
 problem if you only want to send data (like a client), but more on this in the next section.
 
 === Sending Datagram packets
@@ -49,55 +47,53 @@ This means each packet can be sent to a different remote peer.
 
 Sending packets is as easy as shown here:
 
-[source,php]
+[source,scala]
 ----
-<?php
-    use io\vertx\jphp\core\buffer\Buffer;
-    $socket = $vertx->createDatagramSocket(array(
-    ));
-    $buffer = Buffer::buffer("content");
-    // Send a Buffer
-    $socket->send($buffer, 1234, "10.0.0.1", function ($asyncResult, $asyncResult_err) {
-        echo "Send succeeded? ".$asyncResult != null."\n";
-    });
-    // Send a String
-    $socket->send("A string used as content", 1234, "10.0.0.1", function ($asyncResult, $asyncResult_err) {
-        echo "Send succeeded? ".$asyncResult != null."\n";
-    });
+var socket = vertx.createDatagramSocket(DatagramSocketOptions())
+var buffer = Buffer.buffer("content")
+// Send a Buffer
+socket.sendFuture(buffer, 1234, "10.0.0.1").onComplete{
+  case Success(result) => println("Success")
+  case Failure(cause) => println("Failure")
+}
+// Send a String
+socket.sendFuture("A string used as content", 1234, "10.0.0.1").onComplete{
+  case Success(result) => println("Success")
+  case Failure(cause) => println("Failure")
+}
 
 ----
 
 === Receiving Datagram packets
 
-If you want to receive packets you need to bind the `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.datagram.DatagramSocket.html[DatagramSocket]` by calling
+If you want to receive packets you need to bind the `link:../../scaladocs/io/vertx/scala/core/datagram/DatagramSocket.html[DatagramSocket]` by calling
 `listen(...)}` on it.
 
-This way you will be able to receive `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.datagram.DatagramPacket.html[DatagramPacket]`s that were sent to the address and port on
-which the `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.datagram.DatagramSocket.html[DatagramSocket]` listens.
+This way you will be able to receive `link:../../scaladocs/io/vertx/scala/core/datagram/DatagramPacket.html[DatagramPacket]`s that were sent to the address and port on
+which the `link:../../scaladocs/io/vertx/scala/core/datagram/DatagramSocket.html[DatagramSocket]` listens.
 
-Beside this you also want to set a `Handler` which will be called for each received `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.datagram.DatagramPacket.html[DatagramPacket]`.
+Beside this you also want to set a `Handler` which will be called for each received `link:../../scaladocs/io/vertx/scala/core/datagram/DatagramPacket.html[DatagramPacket]`.
 
-The `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.datagram.DatagramPacket.html[DatagramPacket]` has the following methods:
+The `link:../../scaladocs/io/vertx/scala/core/datagram/DatagramPacket.html[DatagramPacket]` has the following methods:
 
-- `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.datagram.DatagramPacket.html#method_sender[sender]`: The InetSocketAddress which represent the sender of the packet
-- `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.datagram.DatagramPacket.html#method_data[data]`: The Buffer which holds the data which was received.
+- `link:../../scaladocs/io/vertx/scala/core/datagram/DatagramPacket.html#sender()[sender]`: The InetSocketAddress which represent the sender of the packet
+- `link:../../scaladocs/io/vertx/scala/core/datagram/DatagramPacket.html#data()[data]`: The Buffer which holds the data which was received.
 
 So to listen on a specific address and port you would do something like shown here:
 
-[source,php]
+[source,scala]
 ----
-<?php
-    $socket = $vertx->createDatagramSocket(array(
-    ));
-    $socket->listen(1234, "0.0.0.0", function ($asyncResult, $asyncResult_err) {
-        if ($asyncResult != null) {
-            $socket->handler(function ($packet) {
-                // Do something with the packet
-            });
-        } else {
-            echo "Listen failed".$asyncResult_err."\n";
-        };
-    });
+var socket = vertx.createDatagramSocket(DatagramSocketOptions())
+socket.listenFuture(1234, "0.0.0.0").onComplete{
+  case Success(result) => {
+    socket.handler((packet: io.vertx.scala.core.datagram.DatagramPacket) => {
+      // Do something with the packet
+    })
+  }
+  case Failure(cause) => {
+    println(s"$cause")
+  }
+}
 
 ----
 
@@ -120,17 +116,15 @@ in a multicast group address to the send method.
 
 This is show here:
 
-[source,php]
+[source,scala]
 ----
-<?php
-    use io\vertx\jphp\core\buffer\Buffer;
-    $socket = $vertx->createDatagramSocket(array(
-    ));
-    $buffer = Buffer::buffer("content");
-    // Send a Buffer to a multicast address
-    $socket->send($buffer, 1234, "230.0.0.1", function ($asyncResult, $asyncResult_err) {
-        echo "Send succeeded? ".$asyncResult != null."\n";
-    });
+var socket = vertx.createDatagramSocket(DatagramSocketOptions())
+var buffer = Buffer.buffer("content")
+// Send a Buffer to a multicast address
+socket.sendFuture(buffer, 1234, "230.0.0.1").onComplete{
+  case Success(result) => println("Success")
+  case Failure(cause) => println("Failure")
+}
 
 ----
 
@@ -138,15 +132,15 @@ All sockets that have joined the multicast group 230.0.0.1 will receive the pack
 
 ===== Receiving Multicast packets
 
-If you want to receive packets for specific Multicast group you need to bind the `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.datagram.DatagramSocket.html[DatagramSocket]` by
+If you want to receive packets for specific Multicast group you need to bind the `link:../../scaladocs/io/vertx/scala/core/datagram/DatagramSocket.html[DatagramSocket]` by
 calling `listen(...)` on it to join the Multicast group.
 
 This way you will receive DatagramPackets that were sent to the address and port on which the
-`link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.datagram.DatagramSocket.html[DatagramSocket]`listens and also to those sent to the Multicast group.
+`link:../../scaladocs/io/vertx/scala/core/datagram/DatagramSocket.html[DatagramSocket]`listens and also to those sent to the Multicast group.
 
 Beside this you also want to set a Handler which will be called for each received DatagramPacket.
 
-The `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.datagram.DatagramPacket.html[DatagramPacket]` has the following methods:
+The `link:../../scaladocs/io/vertx/scala/core/datagram/DatagramPacket.html[DatagramPacket]` has the following methods:
 
 - `sender()`: The InetSocketAddress which represent the sender of the packet
 - `data()`: The Buffer which holds the data which was received.
@@ -154,25 +148,25 @@ The `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.dat
 So to listen on a specific address and port and also receive packets for the Multicast group 230.0.0.1 you
 would do something like shown here:
 
-[source,php]
+[source,scala]
 ----
-<?php
-    $socket = $vertx->createDatagramSocket(array(
-    ));
-    $socket->listen(1234, "0.0.0.0", function ($asyncResult, $asyncResult_err) {
-        if ($asyncResult != null) {
-            $socket->handler(function ($packet) {
-                // Do something with the packet
-            });
+var socket = vertx.createDatagramSocket(DatagramSocketOptions())
+socket.listenFuture(1234, "0.0.0.0").onComplete{
+  case Success(result) => {
+    socket.handler((packet: io.vertx.scala.core.datagram.DatagramPacket) => {
+      // Do something with the packet
+    })
 
-            // join the multicast group
-            $socket->listenMulticastGroup("230.0.0.1", function ($asyncResult2, $asyncResult2_err) {
-                echo "Listen succeeded? ".$asyncResult2 != null."\n";
-            });
-        } else {
-            echo "Listen failed".$asyncResult_err."\n";
-        };
-    });
+    // join the multicast group
+    socket.listenMulticastGroupFuture("230.0.0.1").onComplete{
+      case Success(result) => println("Success")
+      case Failure(cause) => println("Failure")
+    }
+  }
+  case Failure(cause) => {
+    println(s"$cause")
+  }
+}
 
 ----
 
@@ -184,35 +178,36 @@ In this situations you can first start to listen for them and then later unliste
 
 This is shown here:
 
-[source,php]
+[source,scala]
 ----
-<?php
-    $socket = $vertx->createDatagramSocket(array(
-    ));
-    $socket->listen(1234, "0.0.0.0", function ($asyncResult, $asyncResult_err) {
-        if ($asyncResult != null) {
-            $socket->handler(function ($packet) {
-                // Do something with the packet
-            });
+var socket = vertx.createDatagramSocket(DatagramSocketOptions())
+socket.listenFuture(1234, "0.0.0.0").onComplete{
+  case Success(result) => {
+    socket.handler((packet: io.vertx.scala.core.datagram.DatagramPacket) => {
+      // Do something with the packet
+    })
 
-            // join the multicast group
-            $socket->listenMulticastGroup("230.0.0.1", function ($asyncResult2, $asyncResult2_err) {
-                if ($asyncResult2 != null) {
-                    // will now receive packets for group
+    // join the multicast group
+    socket.listenMulticastGroupFuture("230.0.0.1").onComplete{
+      case Success(result) => {
+        // will now receive packets for group
 
-                    // do some work
+        // do some work
 
-                    $socket->unlistenMulticastGroup("230.0.0.1", function ($asyncResult3, $asyncResult3_err) {
-                        echo "Unlisten succeeded? ".$asyncResult3 != null."\n";
-                    });
-                } else {
-                    echo "Listen failed".$asyncResult2_err."\n";
-                };
-            });
-        } else {
-            echo "Listen failed".$asyncResult_err."\n";
-        };
-    });
+        socket.unlistenMulticastGroupFuture("230.0.0.1").onComplete{
+          case Success(result) => println("Success")
+          case Failure(cause) => println("Failure")
+        }
+      }
+      case Failure(cause) => {
+        println(s"$cause")
+      }
+    }
+  }
+  case Failure(cause) => {
+    println(s"$cause")
+  }
+}
 
 ----
 
@@ -228,38 +223,37 @@ This an expert feature.
 To block multicast from a specific address you can call `blockMulticastGroup(...)` on the DatagramSocket
 like shown here:
 
-[source,php]
+[source,scala]
 ----
-<?php
-    $socket = $vertx->createDatagramSocket(array(
-    ));
+var socket = vertx.createDatagramSocket(DatagramSocketOptions())
 
-    // Some code
+// Some code
 
-    // This would block packets which are send from 10.0.0.2
-    $socket->blockMulticastGroup("230.0.0.1", "10.0.0.2", function ($asyncResult, $asyncResult_err) {
-        echo "block succeeded? ".$asyncResult != null."\n";
-    });
+// This would block packets which are send from 10.0.0.2
+socket.blockMulticastGroupFuture("230.0.0.1", "10.0.0.2").onComplete{
+  case Success(result) => println("Success")
+  case Failure(cause) => println("Failure")
+}
 
 ----
 
 ==== DatagramSocket properties
 
-When creating a `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.datagram.DatagramSocket.html[DatagramSocket]` there are multiple properties you can set to
-change it's behaviour with the `link:../vertx-jphp/enums.adoc#DatagramSocketOptions[DatagramSocketOptions]` object. Those are listed here:
+When creating a `link:../../scaladocs/io/vertx/scala/core/datagram/DatagramSocket.html[DatagramSocket]` there are multiple properties you can set to
+change it's behaviour with the `link:../dataobjects.html#DatagramSocketOptions[DatagramSocketOptions]` object. Those are listed here:
 
-- `link:../vertx-jphp/enums.adoc#DatagramSocketOptions#method_setSendBufferSize[setSendBufferSize]` Sets the send buffer size in bytes.
-- `link:../vertx-jphp/enums.adoc#DatagramSocketOptions#method_setReceiveBufferSize[setReceiveBufferSize]` Sets the TCP receive buffer size
+- `link:../dataobjects.html#DatagramSocketOptions#setSendBufferSize(int)[sendBufferSize]` Sets the send buffer size in bytes.
+- `link:../dataobjects.html#DatagramSocketOptions#setReceiveBufferSize(int)[receiveBufferSize]` Sets the TCP receive buffer size
 in bytes.
-- `link:../vertx-jphp/enums.adoc#DatagramSocketOptions#method_setReuseAddress[setReuseAddress]` If true then addresses in TIME_WAIT
+- `link:../dataobjects.html#DatagramSocketOptions#setReuseAddress(boolean)[reuseAddress]` If true then addresses in TIME_WAIT
 state can be reused after they have been closed.
-- `link:../vertx-jphp/enums.adoc#DatagramSocketOptions#method_setTrafficClass[setTrafficClass]`
-- `link:../vertx-jphp/enums.adoc#DatagramSocketOptions#method_setBroadcast[setBroadcast]` Sets or clears the SO_BROADCAST socket
+- `link:../dataobjects.html#DatagramSocketOptions#setTrafficClass(int)[trafficClass]`
+- `link:../dataobjects.html#DatagramSocketOptions#setBroadcast(boolean)[broadcast]` Sets or clears the SO_BROADCAST socket
 option. When this option is set, Datagram (UDP) packets may be sent to a local interface's broadcast address.
-- `link:../vertx-jphp/enums.adoc#DatagramSocketOptions#method_setMulticastNetworkInterface[setMulticastNetworkInterface]` Sets or clears
+- `link:../dataobjects.html#DatagramSocketOptions#setMulticastNetworkInterface(java.lang.String)[multicastNetworkInterface]` Sets or clears
 the IP_MULTICAST_LOOP socket option. When this option is set, multicast packets will also be received on the
 local interface.
-- `link:../vertx-jphp/enums.adoc#DatagramSocketOptions#method_setMulticastTimeToLive[setMulticastTimeToLive]` Sets the IP_MULTICAST_TTL socket
+- `link:../dataobjects.html#DatagramSocketOptions#setMulticastTimeToLive(int)[multicastTimeToLive]` Sets the IP_MULTICAST_TTL socket
 option. TTL stands for "Time to Live," but in this context it specifies the number of IP hops that a packet is
 allowed to go through, specifically for multicast traffic. Each router or gateway that forwards a packet decrements
 the TTL. If the TTL is decremented to 0 by a router, it will not be forwarded.
@@ -267,10 +261,10 @@ the TTL. If the TTL is decremented to 0 by a router, it will not be forwarded.
 ==== DatagramSocket Local Address
 
 You can find out the local address of the socket (i.e. the address of this side of the UDP Socket) by calling
-`link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.datagram.DatagramSocket.html#method_localAddress[localAddress]`. This will only return an `InetSocketAddress` if you
-bound the `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.datagram.DatagramSocket.html[DatagramSocket]` with `listen(...)` before, otherwise it will return null.
+`link:../../scaladocs/io/vertx/scala/core/datagram/DatagramSocket.html#localAddress()[localAddress]`. This will only return an `InetSocketAddress` if you
+bound the `link:../../scaladocs/io/vertx/scala/core/datagram/DatagramSocket.html[DatagramSocket]` with `listen(...)` before, otherwise it will return null.
 
 ==== Closing a DatagramSocket
 
-You can close a socket by invoking the `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.datagram.DatagramSocket.html#method_close[close]` method. This will close
+You can close a socket by invoking the `link:../../scaladocs/io/vertx/scala/core/datagram/DatagramSocket.html#close(io.vertx.core.Handler)[close]` method. This will close
 the socket and release all resources

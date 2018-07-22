@@ -53,6 +53,16 @@
             <optional>true</optional>
             <systemPath>${java.home}/../lib/tools.jar</systemPath>
         </dependency>
+        <dependency>
+            <groupId>tk.okou</groupId>
+            <artifactId>vertx-lang-jphp-compiler</artifactId>
+            <version>3.6.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-lang-scala_2.12</artifactId>
+            <version>3.6.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -86,27 +96,27 @@
                         <java.util.logging.SimpleFormatter.format>%4$s: %3$s - %5$s %6$s%n</java.util.logging.SimpleFormatter.format>
                     </systemProperties>
                 </configuration>
-                <!--<executions>-->
-                    <!--&lt;!&ndash; Run the annotation processor on vertx-codegen TCK and generate the Kotlin API &ndash;&gt;-->
-                    <!--<execution>-->
-                        <!--<id>generate-tck</id>-->
-                        <!--<goals>-->
-                            <!--<goal>process-test</goal>-->
-                        <!--</goals>-->
-                        <!--<phase>generate-test-sources</phase>-->
-                        <!--<configuration>-->
-                            <!--<processors>-->
-                                <!--<processor>io.vertx.codegen.CodeGenProcessor</processor>-->
-                            <!--</processors>-->
-                            <!--<optionMap>-->
-                                <!--<codegen.output>${project.build.directory}/generated-sources</codegen.output>-->
-                                <!--<codegen.generators>Php</codegen.generators>-->
-                            <!--</optionMap>-->
-                            <!--<sourceDirectory>${project.build.directory}/sources/vertx-codegen</sourceDirectory>-->
-                            <!--<defaultOutputDirectory>${project.build.directory}/generated-test-sources/apt</defaultOutputDirectory>-->
-                        <!--</configuration>-->
-                    <!--</execution>-->
-                <!--</executions>-->
+                <executions>
+                    <!-- Run the annotation processor on vertx-codegen TCK and generate the Kotlin API -->
+                    <execution>
+                        <id>generate-test</id>
+                        <goals>
+                            <goal>process</goal>
+                        </goals>
+                        <phase>generate-test-sources</phase>
+                        <configuration>
+                            <processors>
+                                <processor>io.vertx.codegen.CodeGenProcessor</processor>
+                            </processors>
+                            <optionMap>
+                                <codegen.output>${project.build.directory}/generated-test-sources</codegen.output>
+                                <codegen.generators>JPhp</codegen.generators>
+                            </optionMap>
+                            <sourceDirectory>${project.basedir}/src/test/java</sourceDirectory>
+                            <defaultOutputDirectory>${project.build.directory}/generated-test-sources/apt</defaultOutputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
                 <dependencies>
                     <dependency>
                         <groupId>junit</groupId>

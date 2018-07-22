@@ -24,35 +24,30 @@ buffer3:I AM DOING OK
 
 Let's see the associated code:
 
-[source, php]
+[source, scala]
 ----
-<?php
-    use io\vertx\jphp\core\buffer\Buffer;
-    use io\vertx\jphp\core\parsetools\RecordParser;
-    $parser = RecordParser::newDelimited("\n", function ($h) {
-        echo $h->toString()."\n";
-    });
+var parser = RecordParser.newDelimited("\n", (h: io.vertx.scala.core.buffer.Buffer) => {
+  println(h.toString())
+})
 
-    $parser->handle(Buffer::buffer("HELLO\nHOW ARE Y"));
-    $parser->handle(Buffer::buffer("OU?\nI AM"));
-    $parser->handle(Buffer::buffer("DOING OK"));
-    $parser->handle(Buffer::buffer("\n"));
+parser.handle(Buffer.buffer("HELLO\nHOW ARE Y"))
+parser.handle(Buffer.buffer("OU?\nI AM"))
+parser.handle(Buffer.buffer("DOING OK"))
+parser.handle(Buffer.buffer("\n"))
 
 ----
 
 You can also produce fixed sized chunks as follows:
 
-[source, php]
+[source, scala]
 ----
-<?php
-    use io\vertx\jphp\core\parsetools\RecordParser;
-    RecordParser::newFixed(4, function ($h) {
-        echo $h->toString()."\n";
-    });
+RecordParser.newFixed(4, (h: io.vertx.scala.core.buffer.Buffer) => {
+  println(h.toString())
+})
 
 ----
 
-For more details, check out the `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.parsetools.RecordParser.html[RecordParser]` class.
+For more details, check out the `link:../../scaladocs/io/vertx/scala/core/parsetools/RecordParser.html[RecordParser]` class.
 
 == Json Parser
 
@@ -62,48 +57,45 @@ may not be convenient when you need to parse very large structures.
 The non-blocking JSON parser is an event driven parser able to deal with very large structures.
 It transforms a sequence of input buffer to a sequence of JSON parse events.
 
-[source, php]
+[source, scala]
 ----
 Code not translatable
 ----
 
 The parser is non-blocking and emitted events are driven by the input buffers.
 
-[source, php]
+[source, scala]
 ----
-<?php
-    use io\vertx\jphp\core\buffer\Buffer;
-    use io\vertx\jphp\core\parsetools\JsonParser;
 
-    $parser = JsonParser::newParser();
+var parser = JsonParser.newParser()
 
-    // start array event
-    // start object event
-    // "firstName":"Bob" event
-    $parser->handle(Buffer::buffer("[{\"firstName\":\"Bob\","));
+// start array event
+// start object event
+// "firstName":"Bob" event
+parser.handle(Buffer.buffer("[{\"firstName\":\"Bob\","))
 
-    // "lastName":"Morane" event
-    // end object event
-    $parser->handle(Buffer::buffer("\"lastName\":\"Morane\"},"));
+// "lastName":"Morane" event
+// end object event
+parser.handle(Buffer.buffer("\"lastName\":\"Morane\"},"))
 
-    // start object event
-    // "firstName":"Luke" event
-    // "lastName":"Lucky" event
-    // end object event
-    $parser->handle(Buffer::buffer("{\"firstName\":\"Luke\",\"lastName\":\"Lucky\"}"));
+// start object event
+// "firstName":"Luke" event
+// "lastName":"Lucky" event
+// end object event
+parser.handle(Buffer.buffer("{\"firstName\":\"Luke\",\"lastName\":\"Lucky\"}"))
 
-    // end array event
-    $parser->handle(Buffer::buffer("]"));
+// end array event
+parser.handle(Buffer.buffer("]"))
 
-    // Always call end
-    $parser->end();
+// Always call end
+parser.end()
 
 ----
 
 Event driven parsing provides more control but comes at the price of dealing with fine grained events, which can be
 inconvenient sometimes. The JSON parser allows you to handle JSON structures as values when it is desired:
 
-[source, php]
+[source, scala]
 ----
 Code not translatable
 ----
@@ -111,45 +103,42 @@ Code not translatable
 The value mode can be set and unset during the parsing allowing you to switch between fine grained
 events or JSON object value events.
 
-[source, php]
+[source, scala]
 ----
 Code not translatable
 ----
 
 You can do the same with arrays as well
 
-[source, php]
+[source, scala]
 ----
 Code not translatable
 ----
 
 You can also decode POJOs
 
-[source, php]
+[source, scala]
 ----
-<?php
-    $parser->handler(function ($event) {
-        // Handle each object
-        // Get the field in which this object was parsed
-        $id = $event->fieldName();
-        $user = $event->mapTo(Java::type("examples.ParseToolsExamples.User")->class);
-        echo "User with id ".$id." : .$user->firstName. .$user->lastName"."\n";
-    });
+parser.handler((event: io.vertx.scala.core.parsetools.JsonEvent) => {
+  // Handle each object
+  // Get the field in which this object was parsed
+  var id = event.fieldName()
+  var user = event.mapTo(examples.ParseToolsExamples.User.class)
+  println(s"User with id ${id} : ${user.firstName} ${user.lastName}")
+})
 
 ----
 
 Whenever the parser fails to process a buffer, an exception will be thrown unless you set an exception handler:
 
-[source, php]
+[source, scala]
 ----
-<?php
-    use io\vertx\jphp\core\parsetools\JsonParser;
 
-    $parser = JsonParser::newParser();
+var parser = JsonParser.newParser()
 
-    $parser->exceptionHandler(function ($err) {
-        // Catch any parsing or decoding error
-    });
+parser.exceptionHandler((err: java.lang.Throwable) => {
+  // Catch any parsing or decoding error
+})
 
 ----
 
@@ -158,4 +147,4 @@ The parser also parses json streams:
 - concatenated json streams: `{"temperature":30}{"temperature":50}`
 - line delimited json streams: `{"an":"object"}\r\n3\r\n"a string"\r\nnull`
 
-For more details, check out the `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.parsetools.JsonParser.html[JsonParser]` class.
+For more details, check out the `link:../../scaladocs/io/vertx/scala/core/parsetools/JsonParser.html[JsonParser]` class.

@@ -11,6 +11,7 @@ import io.vertx.codegen.type.TypeInfo;
 import io.vertx.lang.jphp.generator.AbstractClassGenerator;
 
 import javax.lang.model.element.Element;
+import javax.lang.model.element.Modifier;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -31,8 +32,17 @@ abstract class AbstractPhpDataObjectGenerator extends AbstractClassGenerator<Dat
         return !model.isConcrete() || !implement ? super.filename(model) : null;
     }
 
+    void addImports(DataObjectModel model){
+        for (PropertyInfo property : model.getPropertyMap().values()) {
+            if (property.getType().getKind() == DATA_OBJECT) {
+                addImport(model, property.getType());
+            }
+        }
+    }
+
     @Override
     protected void render(DataObjectModel model, int index, int size, Map<String, Object> session, PrintWriter writer) {
+        addImports(model);
         ClassTypeInfo type = model.getType();
         String packageName = type.getRaw().translatePackageName("jphp");
         if (implement) {
@@ -46,27 +56,19 @@ abstract class AbstractPhpDataObjectGenerator extends AbstractClassGenerator<Dat
         genTypeDocAndDeprecated(model.getDoc(), model.isDeprecated(), writer);
         startClassTemplate(packageName, model, writer);
 
-        genConstruct(model, writer);
+        if (model.isClass() || implement) {
+            genConstruct(model, writer);
+        }
 
         for (PropertyInfo property : model.getPropertyMap().values()) {
-//            String propertyType;
-//            if (kind.isValue()) {
-//                propertyType = property.getType().getSimpleName();
-//            } else if (kind.isList()) {
-//
-//            } else if (kind.isSet()) {
-//
-//            } else if (kind.isMap()) {
-//
-//            }
             if (property.getAdderMethod() != null) {
-                genAdderMethod(property, writer);
+                genAdderMethod(model, property, writer);
             }
             if (property.getGetterMethod() != null) {
-                genGetterMethod(property, writer);
+                genGetterMethod(model, property, writer);
             }
             if (property.getSetterMethod() != null) {
-                genSetterMethod(property, writer);
+                genSetterMethod(model, property, writer);
             }
         }
 
@@ -74,44 +76,102 @@ abstract class AbstractPhpDataObjectGenerator extends AbstractClassGenerator<Dat
 
     }
 
-    void genAdderMethod(PropertyInfo propertyInfo, PrintWriter writer) {
+    void genAdderMethod(DataObjectModel model, PropertyInfo propertyInfo, PrintWriter writer) {
         writer.println();
+        Runnable run = () -> {
+            if (model.isClass() || implement) {
+                writer.println();
+                writer.println("  {");
+                writer.println("    return $this;");
+                writer.println("  }");
+            } else {
+                writer.println(";");
+            }
+        };
         if (propertyInfo.getKind().isMap()) {
             writer.println("  /**");
-            writer.println("   * @param $$key String");
-            writer.println("   * @param $$value String");
+            writer.println("   * @param $key String");
+            writer.println("   * @param $value String");
             writer.println("   * @return $this");
             writer.println("   */");
             writer.print("  public function ");
             writer.print(propertyInfo.getAdderMethod());
-            writer.println("($$key, $$value) ");
-            writer.println("  {");
-            writer.println("    return $this;");
-            writer.println("  }");
+            writer.print("($key, $value) ");
+            run.run();
         } else {
             writer.println("  /**");
-            writer.print("   * @param $$");
+            writer.print("   * @param $");
             writer.print(propertyInfo.getName());
             writer.println(getPHPDocType(propertyInfo.getType(), "|", "", ""));
             writer.println("   * @return $this");
             writer.println("   */");
             writer.print("  public function ");
             writer.print(propertyInfo.getAdderMethod());
-            writer.print("($$");
+            writer.print("($");
             writer.print(propertyInfo.getName());
-            writer.println(") ");
-            writer.println("  {");
-            writer.println("    return $this;");
-            writer.println("  }");
+            writer.print(") ");
+            run.run();
         }
     }
 
-    void genGetterMethod(PropertyInfo propertyInfo, PrintWriter writer) {
-
+    void genGetterMethod(DataObjectModel model, PropertyInfo propertyInfo, PrintWriter writer) {
+        writer.println();
+        writer.println("  /**");
+        writer.print("   * @return ");
+        writer.println(getPHPDocType(propertyInfo.getType(), "|", "", ""));
+        writer.println("   */");
+        writer.print("  public function ");
+        writer.print(propertyInfo.getGetterMethod());
+        writer.print("()");
+        if (model.isClass() || implement) {
+            writer.println("  {");
+            writer.print("    return ");
+            writer.print(getReturnInfo(propertyInfo.getType()));
+            writer.println(";");
+            writer.println("  }");
+        } else {
+            writer.println(";");
+        }
     }
 
-    void genSetterMethod(PropertyInfo propertyInfo, PrintWriter writer) {
-
+    void genSetterMethod(DataObjectModel model, PropertyInfo propertyInfo, PrintWriter writer) {
+        writer.println();
+        writer.println("  /**");
+        writer.print("   * @param $");
+        writer.print(propertyInfo.getName());
+        writer.print(" ");
+        writer.println(getPHPDocType(propertyInfo.getType(), "|", "", ""));
+        writer.println("   * @return $this");
+        writer.println("   */");
+        writer.print("  public function ");
+        writer.print(propertyInfo.getSetterMethod());
+        writer.print("(");
+        writer.print("$");
+        writer.print(propertyInfo.getName());
+        writer.print(")");
+        if (model.isClass() || implement) {
+            writer.println("  {");
+            writer.println("    return $this;");
+            writer.println("  }");
+        } else {
+            writer.println(";");
+        }
+    }
+    private String getReturnInfo(TypeInfo type){
+        ClassKind kind = type.getKind();
+        if (kind.collection || kind.json) {
+            return "[]";
+        } else if (kind.basic) {
+            if (kind == STRING) {
+                return "\"\"";
+            } else if (type.getSimpleName().equalsIgnoreCase("boolean")) {
+                return "false";
+            } else {
+                return "0";
+            }
+        } else {
+            return "null";
+        }
     }
 
     private String getPHPDocType(TypeInfo typeInfo, String delimiter, String prefix, String suffix) {
@@ -171,13 +231,14 @@ abstract class AbstractPhpDataObjectGenerator extends AbstractClassGenerator<Dat
     }
 
     void genConstruct(DataObjectModel model, PrintWriter writer) {
-        writer.print("public function __construct($");
+        writer.print("  public function __construct($");
         writer.print(model.getType().getSimpleName(Case.LOWER_CAMEL));
         if (model.hasEmptyConstructor()) {
             writer.print(" = null");
         }
         writer.println(")");
-        writer.println("{");
+        writer.println("  {");
+        writer.println("  }");
     }
 
     void genPackageName(String packageName, PrintWriter writer) {
@@ -191,11 +252,12 @@ abstract class AbstractPhpDataObjectGenerator extends AbstractClassGenerator<Dat
         writer.print(packageName.replace(".", "\\"));
         writer.println(";");
     }
-
-    void startClassTemplate(String packageName, DataObjectModel model, PrintWriter writer) {
-//        ModuleInfo module = model.getModule();
-        ClassTypeInfo type = model.getType();
-        if (implement || model.isConcrete()) {
+    void genClassModifiers(DataObjectModel model, PrintWriter writer) {
+        Element element = model.getElement();
+        if(element.getModifiers().contains(Modifier.FINAL)) {
+            writer.print("final ");
+        }
+        if (implement || model.isClass()) {
             if (!implement && !model.isConcrete()) {
                 writer.print("abstract ");
             }
@@ -203,6 +265,11 @@ abstract class AbstractPhpDataObjectGenerator extends AbstractClassGenerator<Dat
         } else {
             writer.print("interface ");
         }
+    }
+    void startClassTemplate(String packageName, DataObjectModel model, PrintWriter writer) {
+//        ModuleInfo module = model.getModule();
+        ClassTypeInfo type = model.getType();
+        genClassModifiers(model, writer);
         writer.print(type.getSimpleName());
         if (implement || model.isClass()) {
             if (implement) {
@@ -210,6 +277,8 @@ abstract class AbstractPhpDataObjectGenerator extends AbstractClassGenerator<Dat
             }
             if (!model.isClass()) {
                 writer.print(" implements ");
+            } else if (implement){
+                writer.print(" extends ");
             }
             if (implement) {
                 writer.print(type.getSimpleName());
@@ -222,7 +291,7 @@ abstract class AbstractPhpDataObjectGenerator extends AbstractClassGenerator<Dat
 
     void genTypeDocAndDeprecated(Doc doc, boolean deprecated, PrintWriter writer) {
         if (doc != null || deprecated) {
-            writer.println("/*");
+            writer.println("/**");
             if (doc != null) {
                 Token.toHtml(doc.getTokens(), " *", this::renderLinkToHtml, "\n", writer);
             }

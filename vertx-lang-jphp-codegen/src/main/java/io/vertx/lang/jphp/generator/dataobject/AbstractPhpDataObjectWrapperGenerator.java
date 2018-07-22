@@ -1,9 +1,12 @@
 package io.vertx.lang.jphp.generator.dataobject;
 
 import io.vertx.codegen.DataObjectModel;
+import io.vertx.codegen.PropertyInfo;
 import io.vertx.codegen.doc.Doc;
 import io.vertx.codegen.type.ClassTypeInfo;
 
+import javax.lang.model.element.Element;
+import javax.lang.model.element.Modifier;
 import java.io.PrintWriter;
 import java.util.Map;
 
@@ -18,13 +21,32 @@ public class AbstractPhpDataObjectWrapperGenerator extends AbstractPhpDataObject
         importClassSet.add("php.runtime.annotation.Reflection.Name");
         importClassSet.add("php.runtime.annotation.Reflection.Namespace");
         importClassSet.add("php.runtime.annotation.Reflection.Signature");
+        Element element = model.getElement();
+        boolean isFinal = element.getModifiers().contains(Modifier.FINAL);
+        if (isFinal) {
+            importClassSet.add("io.vertx.lang.jphp.BaseWrapper");
+        }
 
         super.render(model, index, size, session, writer);
     }
 
     @Override
     void genConstruct(DataObjectModel model, PrintWriter writer) {
+        if (model.hasEmptyConstructor()) {
 
+        }
+    }
+
+    @Override
+    void genAdderMethod(DataObjectModel model, PropertyInfo propertyInfo, PrintWriter writer) {
+    }
+
+    @Override
+    void genGetterMethod(DataObjectModel model, PropertyInfo propertyInfo, PrintWriter writer) {
+    }
+
+    @Override
+    void genSetterMethod(DataObjectModel model, PropertyInfo propertyInfo, PrintWriter writer) {
     }
 
     @Override
@@ -43,6 +65,8 @@ public class AbstractPhpDataObjectWrapperGenerator extends AbstractPhpDataObject
 
     @Override
     void startClassTemplate(String packageName, DataObjectModel model, PrintWriter writer) {
+        Element element = model.getElement();
+        boolean isFinal = element.getModifiers().contains(Modifier.FINAL);
         ClassTypeInfo type = model.getType();
         String simpleName = type.getSimpleName();
         writer.print("@Name(\"");
@@ -52,14 +76,7 @@ public class AbstractPhpDataObjectWrapperGenerator extends AbstractPhpDataObject
         writer.print(packageName.replace(".", "\\\\"));
         writer.println("\")");
         writer.print("public ");
-        if (implement || model.isClass()) {
-            if (!implement && !model.isConcrete()) {
-                writer.print("abstract ");
-            }
-            writer.print("class ");
-        } else {
-            writer.print("interface ");
-        }
+        genClassModifiers(model, writer);
         writer.print(simpleName);
         if (implement || model.isClass()) {
             if (implement) {
@@ -72,8 +89,12 @@ public class AbstractPhpDataObjectWrapperGenerator extends AbstractPhpDataObject
             }
             if (implement) {
                 writer.print(type.translateName(id));
-            } else {
+            } else if (!isFinal){
                 writer.print(type.getName());
+            } else {
+                writer.print("BaseWrapper<");
+                writer.print(type.getName());
+                writer.print(">");
             }
         } else {
             writer.print(" extends ");
@@ -82,11 +103,6 @@ public class AbstractPhpDataObjectWrapperGenerator extends AbstractPhpDataObject
         writer.println(" {");
     }
 
-    void genDeprecated(PrintWriter writer, boolean tag) {
-        if (!tag) {
-            writer.println("@Deprecated");
-        }
-    }
 
     @Override
     void genTypeDocAndDeprecated(Doc doc, boolean deprecated, PrintWriter writer) {

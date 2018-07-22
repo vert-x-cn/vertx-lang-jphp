@@ -1,9 +1,9 @@
 == The Event Bus
 :toc: left
 
-The `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.eventbus.EventBus.html[event bus]` is the *nervous system* of Vert.x.
+The `link:../../scaladocs/io/vertx/scala/core/eventbus/EventBus.html[event bus]` is the *nervous system* of Vert.x.
 
-There is a single event bus instance for every Vert.x instance and it is obtained using the method `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.Vertx.html#method_eventBus[eventBus]`.
+There is a single event bus instance for every Vert.x instance and it is obtained using the method `link:../../scaladocs/io/vertx/scala/core/Vertx.html#eventBus()[eventBus]`.
 
 The event bus allows different parts of your application to communicate with each other, irrespective of what language they are written in,
 and whether they're in the same Vert.x instance, or in a different Vert.x instance.
@@ -77,7 +77,7 @@ to retry after recovery.
 
 ==== Types of messages
 
-Out of the box Vert.x allows any primitive/simple type, String, or `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.buffer.Buffer.html[buffers]` to
+Out of the box Vert.x allows any primitive/simple type, String, or `link:../../scaladocs/io/vertx/scala/core/buffer/Buffer.html[buffers]` to
 be sent as messages.
 
 However it's a convention and common practice in Vert.x to send messages as http://json.org/[JSON]
@@ -98,10 +98,9 @@ Let's jump into the API.
 
 You get a reference to the event bus as follows:
 
-[source,php]
+[source,scala]
 ----
-<?php
-    $eb = $vertx->eventBus();
+var eb = vertx.eventBus()
 
 ----
 
@@ -109,89 +108,86 @@ There is a single instance of the event bus per Vert.x instance.
 
 ==== Registering Handlers
 
-This simplest way to register a handler is using `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.eventbus.EventBus.html#method_consumer[consumer]`.
+This simplest way to register a handler is using `link:../../scaladocs/io/vertx/scala/core/eventbus/EventBus.html#consumer(java.lang.String,%20io.vertx.core.Handler)[consumer]`.
 Here's an example:
 
-[source,php]
+[source,scala]
 ----
-<?php
-    $eb = $vertx->eventBus();
+var eb = vertx.eventBus()
 
-    $eb->consumer("news.uk.sport", function ($message) {
-        echo "I have received a message: ".$message->body()."\n";
-    });
+eb.consumer("news.uk.sport", (message: io.vertx.scala.core.eventbus.Message<java.lang.Object>) => {
+  println(s"I have received a message: ${message.body()}")
+})
 
 ----
 
-When a message arrives for your handler, your handler will be called, passing in the `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.eventbus.Message.html[message]`.
+When a message arrives for your handler, your handler will be called, passing in the `link:../../scaladocs/io/vertx/scala/core/eventbus/Message.html[message]`.
 
-The object returned from call to +consumer()+ is an instance of `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.eventbus.MessageConsumer.html[MessageConsumer]`.
+The object returned from call to +consumer()+ is an instance of `link:../../scaladocs/io/vertx/scala/core/eventbus/MessageConsumer.html[MessageConsumer]`.
 
 This object can subsequently be used to unregister the handler, or use the handler as a stream.
 
-Alternatively you can use `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.eventbus.EventBus.html#method_consumer[consumer]` to
+Alternatively you can use `link:../../scaladocs/io/vertx/scala/core/eventbus/EventBus.html#consumer(java.lang.String,%20io.vertx.core.Handler)[consumer]` to
 return a +MessageConsumer+ with no handler set, and then set the handler on that. For example:
 
-[source,php]
+[source,scala]
 ----
-<?php
-    $eb = $vertx->eventBus();
+var eb = vertx.eventBus()
 
-    $consumer = $eb->consumer("news.uk.sport");
-    $consumer->handler(function ($message) {
-        echo "I have received a message: ".$message->body()."\n";
-    });
+var consumer = eb.consumer("news.uk.sport")
+consumer.handler((message: io.vertx.scala.core.eventbus.Message<java.lang.String>) => {
+  println(s"I have received a message: ${message.body()}")
+})
 
 ----
 
 When registering a handler on a clustered event bus, it can take some time for the registration to reach all
 nodes of the cluster.
 
-If you want to be notified when this has completed, you can register a `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.eventbus.MessageConsumer.html#method_completionHandler[completion handler]`
+If you want to be notified when this has completed, you can register a `link:../../scaladocs/io/vertx/scala/core/eventbus/MessageConsumer.html#completionHandler(io.vertx.core.Handler)[completion handler]`
 on the +MessageConsumer+ object.
 
-[source,php]
+[source,scala]
 ----
-<?php
-    $consumer->completionHandler(function ($res, $res_err) {
-        if ($res != null) {
-            echo "The handler registration has reached all nodes\n";
-        } else {
-            echo "Registration failed!\n";
-        };
-    });
+consumer.completionHandlerFuture().onComplete{
+  case Success(result) => {
+    println("The handler registration has reached all nodes")
+  }
+  case Failure(cause) => {
+    println(s"$cause")
+  }
+}
 
 ----
 
 ==== Un-registering Handlers
 
-To unregister a handler, call `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.eventbus.MessageConsumer.html#method_unregister[unregister]`.
+To unregister a handler, call `link:../../scaladocs/io/vertx/scala/core/eventbus/MessageConsumer.html#unregister()[unregister]`.
 
 If you are on a clustered event bus, un-registering can take some time to propagate across the nodes.  If you want to
-be notified when this is complete, use `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.eventbus.MessageConsumer.html#method_unregister[unregister]`.
+be notified when this is complete, use `link:../../scaladocs/io/vertx/scala/core/eventbus/MessageConsumer.html#unregister(io.vertx.core.Handler)[unregister]`.
 
-[source,php]
+[source,scala]
 ----
-<?php
-    $consumer->unregister(function ($res, $res_err) {
-        if ($res != null) {
-            echo "The handler un-registration has reached all nodes\n";
-        } else {
-            echo "Un-registration failed!\n";
-        };
-    });
+consumer.unregisterFuture().onComplete{
+  case Success(result) => {
+    println("The handler un-registration has reached all nodes")
+  }
+  case Failure(cause) => {
+    println(s"$cause")
+  }
+}
 
 ----
 
 ==== Publishing messages
 
-Publishing a message is simple. Just use `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.eventbus.EventBus.html#method_publish[publish]` specifying the
+Publishing a message is simple. Just use `link:../../scaladocs/io/vertx/scala/core/eventbus/EventBus.html#publish(java.lang.String,%20java.lang.Object)[publish]` specifying the
 address to publish it to.
 
-[source,php]
+[source,scala]
 ----
-<?php
-    $eventBus->publish("news.uk.sport", "Yay! Someone kicked a ball");
+eventBus.publish("news.uk.sport", "Yay! Someone kicked a ball")
 
 ----
 
@@ -202,12 +198,11 @@ That message will then be delivered to all handlers registered against the addre
 Sending a message will result in only one handler registered at the address receiving the message.
 This is the point-to-point messaging pattern. The handler is chosen in a non-strict round-robin fashion.
 
-You can send a message with `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.eventbus.EventBus.html#method_send[send]`.
+You can send a message with `link:../../scaladocs/io/vertx/scala/core/eventbus/EventBus.html#send(java.lang.String,%20java.lang.Object)[send]`.
 
-[source,php]
+[source,scala]
 ----
-<?php
-    $eventBus->send("news.uk.sport", "Yay! Someone kicked a ball");
+eventBus.send("news.uk.sport", "Yay! Someone kicked a ball")
 
 ----
 
@@ -219,20 +214,20 @@ Vert.x will deliver messages to any particular handler in the same order they we
 
 ==== The Message object
 
-The object you receive in a message handler is a `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.eventbus.Message.html[Message]`.
+The object you receive in a message handler is a `link:../../scaladocs/io/vertx/scala/core/eventbus/Message.html[Message]`.
 
-The `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.eventbus.Message.html#method_body[body]` of the message corresponds to the object that was sent or published.
+The `link:../../scaladocs/io/vertx/scala/core/eventbus/Message.html#body()[body]` of the message corresponds to the object that was sent or published.
 
-The headers of the message are available with `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.eventbus.Message.html#method_headers[headers]`.
+The headers of the message are available with `link:../../scaladocs/io/vertx/scala/core/eventbus/Message.html#headers()[headers]`.
 
 ==== Acknowledging messages / sending replies
 
-When using `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.eventbus.EventBus.html#method_send[send]` the event bus attempts to deliver the message to a
-`link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.eventbus.MessageConsumer.html[MessageConsumer]`registered with the event bus.
+When using `link:../../scaladocs/io/vertx/scala/core/eventbus/EventBus.html#send(java.lang.String,%20java.lang.Object)[send]` the event bus attempts to deliver the message to a
+`link:../../scaladocs/io/vertx/scala/core/eventbus/MessageConsumer.html[MessageConsumer]`registered with the event bus.
 
 In some cases it's useful for the sender to know when the consumer has received the message and "processed" it.
 
-To acknowledge that the message has been processed, the consumer can reply to the message by calling `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.eventbus.Message.html#method_reply[reply]`.
+To acknowledge that the message has been processed, the consumer can reply to the message by calling `link:../../scaladocs/io/vertx/scala/core/eventbus/Message.html#reply(java.lang.Object)[reply]`.
 
 When this happens it causes a reply to be sent back to the sender and the reply handler is invoked with the reply.
 
@@ -240,27 +235,26 @@ An example will make this clear:
 
 The receiver:
 
-[source,php]
+[source,scala]
 ----
-<?php
-    $consumer = $eventBus->consumer("news.uk.sport");
-    $consumer->handler(function ($message) {
-        echo "I have received a message: ".$message->body()."\n";
-        $message->reply("how interesting!");
-    });
+var consumer = eventBus.consumer("news.uk.sport")
+consumer.handler((message: io.vertx.scala.core.eventbus.Message<java.lang.String>) => {
+  println(s"I have received a message: ${message.body()}")
+  message.reply("how interesting!")
+})
 
 ----
 
 The sender:
 
-[source,php]
+[source,scala]
 ----
-<?php
-    $eventBus->send("news.uk.sport", "Yay! Someone kicked a ball across a patch of grass", function ($ar, $ar_err) {
-        if ($ar != null) {
-            echo "Received reply: ".$ar->body()."\n";
-        };
-    });
+eventBus.sendFuture("news.uk.sport", "Yay! Someone kicked a ball across a patch of grass").onComplete{
+  case Success(result) => {
+    println(s"Received reply: ${result.body()}")
+  }
+  case Failure(cause) => println("Failure")
+}
 
 ----
 
@@ -280,7 +274,7 @@ so it can be deleted from the database
 
 ==== Sending with timeouts
 
-When sending a message with a reply handler, you can specify a timeout in the `link:../vertx-jphp/enums.adoc#DeliveryOptions[DeliveryOptions]`.
+When sending a message with a reply handler, you can specify a timeout in the `link:../dataobjects.html#DeliveryOptions[DeliveryOptions]`.
 
 If a reply is not received within that time, the reply handler will be called with a failure.
 
@@ -291,7 +285,7 @@ The default timeout is 30 seconds.
 Message sends can fail for other reasons, including:
 
 * There are no handlers available to send the message to
-* The recipient has explicitly failed the message using `link:https://vertx.okou.tk/phpdoc/vertx-jphp/classes/io.vertx.jphp.core.eventbus.Message.html#method_fail[fail]`
+* The recipient has explicitly failed the message using `link:../../scaladocs/io/vertx/scala/core/eventbus/Message.html#fail(int,%20java.lang.String)[fail]`
 
 In all cases, the reply handler will be called with the specific failure.
 
@@ -307,21 +301,19 @@ your network they can form a single, distributed event bus.
 If you're creating your Vert.x instance programmatically you get a clustered event bus by configuring the Vert.x
 instance as clustered;
 
-[source,php]
+[source,scala]
 ----
-<?php
-    use io\vertx\jphp\core\Vertx;
-    $options = array(
-    );
-    Vertx::clusteredVertx($options, function ($res, $res_err) {
-        if ($res != null) {
-            $vertx = $res;
-            $eventBus = $vertx->eventBus();
-            echo "We now have a clustered event bus: ".$eventBus."\n";
-        } else {
-            echo "Failed: ".$res_err."\n";
-        };
-    });
+var options = VertxOptions()
+Vertx.clusteredVertx(options, {
+  case Success(result) => {
+    var vertx = result
+    var eventBus = vertx.eventBus()
+    println(s"We now have a clustered event bus: ${eventBus}")
+  }
+  case Failure(cause) => {
+    println(s"$cause")
+  }
+})
 
 ----
 
@@ -343,38 +335,37 @@ when the verticle is undeployed.
 
 The event bus can be configured. It is particularly useful when the event bus is clustered. Under the hood
 the event bus uses TCP connections to send and receive messages, so the
-`link:../vertx-jphp/enums.adoc#EventBusOptions[EventBusOptions]`let you configure all aspects of these TCP connections. As
+`link:../dataobjects.html#EventBusOptions[EventBusOptions]`let you configure all aspects of these TCP connections. As
 the event bus acts as a server and client, the configuration is close to
-`link:../vertx-jphp/enums.adoc#NetClientOptions[NetClientOptions]`and `link:../vertx-jphp/enums.adoc#NetServerOptions[NetServerOptions]`.
+`link:../dataobjects.html#NetClientOptions[NetClientOptions]`and `link:../dataobjects.html#NetServerOptions[NetServerOptions]`.
 
-[source,php]
+[source,scala]
 ----
-<?php
-    use io\vertx\jphp\core\Vertx;
-    $options = array(
-        "eventBusOptions" => array(
-            "ssl" => true,
-            "keyStoreOptions" => array(
-                "path" => "keystore.jks",
-                "password" => "wibble"
-            ),
-            "trustStoreOptions" => array(
-                "path" => "keystore.jks",
-                "password" => "wibble"
-            ),
-            "clientAuth" => "REQUIRED"
-        )
-    );
+var options = VertxOptions()
+  .setEventBusOptions(EventBusOptions()
+    .setSsl(true)
+    .setKeyStoreOptions(JksOptions()
+      .setPath("keystore.jks")
+      .setPassword("wibble")
+    )
+    .setTrustStoreOptions(JksOptions()
+      .setPath("keystore.jks")
+      .setPassword("wibble")
+    )
+    .setClientAuth(ClientAuth.REQUIRED)
+  )
 
-    Vertx::clusteredVertx($options, function ($res, $res_err) {
-        if ($res != null) {
-            $vertx = $res;
-            $eventBus = $vertx->eventBus();
-            echo "We now have a clustered event bus: ".$eventBus."\n";
-        } else {
-            echo "Failed: ".$res_err."\n";
-        };
-    });
+
+Vertx.clusteredVertx(options, {
+  case Success(result) => {
+    var vertx = result
+    var eventBus = vertx.eventBus()
+    println(s"We now have a clustered event bus: ${eventBus}")
+  }
+  case Failure(cause) => {
+    println(s"$cause")
+  }
+})
 
 ----
 
@@ -387,31 +378,30 @@ manager for further details.
 
 The event bus configuration needs to be consistent in all the cluster nodes.
 
-The `link:../vertx-jphp/enums.adoc#EventBusOptions[EventBusOptions]` also lets you specify whether or not the event bus is
-clustered, the port and host, as you would do with `link:../vertx-jphp/enums.adoc#VertxOptions#method_setClustered[setClustered]`,
-`link:../vertx-jphp/enums.adoc#VertxOptions#method_getClusterHost[getClusterHost]` and `link:../vertx-jphp/enums.adoc#VertxOptions#method_getClusterPort[getClusterPort]`.
+The `link:../dataobjects.html#EventBusOptions[EventBusOptions]` also lets you specify whether or not the event bus is
+clustered, the port and host, as you would do with `link:../dataobjects.html#VertxOptions#setClustered(boolean)[clustered]`,
+`link:../dataobjects.html#VertxOptions#getClusterHost()[getClusterHost]` and `link:../dataobjects.html#VertxOptions#getClusterPort()[getClusterPort]`.
 
 When used in containers, you can also configure the public host and port:
 
-[source,php]
+[source,scala]
 ----
-<?php
-    use io\vertx\jphp\core\Vertx;
-    $options = array(
-        "eventBusOptions" => array(
-            "clusterPublicHost" => "whatever",
-            "clusterPublicPort" => 1234
-        )
-    );
+var options = VertxOptions()
+  .setEventBusOptions(EventBusOptions()
+    .setClusterPublicHost("whatever")
+    .setClusterPublicPort(1234)
+  )
 
-    Vertx::clusteredVertx($options, function ($res, $res_err) {
-        if ($res != null) {
-            $vertx = $res;
-            $eventBus = $vertx->eventBus();
-            echo "We now have a clustered event bus: ".$eventBus."\n";
-        } else {
-            echo "Failed: ".$res_err."\n";
-        };
-    });
+
+Vertx.clusteredVertx(options, {
+  case Success(result) => {
+    var vertx = result
+    var eventBus = vertx.eventBus()
+    println(s"We now have a clustered event bus: ${eventBus}")
+  }
+  case Failure(cause) => {
+    println(s"$cause")
+  }
+})
 
 ----
