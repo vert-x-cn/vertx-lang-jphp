@@ -2,6 +2,7 @@ package io.vertx.jphp.core;
 
 import io.vertx.core.json.JsonObject;
 import io.vertx.lang.jphp.IDataObject;
+import io.vertx.lang.jphp.IDataObjectWrapper;
 import php.runtime.Memory;
 import php.runtime.annotation.Reflection;
 import php.runtime.common.HintType;
@@ -11,7 +12,7 @@ import php.runtime.memory.ObjectMemory;
 import php.runtime.memory.StringMemory;
 import php.runtime.reflection.ClassEntity;
 
-public class HttpOptions extends io.vertx.core.HttpOptions implements IDataObject<io.vertx.core.HttpOptions> {
+public class HttpOptions extends BaseOptions implements IDataObject, Options1, Options2 {
     private final ArrayMemory __dynamicProperties__;
     private ClassEntity __class__;
     private final Environment __env__;
@@ -26,7 +27,7 @@ public class HttpOptions extends io.vertx.core.HttpOptions implements IDataObjec
     }
 
     public HttpOptions(Environment __env__, ClassEntity entity) {
-        super(new JsonObject());
+        super(__env__, entity);
         this.__env__ = __env__;
         this.__class__ = entity;
         this.__dynamicProperties__ = new ArrayMemory(true);

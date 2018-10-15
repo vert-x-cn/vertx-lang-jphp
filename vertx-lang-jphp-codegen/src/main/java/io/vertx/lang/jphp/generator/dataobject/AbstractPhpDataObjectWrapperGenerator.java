@@ -26,15 +26,33 @@ public class AbstractPhpDataObjectWrapperGenerator extends AbstractPhpDataObject
         if (isFinal) {
             importClassSet.add("io.vertx.lang.jphp.BaseWrapper");
         }
+        if (model.isClass()) {
+            importClassSet.add("io.vertx.lang.jphp.IDataObjectWrapper");
+        }
 
         super.render(model, index, size, session, writer);
     }
 
     @Override
     void genConstruct(DataObjectModel model, PrintWriter writer) {
-        if (model.hasEmptyConstructor()) {
+        ClassTypeInfo type = model.getType();
+        if (implement || model.isConcrete()) {
+            if (model.isClass()) {
+                writer.print("  public ");
+                writer.print(type.getSimpleName());
+                writer.print("(");
+            } else {
+                writer.print("  public ");
+                writer.print(type.getSimpleName());
+                writer.print("((Environment __env__, ");
+                writer.print(type.getName());
+            }
+
 
         }
+
+//        if (model.hasEmptyConstructor()) {
+//        }
     }
 
     @Override
@@ -91,6 +109,16 @@ public class AbstractPhpDataObjectWrapperGenerator extends AbstractPhpDataObject
                 writer.print(type.translateName(id));
             } else if (!isFinal){
                 writer.print(type.getName());
+                if (model.isClass()) {
+                    writer.print(" implements ");
+                    writer.print("IDataObjectWrapper<");
+                    writer.print(type.getName());
+                    writer.print(">");
+                } else {
+                    writer.print(", IDataObjectWrapper<");
+                    writer.print(type.getName());
+                    writer.print(">");
+                }
             } else {
                 writer.print("BaseWrapper<");
                 writer.print(type.getName());

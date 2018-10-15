@@ -9,7 +9,7 @@ public final class FinalOptions extends BaseOptions {
         super(json);
     }
 
-    public String getString() {
+    public final String getString() {
         return "";
     }
 

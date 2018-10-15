@@ -1,4 +1,6 @@
 package io.vertx.lang.jphp;
 
-public interface IDataObject<D> extends IWrapper<D> {
+import php.runtime.lang.IObject;
+
+public interface IDataObject extends IObject {
 }

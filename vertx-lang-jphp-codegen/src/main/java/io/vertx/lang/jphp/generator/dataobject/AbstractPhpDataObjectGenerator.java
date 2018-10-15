@@ -13,10 +13,7 @@ import io.vertx.lang.jphp.generator.AbstractClassGenerator;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.Modifier;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static io.vertx.codegen.type.ClassKind.*;
@@ -254,7 +251,7 @@ abstract class AbstractPhpDataObjectGenerator extends AbstractClassGenerator<Dat
     }
     void genClassModifiers(DataObjectModel model, PrintWriter writer) {
         Element element = model.getElement();
-        if(element.getModifiers().contains(Modifier.FINAL)) {
+        if(element.getModifiers().contains(Modifier.FINAL) || implement) {
             writer.print("final ");
         }
         if (implement || model.isClass()) {
@@ -272,17 +269,26 @@ abstract class AbstractPhpDataObjectGenerator extends AbstractClassGenerator<Dat
         genClassModifiers(model, writer);
         writer.print(type.getSimpleName());
         if (implement || model.isClass()) {
-            if (implement) {
-                writer.print("Impl");
-            }
+//            if (implement) {
+//                writer.print("Impl");
+//            }
             if (!model.isClass()) {
+                //接口即不是实现类也不是类，所以这里肯定是接口的实现类，只能实现接口
                 writer.print(" implements ");
             } else if (implement){
+                //如果不是接口的实现类，那么就只剩下抽象类的实现类了
                 writer.print(" extends ");
             }
             if (implement) {
+                writer.print("Parent");
                 writer.print(type.getSimpleName());
-                writer.print("Interface");
+            }
+        } else {
+            //不是实现类也不是类，那么这里肯定是接口
+            Set<ClassTypeInfo> superTypes = model.getSuperTypes();
+            if (superTypes != null && !superTypes.isEmpty()) {
+                writer.print(" extends ");
+                writer.print(superTypes.stream().map(ClassTypeInfo::getSimpleName).collect(Collectors.joining(", ")));
             }
         }
         writer.println();

@@ -36,7 +36,7 @@ public abstract class AbstractClassGenerator<M extends Model> extends PhpGenerat
             sb.append(".impl");
         }
         sb.append(".").append(Helper.getSimpleName(model.getFqn()));
-        if (implement) {
+        if (implement && suffix.equals("java")) {
             sb.append("Impl");
         }
         String fileName = sb.toString();

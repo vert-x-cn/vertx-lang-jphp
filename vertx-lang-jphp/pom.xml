@@ -27,7 +27,6 @@
             <groupId>tk.okou</groupId>
             <artifactId>vertx-lang-jphp-codegen</artifactId>
             <version>${project.version}</version>
-            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>com.sun</groupId>

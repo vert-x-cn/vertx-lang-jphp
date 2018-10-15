@@ -15,7 +15,7 @@ public class PhpDataObjectImplGenerator extends AbstractPhpDataObjectGenerator {
     @Override
     protected void render(DataObjectModel model, int index, int size, Map<String, Object> session, PrintWriter writer) {
         ModuleInfo module = model.getModule();
-        importClassSet.add(module.translateQualifiedName(model.getFqn(), id) + " as " + model.getType().getSimpleName() + "Interface");
+        importClassSet.add(module.translateQualifiedName(model.getFqn(), id) + " as Parent" + model.getType().getSimpleName());
         writer.println("<?php");
         super.render(model, index, size, session, writer);
     }

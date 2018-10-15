@@ -1,8 +1,9 @@
 package io.vertx.jphp.core.impl;
 
-import io.vertx.jphp.core.VertxOptions;
+import io.vertx.jphp.core.Options1;
 import io.vertx.lang.jphp.BaseWrapper;
 import io.vertx.lang.jphp.IDataObject;
+import io.vertx.lang.jphp.IDataObjectWrapper;
 import php.runtime.Memory;
 import php.runtime.annotation.Reflection.*;
 import php.runtime.common.HintType;
@@ -10,10 +11,10 @@ import php.runtime.env.Environment;
 import php.runtime.memory.StringMemory;
 import php.runtime.reflection.ClassEntity;
 
-@Name("VertxOptions")
+@Name("Options1")
 @Namespace("io\\vertx\\jphp\\core\\impl")
-public final class VertxOptionsImpl extends BaseWrapper<io.vertx.core.VertxOptions> implements VertxOptions, IDataObject<io.vertx.core.VertxOptions> {
-    public VertxOptionsImpl(Environment __env__, io.vertx.core.VertxOptions __wrappedObject) {
+public final class VertxOptionsImpl extends BaseWrapper<io.vertx.core.Options1> implements Options1, IDataObjectWrapper<io.vertx.core.Options1> {
+    public VertxOptionsImpl(Environment __env__, io.vertx.core.Options1 __wrappedObject) {
         super(__env__, __wrappedObject);
     }
 
