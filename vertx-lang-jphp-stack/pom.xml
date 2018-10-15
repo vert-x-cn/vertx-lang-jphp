@@ -72,7 +72,7 @@
         </dependency>
         <dependency>
             <groupId>tk.okou</groupId>
-            <artifactId>vertx-lang-jphp-codegen</artifactId>
+            <artifactId>vertx-lang-jphp-gen</artifactId>
             <version>${project.version}</version>
             <optional>true</optional>
         </dependency>

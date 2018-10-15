@@ -9,7 +9,7 @@
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>vertx-lang-jphp-codegen</artifactId>
+    <artifactId>vertx-lang-jphp-gen</artifactId>
 
     <dependencies>
         <dependency>
