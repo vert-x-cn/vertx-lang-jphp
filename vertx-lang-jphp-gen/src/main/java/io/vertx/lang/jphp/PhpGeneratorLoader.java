@@ -9,12 +9,13 @@ import java.util.stream.Stream;
 public class PhpGeneratorLoader implements GeneratorLoader {
     @Override
     public Stream<Generator<?>> loadGenerators(ProcessingEnvironment processingEnv) {
-//        return Stream.of(
+        return Stream.of(
 //                new PhpClassGenerator(),
 //                new PhpClassWrapperGenerator(),
 //                new PhpDataObjectGenerator(),
 //                new PhpDataObjectWrapperGenerator(),
-//                new PhpExtensionGenerator());
-        return Stream.empty();
+                new PhpExtensionGenerator()
+        );
+//        return Stream.empty();
     }
 }

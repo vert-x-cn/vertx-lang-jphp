@@ -8,6 +8,7 @@ import java.io.StringWriter;
 import java.util.Map;
 
 abstract class PhpGenerator<M extends Model> extends Generator<M> {
+    static final String id = "jphp";
     PhpGenerator(){
         this.name = "JPhp";
     }

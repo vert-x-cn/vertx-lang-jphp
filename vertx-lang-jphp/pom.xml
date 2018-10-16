@@ -542,9 +542,9 @@
                         <java.util.logging.SimpleFormatter.format>%4$s: %3$s - %5$s %6$s%n</java.util.logging.SimpleFormatter.format>
                         <mvel2.disable.jit>true</mvel2.disable.jit>
                     </systemProperties>
+                    <addCompileSourceRoots>true</addCompileSourceRoots>
                 </configuration>
                 <executions>
-                    <!-- Run the annotation processor on java sources and generate the API -->
                     <execution>
                         <id>generate-api</id>
                         <goals>
