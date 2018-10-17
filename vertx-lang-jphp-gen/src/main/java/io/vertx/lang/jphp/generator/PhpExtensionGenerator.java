@@ -4,8 +4,8 @@ package io.vertx.lang.jphp.generator;
 import io.vertx.codegen.Case;
 import io.vertx.codegen.Model;
 import io.vertx.codegen.ModuleInfo;
+import io.vertx.codegen.writer.CodeWriter;
 
-import java.io.PrintWriter;
 import java.util.*;
 
 public class PhpExtensionGenerator extends PhpGenerator<Model> {
@@ -35,58 +35,40 @@ public class PhpExtensionGenerator extends PhpGenerator<Model> {
     }
 
     @Override
-    protected void render(Model model, int index, int size, Map<String, Object> session, PrintWriter writer) {
+    protected void render(Model model, int index, int size, Map<String, Object> session, CodeWriter writer) {
         ModuleInfo module = model.getModule();
-//        importClassSet.add(module.translateQualifiedName(model.getFqn(), "jphp"));
         registerClassSet.add(module.translateQualifiedName(model.getFqn(), "jphp"));
         if (index == size - 1) {
-            String packageName = module.translatePackageName(id);
             writer.println("package io.vertx.lang.jphp;");
             writer.println();
 
             for (String importClass : importClassSet) {
-                writer.print("import ");
-                writer.print(importClass);
-                writer.println(";");
+                writer.format("import %s;", importClass).println();
             }
             writer.println();
 
             writer.println("public class VertxExtension extends Extension {");
 
             writer.println();
+            writer.indent();
 
-            writer.println("  @Override");
-            writer.println("  public Status getStatus() {");
-            writer.println("    return Status.BETA;");
-            writer.println("  }");
+            writer.println("@Override");
+            writer.println("public Status getStatus() {");
+            writer.indent().println("return Status.BETA;");
+            writer.unindent().println("}");
             writer.println();
 
-            writer.println("  @Override");
-            writer.println("  public void onRegister(CompileScope scope) {");
+            writer.println("@Override");
+            writer.println("public void onRegister(CompileScope scope) {");
 
+            writer.indent();
             for (String registerClass : registerClassSet) {
-                writer.print("    registerClass(scope, ");
-                writer.print(registerClass);
-                writer.println(".class);");
+                writer.format("registerClass(scope, %s.class);", registerClass).println();
             }
 
-            writer.println("  }");
-            writer.println("}");
+            writer.unindent().println("}");
+            writer.unindent().println("}");
 
         }
-    }
-
-    static String fcq(Model model) {
-        ModuleInfo module = model.getModule();
-        String className = simpleName(module);
-        return module.translatePackageName(id) + "." + className;
-    }
-
-    private static String simpleName(ModuleInfo model) {
-        String name = model.getName();
-        if ("vertx".equals(name)) {
-            name = "VertxCore";
-        }
-        return Case.KEBAB.to(Case.CAMEL, name) + "Extension";
     }
 }
