@@ -51,7 +51,7 @@ public interface TypeConverter<T> {
             } else if (value instanceof FalseMemory) {
                 return false;
             } else if (value instanceof ReferenceMemory) {
-                return convParam(env, value);
+                return convParam(env, ((ReferenceMemory) value).getValue());
             } else if (value instanceof ObjectMemory && ((ObjectMemory) value).value instanceof StdClass) {
                 String str = JsonFunctions.json_encode(value);
                 return str.charAt(0) == '{' ? new JsonObject(str) : new JsonArray(str);
