@@ -3,17 +3,17 @@
 //require_once 'testImport.php';
 
 $httpServerOptions = array(
-    "port"  =>  8998,
-    "host"  =>  "localhost",
+  "port" => 8998,
+  "host" => "localhost",
 );
 $a = [
-    "port"  =>  8998,
-    "host"  =>  "localhost",
+  "port" => 8998,
+  "host" => "localhost",
 ];
 
 $httpServer = $vertx->createHttpServer($a);
 $httpServer->requestHandler(function ($res) {
-    $res->response()->end("Hello from Vert.x!");
+  $res->response()->end("Hello from Vert.x!");
 });
 $httpServer->listen();
 

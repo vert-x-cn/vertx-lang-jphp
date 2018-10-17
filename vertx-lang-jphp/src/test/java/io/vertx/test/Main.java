@@ -15,25 +15,25 @@ import javax.script.ScriptEngineManager;
 import java.lang.reflect.Field;
 
 public class Main {
-    public static void main(String[] args) throws Throwable {
-        System.setProperty("vertx.logger-delegate-factory-class-name", JULLogDelegateFactory.class.getName());
-        InternalLoggerFactory.setDefaultFactory(JdkLoggerFactory.INSTANCE);
-        ClasspathFileResolver.init();
-        ScriptEngineManager sm = new ScriptEngineManager();
-        ScriptEngine engine = sm.getEngineByName("php");
-        Field f = engine.getClass().getDeclaredField("environment");
-        f.setAccessible(true);
-        Environment e = (Environment) f.get(engine);
-        System.out.println(e);
-        ScriptEngineFactory factory = engine.getFactory();
-        engine.eval("<?php require 'index.php';test();");
-        FunctionEntity m = e.fetchFunction("test");
-        System.out.println("=================");
-        System.out.println(m);
-        System.out.println("=================");
+  public static void main(String[] args) throws Throwable {
+    System.setProperty("vertx.logger-delegate-factory-class-name", JULLogDelegateFactory.class.getName());
+    InternalLoggerFactory.setDefaultFactory(JdkLoggerFactory.INSTANCE);
+    ClasspathFileResolver.init();
+    ScriptEngineManager sm = new ScriptEngineManager();
+    ScriptEngine engine = sm.getEngineByName("php");
+    Field f = engine.getClass().getDeclaredField("environment");
+    f.setAccessible(true);
+    Environment e = (Environment) f.get(engine);
+    System.out.println(e);
+    ScriptEngineFactory factory = engine.getFactory();
+    engine.eval("<?php require 'index.php';test();");
+    FunctionEntity m = e.fetchFunction("test");
+    System.out.println("=================");
+    System.out.println(m);
+    System.out.println("=================");
 //        m.invoke(e, null, null);
 
-        ScriptEngine newEngine = new JPHPScriptEngine();
-        newEngine.eval("<?php require 'index2.php';test2();");
-    }
+    ScriptEngine newEngine = new JPHPScriptEngine();
+    newEngine.eval("<?php require 'index2.php';test2();");
+  }
 }

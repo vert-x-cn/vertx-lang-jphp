@@ -7,11 +7,13 @@ $httpServer = $vertx->createHttpServer();
 $router = Router::router($vertx);
 $router->route("/*")->handler(LoggerHandler::create());
 
-class A {
-    public function test($routerContext){
-        $routerContext->response()->end("Hello Vertx Php!");
-        echo "\n-----------test\n";
-    }
+class A
+{
+  public function test($routerContext)
+  {
+    $routerContext->response()->end("Hello Vertx Php!");
+    echo "\n-----------test\n";
+  }
 }
 
 $a = new A();

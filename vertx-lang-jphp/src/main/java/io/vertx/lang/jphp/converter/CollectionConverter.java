@@ -12,21 +12,21 @@ import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 public class CollectionConverter<C extends Collection<T>, T> extends ContainerConverter<C, T> {
-    private Supplier<C> supplier;
-    private Collector<T, ?, C> collector;
+  private Supplier<C> supplier;
+  private Collector<T, ?, C> collector;
 
-    public CollectionConverter(boolean map, Supplier<C> supplier, TypeConverter<T> valueConverter, Collector<T, ?, C> collector) {
-        super(map, valueConverter);
-        this.collector = collector;
-    }
+  public CollectionConverter(boolean map, Supplier<C> supplier, TypeConverter<T> valueConverter, Collector<T, ?, C> collector) {
+    super(map, valueConverter);
+    this.collector = collector;
+  }
 
-    @Override
-    public C convParamNotNull(Environment env, Memory value) {
-        return value.toValue(ArrayMemory.class).stream().map(ReferenceMemory::getValue).map(e -> valueConverter.convParam(env, e)).collect(collector);
-    }
+  @Override
+  public C convParamNotNull(Environment env, Memory value) {
+    return value.toValue(ArrayMemory.class).stream().map(ReferenceMemory::getValue).map(e -> valueConverter.convParam(env, e)).collect(collector);
+  }
 
-    @Override
-    public Memory convReturnNotNull(Environment env, C value) {
-        return null;
-    }
+  @Override
+  public Memory convReturnNotNull(Environment env, C value) {
+    return null;
+  }
 }

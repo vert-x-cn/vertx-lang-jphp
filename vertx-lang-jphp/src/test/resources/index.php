@@ -33,22 +33,24 @@
 
 
 use io\vertx\php\core\Future;
+
 $future = Future::future();
-$future->setHandler(function($res){
-    var_dump($res);
+$future->setHandler(function ($res) {
+  var_dump($res);
 });
 $future->complete("result");
 
-$future2 = Future::future(function($f) {
-    $h = $f->completer();
-    var_dump($h);
-    $h("result2", null);
+$future2 = Future::future(function ($f) {
+  $h = $f->completer();
+  var_dump($h);
+  $h("result2", null);
 });
-$future2->setHandler(function($res){
-    var_dump($res);
+$future2->setHandler(function ($res) {
+  var_dump($res);
 });
 
 
-function test(){
-    echo "test----\n";
+function test()
+{
+  echo "test----\n";
 }

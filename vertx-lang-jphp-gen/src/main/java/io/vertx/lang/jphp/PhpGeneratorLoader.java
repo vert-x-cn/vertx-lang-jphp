@@ -8,15 +8,15 @@ import javax.annotation.processing.ProcessingEnvironment;
 import java.util.stream.Stream;
 
 public class PhpGeneratorLoader implements GeneratorLoader {
-    @Override
-    public Stream<Generator<?>> loadGenerators(ProcessingEnvironment processingEnv) {
-        return Stream.of(
+  @Override
+  public Stream<Generator<?>> loadGenerators(ProcessingEnvironment processingEnv) {
+    return Stream.of(
 //                new PhpClassGenerator(),
 //                new PhpClassWrapperGenerator(),
-                new PhpDataObjectGenerator(),
-                new PhpDataObjectWrapperGenerator(),
-                new PhpExtensionGenerator()
-        );
+      new PhpDataObjectGenerator(),
+      new PhpDataObjectWrapperGenerator(),
+      new PhpExtensionGenerator()
+    );
 //        return Stream.empty();
-    }
+  }
 }

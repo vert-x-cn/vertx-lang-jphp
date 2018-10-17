@@ -6,14 +6,14 @@ import php.runtime.Memory;
 import php.runtime.env.Environment;
 
 public interface Handler<E> extends io.vertx.core.Handler<E>, IMemory {
-    TypeConverter<E> get__handlerConverter__();
+  TypeConverter<E> get__handlerConverter__();
 
-    Environment get__env__();
+  Environment get__env__();
 
-    default void handle(E event) {
-        Environment env = get__env__();
-        handle(env, get__handlerConverter__().convReturn(env, event));
-    }
+  default void handle(E event) {
+    Environment env = get__env__();
+    handle(env, get__handlerConverter__().convReturn(env, event));
+  }
 
-    void handle(Environment env, Memory value);
+  void handle(Environment env, Memory value);
 }

@@ -15,24 +15,24 @@ import php.runtime.env.Environment;
 @Name("AsyncHandler")
 @Namespace("io\\vertx\\php\\core")
 public class AsyncHandler<T> extends BaseWrapper<io.vertx.core.Handler<io.vertx.core.AsyncResult<T>>> implements Variable1Wrapper<io.vertx.core.Handler<io.vertx.core.AsyncResult<T>>, T> {
-    private TypeConverter<T> converter;
+  private TypeConverter<T> converter;
 
-    public AsyncHandler(Environment __env__, Handler<io.vertx.core.AsyncResult<T>> __wrappedObject, TypeConverter<T> converter) {
-        super(__env__, __wrappedObject);
-        this.converter = converter;
-    }
+  public AsyncHandler(Environment __env__, Handler<io.vertx.core.AsyncResult<T>> __wrappedObject, TypeConverter<T> converter) {
+    super(__env__, __wrappedObject);
+    this.converter = converter;
+  }
 
-    @Override
-    public TypeConverter<T> getTypeConverter1() {
-        return converter;
-    }
+  @Override
+  public TypeConverter<T> getTypeConverter1() {
+    return converter;
+  }
 
-    @Signature
-    public void handle(Environment __ENV__, Memory result, Memory cause) {
-        if (Utils.isNotNull(result) && converter.accept(__ENV__, result)) {
-            getWrappedObject().handle(Future.succeededFuture(converter.convParam(__ENV__, result)));
-        } else if (Utils.isNotNull(result) && Utils.isThrowable(__ENV__, cause)) {
-            getWrappedObject().handle(Future.failedFuture(Utils.convParamThrowable(__ENV__, cause)));
-        }
+  @Signature
+  public void handle(Environment __ENV__, Memory result, Memory cause) {
+    if (Utils.isNotNull(result) && converter.accept(__ENV__, result)) {
+      getWrappedObject().handle(Future.succeededFuture(converter.convParam(__ENV__, result)));
+    } else if (Utils.isNotNull(result) && Utils.isThrowable(__ENV__, cause)) {
+      getWrappedObject().handle(Future.failedFuture(Utils.convParamThrowable(__ENV__, cause)));
     }
+  }
 }

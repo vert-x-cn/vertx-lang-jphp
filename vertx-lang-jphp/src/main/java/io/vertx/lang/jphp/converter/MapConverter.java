@@ -10,21 +10,21 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class MapConverter<E> extends ContainerConverter<Map<String, E>, E> {
-    public MapConverter(TypeConverter<E> valueConverter) {
-        super(true, valueConverter);
-    }
+  public MapConverter(TypeConverter<E> valueConverter) {
+    super(true, valueConverter);
+  }
 
-    @Override
-    public Map<String, E> convParamNotNull(Environment env, Memory value) {
-        return value.toValue(ArrayMemory.class).stream().map(ReferenceMemory::getValue).map(m -> m.toValue(ArrayMapEntryMemory.class)).collect(Collectors.toMap(e -> e.getKey().toString(), e -> valueConverter.convParam(env, e.getValue())));
-    }
+  @Override
+  public Map<String, E> convParamNotNull(Environment env, Memory value) {
+    return value.toValue(ArrayMemory.class).stream().map(ReferenceMemory::getValue).map(m -> m.toValue(ArrayMapEntryMemory.class)).collect(Collectors.toMap(e -> e.getKey().toString(), e -> valueConverter.convParam(env, e.getValue())));
+  }
 
-    @Override
-    public Memory convReturnNotNull(Environment env, Map<String, E> value) {
-        ArrayMemory array = new ArrayMemory();
-        value.forEach((key, v) -> {
-            array.put(key, valueConverter.convReturn(env, v));
-        });
-        return array;
-    }
+  @Override
+  public Memory convReturnNotNull(Environment env, Map<String, E> value) {
+    ArrayMemory array = new ArrayMemory();
+    value.forEach((key, v) -> {
+      array.put(key, valueConverter.convReturn(env, v));
+    });
+    return array;
+  }
 }

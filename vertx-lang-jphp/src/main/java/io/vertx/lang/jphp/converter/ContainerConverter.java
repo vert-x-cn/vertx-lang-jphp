@@ -14,48 +14,48 @@ import java.util.stream.Collectors;
 
 
 public abstract class ContainerConverter<T, E> implements TypeConverter<T> {
-    private boolean map;
-    protected TypeConverter<E> valueConverter;
+  private boolean map;
+  protected TypeConverter<E> valueConverter;
 
-    public ContainerConverter(boolean map, TypeConverter<E> valueConverter) {
-        this.map = map;
-        this.valueConverter = valueConverter;
+  public ContainerConverter(boolean map, TypeConverter<E> valueConverter) {
+    this.map = map;
+    this.valueConverter = valueConverter;
+  }
+
+  @Override
+  public boolean accept(Environment env, Memory value) {
+    if (!(value instanceof ArrayMemory)) {
+      return false;
     }
-
-    @Override
-    public boolean accept(Environment env, Memory value) {
-        if (!(value instanceof ArrayMemory)) {
-            return false;
+    ArrayMemory array = (ArrayMemory) value;
+    for (ReferenceMemory referenceMemory : array) {
+      Memory entry = referenceMemory.getValue();
+      if (map && !(entry instanceof ArrayMapEntryMemory)) {
+        return false;
+      }
+      if (map) {
+        ArrayMapEntryMemory v = (ArrayMapEntryMemory) entry;
+        if (!(v.getKey() instanceof String)) {
+          return false;
         }
-        ArrayMemory array = (ArrayMemory) value;
-        for (ReferenceMemory referenceMemory : array) {
-            Memory entry = referenceMemory.getValue();
-            if (map && !(entry instanceof ArrayMapEntryMemory)) {
-                return false;
-            }
-            if (map) {
-                ArrayMapEntryMemory v = (ArrayMapEntryMemory) entry;
-                if (!(v.getKey() instanceof String)) {
-                    return false;
-                }
-                entry = v.getValue();
-            }
-            if (!valueConverter.accept(env, entry)) {
-                return false;
-            }
-        }
-        return true;
+        entry = v.getValue();
+      }
+      if (!valueConverter.accept(env, entry)) {
+        return false;
+      }
     }
+    return true;
+  }
 
-    public static <E> CollectionConverter<List<E>, E> createListConverter(TypeConverter<E> converter) {
-        return new CollectionConverter<>(false, ArrayList::new, converter, Collectors.toList());
-    }
+  public static <E> CollectionConverter<List<E>, E> createListConverter(TypeConverter<E> converter) {
+    return new CollectionConverter<>(false, ArrayList::new, converter, Collectors.toList());
+  }
 
-    public static <E> CollectionConverter<Set<E>, E> createSetConverter(TypeConverter<E> converter) {
-        return new CollectionConverter<>(false, HashSet::new, converter, Collectors.toSet());
-    }
+  public static <E> CollectionConverter<Set<E>, E> createSetConverter(TypeConverter<E> converter) {
+    return new CollectionConverter<>(false, HashSet::new, converter, Collectors.toSet());
+  }
 
-    public static <E> MapConverter<E> createMapConverter(TypeConverter<E> converter) {
-        return new MapConverter<>(converter);
-    }
+  public static <E> MapConverter<E> createMapConverter(TypeConverter<E> converter) {
+    return new MapConverter<>(converter);
+  }
 }
