@@ -9,11 +9,6 @@
     "fileName": "module.translateQualifiedName(fqn, 'jphp').replace('.', '/') + '.java'",
     "templateFileName": "vertx-php/template/dataobject.wrap.templ"
   },{
-    "kind": ["//class","//dataObject"],
-    "incremental" : true,
-    "fileName": "'../jphp/jphp-vertx-extension.properties'",
-    "templateFileName": "vertx-php/template/extension.templ"
-  },{
     "kind": "class",
     "fileName": "'../jphp/' + module.translateQualifiedName(fqn, 'jphp').replace('.', '/') + '.php'",
     "templateFileName": "vertx-php/template/class.templ"
