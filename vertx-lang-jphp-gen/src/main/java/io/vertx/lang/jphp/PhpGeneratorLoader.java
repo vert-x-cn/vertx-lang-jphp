@@ -2,6 +2,7 @@ package io.vertx.lang.jphp;
 
 import io.vertx.codegen.Generator;
 import io.vertx.codegen.GeneratorLoader;
+import io.vertx.lang.jphp.generator.PhpExtensionGenerator;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import java.util.stream.Stream;

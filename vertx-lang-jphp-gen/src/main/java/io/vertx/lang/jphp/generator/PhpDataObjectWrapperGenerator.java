@@ -1,4 +1,4 @@
-package io.vertx.lang.jphp;
+package io.vertx.lang.jphp.generator;
 
 import io.vertx.codegen.DataObjectModel;
 
