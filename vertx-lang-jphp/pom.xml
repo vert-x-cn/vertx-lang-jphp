@@ -697,6 +697,23 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>1.4.0</version>
+        <executions>
+          <execution>
+            <id>phpdoc</id>
+            <phase>compile</phase>
+            <goals>
+              <goal>exec</goal>
+            </goals>
+            <configuration>
+              <executable>${project.basedir}/phpdoc.bat</executable>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
 
@@ -723,7 +740,7 @@
             <executions>
               <execution>
                 <configuration>
-                  <sourcepath>${project.build.directory}/sources/vertx/</sourcepath>
+                  <sourcepath>${project.build.directory}/sources/asciidoc/</sourcepath>
                   <reportOutputDirectory>${project.build.directory}/docs</reportOutputDirectory>
                 </configuration>
                 <phase>package</phase>

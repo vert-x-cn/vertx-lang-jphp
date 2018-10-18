@@ -135,3 +135,13 @@ $httpServer->listen();
 - [x] VertxExtension 读取jphp-vertx-extension.properties文件并注册wrapper类
 - [ ] 使用vertx-docgen自动生成对应的asciidoc文档
 - [ ] 测试
+
+
+#phpdoc
+
+vertx-lang-jphp
+
+- 1、java环境，maven环境，php环境。
+- 2、下载[phpdoc](http://www.phpdoc.org/)改名为phpdoc放到vertx-lang-jphp目录下
+- 3、下载[graphviz](http://www.graphviz.org/download/) 并配置环境变量
+

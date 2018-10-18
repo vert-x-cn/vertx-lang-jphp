@@ -2,8 +2,5 @@
 *.iml
 target
 generated
-vertx-*-jphp
-jphp-vertx-extension.properties
-changeGitInfo.sh
 TestUnit.java
 FirstUnitTest.php
