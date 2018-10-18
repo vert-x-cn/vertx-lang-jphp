@@ -8,7 +8,11 @@
     <includeBaseDirectory>false</includeBaseDirectory>
     <fileSets>
         <fileSet>
-            <directory>${asciidoc.dir}</directory>
+            <directory>${project.build.directory}/phpdoc</directory>
+            <outputDirectory>/phpdoc</outputDirectory>
+        </fileSet>
+        <fileSet>
+            <directory>${project.build.directory}/asciidoc</directory>
             <outputDirectory>/</outputDirectory>
         </fileSet>
     </fileSets>

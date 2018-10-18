@@ -1,8 +1,17 @@
 language: java
+php:
+  - nightly
+
 branches:
   only:
   - master
   - /^\d+\.\d+$/
+
+install:
+  - composer require "phpdocumentor/phpdocumentor:2.8.5"
+  - sudo apt-get install graphviz
+  - sudo chmod 755 ./vertx-lang-jphp/.travis.phpdoc.sh
+
 jobs:
   include:
   - stage: test
