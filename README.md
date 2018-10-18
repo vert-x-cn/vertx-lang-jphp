@@ -139,9 +139,9 @@ $httpServer->listen();
 
 #phpdoc
 
-vertx-lang-jphp
+生成phpdoc需要phpDocumentor2，使用的皮肤需要开启xsl功能并下载graphviz
 
-- 1、java环境，maven环境，php环境。
-- 2、下载[phpdoc](http://www.phpdoc.org/)改名为phpdoc放到vertx-lang-jphp目录下
-- 3、下载[graphviz](http://www.graphviz.org/download/) 并配置环境变量
+- 下载[phpDocumentor2](http://www.phpdoc.org/)改名为phpdoc放到vertx-lang-jphp目录下
+- 下载[graphviz](http://www.graphviz.org/download/) 并配置环境变量
+- 修改php.ini，开启xsl扩展(如果未开启)
 
