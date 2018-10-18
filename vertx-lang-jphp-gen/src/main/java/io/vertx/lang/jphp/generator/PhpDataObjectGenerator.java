@@ -74,6 +74,10 @@ public class PhpDataObjectGenerator extends AbstractPhpDataObjectGenerator {
 
   @Override
   void genConstructor(DataObjectModel model, CodeWriter writer) {
+    writer.println("/**");
+    writer.format(" * %s constructor", model.getType().getSimpleName()).println();
+    writer.format(" * @param $%s mixed | null", model.getType().getSimpleName(Case.LOWER_CAMEL)).println();
+    writer.println(" */");
     writer.format("public function __construct($%s%s)", model.getType().getSimpleName(Case.LOWER_CAMEL), model.hasEmptyConstructor() ? " = null" : "").println();
     writer.println("{");
     writer.indent().println();
