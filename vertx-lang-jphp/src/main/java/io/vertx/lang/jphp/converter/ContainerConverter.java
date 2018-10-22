@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 
 public abstract class ContainerConverter<T, E> implements TypeConverter<T> {
   private boolean map;
-  protected TypeConverter<E> valueConverter;
+  TypeConverter<E> valueConverter;
 
   public ContainerConverter(boolean map, TypeConverter<E> valueConverter) {
     this.map = map;
@@ -48,11 +48,11 @@ public abstract class ContainerConverter<T, E> implements TypeConverter<T> {
   }
 
   public static <E> CollectionConverter<List<E>, E> createListConverter(TypeConverter<E> converter) {
-    return new CollectionConverter<>(false, ArrayList::new, converter, Collectors.toList());
+    return new CollectionConverter<>(false, converter, Collectors.toList());
   }
 
   public static <E> CollectionConverter<Set<E>, E> createSetConverter(TypeConverter<E> converter) {
-    return new CollectionConverter<>(false, HashSet::new, converter, Collectors.toSet());
+    return new CollectionConverter<>(false, converter, Collectors.toSet());
   }
 
   public static <E> MapConverter<E> createMapConverter(TypeConverter<E> converter) {

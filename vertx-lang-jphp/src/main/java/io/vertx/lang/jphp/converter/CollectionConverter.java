@@ -12,10 +12,9 @@ import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 public class CollectionConverter<C extends Collection<T>, T> extends ContainerConverter<C, T> {
-  private Supplier<C> supplier;
   private Collector<T, ?, C> collector;
 
-  public CollectionConverter(boolean map, Supplier<C> supplier, TypeConverter<T> valueConverter, Collector<T, ?, C> collector) {
+  CollectionConverter(boolean map, TypeConverter<T> valueConverter, Collector<T, ?, C> collector) {
     super(map, valueConverter);
     this.collector = collector;
   }
