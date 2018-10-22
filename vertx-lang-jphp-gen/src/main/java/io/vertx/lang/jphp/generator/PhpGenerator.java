@@ -284,7 +284,7 @@ abstract class PhpGenerator<M extends Model> extends Generator<M> {
   }
 
   String phpFileName(M model) {
-    return model.getModule().translateQualifiedName(model.getFqn(), "jphp").replace(".", "/") + ".php";
+    return "resources/" + model.getModule().translateQualifiedName(model.getFqn(), "jphp").replace(".", "/") + ".php";
   }
 
   String getReturnInfo(TypeInfo propertyType) {

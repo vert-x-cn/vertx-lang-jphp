@@ -612,7 +612,7 @@
                 <processor>io.vertx.codegen.CodeGenProcessor</processor>
               </processors>
               <optionMap>
-                <codegen.output>${project.basedir}/src/main/generated</codegen.output>
+                <codegen.output>${project.basedir}/src/main/</codegen.output>
               </optionMap>
               <excludes>
                 <exclude>examples/**/*.java</exclude>
@@ -775,7 +775,7 @@
             <executions>
               <execution>
                 <configuration>
-                  <sourcepath>${project.build.directory}/sources/asciidoc/</sourcepath>
+                  <sourcepath>${project.basedir}/src/main/java</sourcepath>
                   <reportOutputDirectory>${project.build.directory}/docs</reportOutputDirectory>
                 </configuration>
                 <phase>package</phase>
