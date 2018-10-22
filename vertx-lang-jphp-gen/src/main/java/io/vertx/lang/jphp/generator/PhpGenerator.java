@@ -144,8 +144,8 @@ abstract class PhpGenerator<M extends Model> extends Generator<M> {
     } else if (kind == ENUM) {
       return Collections.singletonList("string");
     } else if (kind == API) {
-      ApiTypeInfo typeInfo = (ApiTypeInfo) type;
-      return typeInfo.isHandler() ? Arrays.asList(type.getRaw().getSimpleName(), "callable") : Collections.singletonList(type.getRaw().getSimpleName());
+      ApiTypeInfo typeInfo = (ApiTypeInfo) type.getRaw();
+      return typeInfo.isHandler() ? Arrays.asList(type.getSimpleName(), "callable") : Collections.singletonList(type.getSimpleName());
     } else if (kind.collection) {
       return Collections.singletonList("array");
     } else if (kind == MAP) {
@@ -193,25 +193,29 @@ abstract class PhpGenerator<M extends Model> extends Generator<M> {
 
   final String getTypeConverter(M model, TypeInfo typeInfo) {
     ClassKind typeKind = typeInfo.getKind();
-    String simpleName = typeInfo.getRaw().getSimpleName();
-    String fqn = typeInfo.getRaw().getName();
+//    String simpleName = typeInfo.getRaw().getSimpleName();
+//    String fqn = typeInfo.getRaw().getName();
     if (typeKind.basic || typeKind.json || typeKind == THROWABLE || typeKind == VOID) {
-      return "TypeConverter." + typeConverterMap.get(typeKind == PRIMITIVE ? typeInfo.getName() : simpleName);
+      return "TypeConverter." + typeConverterMap.get(typeKind == PRIMITIVE ? typeInfo.getName() : typeInfo.getRaw().getSimpleName());
     } else if (typeKind == ENUM) {
       return "EnumConverter.create(" + typeInfo.getSimpleName() + ".class)";
     } else if (typeKind == DATA_OBJECT) {
       DataObjectTypeInfo type = (DataObjectTypeInfo) typeInfo;
       String creator = type.isAbstract() ? "null" : typeInfo.getRaw().getName() + "::new";
-      return "DataObjectConverter.create(" + typeInfo.getRaw().getName() + ".class, " + creator + ", " + simpleName + "::new)";
+      return "DataObjectConverter.create(" + typeInfo.getRaw().getName() + ".class, " + creator + ", " + typeInfo.getRaw().getSimpleName() + "::new)";
     } else if (typeKind == LIST || typeKind == SET || typeKind == MAP) {
       ParameterizedTypeInfo type = (ParameterizedTypeInfo) typeInfo;
       TypeInfo containerType = null;
+      String caseStartInfo = "";
+      String caseEndInfo = "";
       if (typeKind != MAP) {
         containerType = type.getArg(0);
+        caseStartInfo = "((TypeConverter<" + typeInfo.getRaw().getSimpleName() + "<" + containerType.getRaw().getName() + ">>)";
+        caseEndInfo = ")";
       } else {
         containerType = type.getArg(1);
       }
-      return "ContainerConverter.create" + simpleName + "Converter(" + getTypeConverter(model, containerType) + ")";
+      return caseStartInfo + "ContainerConverter.<" + containerType.getRaw().getName() + ">create" + typeInfo.getRaw().getSimpleName() + "Converter(" + getTypeConverter(model, containerType) + ")" + caseEndInfo;
     } else if (typeKind == API) {
       List<TypeInfo> args = typeInfo.isParameterized() ? ((ParameterizedTypeInfo) typeInfo).getArgs() : Collections.emptyList();
       StringBuilder returnInfo = new StringBuilder("VertxGenVariable0Converter.<");
@@ -240,16 +244,32 @@ abstract class PhpGenerator<M extends Model> extends Generator<M> {
         }
       }
       String typeParamInfo2 = (typeParamInfo.toString().equals("")) ? "" : ("<" + typeParamInfo + ">");
-      returnInfo.append(fqn).append(typeParamInfo2).append(", ").append(simpleName).append(typeParamInfo2);
+      returnInfo.append(typeInfo.getRaw().getName()).append(typeParamInfo2).append(", ").append(typeInfo.getRaw().getSimpleName()).append(typeParamInfo2);
       returnInfo.append(typeParamInfo.toString().equals("") ? "" : ", ");
       returnInfo.append(typeParamInfo);
-      returnInfo.append(">create").append(args.size()).append("(").append(simpleName).append(".class, ").append(simpleName).append("::__create");
+      returnInfo.append(">create").append(args.size()).append("(").append(typeInfo.getRaw().getSimpleName()).append(".class, ").append(typeInfo.getRaw().getSimpleName()).append("::__create");
       for (TypeInfo arg : args) {
         returnInfo.append(", ").append(getTypeConverter(model, arg));
       }
       return returnInfo + ")";
     } else if (typeInfo.isVariable() && ((TypeVariableInfo) typeInfo).getParam().isClass()) {
       return getConverterMethodName(model, "get", typeInfo.getName()) + "()";
+    } else if (typeKind == HANDLER){
+      ParameterizedTypeInfo type = (ParameterizedTypeInfo) typeInfo;
+      TypeInfo arg = type.getArg(0);
+      if (arg.getKind() == ASYNC_RESULT) {
+        ParameterizedTypeInfo result = (ParameterizedTypeInfo) arg;
+        return "HandlerConverter.createResult(" + getTypeConverter(model, result.getArg(0)) + ")";
+      } else {
+        return "HandlerConverter.create(" + getTypeConverter(model, arg) + ")";
+      }
+    } else if (typeKind == FUNCTION){
+      ParameterizedTypeInfo type = (ParameterizedTypeInfo) typeInfo;
+      TypeInfo typeT = type.getArg(0);
+      TypeInfo typeR = type.getArg(1);
+      return "FunctionConverter.create(" + getTypeConverter(model, typeT) + ", "  + getTypeConverter(model, typeR) + ")";
+    } else if (typeKind == CLASS_TYPE){
+      return "TypeConverter.CLASS";
     } else {
       return "TypeConverter.UNKNOWN_TYPE";
     }
@@ -282,5 +302,13 @@ abstract class PhpGenerator<M extends Model> extends Generator<M> {
     } else {
       return null;
     }
+  }
+
+  final void genJavaPackage(CodeWriter writer, String packageOrNamespace){
+    writer.format("package %s;", packageOrNamespace).println();
+  }
+  final void genPhpNamespace(CodeWriter writer, String packageOrNamespace){
+    writer.println("<?php /** @noinspection ALL */");
+    writer.format("namespace %s;", packageOrNamespace.replace(".", "\\")).println();
   }
 }

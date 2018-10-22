@@ -20,7 +20,7 @@ public class PhpDataObjectWrapperGenerator extends AbstractPhpDataObjectGenerato
 
   @Override
   void genPackageOrNamespace(CodeWriter writer, String packageOrNamespace) {
-    writer.format("package %s;", packageOrNamespace).println();
+    genJavaPackage(writer, packageOrNamespace);
   }
 
   @Override
@@ -28,16 +28,16 @@ public class PhpDataObjectWrapperGenerator extends AbstractPhpDataObjectGenerato
     writer.println("@SuppressWarnings(\"ALL\")");
     ClassTypeInfo type = model.getType();
     String simpleName = type.getSimpleName();
-    String fcn = type.getName();
-    writer.format("public class %s extends DataObjectWrapper<%s> {", simpleName, fcn).println();
+    String fqn = type.getName();
+    writer.format("public class %s extends DataObjectWrapper<%s> {", simpleName, fqn).println();
   }
 
   @Override
   void genConstructor(DataObjectModel model, CodeWriter writer) {
     ClassTypeInfo type = model.getType();
     String simpleName = type.getSimpleName();
-    String fcn = type.getName();
-    writer.format("public %s(Environment env, %s wrappedObject) {", simpleName, fcn).println();
+    String fqn = type.getName();
+    writer.format("public %s(Environment env, %s wrappedObject) {", simpleName, fqn).println();
     writer.indent();
     writer.println("super(env, wrappedObject);");
     writer.unindent().println("}");
@@ -47,14 +47,14 @@ public class PhpDataObjectWrapperGenerator extends AbstractPhpDataObjectGenerato
         writer.println("@Signature");
         writer.println("public Memory __construct() {");
         writer.indent();
-        writer.format("this.__wrappedObject = new %s();", fcn).println();
+        writer.format("this.__wrappedObject = new %s();", fqn).println();
         writer.println("return Memory.NULL;");
         writer.unindent().println("}");
       }
       writer.println("@Signature");
       writer.println("public Memory __construct(Memory memory) {");
       writer.indent();
-      writer.format("this.__wrappedObject = new %s(new JsonObject(JsonFunctions.json_encode(memory)));", fcn).println();
+      writer.format("this.__wrappedObject = new %s(new JsonObject(JsonFunctions.json_encode(memory)));", fqn).println();
       writer.println("return Memory.NULL;");
       writer.unindent().println("}");
     }

@@ -21,8 +21,7 @@ public class PhpDataObjectGenerator extends AbstractPhpDataObjectGenerator {
 
   @Override
   void genPackageOrNamespace(CodeWriter writer, String packageOrNamespace) {
-    writer.println("<?php /** @noinspection ALL */");
-    writer.format("namespace %s;", packageOrNamespace.replace(".", "\\")).println();
+    genPhpNamespace(writer, packageOrNamespace);
   }
 
   @Override
