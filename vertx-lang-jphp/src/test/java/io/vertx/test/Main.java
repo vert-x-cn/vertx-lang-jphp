@@ -26,7 +26,7 @@ public class Main {
     Environment e = (Environment) f.get(engine);
     System.out.println(e);
     ScriptEngineFactory factory = engine.getFactory();
-    engine.eval("<?php require 'index.php';test();");
+    engine.eval("<?php require 'test/index.php';test();");
     FunctionEntity m = e.fetchFunction("test");
     System.out.println("=================");
     System.out.println(m);
@@ -34,6 +34,6 @@ public class Main {
 //        m.invoke(e, null, null);
 
     ScriptEngine newEngine = new JPHPScriptEngine();
-    newEngine.eval("<?php require 'index2.php';test2();");
+    newEngine.eval("<?php require 'test/index2.php';test2();");
   }
 }
