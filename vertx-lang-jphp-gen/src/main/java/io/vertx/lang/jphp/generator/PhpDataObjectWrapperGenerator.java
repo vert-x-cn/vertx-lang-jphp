@@ -25,10 +25,14 @@ public class PhpDataObjectWrapperGenerator extends AbstractPhpDataObjectGenerato
 
   @Override
   void genClassStartTemplate(DataObjectModel model, CodeWriter writer) {
-    writer.println("@SuppressWarnings(\"ALL\")");
-    ClassTypeInfo type = model.getType();
-    String simpleName = type.getSimpleName();
+    ClassTypeInfo type = model.getType().getRaw();
     String fqn = type.getName();
+    String simpleName = type.getSimpleName();
+    String packageName = type.getPackageName();
+    writer.format("@Name(\"%s\")", simpleName).println();
+    writer.format("@Namespace(\"%s\")", packageName.replace(".", "\\\\")).println();
+    writer.format("@PhpGen(%s.class)", fqn).println();
+    writer.println("@SuppressWarnings(\"ALL\")");
     writer.format("public class %s extends DataObjectWrapper<%s> {", simpleName, fqn).println();
   }
 
@@ -63,10 +67,13 @@ public class PhpDataObjectWrapperGenerator extends AbstractPhpDataObjectGenerato
   @Override
   void genImportsOrUses(DataObjectModel model, CodeWriter writer) {
     Set<String> importClassSet = new TreeSet<>();
+    importClassSet.add("io.vertx.lang.jphp.wrapper.PhpGen");
     importClassSet.add("io.vertx.lang.jphp.wrapper.DataObjectWrapper");
     importClassSet.add("php.runtime.env.Environment");
     importClassSet.add("io.vertx.lang.jphp.Utils");
     importClassSet.add("php.runtime.annotation.Reflection.Signature");
+    importClassSet.add("php.runtime.annotation.Reflection.Name");
+    importClassSet.add("php.runtime.annotation.Reflection.Namespace");
     importClassSet.add("php.runtime.Memory");
     importClassSet.add("io.vertx.core.json.JsonObject");
     importClassSet.add("org.develnext.jphp.zend.ext.json.JsonFunctions");

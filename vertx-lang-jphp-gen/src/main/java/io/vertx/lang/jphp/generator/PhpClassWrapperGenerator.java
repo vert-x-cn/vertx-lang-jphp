@@ -38,6 +38,7 @@ public class PhpClassWrapperGenerator extends AbstractPhpClassGenerator {
     importClassSet.add("php.runtime.annotation.Reflection.Namespace");
     importClassSet.add("php.runtime.annotation.Reflection.Signature");
     importClassSet.add("php.runtime.env.Environment");
+    importClassSet.add("io.vertx.lang.jphp.wrapper.PhpGen");
     importClassSet.add("io.vertx.lang.jphp.converter.*");
 //    importClassSet.add("io.vertx.lang.jphp.converter.TypeConverter");
 //    importClassSet.add("io.vertx.lang.jphp.converter.VertxGenVariable0Converter");
@@ -88,9 +89,11 @@ public class PhpClassWrapperGenerator extends AbstractPhpClassGenerator {
   @Override
   void genClassStartTemplate(ClassModel model, CodeWriter writer) {
     String simpleName = model.getIfaceSimpleName();
+    String fqn = model.getFqn();
     List<? extends TypeParamInfo> typeParams = model.getTypeParams();
     writer.format("@Name(\"%s\")", simpleName).println();
     writer.format("@Namespace(\"%s\")", model.getIfacePackageName().replace(".", "\\\\")).println();
+    writer.format("@PhpGen(%s.class)", fqn).println();
     writer.println("@SuppressWarnings(\"ALL\")");
     if (model.isDeprecated()) {
       writer.println("@Deprecated");

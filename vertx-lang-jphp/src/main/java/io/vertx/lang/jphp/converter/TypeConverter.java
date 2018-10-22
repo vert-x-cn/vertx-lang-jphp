@@ -2,6 +2,7 @@ package io.vertx.lang.jphp.converter;
 
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
+import io.vertx.lang.jphp.wrapper.PhpGen;
 import io.vertx.lang.jphp.wrapper.extension.BaseThrowable;
 import org.develnext.jphp.zend.ext.json.JsonFunctions;
 import php.runtime.Memory;
@@ -345,11 +346,19 @@ public interface TypeConverter<T> {
     @Override
     public Class<Object> convParamNotNull(Environment env, Memory value) {
       String name = value.toString();
+      Class<Object> c;
       try {
-        return (Class<Object>) Class.forName(name);
+        c = (Class<Object>) Class.forName(name);
       } catch (Throwable throwable) {
-        return (Class<Object>) env.fetchClass(name).getNativeClass();
+        c = (Class<Object>) env.fetchClass(name).getNativeClass();
       }
+      if (c != null) {
+        PhpGen gen = c.getAnnotation(PhpGen.class);
+        if (gen != null) {
+          c = gen.value();
+        }
+      }
+      return c;
     }
 
     @Override
