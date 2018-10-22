@@ -11,6 +11,7 @@ install:
   - composer require "phpdocumentor/phpdocumentor:2.8.5"
   - sudo apt-get install graphviz
   - sudo chmod 755 ./vertx-lang-jphp/.travis.phpdoc.sh
+  - export PATH="`pwd`/vendor/bin:$PATH"
 
 jobs:
   include:
