@@ -279,9 +279,6 @@ public class PhpClassWrapperGenerator extends AbstractPhpClassGenerator {
 
 
   private void addImport(ClassModel model, Set<String> importClassSet, TypeInfo typeInfo, boolean isParameterized, boolean isParam) {
-    if (model.getIfaceSimpleName().equals("BodyCodec")) {
-      System.out.println("");
-    }
     if (typeInfo.isVariable() || typeInfo.isVoid()) {
       return;
     }
