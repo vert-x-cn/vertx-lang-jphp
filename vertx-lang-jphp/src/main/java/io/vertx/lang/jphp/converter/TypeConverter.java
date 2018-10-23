@@ -196,7 +196,7 @@ public interface TypeConverter<T> {
   TypeConverter<Character> CHARACTER = new TypeConverter<Character>() {
     @Override
     public boolean accept(Environment env, Memory value) {
-      return LONG.accept(env, value);
+      return STRING.accept(env, value) || LONG.accept(env, value);
     }
 
     @Override
@@ -206,7 +206,7 @@ public interface TypeConverter<T> {
 
     @Override
     public Memory convReturnNotNull(Environment env, Character value) {
-      return LongMemory.valueOf(value);
+      return StringMemory.valueOf(value);
     }
   };
   TypeConverter<Short> SHORT = new LongConverter<>(Long::shortValue);
