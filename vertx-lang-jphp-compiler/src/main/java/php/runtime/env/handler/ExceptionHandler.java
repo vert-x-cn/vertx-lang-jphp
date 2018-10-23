@@ -57,7 +57,8 @@ public class ExceptionHandler {
                         env.echo("  " + el.toString() + "\n");
                 }
             }
-            return false;
+            throw exception;
+//            return false;
         }
     };
 
