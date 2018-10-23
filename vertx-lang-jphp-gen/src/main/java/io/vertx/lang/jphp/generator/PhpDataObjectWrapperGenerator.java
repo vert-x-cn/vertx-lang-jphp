@@ -30,7 +30,8 @@ public class PhpDataObjectWrapperGenerator extends AbstractPhpDataObjectGenerato
     String simpleName = type.getSimpleName();
     String packageName = type.getPackageName();
     writer.format("@Name(\"%s\")", simpleName).println();
-    writer.format("@Namespace(\"%s\")", packageName.replace(".", "\\\\")).println();
+
+    writer.format("@Namespace(\"%s\")", model.getType().translatePackageName(id).replace(".", "\\\\")).println();
     writer.format("@PhpGen(%s.class)", fqn).println();
     writer.println("@SuppressWarnings(\"ALL\")");
     writer.format("public class %s extends DataObjectWrapper<%s> {", simpleName, fqn).println();

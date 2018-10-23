@@ -89,7 +89,7 @@ public class PhpClassWrapperGenerator extends AbstractPhpClassGenerator {
     String fqn = model.getFqn();
     List<? extends TypeParamInfo> typeParams = model.getTypeParams();
     writer.format("@Name(\"%s\")", simpleName).println();
-    writer.format("@Namespace(\"%s\")", model.getIfacePackageName().replace(".", "\\\\")).println();
+    writer.format("@Namespace(\"%s\")", model.getType().translatePackageName(id).replace(".", "\\\\")).println();
     writer.format("@PhpGen(%s.class)", fqn).println();
     writer.println("@SuppressWarnings(\"ALL\")");
     if (model.isDeprecated()) {
