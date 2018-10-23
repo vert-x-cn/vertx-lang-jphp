@@ -1,6 +1,7 @@
 package io.vertx.lang.jphp.generator;
 
 
+import io.vertx.codegen.Case;
 import io.vertx.codegen.Model;
 import io.vertx.codegen.ModuleInfo;
 import io.vertx.codegen.writer.CodeWriter;
@@ -15,7 +16,7 @@ public class PhpExtensionGenerator extends PhpGenerator<Model> {
 
   @Override
   public String filename(Model model) {
-    return "io.vertx.lang.jphp.VertxExtension.java";
+    return fcq(model) + ".java";
   }
 
   private Set<String> importClassSet = new TreeSet<>();
@@ -38,7 +39,7 @@ public class PhpExtensionGenerator extends PhpGenerator<Model> {
     ModuleInfo module = model.getModule();
     registerClassSet.add(module.translateQualifiedName(model.getFqn(), "jphp"));
     if (index == size - 1) {
-      writer.println("package io.vertx.lang.jphp;");
+      writer.format("package %s;", module.translatePackageName(id)).println();
       writer.println();
 
       for (String importClass : importClassSet) {
@@ -46,7 +47,8 @@ public class PhpExtensionGenerator extends PhpGenerator<Model> {
       }
       writer.println();
 
-      writer.println("public class VertxExtension extends Extension {");
+      String simpleName = simpleName(module);
+      writer.format("public class %s extends Extension {", simpleName).println();
 
       writer.println();
       writer.indent();
@@ -70,4 +72,18 @@ public class PhpExtensionGenerator extends PhpGenerator<Model> {
 
     }
   }
+  static String fcq(Model model) {
+    ModuleInfo module = model.getModule();
+    String className = simpleName(module);
+    return module.translatePackageName(id) + "." + className;
+  }
+
+  private static String simpleName(ModuleInfo model) {
+    String name = model.getName();
+    if ("vertx".equals(name)) {
+      name = "VertxCore";
+    }
+    return Case.KEBAB.to(Case.CAMEL, name) + "Extension";
+  }
+
 }

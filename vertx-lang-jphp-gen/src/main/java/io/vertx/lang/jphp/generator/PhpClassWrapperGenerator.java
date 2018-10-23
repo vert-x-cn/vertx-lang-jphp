@@ -30,9 +30,6 @@ public class PhpClassWrapperGenerator extends AbstractPhpClassGenerator {
 
   @Override
   void genImportsOrUses(ClassModel model, CodeWriter writer) {
-    if (model.getIfaceSimpleName().equals("ClusteredSessionStore")) {
-      System.out.println("===");
-    }
     Set<String> importClassSet = new TreeSet<>();
     importClassSet.add("php.runtime.annotation.Reflection.Name");
     importClassSet.add("php.runtime.annotation.Reflection.Namespace");
@@ -295,7 +292,6 @@ public class PhpClassWrapperGenerator extends AbstractPhpClassGenerator {
       if (!typeKind.basic) {
         if (typeInfo.getRaw() == null) {
 //          importClassSet.add(typeInfo.getName());
-          System.err.println("=====" + typeInfo.getName());
           return;
         }
         String fqn = typeInfo.getRaw().getName();

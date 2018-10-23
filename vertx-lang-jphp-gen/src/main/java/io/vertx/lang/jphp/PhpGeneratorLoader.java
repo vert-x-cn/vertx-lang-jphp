@@ -15,7 +15,8 @@ public class PhpGeneratorLoader implements GeneratorLoader {
       new PhpClassWrapperGenerator(),
       new PhpDataObjectGenerator(),
       new PhpDataObjectWrapperGenerator(),
-      new PhpExtensionGenerator()
+      new PhpExtensionGenerator(),
+      new ServiceLoaderGenerator()
     );
   }
 }
