@@ -9,6 +9,7 @@ import io.vertx.codegen.writer.CodeWriter;
 
 import javax.lang.model.element.Element;
 import java.io.StringWriter;
+import java.time.Instant;
 import java.util.*;
 
 import static io.vertx.codegen.type.ClassKind.*;
@@ -247,7 +248,7 @@ abstract class PhpGenerator<M extends Model> extends Generator<M> {
       returnInfo.append(typeInfo.getRaw().getName()).append(typeParamInfo2).append(", ").append(typeInfo.getRaw().getSimpleName()).append(typeParamInfo2);
       returnInfo.append(typeParamInfo.toString().equals("") ? "" : ", ");
       returnInfo.append(typeParamInfo);
-      returnInfo.append(">create").append(args.size()).append("(").append(typeInfo.getRaw().getSimpleName()).append(".class, ").append(typeInfo.getRaw().getSimpleName()).append("::__create");
+      returnInfo.append(">create").append(args.size()).append("(").append(typeInfo.getRaw().getName()).append(".class, ").append(typeInfo.getRaw().getSimpleName()).append("::__create");
       for (TypeInfo arg : args) {
         returnInfo.append(", ").append(getTypeConverter(model, arg));
       }
@@ -271,6 +272,9 @@ abstract class PhpGenerator<M extends Model> extends Generator<M> {
     } else if (typeKind == CLASS_TYPE){
       return "TypeConverter.CLASS";
     } else {
+      if (typeInfo.getName().equals(Instant.class.getName())) {
+        return "TypeConverter.INSTANT";
+      }
       return "TypeConverter.UNKNOWN_TYPE";
     }
   }

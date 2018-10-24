@@ -39,17 +39,17 @@ public abstract class AbstractPhpDataObjectGenerator extends PhpGenerator<DataOb
 
     genConstructor(model, writer);
 
-//    for (PropertyInfo property : model.getPropertyMap().values()) {
-//      if (property.getAdderMethod() != null) {
-//        genAdderMethod(model, property, writer);
-//      }
-//      if (property.getGetterMethod() != null) {
-//        genGetterMethod(model, property, writer);
-//      }
-//      if (property.getSetterMethod() != null) {
-//        genSetterMethod(model, property, writer);
-//      }
-//    }
+    for (PropertyInfo property : model.getPropertyMap().values()) {
+      if (property.getAdderMethod() != null) {
+        genAdderMethod(model, property, writer);
+      }
+      if (property.getGetterMethod() != null) {
+        genGetterMethod(model, property, writer);
+      }
+      if (property.getSetterMethod() != null) {
+        genSetterMethod(model, property, writer);
+      }
+    }
     writer.unindent().print("}");
   }
 

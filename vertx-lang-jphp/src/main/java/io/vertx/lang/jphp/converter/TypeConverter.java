@@ -2,6 +2,7 @@ package io.vertx.lang.jphp.converter;
 
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
+import io.vertx.lang.jphp.wrapper.IWrapper;
 import io.vertx.lang.jphp.wrapper.PhpGen;
 import io.vertx.lang.jphp.wrapper.extension.BaseThrowable;
 import org.develnext.jphp.zend.ext.json.JsonFunctions;
@@ -11,8 +12,7 @@ import php.runtime.lang.StdClass;
 import php.runtime.memory.*;
 import php.runtime.memory.support.ArrayMapEntryMemory;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -55,33 +55,43 @@ public interface TypeConverter<T> {
         return convParam(env, ((ReferenceMemory) value).getValue());
       } else if (value instanceof ObjectMemory && ((ObjectMemory) value).value instanceof StdClass) {
         String str = JsonFunctions.json_encode(value);
-        return str.charAt(0) == '{' ? new JsonObject(str) : new JsonArray(str);
+//        return str.charAt(0) == '{' ? new JsonObject(str) : new JsonArray(str);
+        return new JsonObject(str);
       } else if (value instanceof ArrayMemory) {
         ArrayMemory array = (ArrayMemory) value;
+        String str = JsonFunctions.json_encode(value);
         if (array.isMap()) {
-          Map<Object, Object> map = new HashMap<>();
-          array.forEach(referenceMemory -> {
-            ArrayMapEntryMemory mapEntryMemory = (ArrayMapEntryMemory) referenceMemory;
-            Object k = mapEntryMemory.getKey();
-            Object key;
-            if (k instanceof LongMemory) {
-              key = ((LongMemory) k).toLong();
-            } else {
-              key = k.toString();
-            }
-            map.put(key, convParam(env, mapEntryMemory.getValue()));
-          });
-          return map;
+          return str.charAt(0) == '{' ? new JsonObject(str) : new JsonArray(str);
         } else {
-          List<Object> list = new ArrayList<>();
-          array.forEach(referenceMemory ->
-            list.add(convParam(env, referenceMemory.getValue()))
-          );
-          return list;
+          return new JsonArray(str);
         }
+//        if (array.isMap()) {
+//          Map<Object, Object> map = new HashMap<>();
+//          array.forEach(referenceMemory -> {
+//            ArrayMapEntryMemory mapEntryMemory = (ArrayMapEntryMemory) referenceMemory;
+//            Object k = mapEntryMemory.getKey();
+//            Object key;
+//            if (k instanceof LongMemory) {
+//              key = ((LongMemory) k).toLong();
+//            } else {
+//              key = k.toString();
+//            }
+//            map.put(key, convParam(env, mapEntryMemory.getValue()));
+//          });
+//          return map;
+//        } else {
+//          List<Object> list = new ArrayList<>();
+//          array.forEach(referenceMemory ->
+//            list.add(convParam(env, referenceMemory.getValue()))
+//          );
+//          return list;
+//        }
       } else {
 //                String str = JsonFunctions.json_encode(value);
 //                return str.charAt(0) == '{' ? new JsonObject(str) : new JsonArray(str);
+        if (value instanceof ObjectMemory && ((ObjectMemory) value).value instanceof IWrapper) {
+          return ((IWrapper) ((ObjectMemory) value).value).getWrappedObject();
+        }
         return value;
       }
     }
@@ -381,6 +391,23 @@ public interface TypeConverter<T> {
     @Override
     public Memory convReturnNotNull(Environment env, Memory value) {
       return value;
+    }
+  };
+
+  TypeConverter<Instant> INSTANT = new TypeConverter<Instant>() {
+    @Override
+    public boolean accept(Environment env, Memory value) {
+      return value.isNumber();
+    }
+
+    @Override
+    public Instant convParamNotNull(Environment env, Memory value) {
+      return Instant.ofEpochMilli(value.toLong());
+    }
+
+    @Override
+    public Memory convReturnNotNull(Environment env, Instant value) {
+      return LongMemory.valueOf(value.toEpochMilli());
     }
   };
 

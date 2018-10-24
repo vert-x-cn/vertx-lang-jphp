@@ -3,13 +3,16 @@ package io.vertx.lang.jphp.wrapper.extension;
 
 import io.vertx.lang.jphp.wrapper.IMemory;
 import php.runtime.Memory;
+import php.runtime.annotation.Reflection;
 import php.runtime.annotation.Reflection.Name;
 import php.runtime.env.Environment;
+import php.runtime.lang.exception.BaseBaseException;
 import php.runtime.lang.spl.exception.RuntimeException;
 import php.runtime.memory.ObjectMemory;
+import php.runtime.memory.StringMemory;
 
 @Name("BaseThrowable")
-public class BaseThrowable extends RuntimeException implements IMemory {
+public class BaseThrowable extends BaseBaseException implements IMemory {
   private Memory __INSTANCE;
 
   private BaseThrowable(Environment env, Throwable cause) {
@@ -27,5 +30,10 @@ public class BaseThrowable extends RuntimeException implements IMemory {
       __INSTANCE = ObjectMemory.valueOf(this);
     }
     return __INSTANCE;
+  }
+
+  @Reflection.Signature
+  public Memory getMessage(Environment env, Memory... args) {
+    return StringMemory.valueOf(getCause().getMessage());
   }
 }

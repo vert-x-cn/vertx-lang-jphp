@@ -95,18 +95,39 @@ public class PhpClassGenerator extends AbstractPhpClassGenerator {
         Token.toHtml(method.getDoc().getTokens(), " *", this::renderLinkToHtml, "\n", writer);
         writer.println(" *");
       }
-      for (ParamInfo param : method.getParams()) {
-        Text t = param.getDescription();
-        writer.format(" * param $%s %s %s", param.getName(), getPHPDocType(param.getType()).stream().collect(Collectors.joining(" | ", "[", "]")), t == null ? "" : t.getValue()).println();
-//        writer.println(" *");
-      }
-      writer.println(" * <b>");
-      if (method.isDeprecated()) {
-        writer.println(" * this method is deprecated");
-        writer.println(" * <s>");
-      }
-      writer.format(" * %s(", methodName);
       allDeprecated = allDeprecated && method.isDeprecated();
+      if (methods.size() > 1) {
+        for (ParamInfo param : method.getParams()) {
+          Text t = param.getDescription();
+          writer.format(" * param $%s %s %s", param.getName(), getPHPDocType(param.getType()).stream().collect(Collectors.joining(" | ", "[", "]")), t == null ? "" : t.getValue()).println();
+        }
+        writer.println(" * <b>");
+        if (method.isDeprecated()) {
+          writer.println(" * this method is deprecated");
+          writer.println(" * <s>");
+        }
+        writer.format(" * %s(", methodName);
+        for (int index = 0; index < method.getParams().size(); index++) {
+          ParamInfo param = method.getParam(index);
+//          Set<String> params = index < paramTypes.size() ? paramTypes.get(index) : null;
+//          if (params == null) {
+//            params = new HashSet<>();
+//            paramTypes.add(params);
+//          }
+//          List<String> paramTypeList = getPHPDocType(param.getType());
+//          params.addAll(paramTypeList);
+          if (index > 0) {
+            writer.print(", ");
+          }
+          writer.print("$" + param.getName());
+        }
+        writer.println(")");
+        if (method.isDeprecated()) {
+          writer.println(" * </s>");
+        }
+        writer.println(" * </b>");
+        writer.println(" *");
+      }
       for (int index = 0; index < method.getParams().size(); index++) {
         ParamInfo param = method.getParam(index);
         Set<String> params = index < paramTypes.size() ? paramTypes.get(index) : null;
@@ -116,18 +137,13 @@ public class PhpClassGenerator extends AbstractPhpClassGenerator {
         }
         List<String> paramTypeList = getPHPDocType(param.getType());
         params.addAll(paramTypeList);
-        if (index > 0) {
-          writer.print(", ");
-        }
-        writer.print("$" + param.getName());
+//        if (index > 0) {
+//          writer.print(", ");
+//        }
+//        writer.print("$" + param.getName());
       }
-      writer.println(")");
-      if (method.isDeprecated()) {
-        writer.println(" * </s>");
-      }
-      writer.println(" * </b>");
-      writer.println(" *");
     }
+
     for (int index = 0; index < paramTypes.size(); index++) {
       writer.format(" * @param $arg%d %s", index, join(" | ", paramTypes.get(index))).println();
     }

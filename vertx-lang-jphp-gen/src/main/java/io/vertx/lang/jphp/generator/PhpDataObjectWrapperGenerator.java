@@ -104,14 +104,20 @@ public class PhpDataObjectWrapperGenerator extends AbstractPhpDataObjectGenerato
   @Override
   void genAdderMethod(DataObjectModel model, PropertyInfo property, CodeWriter writer) {
     writer.println("@Signature");
+    boolean basic = property.getKind().isValue() && property.getType().getKind().basic;
+    String adderParamType = basic ? property.getType().getSimpleName() : "Memory";
     if (property.getKind().isMap()) {
-      writer.format("public Memory %s(String key, String value) {", property.getAdderMethod()).println();
-      writer.indent().format("this.getWrappedObject().%s(key, value);", property.getAdderMethod()).println();
+      writer.format("public Memory %s(Environment __ENV__, String key, %s %s) {", property.getAdderMethod(), adderParamType, property.getName()).println();
+      String valueInfo;
+      if (basic) {
+        valueInfo = property.getName();
+      } else {
+        valueInfo = getTypeConverter(model, property.getType()) + ".convParam(__ENV__, " + property.getName() + ")";
+      }
+      writer.indent().format("this.getWrappedObject().%s(key, %s);", property.getAdderMethod(), valueInfo).println();
       writer.println("return toMemory();");
       writer.unindent().println("}");
     } else {
-      boolean basic = property.getKind().isValue() && property.getType().getKind().basic;
-      String adderParamType = basic ? property.getType().getSimpleName() : "Memory";
       writer.format("public Memory %s(Environment __ENV__, %s %s) {", property.getAdderMethod(), adderParamType, property.getName()).println();
       writer.indent().format("this.getWrappedObject().%s(", property.getAdderMethod());
       if (basic) {
