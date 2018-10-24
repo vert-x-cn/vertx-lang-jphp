@@ -266,7 +266,7 @@ public interface TypeConverter<T> {
 
     @Override
     public Memory convReturnNotNull(Environment env, JsonObject value) {
-      return JsonFunctions.json_decode(env, value.encode());
+      return JsonFunctions.json_decode(env, value.encode(), true);
     }
   };
   TypeConverter<JsonArray> JSON_ARRAY = new TypeConverter<JsonArray>() {
@@ -301,7 +301,7 @@ public interface TypeConverter<T> {
 
     @Override
     public Memory convReturnNotNull(Environment env, JsonArray value) {
-      return JsonFunctions.json_decode(env, value.encode());
+      return JsonFunctions.json_decode(env, value.encode(), true);
     }
   };
 
