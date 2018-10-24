@@ -148,7 +148,7 @@ public class CompileMethodEntity extends MethodEntity {
 
             CompileMethod.Method method = function.find(arguments == null ? 0 : arguments.length);
             if (method == null){
-                env.warning(env.trace(), Messages.ERR_EXPECT_LEAST_PARAMS.fetch(
+                env.error(env.trace(), Messages.ERR_EXPECT_LEAST_PARAMS.fetch(
                         name, function.getMinArgs(), arguments == null ? 0 : arguments.length
                 ));
                 return Memory.NULL;

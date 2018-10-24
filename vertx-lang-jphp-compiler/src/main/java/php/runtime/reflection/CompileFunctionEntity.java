@@ -48,7 +48,7 @@ public class CompileFunctionEntity extends FunctionEntity {
     public Memory invoke(Environment env, TraceInfo trace, Memory[] arguments) throws Throwable {
         CompileFunction.Method method = getCompileFunction().find(arguments.length);
         if (method == null){
-            env.warning(trace, Messages.ERR_EXPECT_LEAST_PARAMS.fetch(
+            env.error(trace, Messages.ERR_EXPECT_LEAST_PARAMS.fetch(
                     name, compileFunction.getMinArgs(), arguments.length
             ));
             return Memory.NULL;
