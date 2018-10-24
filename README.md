@@ -7,7 +7,7 @@
 # vertx-lang-jphp
 Vert.x JPHP support 
 
-[phpdoc](https://vertx.okou.tk/phpdoc/vertx-jphp/index.html)
+[phpdoc](https://vertx.tk/docs/phpdoc/namespaces/io.html)
 
 ### 怎么用 / How to use?
 
