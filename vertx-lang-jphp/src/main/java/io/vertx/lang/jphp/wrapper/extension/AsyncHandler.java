@@ -28,11 +28,21 @@ public class AsyncHandler<T> extends BaseWrapper<io.vertx.core.Handler<io.vertx.
   }
 
   @Signature
+  public void handle(Environment __ENV__, Memory result) {
+    handle(__ENV__, result, null);
+  }
+  @Signature
   public void handle(Environment __ENV__, Memory result, Memory cause) {
-    if (Utils.isNotNull(result) && converter.accept(__ENV__, result)) {
+    if (!Utils.isNotNull(cause) && converter.accept(__ENV__, result)) {
       getWrappedObject().handle(Future.succeededFuture(converter.convParam(__ENV__, result)));
-    } else if (Utils.isNotNull(result) && Utils.isThrowable(__ENV__, cause)) {
-      getWrappedObject().handle(Future.failedFuture(Utils.convParamThrowable(__ENV__, cause)));
+    } else if (Utils.isNotNull(cause)) {
+      if(Utils.isThrowable(__ENV__, cause)) {
+        getWrappedObject().handle(Future.failedFuture(Utils.convParamThrowable(__ENV__, cause)));
+      } else {
+        getWrappedObject().handle(Future.failedFuture(new RuntimeException(cause.toString())));
+      }
+    } else {
+      throw new RuntimeException("function invoked with invalid arguments");
     }
   }
 }

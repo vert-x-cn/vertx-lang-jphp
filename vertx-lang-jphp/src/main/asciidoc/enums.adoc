@@ -769,6 +769,23 @@ Unknown status.
 +++
 |===
 
+[[TestGenEnum]]
+== TestGenEnum
+
+++++
+++++
+'''
+
+[cols=">25%,75%"]
+[frame="topbot"]
+|===
+^|Name | Description
+|[[LAURA]]`LAURA`|-
+|[[BOB]]`BOB`|-
+|[[MIKE]]`MIKE`|-
+|[[LELAND]]`LELAND`|-
+|===
+
 [[TransactionIsolation]]
 == TransactionIsolation
 

@@ -57,7 +57,8 @@ public class ExceptionHandler {
                         env.echo("  " + el.toString() + "\n");
                 }
             }
-            throw exception;
+            //@author okou19900722 throw Exception
+            throw new RuntimeException(exception.getMessage());
 //            return false;
         }
     };

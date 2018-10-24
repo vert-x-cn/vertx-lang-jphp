@@ -29,9 +29,9 @@ public class PhpExtensionGenerator extends PhpGenerator<Model> {
     importClassSet.add("io.vertx.lang.jphp.wrapper.extension.AsyncHandler");
     importClassSet.add("io.vertx.lang.jphp.wrapper.extension.BaseThrowable");
     importClassSet.add("io.vertx.lang.jphp.wrapper.extension.Handler");
-    registerClassSet.add("AsyncHandler");
-    registerClassSet.add("BaseThrowable");
-    registerClassSet.add("Handler");
+//    registerClassSet.add("AsyncHandler");
+//    registerClassSet.add("BaseThrowable");
+//    registerClassSet.add("Handler");
   }
 
   @Override
@@ -63,9 +63,17 @@ public class PhpExtensionGenerator extends PhpGenerator<Model> {
       writer.println("public void onRegister(CompileScope scope) {");
 
       writer.indent();
+      if (module.getName().equals("vertx")) {
+        writer.println("registerClass(scope, AsyncHandler.class);");
+        writer.println("registerClass(scope, BaseThrowable.class);");
+        writer.println("registerClass(scope, Handler.class);");
+      }
       for (String registerClass : registerClassSet) {
         writer.format("registerClass(scope, %s.class);", registerClass).println();
       }
+//      for (String registerClass : registerClassSet) {
+//        writer.format("registerMemoryOperation(%sOperation.class);", registerClass).println();
+//      }
 
       writer.unindent().println("}");
       writer.unindent().println("}");

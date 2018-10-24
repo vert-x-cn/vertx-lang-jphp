@@ -211,8 +211,15 @@ public class PhpClassWrapperGenerator extends AbstractPhpClassGenerator {
   private void getReturnInfo(ClassModel model, MethodInfo method, CodeWriter writer){
     TypeInfo returnType = method.getReturnType();
     if (!returnType.getName().equals("void") && !method.isFluent()) {
+      if (method.isCacheReturn()) {
+        writer.format("Memory cache = cacheMap.get(\"%s\");", method.getName()).println();
+        writer.println("if (cache == null) {");
+        writer.indent().print("cache = ");
+      } else {
+        writer.print("return ");
+      }
       String typeConverter = getTypeConverter(model, returnType);
-      writer.format("return %s.convReturn(__ENV__, ", typeConverter);
+      writer.format("%s.convReturn(__ENV__, ", typeConverter);
     }
 
     if (method.isStaticMethod()) {
@@ -236,6 +243,12 @@ public class PhpClassWrapperGenerator extends AbstractPhpClassGenerator {
     writer.println(";");
     if (method.isFluent()) {
       writer.println("return toMemory();");
+    } else if (!returnType.getName().equals("void")) {
+      if (method.isCacheReturn()) {
+        writer.format("cacheMap.put(\"%s\", cache);", method.getName()).println();
+        writer.unindent().println("}");
+        writer.println("return cache;");
+      }
     }
   }
 

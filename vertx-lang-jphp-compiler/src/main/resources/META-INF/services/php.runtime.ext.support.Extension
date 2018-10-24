@@ -5,3 +5,4 @@ org.develnext.jphp.ext.sql.SqlExtension
 org.develnext.jphp.ext.xml.XmlExtension
 org.develnext.jphp.yaml.YamlExtension
 org.develnext.jphp.zend.ext.ZendExtension
+io.vertx.lang.jphp.AssertExtension

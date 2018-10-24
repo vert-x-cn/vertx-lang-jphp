@@ -195,11 +195,11 @@ public class JPHPScriptEngine extends AbstractScriptEngine implements Compilable
                 } catch (Throwable throwable) {
                     throw new RuntimeException(throwable);
                 } finally {
-                    try {
+//                    try {
                         environment.doFinal();
-                    } catch (Throwable throwable) {
-                        throw new RuntimeException(throwable);
-                    }
+//                    } catch (Throwable throwable) {
+//                        throw new RuntimeException(throwable);
+//                    }
                 }
             } catch (Throwable e) {
                 throw new ScriptException(new Exception(e));

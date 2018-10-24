@@ -20,223 +20,229 @@ import php.runtime.reflection.ClassEntity;
 import java.lang.ref.WeakReference;
 
 abstract public class BaseBaseException extends RuntimeException implements IObject, JPHPException {
-    protected final ArrayMemory props;
-    protected ClassEntity clazz;
-    protected Environment env;
-    protected TraceInfo trace;
-    protected CallStackItem[] callStack;
+  protected final ArrayMemory props;
+  protected ClassEntity clazz;
+  protected Environment env;
+  protected TraceInfo trace;
+  protected CallStackItem[] callStack;
 
-    private boolean init = true;
-    private boolean isFinalized = false;
+  private boolean init = true;
+  private boolean isFinalized = false;
 
-    private String nativeMessage = null;
+  private String nativeMessage = null;
 
-    public BaseBaseException(String message) {
-        this((Environment) null);
-        nativeMessage = message;
-    }
+  public BaseBaseException(String message) {
+    this((Environment) null);
+    nativeMessage = message;
+  }
 
-    public BaseBaseException(Environment env){
-        this(env, null);
-        clazz = env == null ? null : env.fetchClass(getClass());
-    }
+  @Override
+  public String getMessage() {
+    return getMessage(env, null).toString();
+  }
 
-    public BaseBaseException(Environment env, ClassEntity clazz) {
-        this.clazz = clazz;
-        this.props = new ArrayMemory(true);
-        this.env = env;
-    }
+  public BaseBaseException(Environment env) {
+    this(env, null);
+    clazz = env == null ? null : env.fetchClass(getClass());
+  }
 
-    public void setTraceInfo(Environment env, TraceInfo trace) {
-        this.callStack = env.getCallStackSnapshot();
-        this.trace = trace;
-        this.init = false;
-    }
+  public BaseBaseException(Environment env, ClassEntity clazz) {
+    this.clazz = clazz;
+    this.props = new ArrayMemory(true);
+    this.env = env;
+  }
 
-    @Override
-    public ClassEntity getReflection() {
-        return clazz;
-    }
+  public void setTraceInfo(Environment env, TraceInfo trace) {
+    this.callStack = env.getCallStackSnapshot();
+    this.trace = trace;
+    this.init = false;
+  }
 
-    @Override
-    public ArrayMemory getProperties() {
-        if (!init){
-            init = true;
-            if (trace != null) {
-                Memory m;
-                m = clazz.refOfProperty(props, "file");
-                if (m.isNull()) {
-                    m.assign(trace.getFileName());
-                }
+  @Override
+  public ClassEntity getReflection() {
+    return clazz;
+  }
 
-                m = clazz.refOfProperty(props, "line");
-                if (m.isNull()) {
-                    m.assign(trace.getStartLine() + 1);
-                }
-
-                m = clazz.refOfProperty(props, "position");
-
-                if (m.isNull()) {
-                    m.assign(trace.getStartPosition() + 1);
-                }
-
-                ArrayMemory backTrace = new ArrayMemory();
-
-                for(CallStackItem el : callStack) {
-                    backTrace.add(el.toArray());
-                }
-
-                clazz.refOfProperty(props, "trace").assign(backTrace);
-            }
+  @Override
+  public ArrayMemory getProperties() {
+    if (!init) {
+      init = true;
+      if (trace != null) {
+        Memory m;
+        m = clazz.refOfProperty(props, "file");
+        if (m.isNull()) {
+          m.assign(trace.getFileName());
         }
 
-        return props;
-    }
-
-    @Override
-    final public int getPointer() {
-        return super.hashCode();
-    }
-
-    @Override
-    public boolean isMock() {
-        return clazz == null;
-    }
-
-    @Override
-    public void setAsMock() {
-        clazz = null;
-    }
-
-    public CallStackItem[] getCallStack() {
-        Environment env = getEnvironment();
-
-        if (env != null) {
-            env.applySourceMap(callStack);
+        m = clazz.refOfProperty(props, "line");
+        if (m.isNull()) {
+          m.assign(trace.getStartLine() + 1);
         }
 
-        return callStack;
-    }
+        m = clazz.refOfProperty(props, "position");
 
-    public TraceInfo getTrace() {
-        Environment env = getEnvironment();
-        if (env != null) {
-            return env.getTraceAppliedSourceMap(trace);
+        if (m.isNull()) {
+          m.assign(trace.getStartPosition() + 1);
         }
 
-        return trace == null ? TraceInfo.UNKNOWN : trace;
-    }
+        ArrayMemory backTrace = new ArrayMemory();
 
-    @Signature
-    public Memory getMessage(Environment env, Memory... args) {
-        if (nativeMessage != null) {
-            return StringMemory.valueOf(nativeMessage);
+        for (CallStackItem el : callStack) {
+          backTrace.add(el.toArray());
         }
 
-        return clazz.refOfProperty(getProperties(), "message").toValue();
+        clazz.refOfProperty(props, "trace").assign(backTrace);
+      }
     }
 
-    @Signature
-    public Memory getCode(Environment env, Memory... args){
-        Memory code = clazz.refOfProperty(getProperties(), "code").toValue();
-        return code.isNull() ? Memory.CONST_INT_0 : code;
+    return props;
+  }
+
+  @Override
+  final public int getPointer() {
+    return super.hashCode();
+  }
+
+  @Override
+  public boolean isMock() {
+    return clazz == null;
+  }
+
+  @Override
+  public void setAsMock() {
+    clazz = null;
+  }
+
+  public CallStackItem[] getCallStack() {
+    Environment env = getEnvironment();
+
+    if (env != null) {
+      env.applySourceMap(callStack);
     }
 
-    @Signature
-    public Memory getLine(Environment env, Memory... args){
-        return clazz.refOfProperty(getProperties(), "line").toValue();
+    return callStack;
+  }
+
+  public TraceInfo getTrace() {
+    Environment env = getEnvironment();
+    if (env != null) {
+      return env.getTraceAppliedSourceMap(trace);
     }
 
-    @Signature
-    public Memory getPosition(Environment env, Memory... args){
-        return clazz.refOfProperty(getProperties(), "position").toValue();
+    return trace == null ? TraceInfo.UNKNOWN : trace;
+  }
+
+  @Signature
+  public Memory getMessage(Environment env, Memory... args) {
+    if (nativeMessage != null) {
+      return StringMemory.valueOf(nativeMessage);
     }
 
-    @Signature
-    public Memory getFile(Environment env, Memory... args){
-        return clazz.refOfProperty(getProperties(), "file").toValue();
+    return clazz.refOfProperty(getProperties(), "message").toValue();
+  }
+
+  @Signature
+  public Memory getCode(Environment env, Memory... args) {
+    Memory code = clazz.refOfProperty(getProperties(), "code").toValue();
+    return code.isNull() ? Memory.CONST_INT_0 : code;
+  }
+
+  @Signature
+  public Memory getLine(Environment env, Memory... args) {
+    return clazz.refOfProperty(getProperties(), "line").toValue();
+  }
+
+  @Signature
+  public Memory getPosition(Environment env, Memory... args) {
+    return clazz.refOfProperty(getProperties(), "position").toValue();
+  }
+
+  @Signature
+  public Memory getFile(Environment env, Memory... args) {
+    return clazz.refOfProperty(getProperties(), "file").toValue();
+  }
+
+  @Signature
+  public Memory getTrace(Environment env, Memory... args) {
+    return clazz.refOfProperty(getProperties(), "trace").toValue();
+  }
+
+  @Signature
+  public Memory getPrevious(Environment env, Memory... args) {
+    return clazz.refOfProperty(getProperties(), "previous").toValue();
+  }
+
+  @Signature
+  public Memory __toString(Environment env, Memory... args) {
+    StringBuilder sb = new StringBuilder();
+    sb.append("exception '")
+      .append(clazz.getName()).append("' with message '")
+      .append(clazz.refOfProperty(getProperties(), "message"))
+      .append("' in ")
+      .append(clazz.refOfProperty(getProperties(), "file"))
+      .append(":").append(clazz.refOfProperty(getProperties(), "line"));
+    sb.append("\nStack Trace:\n");
+    sb.append(getTraceAsString(env));
+    return new StringMemory(sb.toString());
+  }
+
+  @Signature
+  public Memory getTraceAsString(Environment env, Memory... args) {
+    int i = 0;
+    StringBuilder sb = new StringBuilder();
+
+    if (callStack != null) {
+      for (CallStackItem e : getCallStack()) {
+        if (i != 0)
+          sb.append("\n");
+
+        sb.append("#").append(i).append(" ").append(e.toString(false));
+        i++;
+      }
+      if (i != 0)
+        sb.append("\n");
+
+      sb.append("#").append(i).append(" {main}");
     }
 
-    @Signature
-    public Memory getTrace(Environment env, Memory... args){
-        return clazz.refOfProperty(getProperties(), "trace").toValue();
+    return new StringMemory(sb.toString());
+  }
+
+  /**
+   * Since we override this method, no stacktrace is generated - much faster
+   *
+   * @return always null
+   */
+  @Override
+  public Throwable fillInStackTrace() {
+    return null;
+  }
+
+  @Override
+  public Environment getEnvironment() {
+    return env;
+  }
+
+  @Override
+  public boolean isFinalized() {
+    return isFinalized;
+  }
+
+  @Override
+  public void doFinalize() {
+    isFinalized = true;
+  }
+
+  @Override
+  public String toString() {
+    if (clazz.methodMagicToString != null) {
+      Environment environment = getEnvironment();
+
+      if (environment != null) {
+        return environment.invokeMethodNoThrow(this, "__toString").toString();
+      }
     }
 
-    @Signature
-    public Memory getPrevious(Environment env, Memory... args) {
-        return clazz.refOfProperty(getProperties(), "previous").toValue();
-    }
-
-    @Signature
-    public Memory __toString(Environment env, Memory... args){
-        StringBuilder sb = new StringBuilder();
-        sb.append("exception '")
-                .append(clazz.getName()).append("' with message '")
-                .append(clazz.refOfProperty(getProperties(), "message"))
-                .append("' in ")
-                .append(clazz.refOfProperty(getProperties(), "file"))
-                .append(":").append(clazz.refOfProperty(getProperties(), "line"));
-        sb.append("\nStack Trace:\n");
-        sb.append(getTraceAsString(env));
-        return new StringMemory(sb.toString());
-    }
-
-    @Signature
-    public Memory getTraceAsString(Environment env, Memory... args){
-        int i = 0;
-        StringBuilder sb = new StringBuilder();
-
-        if (callStack != null){
-            for (CallStackItem e : getCallStack()){
-                if (i != 0)
-                    sb.append("\n");
-
-                sb.append("#").append(i).append(" ").append(e.toString(false));
-                i++;
-            }
-            if (i != 0)
-                sb.append("\n");
-
-            sb.append("#").append(i).append(" {main}");
-        }
-
-        return new StringMemory(sb.toString());
-    }
-
-    /**
-     * Since we override this method, no stacktrace is generated - much faster
-     * @return always null
-     */
-    @Override
-    public Throwable fillInStackTrace() {
-        return null;
-    }
-
-    @Override
-    public Environment getEnvironment() {
-        return env;
-    }
-
-    @Override
-    public boolean isFinalized() {
-        return isFinalized;
-    }
-
-    @Override
-    public void doFinalize() {
-        isFinalized = true;
-    }
-
-    @Override
-    public String toString() {
-        if (clazz.methodMagicToString != null) {
-            Environment environment = getEnvironment();
-
-            if (environment != null) {
-                return environment.invokeMethodNoThrow(this, "__toString").toString();
-            }
-        }
-
-        return super.toString();
-    }
+    return super.toString();
+  }
 }
