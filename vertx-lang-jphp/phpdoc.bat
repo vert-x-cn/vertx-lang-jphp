@@ -1,1 +1,1 @@
-php phpdoc.phar -d src/main/generated -t target/phpdoc --template="responsive-twig"
+php phpdoc.phar -d target/generated-sources/apt -t target/phpdoc --template="responsive-twig"

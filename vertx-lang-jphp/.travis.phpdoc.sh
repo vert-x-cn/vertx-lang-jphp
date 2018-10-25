@@ -1,1 +1,1 @@
-phpdoc -d src/main/generated -t target/phpdoc --template="responsive-twig"
+phpdoc -d target/generated-sources/apt -t target/phpdoc --template="responsive-twig"
