@@ -43,9 +43,9 @@ public class JPHPVerticleFactory implements VerticleFactory {
   private static final String VERTX_STOP_FUNCTION = "vertxStop";
   private static final String VERTX_STOP_ASYNC_FUNCTION = "vertxStopAsync";
 
-  private Vertx vertx;
   private final Method futureCreator;
   private final Method vertxCreator;
+  private final Method contextCreator;
   private final Field field;
 
   public JPHPVerticleFactory() throws Exception {
@@ -55,12 +55,8 @@ public class JPHPVerticleFactory implements VerticleFactory {
     futureCreator = futureClass.getDeclaredMethod("__create", Environment.class, Future.class, TypeConverter.class);
     Class<?> vertxClass = Class.forName("io.vertx.jphp.core.Vertx");
     vertxCreator = vertxClass.getDeclaredMethod("__create", Environment.class, Vertx.class);
-  }
-
-  @Override
-  public void init(Vertx vertx) {
-    this.vertx = vertx;
-
+    Class<?> contextClass = io.vertx.jphp.core.Context.class;
+    contextCreator = contextClass.getDeclaredMethod("__create", Environment.class, Context.class);
   }
 
   @Override
@@ -91,6 +87,7 @@ public class JPHPVerticleFactory implements VerticleFactory {
     private final ScriptEngine engine;
     private final Environment env;
     private Memory jvertx;
+    private Memory jcontext;
 
     private JPHPVerticle(String verticleName, ScriptEngine engine) throws Exception {
       this.verticleName = verticleName;
@@ -101,14 +98,18 @@ public class JPHPVerticleFactory implements VerticleFactory {
     @Override
     public void init(Vertx vertx, Context context) {
       super.init(vertx, context);
-      IMemory m;
+      IMemory vertxMemory;
+      IMemory contextMemory;
       try {
-        m = (IMemory) vertxCreator.invoke(null, env, vertx);
+        vertxMemory = (IMemory) vertxCreator.invoke(null, env, vertx);
+        contextMemory = (IMemory) contextCreator.invoke(null, env, context);
       } catch (Exception e) {
         throw new RuntimeException(e);
       }
-      jvertx = m.toMemory();
+      jvertx = vertxMemory.toMemory();
+      jcontext = contextMemory.toMemory();
       engine.put("vertx", jvertx);
+      engine.put("context", jcontext);
       engine.put("config", JsonFunctions.json_decode(env, context.config().encode(), true));
     }
 

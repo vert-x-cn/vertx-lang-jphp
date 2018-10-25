@@ -4,8 +4,24 @@
  */
 
 use io\vertx\jphp\core\Vertx;
+use io\vertx\jphp\core\Context;
 
-global $vertx;
-global $config;
+/**
+ * @global
+ * @var Vertx
+ */
 $vertx = Vertx::vertx();
+/**
+ * @global
+ * @var Context
+ */
+$context = $vertx->getOrCreateContext();
+/**
+ * @global
+ * @var array
+ */
 $config = [];
+
+
+
+
