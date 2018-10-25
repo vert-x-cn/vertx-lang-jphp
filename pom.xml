@@ -88,65 +88,19 @@
   </dependencies>
 
   <profiles>
+    <!-- Use -Pdocs -->
     <profile>
-      <!--<id>release</id>-->
-      <id>snapshot</id>
-      <distributionManagement>
-        <snapshotRepository>
-          <id>snapshot</id>
-          <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-        </snapshotRepository>
-        <repository>
-          <id>snapshot</id>
-          <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-        </repository>
-      </distributionManagement>
+      <id>docs</id>
       <build>
         <plugins>
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-gpg-plugin</artifactId>
-            <version>1.6</version>
+            <artifactId>maven-javadoc-plugin</artifactId>
             <executions>
               <execution>
-                <id>sign-artifacts</id>
-                <phase>verify</phase>
+                <id>attach-javadocs</id>
                 <goals>
-                  <goal>sign</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
-
-    <profile>
-      <!--<id>release</id>-->
-      <id>nexus</id>
-      <distributionManagement>
-        <snapshotRepository>
-          <id>nexus</id>
-          <url>http://192.168.0.111:9091/repository/maven-snapshots/</url>
-        </snapshotRepository>
-        <repository>
-          <id>nexus</id>
-          <url>http://192.168.0.111:9091/repository/maven-releases/</url>
-        </repository>
-      </distributionManagement>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-gpg-plugin</artifactId>
-            <version>1.6</version>
-            <executions>
-              <execution>
-                <id>sign-artifacts</id>
-                <phase>verify</phase>
-                <goals>
-                  <goal>sign</goal>
+                  <goal>jar</goal>
                 </goals>
               </execution>
             </executions>

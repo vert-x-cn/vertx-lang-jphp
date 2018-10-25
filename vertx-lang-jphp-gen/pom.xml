@@ -54,26 +54,4 @@
       <systemPath>${java.home}/../lib/tools.jar</systemPath>
     </dependency>
   </dependencies>
-  <profiles>
-    <!-- Use -Pdocs -->
-    <profile>
-      <id>docs</id>
-      <build>
-        <plugins>
-          <plugin>
-            <artifactId>maven-javadoc-plugin</artifactId>
-            <executions>
-              <execution>
-                <phase>package</phase>
-                <goals>
-                  <goal>javadoc</goal>
-                  <goal>jar</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
 </project>
