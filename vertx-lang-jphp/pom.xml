@@ -365,6 +365,11 @@
       <artifactId>vertx-micrometer-metrics</artifactId>
       <optional>true</optional>
     </dependency>
+    <dependency>
+      <groupId>io.vertx</groupId>
+      <artifactId>vertx-cassandra-client</artifactId>
+      <optional>true</optional>
+    </dependency>
   </dependencies>
 
   <build>
@@ -481,7 +486,8 @@
             vertx-rabbitmq-client,
             vertx-health-check,
             vertx-shell,
-            vertx-micrometer-metrics
+            vertx-micrometer-metrics,
+            vertx-cassandra-client
           </includeArtifactIds>
           <classifier>sources</classifier>
           <includeTypes>jar</includeTypes>
