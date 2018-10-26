@@ -1,7 +1,7 @@
 package io.vertx.lang.jphp.generator;
 
 import io.vertx.codegen.ClassModel;
-import io.vertx.codegen.DataObjectModel;
+import io.vertx.codegen.ConstantInfo;
 import io.vertx.codegen.doc.Doc;
 import io.vertx.codegen.doc.Tag;
 import io.vertx.codegen.doc.Token;
@@ -22,7 +22,6 @@ public abstract class AbstractPhpClassGenerator extends PhpGenerator<ClassModel>
     writer.println();
     genImportsOrUses(model, writer);
     writer.println();
-
     genClassTemplate(model, writer);
   }
 
@@ -40,6 +39,10 @@ public abstract class AbstractPhpClassGenerator extends PhpGenerator<ClassModel>
     }
     genClassStartTemplate(model, writer);
     writer.indent();
+
+    for (ConstantInfo constant : model.getConstants()) {
+      genConstant(model, constant, writer);
+    }
 
     genConstructor(model, writer);
 
@@ -67,6 +70,8 @@ public abstract class AbstractPhpClassGenerator extends PhpGenerator<ClassModel>
   abstract void genConstructor(ClassModel model, CodeWriter writer);
 
   abstract void genMethod(ClassModel model, String methodName, CodeWriter writer);
+
+  abstract void genConstant(ClassModel model, ConstantInfo constant, CodeWriter writer);
 
   abstract String renderLinkToHtml(Tag.Link link);
 }

@@ -67,12 +67,20 @@ public class PhpClassWrapperGenerator extends AbstractPhpClassGenerator {
         }
       }
     }
+
+    for (ConstantInfo constant : model.getConstants()) {
+      addImport(model, importClassSet, constant.getType(), false, false);
+      if (constant.getType().getKind().json) {
+        importClassSet.add("org.develnext.jphp.zend.ext.json.JsonFunctions");
+      }
+    }
+
     if (cacheMap) {
       importClassSet.add("java.util.HashMap");
       importClassSet.add("java.util.Map");
     }
+    importClassSet.add("php.runtime.Memory");
     if (!noConverter) {
-      importClassSet.add("php.runtime.Memory");
       importClassSet.add("io.vertx.lang.jphp.Utils");
     }
 
@@ -101,6 +109,51 @@ public class PhpClassWrapperGenerator extends AbstractPhpClassGenerator {
       writer.format(" implements Handler<%s>", type.getHandlerArg().getName());
     }
     writer.println(" {");
+  }
+
+  @Override
+  void genConstant(ClassModel model, ConstantInfo constant, CodeWriter writer) {
+//    writer.format("public static final Memory %s = TypeConverter.STRING.", constant.getName()).println();
+    writer.format("public static final %s %s = %s;", getConstantType(constant.getType()), constant.getName(), getConstantConverter(model, constant)).println();
+  }
+
+  private String getConstantType(TypeInfo type) {
+    ClassKind kind = type.getKind();
+    if (kind.basic) {
+      return type.getSimpleName();
+    } else if (kind == ENUM) {
+      return "String";
+//    } else if (kind == API || kind == DATA_OBJECT) {
+//      return "Memory";
+//    } else if (kind.json) {
+//      return "Memory";
+    } else {
+      return "Memory";
+    }
+  }
+  private String getConstantConverter(ClassModel model, ConstantInfo constant) {
+    TypeInfo type = constant.getType();
+    ClassKind kind = type.getKind();
+    String constantInfo = model.getFqn() + "." + constant.getName();
+    if (kind.basic) {
+      return constantInfo;
+    } else if (kind == ENUM) {
+      return constantInfo + ".name()";
+//    } else if (kind == API) {
+//      String parameterizedInfo = "";
+//      if (type.isParameterized()) {
+//        ParameterizedTypeInfo t = (ParameterizedTypeInfo) type;
+//        parameterizedInfo = t.getArgs().stream().map(arg -> ", " + getTypeConverter(model, arg)).collect(Collectors.joining());
+//      }
+//      return type.getRaw().translateName(id) + ".__create(Environment.current(), " + constantInfo + parameterizedInfo + ").toMemory()";
+//    } else if (kind == DATA_OBJECT) {
+//      return "new " + type.getRaw().getSimpleName() + "(Environment.current(), " + constantInfo + ").toMemory()";
+//    } else if (kind.json) {
+//      return "JsonFunctions.json_decode(Environment.current(), " + constantInfo + ".encode(), true)";
+    } else {
+      return getTypeConverter(model, constant.getType()) + ".convReturn(Environment.current(), " + constantInfo + ")";
+    }
+//    return "1";
   }
 
   @Override
@@ -180,23 +233,11 @@ public class PhpClassWrapperGenerator extends AbstractPhpClassGenerator {
         writer.indent();
         if (paramSize == 0) {
           getReturnInfo(model, ms.get(0), writer);
-//          if (ms.get(0).getReturnType().getName().equals("void")) {
-//            writer.println();
-//          } else {
-//            writer.println("return null;");
-//          }
         } else {
           for (MethodInfo method : ms) {
             writer.format("if(%s) {", checkParamType(model, method));
             writer.indent().println("");
-
-//            if (ms.get(0).getReturnType().getName().equals("void")) {
-//              writer.println();
-//            } else {
-//              writer.println("return null;");
-//            }
             getReturnInfo(model, method, writer);
-
             writer.unindent().print("} else ");
           }
           writer.println("{");

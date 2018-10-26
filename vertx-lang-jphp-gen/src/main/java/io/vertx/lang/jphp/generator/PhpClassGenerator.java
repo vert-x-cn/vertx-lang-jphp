@@ -1,6 +1,7 @@
 package io.vertx.lang.jphp.generator;
 
 import io.vertx.codegen.ClassModel;
+import io.vertx.codegen.ConstantInfo;
 import io.vertx.codegen.MethodInfo;
 import io.vertx.codegen.ParamInfo;
 import io.vertx.codegen.doc.Tag;
@@ -49,6 +50,18 @@ public class PhpClassGenerator extends AbstractPhpClassGenerator {
   void genClassStartTemplate(ClassModel model, CodeWriter writer) {
     writer.format("class %s", model.getIfaceSimpleName()).println();
     writer.println("{");
+  }
+
+  @Override
+  void genConstant(ClassModel model, ConstantInfo constant, CodeWriter writer) {
+    writer.println("/**");
+    if (constant.getDoc() != null) {
+      Token.toHtml(constant.getDoc().getTokens(), " *", this::renderLinkToHtml, "\n", writer);
+    }
+    writer.format(" * @var %s", join("|", getPHPDocType(constant.getType()))).println();
+    writer.println(" * php文件只是为了写代码方便，常量的实际值请参考原java文件");
+    writer.println(" */");
+    writer.format("const %s = %s;", constant.getName(), getReturnInfo(constant.getType())).println();
   }
 
   @Override
