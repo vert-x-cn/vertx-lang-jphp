@@ -79,6 +79,7 @@ public class JPHPVerticleFactory implements VerticleFactory {
   }
 
   private ScriptEngine initScriptEngine() {
+    //每次创建一个新的引擎，因为每一个引擎相当于一个新的verticle
     return new JPHPScriptEngine();
   }
 

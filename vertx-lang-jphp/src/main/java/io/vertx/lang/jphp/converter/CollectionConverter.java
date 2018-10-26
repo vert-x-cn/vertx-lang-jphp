@@ -1,5 +1,6 @@
 package io.vertx.lang.jphp.converter;
 
+import io.vertx.lang.jphp.function.Function2;
 import php.runtime.Memory;
 import php.runtime.env.Environment;
 import php.runtime.memory.ArrayMemory;
@@ -26,6 +27,12 @@ public class CollectionConverter<C extends Collection<T>, T> extends ContainerCo
 
   @Override
   public Memory convReturnNotNull(Environment env, C value) {
-    return null;
+    return convCollectionReturnNotNull(env, value, valueConverter::convReturn);
+  }
+
+  static <C extends Collection<T>, T> Memory convCollectionReturnNotNull(Environment env, C value, Function2<Environment, T, Memory> returnConverter) {
+    ArrayMemory result = new ArrayMemory();
+    value.forEach(v -> result.add(returnConverter.apply(env, v)));
+    return result;
   }
 }

@@ -23,10 +23,14 @@ public class EnumConverter<T extends Enum<T>> implements TypeConverter<T> {
 
   @Override
   public Memory convReturnNotNull(Environment env, T value) {
-    return StringMemory.valueOf(value.name());
+    return convReturnNotNull(value);
   }
 
   public static <T extends Enum<T>> TypeConverter<T> create(Class<T> clazz) {
     return new EnumConverter<>(clazz);
+  }
+
+  public static <T extends Enum<T>> Memory convReturnNotNull( T value) {
+    return StringMemory.valueOf(value.name());
   }
 }

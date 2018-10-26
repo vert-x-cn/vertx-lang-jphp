@@ -1,5 +1,6 @@
 package io.vertx.lang.jphp.converter;
 
+import io.vertx.lang.jphp.function.Function2;
 import php.runtime.Memory;
 import php.runtime.env.Environment;
 import php.runtime.memory.ArrayMemory;
@@ -21,10 +22,30 @@ public class MapConverter<E> extends ContainerConverter<Map<String, E>, E> {
 
   @Override
   public Memory convReturnNotNull(Environment env, Map<String, E> value) {
+   return convMapReturnNotNull(env, value, valueConverter::convReturnNotNull);
+  }
+
+  static <E> Memory convMapReturnNotNull(Environment env, Map<String, E> value, Function2<Environment, E, Memory> returnConverter){
     ArrayMemory array = new ArrayMemory();
-    value.forEach((key, v) -> {
-      array.put(key, valueConverter.convReturn(env, v));
-    });
+    value.forEach((key, v) -> array.put(key, returnConverter.apply(env, v)));
     return array;
+
+//
+//    ArrayMemory array = new ArrayMemory(true);
+//    ((Map<?, ?>) value).forEach((k, v) -> {
+//      Object key;
+//      if (k instanceof LongMemory) {
+//        key = k;
+//      } else if (k instanceof Number && !(k instanceof Double) && !(k instanceof Float)) {
+//        key = LongMemory.valueOf(((Number) k).longValue());
+//      } else {
+//        key = k.toString();
+//      }
+//      array.put(key, convReturn(env, v));
+//    });
+//    return array;
+
+
+
   }
 }

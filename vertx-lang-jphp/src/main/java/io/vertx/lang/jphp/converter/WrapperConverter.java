@@ -4,6 +4,7 @@ import io.vertx.lang.jphp.function.Function2;
 import io.vertx.lang.jphp.wrapper.BaseWrapper;
 import php.runtime.Memory;
 import php.runtime.env.Environment;
+import php.runtime.ext.java.JavaObject;
 import php.runtime.memory.ObjectMemory;
 
 @SuppressWarnings("unchecked")
@@ -24,11 +25,16 @@ public abstract class WrapperConverter<S, W extends BaseWrapper<S>> implements T
       return false;
     }
     ObjectMemory objectMemory = (ObjectMemory) value;
-//        if (!(wrapperClass.isInstance(objectMemory.value))) {
-//            return false;
-//        }
-    BaseWrapper wrapper = (BaseWrapper) objectMemory.value;
-    return clazz.isInstance(wrapper.getWrappedObject());
+    Object wrapperObject = objectMemory.value;
+    Object obj;
+    if (wrapperObject instanceof BaseWrapper) {
+      obj = ((BaseWrapper) wrapperObject).getWrappedObject();
+    } else if (wrapperObject instanceof JavaObject) {
+      obj = ((JavaObject) wrapperObject).getObject();
+    } else {
+      obj = wrapperObject;
+    }
+    return clazz.isInstance(obj);
   }
 
   @Override

@@ -8,12 +8,13 @@ import io.vertx.lang.jphp.wrapper.extension.BaseThrowable;
 import org.develnext.jphp.zend.ext.json.JsonFunctions;
 import php.runtime.Memory;
 import php.runtime.env.Environment;
+import php.runtime.ext.java.JavaObject;
 import php.runtime.lang.StdClass;
 import php.runtime.memory.*;
 import php.runtime.memory.support.ArrayMapEntryMemory;
 
 import java.time.Instant;
-import java.util.List;
+import java.util.Collection;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -53,10 +54,6 @@ public interface TypeConverter<T> {
         return false;
       } else if (value instanceof ReferenceMemory) {
         return convParam(env, ((ReferenceMemory) value).getValue());
-      } else if (value instanceof ObjectMemory && ((ObjectMemory) value).value instanceof StdClass) {
-        String str = JsonFunctions.json_encode(value);
-//        return str.charAt(0) == '{' ? new JsonObject(str) : new JsonArray(str);
-        return new JsonObject(str);
       } else if (value instanceof ArrayMemory) {
         ArrayMemory array = (ArrayMemory) value;
         String str = JsonFunctions.json_encode(value);
@@ -65,77 +62,60 @@ public interface TypeConverter<T> {
         } else {
           return new JsonArray(str);
         }
-//        if (array.isMap()) {
-//          Map<Object, Object> map = new HashMap<>();
-//          array.forEach(referenceMemory -> {
-//            ArrayMapEntryMemory mapEntryMemory = (ArrayMapEntryMemory) referenceMemory;
-//            Object k = mapEntryMemory.getKey();
-//            Object key;
-//            if (k instanceof LongMemory) {
-//              key = ((LongMemory) k).toLong();
-//            } else {
-//              key = k.toString();
-//            }
-//            map.put(key, convParam(env, mapEntryMemory.getValue()));
-//          });
-//          return map;
-//        } else {
-//          List<Object> list = new ArrayList<>();
-//          array.forEach(referenceMemory ->
-//            list.add(convParam(env, referenceMemory.getValue()))
-//          );
-//          return list;
-//        }
-      } else {
-//                String str = JsonFunctions.json_encode(value);
-//                return str.charAt(0) == '{' ? new JsonObject(str) : new JsonArray(str);
-        if (value instanceof ObjectMemory && ((ObjectMemory) value).value instanceof IWrapper) {
-          return ((IWrapper) ((ObjectMemory) value).value).getWrappedObject();
+      } else if (value instanceof ObjectMemory) {
+        ObjectMemory obj = (ObjectMemory) value;
+        if (obj.value instanceof StdClass) {
+          String str = JsonFunctions.json_encode(value);
+          return new JsonObject(str);
+        } else if (obj.value instanceof IWrapper) {
+          return ((IWrapper) obj.value).getWrappedObject();
+        } else if (obj.value instanceof JavaObject){
+          return ((JavaObject) obj.value).getObject();
+        } else {
+          return obj.value;
         }
-        return value;
+      } else {
+        throw new UnsupportedOperationException("unsupported type:" + value.getClass() + ", " + value);
       }
     }
 
     @Override
     public Memory convReturnNotNull(Environment env, Object value) {
       if (value instanceof String) {
-        return StringMemory.valueOf((String) value);
+        return STRING.convReturnNotNull(env, (String) value);
       } else if (value instanceof Character) {
-        return StringMemory.valueOf((Character) value);
+        return CHARACTER.convReturnNotNull(env, (Character) value);
       } else if (value instanceof Number) {
         if (value instanceof Double || value instanceof Float) {
-          return DoubleMemory.valueOf(((Number) value).doubleValue());
+          return DOUBLE.convReturnNotNull(env, ((Number) value).doubleValue());
         } else {
-          return LongMemory.valueOf(((Number) value).longValue());
+          return LONG.convReturnNotNull(env, ((Number) value).longValue());
         }
       } else if (value instanceof JsonObject) {
-        return JsonFunctions.json_decode(env, ((JsonObject) value).encode(), true);
+        return JSON_OBJECT.convReturnNotNull(env, ((JsonObject) value));
       } else if (value instanceof JsonArray) {
-        return JsonFunctions.json_decode(env, ((JsonArray) value).encode(), true);
+        return JSON_ARRAY.convReturnNotNull(env, ((JsonArray) value));
       } else if (value instanceof Boolean) {
-        return TrueMemory.valueOf((Boolean) value);
-      } else if (value instanceof List) {
-        ArrayMemory array = new ArrayMemory();
-        ((List<?>) value).forEach(v -> array.add(convReturn(env, v)));
-        return array;
+        return BOOLEAN.convReturnNotNull(env, (Boolean) value);
+      } else if (value instanceof Collection) {
+        return CollectionConverter.convCollectionReturnNotNull(env, (Collection<?>) value, this::convReturnNotNull);
       } else if (value instanceof Map) {
-        ArrayMemory array = new ArrayMemory(true);
-        ((Map<?, ?>) value).forEach((k, v) -> {
-          Object key;
-          if (k instanceof LongMemory) {
-            key = k;
-          } else if (k instanceof Number && !(k instanceof Double) && !(k instanceof Float)) {
-            key = LongMemory.valueOf(((Number) k).longValue());
-          } else {
-            key = k.toString();
-          }
-          array.put(key, convReturn(env, v));
-        });
-        return array;
+        //noinspection unchecked
+        return MapConverter.convMapReturnNotNull(env, (Map<String, ?>) value, this::convReturnNotNull);
       } else if (value instanceof Memory) {
         return (Memory) value;
+      } else if (value instanceof Throwable) {
+        return THROWABLE.convReturnNotNull(env, (Throwable) value);
+      } else if (value instanceof Enum) {
+        //noinspection unchecked
+        return EnumConverter.convReturnNotNull((Enum) value);
+      } else if (value instanceof Void) {
+        return VOID.convReturnNotNull(env, (Void) value);
+      } else if (value instanceof Class) {
+        //noinspection unchecked
+        return CLASS.convReturnNotNull(env, (Class) value);
       }
-      return null;
+      return ObjectMemory.valueOf(JavaObject.of(env, value));
     }
   };
 
