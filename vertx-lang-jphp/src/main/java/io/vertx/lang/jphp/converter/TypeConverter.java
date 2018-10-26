@@ -100,8 +100,7 @@ public interface TypeConverter<T> {
       } else if (value instanceof Collection) {
         return CollectionConverter.convCollectionReturnNotNull(env, (Collection<?>) value, this::convReturnNotNull);
       } else if (value instanceof Map) {
-        //noinspection unchecked
-        return MapConverter.convMapReturnNotNull(env, (Map<String, ?>) value, this::convReturnNotNull);
+        return MapConverter.convMapReturnNotNull(env, (Map<?, ?>) value, this::convReturnNotNull);
       } else if (value instanceof Memory) {
         return (Memory) value;
       } else if (value instanceof Throwable) {

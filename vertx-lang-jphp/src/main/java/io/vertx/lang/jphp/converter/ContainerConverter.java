@@ -29,9 +29,17 @@ public abstract class ContainerConverter<T, E> implements TypeConverter<T> {
     }
     ArrayMemory array = (ArrayMemory) value;
     for (ReferenceMemory referenceMemory : array) {
-      Memory entry = referenceMemory.getValue();
-      if (map && !(entry instanceof ArrayMapEntryMemory)) {
-        return false;
+      Memory entry;
+      if (map) {
+        if (referenceMemory instanceof ArrayMapEntryMemory) {
+          entry = referenceMemory;
+//        } else if (referenceMemory.getValue() instanceof ArrayMapEntryMemory) {
+//          entry = referenceMemory.getValue();
+        } else {
+          return false;
+        }
+      } else {
+        entry = referenceMemory.getValue();
       }
       if (map) {
         ArrayMapEntryMemory v = (ArrayMapEntryMemory) entry;
