@@ -1,10 +1,7 @@
 package io.vertx.test.lang.jphp;
 
 import io.vertx.codegen.annotations.VertxGen;
-import io.vertx.codegen.testmodel.CollectionTCK;
-import io.vertx.codegen.testmodel.CollectionTCKImpl;
-import io.vertx.codegen.testmodel.RefedInterface1;
-import io.vertx.codegen.testmodel.RefedInterface1Impl;
+import io.vertx.codegen.testmodel.*;
 
 @VertxGen
 public interface TCKUtils {
@@ -14,5 +11,9 @@ public interface TCKUtils {
 
   static CollectionTCK createCollectionTCK() {
     return new CollectionTCKImpl();
+  }
+
+  static DataObjectTCK createDataObjectTCK() {
+    return new DataObjectTCKImpl();
   }
 }

@@ -1,7 +1,7 @@
-[![Build Status](https://travis-ci.org/vertx-lang-jphp/vertx-lang-jphp.svg?branch=master)](https://travis-ci.org/vertx-lang-jphp/vertx-lang-jphp)
-[![vertx-lang-jphp](https://img.shields.io/badge/vert.x3-jphp-blue.svg)](https://github.com/vertx-lang-jphp/vertx-lang-jphp)
+[![Build Status](https://travis-ci.org/vert-x-cn/vertx-lang-jphp.svg?branch=master)](https://travis-ci.org/vert-x-cn/vertx-lang-jphp)
+[![vertx-lang-jphp](https://img.shields.io/badge/vert.x3-jphp-blue.svg)](https://github.com/vert-x-cn/vertx-lang-jphp)
 [![Sonatype Nexus (Snapshots)](https://img.shields.io/nexus/s/https/oss.sonatype.org/tk.okou/vertx-lang-jphp.svg)](https://oss.sonatype.org/#nexus-search;gav~tk.okou~vertx-lang-jphp~3.6.0-SNAPSHOT~~)
-[![license](https://img.shields.io/github/license/vertx-lang-jphp/vertx-lang-jphp.svg)](https://www.apache.org/licenses/LICENSE-2.0)
+[![license](https://img.shields.io/github/license/vert-x-cn/vertx-lang-jphp.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 
 
 # vertx-lang-jphp
