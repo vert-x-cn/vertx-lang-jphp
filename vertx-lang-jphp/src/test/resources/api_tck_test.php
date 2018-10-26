@@ -3,10 +3,13 @@
 use com\acme\jphp\pkg\MyInterface;
 use io\vertx\jphp\codegen\testmodel\TestInterface;
 use io\vertx\jphp\codegen\testmodel\Factory;
+use io\vertx\jphp\test\lang\jphp\TCKUtils;
 
 $myInterface = MyInterface::create();
 
 $obj = $myInterface->method();
+
+$refedObj = TCKUtils::createRefedInterface1();
 
 function testMethodWithBasicParams()
 {
@@ -195,8 +198,6 @@ function testMethodWithHandlerAsyncResultBasicTypesFails()
   });
   assertEquals(9, $count);
 }
-
-$refedObj = TestInterface::staticFactoryMethod("");
 
 function testMethodWithUserTypes()
 {

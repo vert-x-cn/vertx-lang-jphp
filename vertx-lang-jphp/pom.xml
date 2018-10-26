@@ -610,6 +610,22 @@
               <goal>run</goal>
             </goals>
           </execution>
+          <execution>
+            <id>copy-tck</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <target>
+                <copy todir="${project.build.directory}/sources/java" overwrite="false">
+                  <fileset dir="../vertx-lang-jphp-gen/src/main/java">
+                    <include name="**/io/vertx/test/**/*.java"/>
+                  </fileset>
+                </copy>
+              </target>
+            </configuration>
+          </execution>
         </executions>
       </plugin>
       <plugin>
