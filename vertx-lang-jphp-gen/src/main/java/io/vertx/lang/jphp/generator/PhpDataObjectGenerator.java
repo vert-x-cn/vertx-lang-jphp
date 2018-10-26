@@ -102,7 +102,7 @@ public class PhpDataObjectGenerator extends AbstractPhpDataObjectGenerator {
       writer.unindent().println("}");
     } else {
       writer.println("/**");
-      writer.format(" * @param $%s %s", property.getName(), join("|", getPHPDocType(property.getType()))).println();
+      writer.format(" * @param $%s %s", property.getName(), join("|", getPHPDocType(property.getType(), true))).println();
       writer.println(" * @return $this");
       writer.println(" */");
       writer.format("public function %s($%s)", property.getAdderMethod(), property.getName()).println();
@@ -116,7 +116,7 @@ public class PhpDataObjectGenerator extends AbstractPhpDataObjectGenerator {
   void genGetterMethod(DataObjectModel model, PropertyInfo property, CodeWriter writer) {
     writer.println();
     writer.println("/**");
-    writer.format(" * @return %s", join("|", getPHPDocType(property.getType()))).println();
+    writer.format(" * @return %s", join("|", getPHPDocType(property.getType(), false))).println();
     writer.println(" */");
     writer.format("public function %s()", property.getGetterMethod()).println();
     writer.println("{");
@@ -128,7 +128,7 @@ public class PhpDataObjectGenerator extends AbstractPhpDataObjectGenerator {
   void genSetterMethod(DataObjectModel model, PropertyInfo property, CodeWriter writer) {
     writer.println();
     writer.println("/**");
-    writer.format(" * @param $%s %s", property.getName(), join("|", getPHPDocType(property.getType()))).println();
+    writer.format(" * @param $%s %s", property.getName(), join("|", getPHPDocType(property.getType(), true))).println();
     writer.println(" * @return $this");
     writer.println(" */");
     writer.format("public function %s($%s)", property.getSetterMethod(), property.getName()).println();

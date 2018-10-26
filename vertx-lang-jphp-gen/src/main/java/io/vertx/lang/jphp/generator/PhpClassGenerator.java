@@ -58,7 +58,7 @@ public class PhpClassGenerator extends AbstractPhpClassGenerator {
     if (constant.getDoc() != null) {
       Token.toHtml(constant.getDoc().getTokens(), " *", this::renderLinkToHtml, "\n", writer);
     }
-    writer.format(" * @var %s", join("|", getPHPDocType(constant.getType()))).println();
+    writer.format(" * @var %s", join("|", getPHPDocType(constant.getType(), false))).println();
     writer.println(" * php文件只是为了写代码方便，常量的实际值请参考原java文件");
     writer.println(" */");
     writer.format("const %s = %s;", constant.getName(), getReturnInfo(constant.getType())).println();
@@ -112,7 +112,7 @@ public class PhpClassGenerator extends AbstractPhpClassGenerator {
       if (methods.size() > 1) {
         for (ParamInfo param : method.getParams()) {
           Text t = param.getDescription();
-          writer.format(" * param $%s %s %s", param.getName(), getPHPDocType(param.getType()).stream().collect(Collectors.joining(" | ", "[", "]")), t == null ? "" : t.getValue()).println();
+          writer.format(" * param $%s %s %s", param.getName(), getPHPDocType(param.getType(), true).stream().collect(Collectors.joining(" | ", "[", "]")), t == null ? "" : t.getValue()).println();
         }
         writer.println(" * <b>");
         if (method.isDeprecated()) {
@@ -148,7 +148,7 @@ public class PhpClassGenerator extends AbstractPhpClassGenerator {
           params = new HashSet<>();
           paramTypes.add(params);
         }
-        List<String> paramTypeList = getPHPDocType(param.getType());
+        List<String> paramTypeList = getPHPDocType(param.getType(), true);
         params.addAll(paramTypeList);
 //        if (index > 0) {
 //          writer.print(", ");
@@ -160,7 +160,7 @@ public class PhpClassGenerator extends AbstractPhpClassGenerator {
     for (int index = 0; index < paramTypes.size(); index++) {
       writer.format(" * @param $arg%d %s", index, join(" | ", paramTypes.get(index))).println();
     }
-    writer.format(" * @return %s %s", returnType == null ? "" : join(" | ", getPHPDocType(returnType)), returnDescription).println();
+    writer.format(" * @return %s %s", returnType == null ? "" : join(" | ", getPHPDocType(returnType, false)), returnDescription).println();
     if (allDeprecated) {
       writer.println(" * @deprecated");
     }

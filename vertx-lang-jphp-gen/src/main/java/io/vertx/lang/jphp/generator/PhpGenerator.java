@@ -114,7 +114,7 @@ abstract class PhpGenerator<M extends Model> extends Generator<M> {
     return "{@link " + rawType.getName() + "}";
   }
 
-  final List<String> getPHPDocType(TypeInfo type) {
+  final List<String> getPHPDocType(TypeInfo type, boolean param) {
     ClassKind kind = type.getKind();
     if (type.getName().equals("void")) {
       return Collections.singletonList("void");
@@ -141,18 +141,19 @@ abstract class PhpGenerator<M extends Model> extends Generator<M> {
     } else if (kind == JSON_ARRAY) {
       return Collections.singletonList("array");
     } else if (kind == DATA_OBJECT) {
-      return Arrays.asList(type.getRaw().getSimpleName(), "mixed");
+      return !param ? Collections.singletonList(type.getRaw().getSimpleName()) : Arrays.asList(type.getSimpleName(), "array");
     } else if (kind == ENUM) {
       return Collections.singletonList("string");
     } else if (kind == API) {
-      ApiTypeInfo typeInfo = (ApiTypeInfo) type.getRaw();
-      return typeInfo.isHandler() ? Arrays.asList(type.getSimpleName(), "callable") : Collections.singletonList(type.getSimpleName());
+//      ApiTypeInfo typeInfo = (ApiTypeInfo) type.getRaw();
+//      return typeInfo.isHandler() ? Arrays.asList(type.getSimpleName(), "callable") : Collections.singletonList(type.getSimpleName());
+      return Collections.singletonList(type.getSimpleName());
     } else if (kind.collection) {
       return Collections.singletonList("array");
     } else if (kind == MAP) {
       return Collections.singletonList("array");
     } else if (kind == OBJECT) {
-      return Collections.singletonList("mixed");
+      return Collections.singletonList("object");
     } else if (kind == HANDLER) {
       return Collections.singletonList("callable");
     } else if (kind == FUNCTION) {
@@ -292,20 +293,21 @@ abstract class PhpGenerator<M extends Model> extends Generator<M> {
   }
 
   String getReturnInfo(TypeInfo propertyType) {
-    ClassKind propertyKind = propertyType.getKind();
-    if (propertyKind.collection || propertyKind.json) {
-      return "[]";
-    } else if (propertyKind.basic) {
-      if (propertyKind == STRING) {
-        return "\"\"";
-      } else if (propertyType.getSimpleName().equals("Boolean") || propertyType.getSimpleName().equals("boolean")) {
-        return "false";
-      } else {
-        return "0";
-      }
-    } else {
-      return null;
-    }
+//    ClassKind propertyKind = propertyType.getKind();
+//    if (propertyKind.collection || propertyKind.json) {
+//      return "[]";
+//    } else if (propertyKind.basic) {
+//      if (propertyKind == STRING) {
+//        return "\"\"";
+//      } else if (propertyType.getSimpleName().equals("Boolean") || propertyType.getSimpleName().equals("boolean")) {
+//        return "false";
+//      } else {
+//        return "0";
+//      }
+//    } else {
+//      return null;
+//    }
+    return null;
   }
 
   final void genJavaPackage(CodeWriter writer, String packageOrNamespace){
