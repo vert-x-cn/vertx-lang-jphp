@@ -80,6 +80,7 @@ public class PhpClassGenerator extends AbstractPhpClassGenerator {
     int minParamSize = Integer.MAX_VALUE;
     int maxParamSize = 0;
     boolean isStatic = false;
+    boolean isFluent = false;
     for (MethodInfo method : methods) {
       if (returnType == null) {
         if (method.isFluent()) {
@@ -99,6 +100,7 @@ public class PhpClassGenerator extends AbstractPhpClassGenerator {
         minParamSize = methodParamSize;
       }
       isStatic = method.isStaticMethod();
+      isFluent = method.isFluent();
     }
     writer.println("/**");
     List<Set<String>> paramTypes = new ArrayList<>();
@@ -160,7 +162,8 @@ public class PhpClassGenerator extends AbstractPhpClassGenerator {
     for (int index = 0; index < paramTypes.size(); index++) {
       writer.format(" * @param $arg%d %s", index, join(" | ", paramTypes.get(index))).println();
     }
-    writer.format(" * @return %s %s", returnType == null ? "" : join(" | ", getPHPDocType(returnType, false)), returnDescription).println();
+    String returnTypeInfo = isFluent ? "$this" : (returnType == null ? "" : join(" | ", getPHPDocType(returnType, false)));
+    writer.format(" * @return %s %s", returnTypeInfo, returnDescription).println();
     if (allDeprecated) {
       writer.println(" * @deprecated");
     }
@@ -175,7 +178,7 @@ public class PhpClassGenerator extends AbstractPhpClassGenerator {
     if (returnType != null && returnType.getName().equals("void")) {
       writer.println();
     } else {
-      writer.format("return %s;", getReturnInfo(returnType)).println();
+      writer.format("return %s;", isFluent ? "$this" : getReturnInfo(returnType)).println();
     }
     writer.unindent().println("}");
   }
