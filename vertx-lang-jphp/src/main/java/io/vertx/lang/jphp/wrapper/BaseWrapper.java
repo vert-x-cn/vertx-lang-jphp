@@ -3,12 +3,15 @@ package io.vertx.lang.jphp.wrapper;
 import php.runtime.Memory;
 import php.runtime.annotation.Reflection;
 import php.runtime.env.Environment;
+import php.runtime.ext.java.JavaObject;
+import php.runtime.lang.IObject;
+import php.runtime.lang.support.IComparableObject;
 import php.runtime.memory.ArrayMemory;
 import php.runtime.memory.ObjectMemory;
 import php.runtime.memory.StringMemory;
 import php.runtime.reflection.ClassEntity;
 
-public class BaseWrapper<API> implements IWrapper<API>, IMemory {
+public class BaseWrapper<API> implements IWrapper<API>, IMemory, IComparableObject<IObject> {
   private final ArrayMemory __dynamicProperties__;
   private ClassEntity __class__;
   protected final Environment __env__;
@@ -89,5 +92,47 @@ public class BaseWrapper<API> implements IWrapper<API>, IMemory {
   @Reflection.Signature
   public Memory __toString() {
     return StringMemory.valueOf(toString());
+  }
+
+  @Override
+  public boolean __equal(IObject iObject) {
+    if (iObject instanceof BaseWrapper) {
+      return __wrappedObject.equals(((BaseWrapper) iObject).__wrappedObject);
+    } else if (iObject instanceof JavaObject) {
+      return __wrappedObject.equals(((JavaObject) iObject).getObject());
+    } else {
+      return false;
+    }
+  }
+
+  @Override
+  public boolean __identical(IObject iObject) {
+    if (iObject instanceof BaseWrapper) {
+      return __wrappedObject == ((BaseWrapper) iObject).__wrappedObject;
+    } else if (iObject instanceof JavaObject) {
+      return __wrappedObject == ((JavaObject) iObject).getObject();
+    } else {
+      return false;
+    }
+  }
+
+  @Override
+  public boolean __greater(IObject iObject) {
+    return getProperties().greater(iObject.getProperties());
+  }
+
+  @Override
+  public boolean __greaterEq(IObject iObject) {
+    return getProperties().greaterEq(iObject.getProperties());
+  }
+
+  @Override
+  public boolean __smaller(IObject iObject) {
+    return getProperties().smaller(iObject.getProperties());
+  }
+
+  @Override
+  public boolean __smallerEq(IObject iObject) {
+    return getProperties().smallerEq(iObject.getProperties());
   }
 }
