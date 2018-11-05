@@ -56,9 +56,9 @@ public class JPhpDocGenerator implements DocGenerator {
       }
       String adocLink;
       if (type.getKind() == ClassKind.DATA_OBJECT) {
-        adocLink = "dataobjects.html";
+        adocLink = "php/dataobjects.html";
       } else {
-        adocLink = "enums.html";
+        adocLink = "php/enums.html";
       }
       return baselink + adocLink + "#" + elt.getSimpleName().toString();
     } else if (type.getKind() == ClassKind.API) {
