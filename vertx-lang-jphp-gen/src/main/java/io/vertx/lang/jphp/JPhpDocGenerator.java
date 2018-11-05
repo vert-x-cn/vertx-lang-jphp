@@ -47,10 +47,6 @@ public class JPhpDocGenerator implements DocGenerator {
       System.out.println("Could not resolve doc link for type " + elt.getQualifiedName());
       return null;
     }
-    String moduleName;
-    if (type.getRaw() != null) {
-      moduleName = type.getRaw().getModuleName() + "-jphp/";
-    } else moduleName = "";
     if ((type.getKind() == ClassKind.ENUM && ((EnumTypeInfo) type).isGen()) || (type.getKind() == ClassKind.DATA_OBJECT)) {
       String baselink;
       if (coordinate == null) {
@@ -60,14 +56,14 @@ public class JPhpDocGenerator implements DocGenerator {
       }
       String adocLink;
       if (type.getKind() == ClassKind.DATA_OBJECT) {
-        adocLink = moduleName + "enums.adoc";
+        adocLink = "dataobjects.html";
       } else {
-        adocLink = moduleName + "dataobjects.adoc";
+        adocLink = "enums.html";
       }
       return baselink + adocLink + "#" + elt.getSimpleName().toString();
     } else if (type.getKind() == ClassKind.API) {
 
-      return "https://vertx.okou.tk/phpdoc/" + moduleName + "classes/" + type.getRaw().translatePackageName("jphp") + "." + type.getRaw().getSimpleName() + ".html";
+      return "../../phpdoc/classes/" + type.getRaw().translatePackageName("jphp") + "." + type.getRaw().getSimpleName() + ".html";
     }
     return null;
   }
