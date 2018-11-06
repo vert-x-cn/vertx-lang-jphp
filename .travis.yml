@@ -13,6 +13,10 @@ install:
   - sudo chmod 755 ./vertx-lang-jphp/.travis.phpdoc.sh
   - export PATH="`pwd`/vendor/bin:$PATH"
 
+cache:
+  directories:
+  - vendor
+
 jobs:
   include:
   - stage: test
