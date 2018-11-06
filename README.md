@@ -133,11 +133,11 @@ $httpServer->listen();
 - [x] 使用vertx-codegen自动生成JPHP的Wrapper类以及php的api文件
 - [x] JPHPVerticleFactory和VerticleFactory
 - [x] VertxExtension 读取jphp-vertx-extension.properties文件并注册wrapper类
-- [ ] 使用vertx-docgen自动生成对应的asciidoc文档
+- [x] 使用vertx-docgen自动生成对应的asciidoc文档
 - [ ] 测试
 
 
-#phpdoc
+# phpdoc
 
 生成phpdoc需要phpDocumentor2，使用的皮肤需要开启xsl功能并下载graphviz
 
