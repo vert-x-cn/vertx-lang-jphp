@@ -307,6 +307,11 @@ class JPhpWriter extends CodeWriter {
     renderJsonObject(model.getMembers());
   }
 
+  @Override
+  public void renderToDataObject(JsonObjectModel model, ClassTypeInfo type) {
+    model.render(this);
+  }
+
   private void renderJsonObject(Iterable<Member> members) {
     append("array(\n");
     indent();
@@ -385,6 +390,20 @@ class JPhpWriter extends CodeWriter {
   @Override
   public void renderDataObjectMemberSelect(ExpressionModel expression, String name) {
     renderJsonObjectMemberSelect(expression, Object.class, name);
+  }
+
+  @Override
+  public void renderJsonObjectSize(ExpressionModel expression) {
+    append("sizeof(");
+    expression.render(this);
+    append(")");
+  }
+
+  @Override
+  public void renderJsonArraySize(ExpressionModel expression) {
+    append("sizeof(");
+    expression.render(this);
+    append(")");
   }
 
   @Override
