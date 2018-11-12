@@ -33,7 +33,4 @@ jobs:
     script: bash .travis.deploy.artifacts.sh
 notifications:
   email:
-    recipients:recipients:
     - 512058895@qq.com
-    on_success: always
-    on_failure: always
