@@ -798,7 +798,8 @@ function testListJsonArrayReturn()
   assertEquals("blah", $arr2[0]);
 }
 
-function testListComplexJsonArrayReturn() {
+function testListComplexJsonArrayReturn()
+{
   global $tck;
   $list = $tck->methodWithListComplexJsonArrayReturn();
   assertTrue(gettype($list) === 'array');
@@ -811,7 +812,8 @@ function testListComplexJsonArrayReturn() {
   assertEquals("bye", $json2[0]["bar"]);
 }
 
-function testListVertxGenReturn() {
+function testListVertxGenReturn()
+{
   global $tck;
   $list = $tck->methodWithListVertxGenReturn();
   assertTrue(gettype($list) === 'array');
@@ -828,9 +830,10 @@ function testListVertxGenReturn() {
   assertEquals("bar", $obj2->getString());
 }
 
-function testListDataObjectReturn() {
+function testListDataObjectReturn()
+{
   global $tck;
-  $listDataObject =$tck->methodWithListDataObjectReturn();
+  $listDataObject = $tck->methodWithListDataObjectReturn();
   assertTrue(gettype($listDataObject) === 'array');
   assertTrue(gettype($listDataObject[0]) === 'object');
   assertTrue($listDataObject[0] instanceof TestDataObject);
@@ -850,15 +853,17 @@ function testListDataObjectReturn() {
   assertEquals(2.2, $listDataObject[1]->getWibble());
 }
 
-function testListEnumReturn() {
+function testListEnumReturn()
+{
   global $tck;
-  $listEnum =$tck->methodWithListEnumReturn();
+  $listEnum = $tck->methodWithListEnumReturn();
   assertTrue(gettype($listEnum) === 'array');
   assertEquals("JULIEN", $listEnum[0]);
   assertEquals("TIM", $listEnum[1]);
 }
 
-function testSetStringReturn() {
+function testSetStringReturn()
+{
   global $tck;
   $setString = $tck->methodWithSetStringReturn();
   assertTrue(gettype($setString) === 'array');
@@ -867,15 +872,17 @@ function testSetStringReturn() {
   assertEquals("wibble", $setString[2]);
 }
 
-function testSetLongReturn() {
+function testSetLongReturn()
+{
   global $tck;
-  $list =$tck->methodWithSetLongReturn();
+  $list = $tck->methodWithSetLongReturn();
   assertTrue(gettype($list) === 'array');
   assertTrue(123 === $list[0]);
   assertTrue(456 === $list[1]);
 }
 
-function testSetJsonObjectReturn() {
+function testSetJsonObjectReturn()
+{
   global $tck;
   $list = $tck->methodWithSetJsonObjectReturn();
   assertTrue(gettype($list) === 'array');
@@ -886,7 +893,8 @@ function testSetJsonObjectReturn() {
   assertEquals("eek", $obj2["blah"]);
 }
 
-function testSetComplexJsonObjectReturn() {
+function testSetComplexJsonObjectReturn()
+{
   global $tck;
   $list = $tck->methodWithSetComplexJsonObjectReturn();
   assertTrue(gettype($list) === 'array');
@@ -900,8 +908,9 @@ function testSetComplexJsonObjectReturn() {
   assertEquals("blue", $json1["list"][1]);
 }
 
-function testSetJsonArrayReturn() {
-   global $tck;
+function testSetJsonArrayReturn()
+{
+  global $tck;
   $list = $tck->methodWithSetJsonArrayReturn();
   assertTrue(gettype($list) === 'array');
   assertTrue(is_array($list));
@@ -913,7 +922,8 @@ function testSetJsonArrayReturn() {
   assertEquals("blah", $arr2[0]);
 }
 
-function testSetComplexJsonArrayReturn() {
+function testSetComplexJsonArrayReturn()
+{
   global $tck;
   $_set = $tck->methodWithSetComplexJsonArrayReturn();
   assertTrue(gettype($_set) === 'array');
@@ -926,7 +936,8 @@ function testSetComplexJsonArrayReturn() {
   assertEquals("bye", $arr2[0]["bar"]);
 }
 
-function testSetVertxGenReturn() {
+function testSetVertxGenReturn()
+{
   global $tck;
   $list = $tck->methodWithSetVertxGenReturn();
   assertTrue(gettype($list) === 'array');
@@ -943,9 +954,10 @@ function testSetVertxGenReturn() {
   assertEquals("bar", $obj2->getString());
 }
 
-function testSetDataObjectReturn() {
+function testSetDataObjectReturn()
+{
   global $tck;
-  $setDataObject =$tck->methodWithSetDataObjectReturn();
+  $setDataObject = $tck->methodWithSetDataObjectReturn();
   assertTrue(gettype($setDataObject) === 'array');
   assertTrue(gettype($setDataObject[0]) === 'object');
   assertTrue($setDataObject[0] instanceof TestDataObject);
@@ -965,18 +977,20 @@ function testSetDataObjectReturn() {
   assertEquals(2.2, $setDataObject[1]->getWibble());
 }
 
-function testSetEnumReturn() {
+function testSetEnumReturn()
+{
   global $tck;
-  $setEnum =$tck->methodWithSetEnumReturn();
+  $setEnum = $tck->methodWithSetEnumReturn();
   assertTrue(gettype($setEnum) === 'array');
   assertEquals("JULIEN", $setEnum[0]);
   assertEquals("TIM", $setEnum[1]);
 }
 
-function testMapComplexJsonArrayReturn() {
+function testMapComplexJsonArrayReturn()
+{
   global $tck;
-  $map =$tck->methodWithMapComplexJsonArrayReturn(function () {
-    });
+  $map = $tck->methodWithMapComplexJsonArrayReturn(function () {
+  });
   assertTrue(gettype($map) === 'array');
   $complex = $map["foo"];
   assertTrue(is_array($complex));
@@ -986,21 +1000,22 @@ function testMapComplexJsonArrayReturn() {
 
 function testMethodWithListParams()
 {
-  global $tck,$refedObj1,$refedObj2;
+  global $tck, $refedObj1, $refedObj2;
   $tck->methodWithListParams(["foo", "bar"], [2, 3], [12, 13], [1234, 1345], [123, 456], [array("foo" => "bar"), array("eek" => "wibble")], [["foo"], ["blah"]], [$refedObj1->setString("foo"), $refedObj2->setString("bar")], [array(
     "foo" => "String 1",
     "bar" => 1,
     "wibble" => 1.1
-  ), array("foo" => "String 2", "bar" => 2, "wibble" => 2.2)], ["JULIEN", "TIM"]);
+  ), array("foo" => "String 2", "bar" => 2, "wibble" => 2.2)], ["JULIEN", "TIM"], array("foo", 4, 3.4, true, array("wibble" => "eek"), array("one", 2)));
 }
 
-function testMethodWithSetParams() {
-  global $tck,$refedObj1,$refedObj2;
+function testMethodWithSetParams()
+{
+  global $tck, $refedObj1, $refedObj2;
   $tck->methodWithSetParams(["foo", "bar"], [2, 3], [12, 13], [1234, 1345], [123, 456], [array("foo" => "bar"), array("eek" => "wibble")], [["foo"], ["blah"]], [$refedObj1->setString("foo"), $refedObj2->setString("bar")], [array(
     "foo" => "String 1",
     "bar" => 1,
     "wibble" => 1.1
-  ), array("foo" => "String 2", "bar" => 2, "wibble" => 2.2)], ["JULIEN", "TIM"]);
+  ), array("foo" => "String 2", "bar" => 2, "wibble" => 2.2)], ["JULIEN", "TIM"], array("foo", 4, 3.4, true, array("wibble" => "eek"), array("one", 2)));
 }
 
 function testMethodWithMapParams()
@@ -1023,6 +1038,14 @@ function testMethodWithMapParams()
     array(
       "foo" => $refedObj1->setString("foo"),
       "eek" => $refedObj2->setString("bar")
+    ),
+    array(
+      "string" => "foo",
+      "integer" => 4,
+      "float" => 3.4,
+      "boolean" => true,
+      "object" => array("wibble" => "eek"),
+      "array" => array("one", 2),
     )
   );
 }
