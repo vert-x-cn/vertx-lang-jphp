@@ -312,6 +312,11 @@ class JPhpWriter extends CodeWriter {
     model.render(this);
   }
 
+  @Override
+  public void renderDataObjectToJson(IdentifierModel model) {
+    model.render(this);
+  }
+
   private void renderJsonObject(Iterable<Member> members) {
     append("array(\n");
     indent();
