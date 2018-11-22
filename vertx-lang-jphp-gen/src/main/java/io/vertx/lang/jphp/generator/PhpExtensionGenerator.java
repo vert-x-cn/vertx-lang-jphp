@@ -4,14 +4,23 @@ package io.vertx.lang.jphp.generator;
 import io.vertx.codegen.Case;
 import io.vertx.codegen.Model;
 import io.vertx.codegen.ModuleInfo;
+import io.vertx.codegen.annotations.DataObject;
+import io.vertx.codegen.annotations.ModuleGen;
+import io.vertx.codegen.annotations.VertxGen;
 import io.vertx.codegen.writer.CodeWriter;
 
+import java.lang.annotation.Annotation;
 import java.util.*;
 
 public class PhpExtensionGenerator extends PhpGenerator<Model> {
   public PhpExtensionGenerator() {
     this.kinds = new HashSet<>(Arrays.asList("class", "dataObject"));
     this.incremental = true;
+  }
+
+  @Override
+  public Collection<Class<? extends Annotation>> annotations() {
+    return Arrays.asList(ModuleGen.class, VertxGen.class, DataObject.class);
   }
 
   @Override

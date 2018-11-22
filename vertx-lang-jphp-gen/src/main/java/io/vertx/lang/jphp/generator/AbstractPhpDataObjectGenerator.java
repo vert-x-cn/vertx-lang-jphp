@@ -2,17 +2,27 @@ package io.vertx.lang.jphp.generator;
 
 import io.vertx.codegen.DataObjectModel;
 import io.vertx.codegen.PropertyInfo;
+import io.vertx.codegen.annotations.DataObject;
+import io.vertx.codegen.annotations.ModuleGen;
 import io.vertx.codegen.doc.Doc;
 import io.vertx.codegen.doc.Tag;
 import io.vertx.codegen.doc.Token;
 import io.vertx.codegen.writer.CodeWriter;
 
+import java.lang.annotation.Annotation;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 
 public abstract class AbstractPhpDataObjectGenerator extends PhpGenerator<DataObjectModel> {
   public AbstractPhpDataObjectGenerator() {
     this.kinds = Collections.singleton("dataObject");
+  }
+
+  @Override
+  public Collection<Class<? extends Annotation>> annotations() {
+    return Arrays.asList(ModuleGen.class, DataObject.class);
   }
 
   @Override

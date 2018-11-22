@@ -2,17 +2,27 @@ package io.vertx.lang.jphp.generator;
 
 import io.vertx.codegen.ClassModel;
 import io.vertx.codegen.ConstantInfo;
+import io.vertx.codegen.annotations.ModuleGen;
+import io.vertx.codegen.annotations.VertxGen;
 import io.vertx.codegen.doc.Doc;
 import io.vertx.codegen.doc.Tag;
 import io.vertx.codegen.doc.Token;
 import io.vertx.codegen.writer.CodeWriter;
 
+import java.lang.annotation.Annotation;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 
 public abstract class AbstractPhpClassGenerator extends PhpGenerator<ClassModel> {
   public AbstractPhpClassGenerator() {
     this.kinds = Collections.singleton("class");
+  }
+
+  @Override
+  public Collection<Class<? extends Annotation>> annotations() {
+    return Arrays.asList(ModuleGen.class, VertxGen.class);
   }
 
   @Override
