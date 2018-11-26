@@ -164,10 +164,10 @@ public class ApiTCKTest extends JPhpTestBase{
     runTest();
   }
 
-//  @Test
-//  public void testNullJsonParams() throws Exception {
-//    runTest();
-//  }
+  @Test
+  public void testNullJsonParams() throws Exception {
+    runTest();
+  }
 
   @Test
   public void testJsonHandlerParams() throws Exception {

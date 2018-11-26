@@ -303,9 +303,14 @@ public class PhpClassWrapperGenerator extends AbstractPhpClassGenerator {
       }
       if (!param.isNullable()) {
         writer.format("Utils.isNotNull(arg%d) && ", index);
+      } else {
+        writer.format("(Utils.isNull(arg%d) || ", index);
       }
       String typeConverter = getTypeConverter(model, param.getType());
       writer.format("%s.accept(__ENV__, arg%d)", typeConverter, index);
+      if (param.isNullable()) {
+        writer.print(")");
+      }
     }
     return sw.toString();
   }

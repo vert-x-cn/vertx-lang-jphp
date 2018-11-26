@@ -24,6 +24,10 @@ import java.util.function.Function;
 @SuppressWarnings({"unused"})
 public class Utils {
 
+  public static boolean isNull(Memory value) {
+    return value == null || value.isNull();
+  }
+
   public static boolean isNotNull(Memory value) {
     return value != null && value.isNotNull();
   }
