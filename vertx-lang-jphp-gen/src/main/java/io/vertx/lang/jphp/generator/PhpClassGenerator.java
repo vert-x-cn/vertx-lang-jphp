@@ -36,9 +36,21 @@ public class PhpClassGenerator extends AbstractPhpClassGenerator {
         addImport(model, importClassSet, param.getType());
       }
     }
+    TypeInfo concreateSuper = getSuper(model);
+    if (concreateSuper != null) {
+      addImport(model, importClassSet, concreateSuper);
+    }
     for (String importClass : importClassSet) {
       writer.format("use %s;", importClass.replace(".", "\\")).println();
     }
+  }
+  private TypeInfo getSuper(ClassModel model){
+    TypeInfo concreateSuper = model.getConcreteSuperType();
+    List<TypeInfo> superTypes = model.getSuperTypes();
+    if (concreateSuper == null && superTypes.size() == 1) {
+      concreateSuper = superTypes.get(0);
+    }
+    return concreateSuper;
   }
 
   @Override
@@ -48,7 +60,12 @@ public class PhpClassGenerator extends AbstractPhpClassGenerator {
 
   @Override
   void genClassStartTemplate(ClassModel model, CodeWriter writer) {
-    writer.format("class %s", model.getIfaceSimpleName()).println();
+    TypeInfo concreateSuper = getSuper(model);
+    writer.format("class %s", model.getIfaceSimpleName());
+    if (concreateSuper != null) {
+      writer.print(" extends " + concreateSuper.getRaw().getSimpleName());
+    }
+    writer.println();
     writer.println("{");
   }
 
