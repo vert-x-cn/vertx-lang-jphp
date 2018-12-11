@@ -42,27 +42,6 @@ abstract class PhpGenerator<M extends Model> extends Generator<M> {
     return !php ? result : result.replace(".", "\\");
   }
 
-  void addImport(M model, Set<String> importClassSet, TypeInfo typeInfo) {
-    if (typeInfo.isVariable()) {
-      return;
-    }
-    String simpleName = Helper.getSimpleName(model.getFqn());
-    if (simpleName.equals(typeInfo.getSimpleName())) {
-      return;
-    }
-    ClassKind typeKind = typeInfo.getKind();
-    String packageName = Helper.getPackageName(model.getFqn());
-    if (typeKind == ClassKind.API || typeKind == ClassKind.DATA_OBJECT) {
-      if (!typeInfo.getRaw().getPackageName().equals(packageName)) {
-        importClassSet.add(translateClassName(typeInfo));
-      }
-    } else if (typeKind == ClassKind.ENUM) {
-      importClassSet.add(typeInfo.getRaw().getPackageName() + "." + typeInfo.getRaw().getSimpleName());
-    } else if (typeKind.json) {
-      importClassSet.add(typeInfo.getRaw().getPackageName() + "." + typeInfo.getRaw().getSimpleName());
-    }
-  }
-
   final String renderJavaLinkToHtml(Tag.Link link) {
     ClassTypeInfo rawType = link.getTargetType().getRaw();
     if (rawType.getModule() != null) {
@@ -87,6 +66,27 @@ abstract class PhpGenerator<M extends Model> extends Generator<M> {
       }
     }
     return "{@link " + rawType.getName() + "}";
+  }
+
+  void addImport(M model, Set<String> importClassSet, TypeInfo typeInfo) {
+    if (typeInfo.isVariable()) {
+      return;
+    }
+    String simpleName = Helper.getSimpleName(model.getFqn());
+    if (simpleName.equals(typeInfo.getSimpleName())) {
+      return;
+    }
+    ClassKind typeKind = typeInfo.getKind();
+    String packageName = Helper.getPackageName(model.getFqn());
+    if (typeKind == ClassKind.API || typeKind == ClassKind.DATA_OBJECT) {
+      if (!typeInfo.getRaw().getPackageName().equals(packageName)) {
+        importClassSet.add(translateClassName(typeInfo));
+      }
+    } else if (typeKind == ClassKind.ENUM) {
+      importClassSet.add(typeInfo.getRaw().getPackageName() + "." + typeInfo.getRaw().getSimpleName());
+    } else if (typeKind.json) {
+      importClassSet.add(typeInfo.getRaw().getPackageName() + "." + typeInfo.getRaw().getSimpleName());
+    }
   }
 
   final String renderPhpLinkToHtml(Tag.Link link) {
@@ -153,7 +153,7 @@ abstract class PhpGenerator<M extends Model> extends Generator<M> {
     } else if (kind == MAP) {
       return Collections.singletonList("array");
     } else if (kind == OBJECT) {
-      return Collections.singletonList("object");
+      return Collections.singletonList("mixed");
     } else if (kind == HANDLER) {
       return Collections.singletonList("callable");
     } else if (kind == FUNCTION) {
