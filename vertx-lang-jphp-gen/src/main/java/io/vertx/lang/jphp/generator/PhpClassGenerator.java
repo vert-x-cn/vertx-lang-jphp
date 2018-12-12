@@ -50,7 +50,8 @@ public class PhpClassGenerator extends AbstractPhpClassGenerator {
     if (concreateSuper == null && superTypes.size() == 1) {
       concreateSuper = superTypes.get(0);
     }
-    return concreateSuper;
+//    return concreateSuper;
+    return null;
   }
 
   @Override
