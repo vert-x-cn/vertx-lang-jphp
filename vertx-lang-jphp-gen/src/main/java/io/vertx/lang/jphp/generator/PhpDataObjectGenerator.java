@@ -101,14 +101,7 @@ public class PhpDataObjectGenerator extends AbstractPhpDataObjectGenerator {
       writer.indent().println("return $this;");
       writer.unindent().println("}");
     } else {
-      writer.println("/**");
-      writer.format(" * @param $%s %s", property.getName(), join("|", getPHPDocType(property.getType(), true))).println();
-      writer.println(" * @return $this");
-      writer.println(" */");
-      writer.format("public function %s($%s)", property.getAdderMethod(), property.getName()).println();
-      writer.println("{");
-      writer.indent().println("return $this;");
-      writer.unindent().println("}");
+      genMethod(property, writer, property.getAdderMethod());
     }
   }
 
@@ -116,7 +109,7 @@ public class PhpDataObjectGenerator extends AbstractPhpDataObjectGenerator {
   void genGetterMethod(DataObjectModel model, PropertyInfo property, CodeWriter writer) {
     writer.println();
     writer.println("/**");
-    writer.format(" * @return %s", join("|", getPHPDocType(property.getType(), false))).println();
+    writer.format(" * @return %s", property.isValue() ? join("|", getPHPDocType(property.getType(), false)) : "array").println();
     writer.println(" */");
     writer.format("public function %s()", property.getGetterMethod()).println();
     writer.println("{");
@@ -127,11 +120,15 @@ public class PhpDataObjectGenerator extends AbstractPhpDataObjectGenerator {
   @Override
   void genSetterMethod(DataObjectModel model, PropertyInfo property, CodeWriter writer) {
     writer.println();
+    genMethod(property, writer, property.getSetterMethod());
+  }
+
+  private void genMethod(PropertyInfo property, CodeWriter writer, String setterMethod) {
     writer.println("/**");
     writer.format(" * @param $%s %s", property.getName(), join("|", getPHPDocType(property.getType(), true))).println();
     writer.println(" * @return $this");
     writer.println(" */");
-    writer.format("public function %s($%s)", property.getSetterMethod(), property.getName()).println();
+    writer.format("public function %s($%s)", setterMethod, property.getName()).println();
     writer.println("{");
     writer.indent().println("return $this;");
     writer.unindent().println("}");
