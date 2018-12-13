@@ -312,6 +312,11 @@
     </dependency>
     <dependency>
       <groupId>io.vertx</groupId>
+      <artifactId>vertx-tcp-eventbus-bridge</artifactId>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>io.vertx</groupId>
       <artifactId>vertx-cassandra-client</artifactId>
       <optional>true</optional>
     </dependency>
@@ -378,6 +383,7 @@
             vertx-bridge-common,
             vertx-sql-common,
             vertx-mongo-client,
+            vertx-cassandra-client,
             vertx-jdbc-client,
             vertx-auth-common,
             vertx-auth-jdbc,
@@ -421,7 +427,7 @@
             vertx-health-check,
             vertx-shell,
             vertx-micrometer-metrics,
-            vertx-cassandra-client
+            vertx-tcp-eventbus-bridge
           </includeArtifactIds>
           <classifier>sources</classifier>
           <includeTypes>jar</includeTypes>
