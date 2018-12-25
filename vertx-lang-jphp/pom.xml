@@ -6,7 +6,7 @@
     <groupId>tk.okou</groupId>
     <!--<groupId>io.vertx</groupId>-->
     <artifactId>vertx-lang-jphp-parent</artifactId>
-    <version>3.6.1-SNAPSHOT</version>
+    <version>3.6.1</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
   <modelVersion>4.0.0</modelVersion>
@@ -347,14 +347,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
-        <executions>
-          <execution>
-            <phase>install</phase>
-            <goals>
-              <goal>jar-no-fork</goal>
-            </goals>
-          </execution>
-        </executions>
         <configuration>
           <excludes>
             <exclude>**/*.php</exclude>

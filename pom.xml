@@ -11,7 +11,7 @@
 
   <groupId>tk.okou</groupId>
   <artifactId>vertx-lang-jphp-parent</artifactId>
-  <version>3.6.1-SNAPSHOT</version>
+  <version>3.6.1</version>
   <packaging>pom</packaging>
 
   <name>Vert.x JPHP Language Support</name>
@@ -55,7 +55,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <junit.version>4.12</junit.version>
     <kotlin.version>1.2.50</kotlin.version>
-    <stack.version>3.6.1-SNAPSHOT</stack.version>
+    <stack.version>3.6.1</stack.version>
     <totalPHP>E:/okou/test/php/src</totalPHP>
     <generated-dir>${project.basedir}/src/main/generated/</generated-dir>
     <maven.compiler.source>1.8</maven.compiler.source>
@@ -86,6 +86,24 @@
       <artifactId>vertx-core</artifactId>
     </dependency>
   </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-gpg-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>sign-artifacts</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>sign</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 
   <profiles>
     <!-- Use -Pdocs -->
