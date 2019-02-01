@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/vert-x-cn/vertx-lang-jphp.svg?branch=3.6)](https://travis-ci.org/vert-x-cn/vertx-lang-jphp)
 [![vertx-lang-jphp](https://img.shields.io/badge/vert.x3-jphp-blue.svg)](https://github.com/vert-x-cn/vertx-lang-jphp)
-[![Sonatype Nexus (Snapshots)](https://img.shields.io/nexus/snapshots/https/oss.sonatype.org/tk.okou/vertx-lang-jphp.svg)](https://oss.sonatype.org/#nexus-search;gav~tk.okou~vertx-lang-jphp~3.6.3~~)
+[![Sonatype Nexus (Snapshots)](https://img.shields.io/nexus/snapshots/https/oss.sonatype.org/tk.okou/vertx-lang-jphp.svg)](https://oss.sonatype.org/#nexus-search;gav~tk.okou~vertx-lang-jphp~3.6.4-SNAPSHOT~~)
 [![license](https://img.shields.io/github/license/vert-x-cn/vertx-lang-jphp.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 
 
@@ -16,14 +16,14 @@ Maven配置 / Maven pom.xml:
 <dependency>
   <groupId>tk.okou</groupId>
   <artifactId>vertx-lang-jphp</artifactId>
-  <version>3.6.3</version>
+  <version>3.6.4-SNAPSHOT</version>
 </dependency>
 ```
 
 Gradle配置 / Gradle build.gradle file:
 ```groovy
 dependencies {
-  compile 'tk.okou:vertx-lang-jphp:3.6.3'
+  compile 'tk.okou:vertx-lang-jphp:3.6.4-SNAPSHOT'
 }
 ```
 
