@@ -26,7 +26,6 @@ abstract class PhpGenerator<M extends Model> extends Generator<M> {
     StringWriter buffer = new StringWriter();
     CodeWriter writer = new CodeWriter(buffer);
     writer.indentSize(2);
-    genLicense(writer);
     render(model, index, size, session, writer);
     return buffer.toString();
   }
@@ -312,10 +311,12 @@ abstract class PhpGenerator<M extends Model> extends Generator<M> {
   }
 
   final void genJavaPackage(CodeWriter writer, String packageOrNamespace){
+    genLicense(writer);
     writer.format("package %s;", packageOrNamespace).println();
   }
   final void genPhpNamespace(CodeWriter writer, String packageOrNamespace){
     writer.println("<?php /** @noinspection ALL */");
+    genLicense(writer);
     writer.format("namespace %s;", packageOrNamespace.replace(".", "\\")).println();
   }
 
