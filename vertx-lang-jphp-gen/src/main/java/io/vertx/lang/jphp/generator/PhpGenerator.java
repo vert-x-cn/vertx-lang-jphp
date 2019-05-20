@@ -193,6 +193,38 @@ abstract class PhpGenerator<M extends Model> extends Generator<M> {
     typeConverterMap.put("Void", "VOID");
   }
 
+  private String getVariable(List<TypeInfo> args) {
+    StringBuilder typeParamInfo = new StringBuilder();
+    boolean first = true;
+    for (TypeInfo arg : args) {
+      if (!first) {
+        typeParamInfo.append(", ");
+      } else {
+        first = false;
+      }
+      if (arg.isVariable()) {
+        TypeVariableInfo variable = (TypeVariableInfo) arg;
+        if (variable.getParam().isClass()) {
+          typeParamInfo.append(arg.getName());
+        } else {
+          typeParamInfo.append("Object");
+        }
+      } else {
+        ClassKind argKind = arg.getKind();
+        if (argKind == API || argKind == DATA_OBJECT) {
+          typeParamInfo.append(arg.getRaw().getName());
+          if (arg.isParameterized()) {
+            String result = getVariable(((ParameterizedTypeInfo)arg).getArgs());
+            typeParamInfo.append(result.equals("") ? "" : "<" + result + ">");
+          }
+        } else {
+          typeParamInfo.append(arg.getRaw().getSimpleName());
+        }
+      }
+    }
+    return typeParamInfo.toString();
+  }
+
   final String getTypeConverter(M model, TypeInfo typeInfo) {
     ClassKind typeKind = typeInfo.getKind();
 //    String simpleName = typeInfo.getRaw().getSimpleName();
@@ -221,33 +253,10 @@ abstract class PhpGenerator<M extends Model> extends Generator<M> {
     } else if (typeKind == API) {
       List<TypeInfo> args = typeInfo.isParameterized() ? ((ParameterizedTypeInfo) typeInfo).getArgs() : Collections.emptyList();
       StringBuilder returnInfo = new StringBuilder("VertxGenVariable0Converter.<");
-      StringBuilder typeParamInfo = new StringBuilder();
-      boolean first = true;
-      for (TypeInfo arg : args) {
-        if (!first) {
-          typeParamInfo.append(", ");
-        } else {
-          first = false;
-        }
-        if (arg.isVariable()) {
-          TypeVariableInfo variable = (TypeVariableInfo) arg;
-          if (variable.getParam().isClass()) {
-            typeParamInfo.append(arg.getName());
-          } else {
-            typeParamInfo.append("Object");
-          }
-        } else {
-          ClassKind argKind = arg.getKind();
-          if (argKind == API || argKind == DATA_OBJECT) {
-            typeParamInfo.append(arg.getRaw().getName());
-          } else {
-            typeParamInfo.append(arg.getRaw().getSimpleName());
-          }
-        }
-      }
-      String typeParamInfo2 = (typeParamInfo.toString().equals("")) ? "" : ("<" + typeParamInfo + ">");
+      String typeParamInfo = getVariable(args);
+      String typeParamInfo2 = (typeParamInfo.equals("")) ? "" : ("<" + typeParamInfo + ">");
       returnInfo.append(typeInfo.getRaw().getName()).append(typeParamInfo2).append(", ").append(typeInfo.getRaw().getSimpleName()).append(typeParamInfo2);
-      returnInfo.append(typeParamInfo.toString().equals("") ? "" : ", ");
+      returnInfo.append(typeParamInfo.equals("") ? "" : ", ");
       returnInfo.append(typeParamInfo);
       returnInfo.append(">create").append(args.size()).append("(").append(typeInfo.getRaw().getName()).append(".class, ").append(typeInfo.getRaw().getSimpleName()).append("::__create");
       for (TypeInfo arg : args) {
@@ -257,6 +266,7 @@ abstract class PhpGenerator<M extends Model> extends Generator<M> {
     } else if (typeInfo.isVariable() && ((TypeVariableInfo) typeInfo).getParam().isClass()) {
       return getConverterMethodName(model, "get", typeInfo.getName()) + "()";
     } else if (typeKind == HANDLER){
+      //FIXME 测试一下Handler不写泛型时的情况
       ParameterizedTypeInfo type = (ParameterizedTypeInfo) typeInfo;
       TypeInfo arg = type.getArg(0);
       if (arg.getKind() == ASYNC_RESULT) {
@@ -276,7 +286,7 @@ abstract class PhpGenerator<M extends Model> extends Generator<M> {
       if (typeInfo.getName().equals(Instant.class.getName())) {
         return "TypeConverter.INSTANT";
       }
-      return "TypeConverter.UNKNOWN_TYPE";
+      return "TypeConverter.createUnknownType()";
     }
   }
 
