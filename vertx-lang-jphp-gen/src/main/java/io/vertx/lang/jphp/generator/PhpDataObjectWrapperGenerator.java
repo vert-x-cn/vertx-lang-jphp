@@ -162,10 +162,16 @@ public class PhpDataObjectWrapperGenerator extends AbstractPhpDataObjectGenerato
     writer.unindent().println("}");
   }
 
+  private boolean isKeyword(String name) {
+    return name.equals("default");
+  }
+
   @Override
   void genSetterMethod(DataObjectModel model, PropertyInfo property, CodeWriter writer) {
     String method = property.getSetterMethod();
     String propertyName = property.getName();
+    propertyName = isKeyword(propertyName) ? "value" : propertyName;
+
     boolean basic = property.getKind().isValue() && property.getType().getKind().basic;
     writer.println("@Signature");
     writer.format("public Memory %s(Environment __ENV__, %s %s) {", method, basic ? property.getType().getSimpleName() : "Memory", propertyName).println();

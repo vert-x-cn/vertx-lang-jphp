@@ -34,6 +34,25 @@ public interface TypeConverter<T> {
 
   Memory convReturnNotNull(Environment env, T value);
 
+  static <T> TypeConverter<T> createUnknownType() {
+    return new TypeConverter<T>() {
+      @Override
+      public boolean accept(Environment env, Memory value) {
+        return true;
+      }
+
+      @SuppressWarnings("unchecked")
+      @Override
+      public T convParamNotNull(Environment env, Memory value) {
+        return (T) TypeConverter.UNKNOWN_TYPE.convParamNotNull(env, value);
+      }
+
+      @Override
+      public Memory convReturnNotNull(Environment env, T value) {
+        return TypeConverter.UNKNOWN_TYPE.convReturnNotNull(env, value);
+      }
+    };
+  }
   TypeConverter<Object> UNKNOWN_TYPE = new TypeConverter<Object>() {
     @Override
     public boolean accept(Environment env, Memory value) {
