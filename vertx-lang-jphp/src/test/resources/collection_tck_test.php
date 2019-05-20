@@ -728,6 +728,35 @@ function testMapJsonArrayReturn()
   assertEquals("wibble", $arr[0]);
 }
 
+function testMapVertxGenReturn()
+{
+  global $tck;
+  $map = $tck->methodWithMapVertxGenReturn(function () {
+  });
+  assertTrue(gettype($map) === 'array');
+  $obj = $map["foo"];
+  assertTrue(gettype($obj) === 'object');
+  /** @noinspection PhpUndefinedMethodInspection */
+  assertEquals("foo", $obj->getString());
+}
+function testMapDataObjectReturn()
+{
+  global $tck;
+  $map = $tck->methodWithMapDataObjectReturn(function () {
+  });
+  assertTrue(gettype($map) === 'array');
+  $obj = $map["foo"];
+  /** @noinspection PhpUndefinedMethodInspection */
+  assertEquals("String 1", $obj->getFoo());
+}
+function testMapEnumReturn()
+{
+  global $tck;
+  $map = $tck->methodWithMapEnumReturn(function () {
+  });
+  assertTrue(gettype($map) === 'array');
+  assertEquals("JULIEN", $map["foo"]);
+}
 function testMapLongReturn()
 {
   global $tck;
@@ -1038,6 +1067,16 @@ function testMethodWithMapParams()
     array(
       "foo" => $refedObj1->setString("foo"),
       "eek" => $refedObj2->setString("bar")
+    ),
+    array(
+      "foo" => array(
+        "foo" => "String 1",
+        "bar" => 1,
+        "wibble" => 1.1,
+      ),
+    ),
+    array(
+      "foo" => "JULIEN",
     ),
     array(
       "string" => "foo",

@@ -194,6 +194,18 @@ public class CollectionTCKTest extends JPhpTestBase{
   }
 
   @Test
+  public void testMapVertxGenReturn() throws Exception {
+    runTest();
+  }
+  @Test
+  public void testMapDataObjectReturn() throws Exception {
+    runTest();
+  }
+  @Test
+  public void testMapEnumReturn() throws Exception {
+    runTest();
+  }
+  @Test
   public void testMapLongReturn() throws Exception {
     runTest();
   }
