@@ -311,10 +311,30 @@ abstract class PhpGenerator<M extends Model> extends Generator<M> {
   }
 
   final void genJavaPackage(CodeWriter writer, String packageOrNamespace){
+    genLicense(writer);
     writer.format("package %s;", packageOrNamespace).println();
   }
   final void genPhpNamespace(CodeWriter writer, String packageOrNamespace){
     writer.println("<?php /** @noinspection ALL */");
+    genLicense(writer);
     writer.format("namespace %s;", packageOrNamespace.replace(".", "\\")).println();
+  }
+
+  private void genLicense(CodeWriter writer) {
+    writer.println("/*");
+    writer.println(" * Copyright (c) 2019 The vertx-lang-jphp-gen Project");
+    writer.println(" *");
+    writer.println(" * Licensed under the Apache License, version 2.0 (the \"License\");");
+    writer.println(" * you may not use this file except in compliance with the License.");
+    writer.println(" * You may obtain a copy of the License at:");
+    writer.println(" *");
+    writer.println(" *   http://www.apache.org/licenses/LICENSE-2.0");
+    writer.println(" *");
+    writer.println(" * Unless required by applicable law or agreed to in writing, software");
+    writer.println(" * distributed under the License is distributed on an \"AS IS\" BASIS,");
+    writer.println(" * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.");
+    writer.println(" * See the License for the specific language governing permissions and");
+    writer.println(" * limitations under the License.");
+    writer.println(" */");
   }
 }
