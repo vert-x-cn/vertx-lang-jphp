@@ -16,7 +16,7 @@
 
   <name>Vert.x JPHP Language Support</name>
   <description>Vert.x PHP Implementation</description>
-  <url>https://github.com/okou19900722/vertx-lang-jphp</url>
+  <url>https://github.com/vert-x-cn/vertx-lang-jphp</url>
 
   <licenses>
     <license>
@@ -32,9 +32,9 @@
   </licenses>
 
   <scm>
-    <connection>scm:git:git@github.com:okou19900722/vertx-lang-jphp.git</connection>
-    <developerConnection>scm:git:git@github.com:okou19900722/vertx-lang-jphp.git</developerConnection>
-    <url>git@github.com:okou19900722/vertx-lang-jphp.git</url>
+    <connection>scm:git:git@github.com:vert-x-cn/vertx-lang-jphp.git</connection>
+    <developerConnection>scm:git:git@github.com:vert-x-cn/vertx-lang-jphp.git</developerConnection>
+    <url>git@github.com:vert-x-cn/vertx-lang-jphp.git</url>
   </scm>
   <developers>
     <developer>
