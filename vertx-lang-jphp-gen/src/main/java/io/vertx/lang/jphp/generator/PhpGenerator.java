@@ -244,12 +244,12 @@ abstract class PhpGenerator<M extends Model> extends Generator<M> {
       String caseEndInfo = "";
       if (typeKind != MAP) {
         containerType = type.getArg(0);
-        caseStartInfo = "((TypeConverter<" + typeInfo.getRaw().getSimpleName() + "<" + containerType.getRaw().getName() + ">>)";
+        caseStartInfo = "((TypeConverter<" + typeInfo.getRaw().getSimpleName() + "<" + (containerType.isVariable() ? "Object" : containerType.getRaw().getName()) + ">>)";
         caseEndInfo = ")";
       } else {
         containerType = type.getArg(1);
       }
-      return caseStartInfo + "ContainerConverter.<" + containerType.getRaw().getName() + ">create" + typeInfo.getRaw().getSimpleName() + "Converter(" + getTypeConverter(model, containerType) + ")" + caseEndInfo;
+      return caseStartInfo + "ContainerConverter.<" + (containerType.isVariable() ? "Object" : containerType.getRaw().getName()) + ">create" + typeInfo.getRaw().getSimpleName() + "Converter(" + getTypeConverter(model, containerType) + ")" + caseEndInfo;
     } else if (typeKind == API) {
       List<TypeInfo> args = typeInfo.isParameterized() ? ((ParameterizedTypeInfo) typeInfo).getArgs() : Collections.emptyList();
       StringBuilder returnInfo = new StringBuilder("VertxGenVariable0Converter.<");
