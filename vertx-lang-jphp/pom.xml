@@ -312,6 +312,21 @@
     </dependency>
     <dependency>
       <groupId>io.vertx</groupId>
+      <artifactId>vertx-sql-client</artifactId>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>io.vertx</groupId>
+      <artifactId>vertx-pg-client</artifactId>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>io.vertx</groupId>
+      <artifactId>vertx-mysql-client</artifactId>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>io.vertx</groupId>
       <artifactId>vertx-mysql-postgresql-client</artifactId>
       <optional>true</optional>
     </dependency>
@@ -418,6 +433,9 @@
             vertx-config,
             vertx-amqp-bridge,
             vertx-kafka-client,
+            vertx-sql-client,
+            vertx-pg-client,
+            vertx-mysql-client,
             vertx-mqtt,
             vertx-mysql-postgresql-client,
             vertx-rabbitmq-client,
