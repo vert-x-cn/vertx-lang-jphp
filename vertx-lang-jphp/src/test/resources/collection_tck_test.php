@@ -1,7 +1,7 @@
 <?php
 
 use io\vertx\jphp\test\lang\jphp\TCKUtils;
-use io\vertx\jphp\codegen\testmodel\TestDataObject;
+//use io\vertx\jphp\codegen\testmodel\TestDataObject;
 use io\vertx\jphp\codegen\testmodel\RefedInterface1;
 
 $tck = TCKUtils::createCollectionTCK();
@@ -508,22 +508,16 @@ function testMethodWithHandlerListDataObject()
   $count = 0;
   $tck->methodWithHandlerAsyncResultListDataObject(function ($listDataObject) use (&$count) {
     assertTrue(gettype($listDataObject) === 'array');
-    assertTrue(gettype($listDataObject[0]) === 'object');
-    assertTrue($listDataObject[0] instanceof TestDataObject);
-    /** @noinspection PhpUndefinedMethodInspection */
-    assertEquals("String 1", $listDataObject[0]->getFoo());
-    /** @noinspection PhpUndefinedMethodInspection */
-    assertEquals(1, $listDataObject[0]->getBar());
-    /** @noinspection PhpUndefinedMethodInspection */
-    assertEquals(1.1, $listDataObject[0]->getWibble());
-    assertTrue(gettype($listDataObject[1]) === 'object');
-    assertTrue($listDataObject[1] instanceof TestDataObject);
-    /** @noinspection PhpUndefinedMethodInspection */
-    assertEquals("String 2", $listDataObject[1]->getFoo());
-    /** @noinspection PhpUndefinedMethodInspection */
-    assertEquals(2, $listDataObject[1]->getBar());
-    /** @noinspection PhpUndefinedMethodInspection */
-    assertEquals(2.2, $listDataObject[1]->getWibble());
+    assertTrue(gettype($listDataObject[0]) === 'array');
+//    assertTrue($listDataObject[0] instanceof TestDataObject);
+    assertEquals("String 1", $listDataObject[0]["foo"]);
+    assertEquals(1, $listDataObject[0]["bar"]);
+    assertEquals(1.1, $listDataObject[0]["wibble"]);
+    assertTrue(gettype($listDataObject[1]) === 'array');
+//    assertTrue($listDataObject[1] instanceof TestDataObject);
+    assertEquals("String 2", $listDataObject[1]["foo"]);
+    assertEquals(2, $listDataObject[1]["bar"]);
+    assertEquals(2.2, $listDataObject[1]["wibble"]);
     $count++;
   });
   assertEquals(1, $count);
@@ -535,22 +529,16 @@ function testMethodWithHandlerSetDataObject()
   $count = 0;
   $tck->methodWithHandlerAsyncResultSetDataObject(function ($setDataObject) use (&$count) {
     assertTrue(gettype($setDataObject) === 'array');
-    assertTrue(gettype($setDataObject[0]) === 'object');
-    assertTrue($setDataObject[0] instanceof TestDataObject);
-    /** @noinspection PhpUndefinedMethodInspection */
-    assertEquals("String 1", $setDataObject[0]->getFoo());
-    /** @noinspection PhpUndefinedMethodInspection */
-    assertEquals(1, $setDataObject[0]->getBar());
-    /** @noinspection PhpUndefinedMethodInspection */
-    assertEquals(1.1, $setDataObject[0]->getWibble());
-    assertTrue(gettype($setDataObject[1]) === 'object');
-    assertTrue($setDataObject[1] instanceof TestDataObject);
-    /** @noinspection PhpUndefinedMethodInspection */
-    assertEquals("String 2", $setDataObject[1]->getFoo());
-    /** @noinspection PhpUndefinedMethodInspection */
-    assertEquals(2, $setDataObject[1]->getBar());
-    /** @noinspection PhpUndefinedMethodInspection */
-    assertEquals(2.2, $setDataObject[1]->getWibble());
+    assertTrue(gettype($setDataObject[0]) === 'array');
+//    assertTrue($setDataObject[0] instanceof TestDataObject);
+    assertEquals("String 1", $setDataObject[0]["foo"]);
+    assertEquals(1, $setDataObject[0]["bar"]);
+    assertEquals(1.1, $setDataObject[0]["wibble"]);
+    assertTrue(gettype($setDataObject[1]) === 'array');
+//    assertTrue($setDataObject[1] instanceof TestDataObject);
+    assertEquals("String 2", $setDataObject[1]["foo"]);
+    assertEquals(2, $setDataObject[1]["bar"]);
+    assertEquals(2.2, $setDataObject[1]["wibble"]);
     $count++;
   });
   assertEquals(1, $count);
@@ -563,22 +551,16 @@ function testMethodWithHandlerAsyncResultListDataObject()
   $tck->methodWithHandlerAsyncResultListDataObject(function ($listDataObject, $err) use (&$count) {
     assertNull($err);
     assertTrue(gettype($listDataObject) === 'array');
-    assertTrue(gettype($listDataObject[0]) === 'object');
-    assertTrue($listDataObject[0] instanceof TestDataObject);
-    /** @noinspection PhpUndefinedMethodInspection */
-    assertEquals("String 1", $listDataObject[0]->getFoo());
-    /** @noinspection PhpUndefinedMethodInspection */
-    assertEquals(1, $listDataObject[0]->getBar());
-    /** @noinspection PhpUndefinedMethodInspection */
-    assertEquals(1.1, $listDataObject[0]->getWibble());
-    assertTrue(gettype($listDataObject[1]) === 'object');
-    assertTrue($listDataObject[1] instanceof TestDataObject);
-    /** @noinspection PhpUndefinedMethodInspection */
-    assertEquals("String 2", $listDataObject[1]->getFoo());
-    /** @noinspection PhpUndefinedMethodInspection */
-    assertEquals(2, $listDataObject[1]->getBar());
-    /** @noinspection PhpUndefinedMethodInspection */
-    assertEquals(2.2, $listDataObject[1]->getWibble());
+    assertTrue(gettype($listDataObject[0]) === 'array');
+//    assertTrue($listDataObject[0] instanceof TestDataObject);
+    assertEquals("String 1", $listDataObject[0]["foo"]);
+    assertEquals(1, $listDataObject[0]["bar"]);
+    assertEquals(1.1, $listDataObject[0]["wibble"]);
+    assertTrue(gettype($listDataObject[1]) === 'array');
+//    assertTrue($listDataObject[1] instanceof TestDataObject);
+    assertEquals("String 2", $listDataObject[1]["foo"]);
+    assertEquals(2, $listDataObject[1]["bar"]);
+    assertEquals(2.2, $listDataObject[1]["wibble"]);
     $count++;
   });
   assertEquals(1, $count);
@@ -591,22 +573,16 @@ function testMethodWithHandlerAsyncResultSetDataObject()
   $tck->methodWithHandlerAsyncResultSetDataObject(function ($setDataObject, $err) use (&$count) {
     assertNull($err);
     assertTrue(gettype($setDataObject) === 'array');
-    assertTrue(gettype($setDataObject[0]) === 'object');
-    assertTrue($setDataObject[0] instanceof TestDataObject);
-    /** @noinspection PhpUndefinedMethodInspection */
-    assertEquals("String 1", $setDataObject[0]->getFoo());
-    /** @noinspection PhpUndefinedMethodInspection */
-    assertEquals(1, $setDataObject[0]->getBar());
-    /** @noinspection PhpUndefinedMethodInspection */
-    assertEquals(1.1, $setDataObject[0]->getWibble());
-    assertTrue(gettype($setDataObject[1]) === 'object');
-    assertTrue($setDataObject[1] instanceof TestDataObject);
-    /** @noinspection PhpUndefinedMethodInspection */
-    assertEquals("String 2", $setDataObject[1]->getFoo());
-    /** @noinspection PhpUndefinedMethodInspection */
-    assertEquals(2, $setDataObject[1]->getBar());
-    /** @noinspection PhpUndefinedMethodInspection */
-    assertEquals(2.2, $setDataObject[1]->getWibble());
+    assertTrue(gettype($setDataObject[0]) === 'array');
+//    assertTrue($setDataObject[0] instanceof TestDataObject);
+    assertEquals("String 1", $setDataObject[0]["foo"]);
+    assertEquals(1, $setDataObject[0]["bar"]);
+    assertEquals(1.1, $setDataObject[0]["wibble"]);
+    assertTrue(gettype($setDataObject[1]) === 'array');
+//    assertTrue($setDataObject[1] instanceof TestDataObject);
+    assertEquals("String 2", $setDataObject[1]["foo"]);
+    assertEquals(2, $setDataObject[1]["bar"]);
+    assertEquals(2.2, $setDataObject[1]["wibble"]);
     $count++;
   });
   assertEquals(1, $count);
@@ -746,8 +722,7 @@ function testMapDataObjectReturn()
   });
   assertTrue(gettype($map) === 'array');
   $obj = $map["foo"];
-  /** @noinspection PhpUndefinedMethodInspection */
-  assertEquals("String 1", $obj->getFoo());
+  assertEquals("String 1", $obj["foo"]);
 }
 function testMapEnumReturn()
 {
@@ -864,22 +839,16 @@ function testListDataObjectReturn()
   global $tck;
   $listDataObject = $tck->methodWithListDataObjectReturn();
   assertTrue(gettype($listDataObject) === 'array');
-  assertTrue(gettype($listDataObject[0]) === 'object');
-  assertTrue($listDataObject[0] instanceof TestDataObject);
-  /** @noinspection PhpUndefinedMethodInspection */
-  assertEquals("String 1", $listDataObject[0]->getFoo());
-  /** @noinspection PhpUndefinedMethodInspection */
-  assertEquals(1, $listDataObject[0]->getBar());
-  /** @noinspection PhpUndefinedMethodInspection */
-  assertEquals(1.1, $listDataObject[0]->getWibble());
-  assertTrue(gettype($listDataObject[1]) === 'object');
-  assertTrue($listDataObject[1] instanceof TestDataObject);
-  /** @noinspection PhpUndefinedMethodInspection */
-  assertEquals("String 2", $listDataObject[1]->getFoo());
-  /** @noinspection PhpUndefinedMethodInspection */
-  assertEquals(2, $listDataObject[1]->getBar());
-  /** @noinspection PhpUndefinedMethodInspection */
-  assertEquals(2.2, $listDataObject[1]->getWibble());
+  assertTrue(gettype($listDataObject[0]) === 'array');
+//  assertTrue($listDataObject[0] instanceof TestDataObject);
+  assertEquals("String 1", $listDataObject[0]["foo"]);
+  assertEquals(1, $listDataObject[0]["bar"]);
+  assertEquals(1.1, $listDataObject[0]["wibble"]);
+  assertTrue(gettype($listDataObject[1]) === 'array');
+//  assertTrue($listDataObject[1] instanceof TestDataObject);
+  assertEquals("String 2", $listDataObject[1]["foo"]);
+  assertEquals(2, $listDataObject[1]["bar"]);
+  assertEquals(2.2, $listDataObject[1]["wibble"]);
 }
 
 function testListEnumReturn()
@@ -988,22 +957,16 @@ function testSetDataObjectReturn()
   global $tck;
   $setDataObject = $tck->methodWithSetDataObjectReturn();
   assertTrue(gettype($setDataObject) === 'array');
-  assertTrue(gettype($setDataObject[0]) === 'object');
-  assertTrue($setDataObject[0] instanceof TestDataObject);
-  /** @noinspection PhpUndefinedMethodInspection */
-  assertEquals("String 1", $setDataObject[0]->getFoo());
-  /** @noinspection PhpUndefinedMethodInspection */
-  assertEquals(1, $setDataObject[0]->getBar());
-  /** @noinspection PhpUndefinedMethodInspection */
-  assertEquals(1.1, $setDataObject[0]->getWibble());
-  assertTrue(gettype($setDataObject[1]) === 'object');
-  assertTrue($setDataObject[1] instanceof TestDataObject);
-  /** @noinspection PhpUndefinedMethodInspection */
-  assertEquals("String 2", $setDataObject[1]->getFoo());
-  /** @noinspection PhpUndefinedMethodInspection */
-  assertEquals(2, $setDataObject[1]->getBar());
-  /** @noinspection PhpUndefinedMethodInspection */
-  assertEquals(2.2, $setDataObject[1]->getWibble());
+  assertTrue(gettype($setDataObject[0]) === 'array');
+//  assertTrue($setDataObject[0] instanceof TestDataObject);
+  assertEquals("String 1", $setDataObject[0]["foo"]);
+  assertEquals(1, $setDataObject[0]["bar"]);
+  assertEquals(1.1, $setDataObject[0]["wibble"]);
+  assertTrue(gettype($setDataObject[1]) === 'array');
+//  assertTrue($setDataObject[1] instanceof TestDataObject);
+  assertEquals("String 2", $setDataObject[1]["foo"]);
+  assertEquals(2, $setDataObject[1]["bar"]);
+  assertEquals(2.2, $setDataObject[1]["wibble"]);
 }
 
 function testSetEnumReturn()

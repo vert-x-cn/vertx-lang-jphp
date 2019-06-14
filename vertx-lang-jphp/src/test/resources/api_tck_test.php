@@ -401,13 +401,10 @@ function testMethodWithHandlerDataObject()
   $count = 0;
 
   $obj->methodWithHandlerDataObject(function ($option) use (&$count) {
-    assertTrue(gettype($option) === 'object');
-    /** @noinspection PhpUndefinedMethodInspection */
-    assertEquals("foo", $option->getFoo());
-    /** @noinspection PhpUndefinedMethodInspection */
-    assertEquals(123, $option->getBar());
-    /** @noinspection PhpUndefinedMethodInspection */
-    assertEquals(0.0, $option->getWibble());
+    assertTrue(gettype($option) === 'array');
+    assertEquals("foo", $option["foo"]);
+    assertEquals(123, $option["bar"]);
+    assertEquals(0.0, $option["wibble"]);
     $count++;
   });
   assertEquals(1, $count);
@@ -419,13 +416,10 @@ function testMethodWithHandlerAsyncResultDataObject()
   global $obj;
   $obj->methodWithHandlerAsyncResultDataObject(false, function ($option, $err) use (&$count) {
     assertNull($err);
-    assertTrue(gettype($option) === 'object');
-    /** @noinspection PhpUndefinedMethodInspection */
-    assertEquals("foo", $option->getFoo());
-    /** @noinspection PhpUndefinedMethodInspection */
-    assertEquals(123, $option->getBar());
-    /** @noinspection PhpUndefinedMethodInspection */
-    assertEquals(0.0, $option->getWibble());
+    assertTrue(gettype($option) === 'array');
+    assertEquals("foo", $option["foo"]);
+    assertEquals(123, $option["bar"]);
+    assertEquals(0.0, $option["wibble"]);
     $count++;
   });
   assertEquals(1, $count);
@@ -828,10 +822,10 @@ function testDataObjectReturn()
 {
   global $obj;
   $ret = $obj->methodWithDataObjectReturn();
-  assertTrue(gettype($ret) === 'object');
-  assertEquals("foo", $ret->getFoo());
-  assertEquals(123, $ret->getBar());
-  assertEquals(0.0, $ret->getWibble());
+  assertTrue(gettype($ret) === 'array');
+  assertEquals("foo", $ret["foo"]);
+  assertEquals(123, $ret["bar"]);
+  assertEquals(0.0, $ret["wibble"]);
 }
 
 function testDataObjectNullReturn()

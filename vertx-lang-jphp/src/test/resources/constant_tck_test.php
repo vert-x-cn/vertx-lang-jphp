@@ -23,10 +23,10 @@ function testVertxGen() {
 
 function testDataObject() {
   $ret = ConstantTCK::DATA_OBJECT;
-  assertTrue(gettype($ret) === 'object');
-  assertEquals("foo", $ret->getFoo());
-  assertEquals(123, $ret->getBar());
-  assertEquals(0.0, $ret->getWibble());
+  assertTrue(gettype($ret) === 'array');
+  assertEquals("foo", $ret["foo"]);
+  assertEquals(123, $ret["bar"]);
+  assertEquals(0.0, $ret['wibble']);
 }
 
 function testJson() {
@@ -86,10 +86,8 @@ function testList() {
   assertEquals(sizeof($jsonArrayList[0]), 2);
   $dataObjectList = ConstantTCK::DATA_OBJECT_LIST;
   checkArray($dataObjectList);
-  /** @noinspection PhpUndefinedMethodInspection */
-  assertEquals($dataObjectList[0]->getFoo(), 'foo');
-  /** @noinspection PhpUndefinedMethodInspection */
-  assertEquals($dataObjectList[0]->getBar(), 123);
+  assertEquals($dataObjectList[0]["foo"], 'foo');
+  assertEquals($dataObjectList[0]["bar"], 123);
   $enumList = ConstantTCK::ENUM_LIST;
   checkArray($enumList);
   assertEquals($enumList[0], 'JULIEN');
@@ -114,10 +112,8 @@ function testSet() {
 
   $dataObjectSet = ConstantTCK::DATA_OBJECT_SET;
   checkArray($dataObjectSet);
-  /** @noinspection PhpUndefinedMethodInspection */
-  assertEquals($dataObjectSet[0]->getFoo(), 'foo');
-  /** @noinspection PhpUndefinedMethodInspection */
-  assertEquals($dataObjectSet[0]->getBar(), 123);
+  assertEquals($dataObjectSet[0]["foo"], 'foo');
+  assertEquals($dataObjectSet[0]["bar"], 123);
   $enumSet = ConstantTCK::ENUM_SET;
   checkArray($enumSet);
   assertEquals($enumSet[0], 'JULIEN');
