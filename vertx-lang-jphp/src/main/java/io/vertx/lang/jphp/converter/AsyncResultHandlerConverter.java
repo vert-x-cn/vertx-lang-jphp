@@ -2,6 +2,7 @@ package io.vertx.lang.jphp.converter;
 
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
+import io.vertx.lang.jphp.Utils;
 import php.runtime.Memory;
 import php.runtime.env.Environment;
 import php.runtime.memory.ArrayMemory;
@@ -18,22 +19,7 @@ public class AsyncResultHandlerConverter<E> implements TypeConverter<Handler<Asy
 
   @Override
   public Handler<AsyncResult<E>> convParamNotNull(Environment env, Memory value) {
-    return (event) -> {
-      try {
-        Memory result;
-        Memory cause;
-        if (event.succeeded()) {
-          result = resultConverter.convReturn(env, event.result());
-          cause = Memory.NULL;
-        } else {
-          result = Memory.NULL;
-          cause = TypeConverter.THROWABLE.convReturn(env, event.cause());
-        }
-        value.toInvoker(env).call(result, cause);
-      } catch (Throwable throwable) {
-        throwable.printStackTrace();
-      }
-    };
+    return Utils.convParamHandlerAsyncResult(env, resultConverter, value);
   }
 
   @Override

@@ -14,7 +14,8 @@ import java.util.*;
 
 public class PhpExtensionGenerator extends PhpGenerator<Model> {
   public PhpExtensionGenerator() {
-    this.kinds = new HashSet<>(Arrays.asList("class", "dataObject"));
+//    this.kinds = new HashSet<>(Arrays.asList("class", "dataObject"));
+    this.kinds = new HashSet<>(Arrays.asList("class"));
     this.incremental = true;
   }
 

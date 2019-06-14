@@ -218,21 +218,6 @@ public class Utils {
   }
 
   /**
-   * {@link ObjectMemory}<DATA_OBJECT>
-   */
-  public static <D, B extends DataObjectWrapper<D>> boolean isDataObject(Environment env, Class<D> clazz, Function<JsonObject, D> function, Function2<Environment, D, B> creator, Memory value) {
-    return DataObjectConverter.create(clazz, function, creator).accept(env, value);
-  }
-
-  public static <D, B extends DataObjectWrapper<D>> D convParamDataObject(Environment env, Class<D> clazz, Function<JsonObject, D> function, Function2<Environment, D, B> creator, Memory value) {
-    return DataObjectConverter.create(clazz, function, creator).convParam(env, value);
-  }
-
-  public static <D, B extends DataObjectWrapper<D>> Memory convReturnDataObject(Environment env, Class<D> clazz, Function2<Environment, D, B> creator, Function<JsonObject, D> function, D value) {
-    return DataObjectConverter.<D, B>create(clazz, function, creator).convReturnNotNull(env, value);
-  }
-
-  /**
    * {@link ObjectMemory}<{@link Throwable}>
    */
   public static boolean isThrowable(Environment env, Memory value) {

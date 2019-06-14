@@ -141,7 +141,8 @@ abstract class PhpGenerator<M extends Model> extends Generator<M> {
     } else if (kind == JSON_ARRAY) {
       return Collections.singletonList("array");
     } else if (kind == DATA_OBJECT) {
-      return !param ? Collections.singletonList(type.getRaw().getSimpleName()) : Arrays.asList(type.getSimpleName(), "array");
+//      return !param ? Collections.singletonList(type.getRaw().getSimpleName()) : Arrays.asList(type.getSimpleName(), "array");
+      return getPHPDocType(((DataObjectTypeInfo)type).getTargetJsonType(), param);
     } else if (kind == ENUM) {
       return Collections.singletonList("string");
     } else if (kind == API) {
@@ -235,8 +236,11 @@ abstract class PhpGenerator<M extends Model> extends Generator<M> {
       return "EnumConverter.create(" + typeInfo.getSimpleName() + ".class)";
     } else if (typeKind == DATA_OBJECT) {
       DataObjectTypeInfo type = (DataObjectTypeInfo) typeInfo;
-      String creator = type.isAbstract() ? "null" : typeInfo.getRaw().getName() + "::new";
-      return "DataObjectConverter.create(" + typeInfo.getRaw().getName() + ".class, " + creator + ", " + typeInfo.getRaw().getSimpleName() + "::new)";
+//      String creator = typeInfo.getRaw().getName() + "::new";
+//      return "DataObjectConverter.create(" + typeInfo.getRaw().getName() + ".class, " + creator + ", " + typeInfo.getRaw().getSimpleName() + "::new)";
+      String decoder = type.getJsonDecoderFQCN() == null ? "null" : type.getJsonDecoderFQCN() + ".INSTANCE";
+      String encoder = type.getJsonEncoderFQCN() == null ? "null" : type.getJsonEncoderFQCN() + ".INSTANCE ";
+      return "new DataObjectConverter<>(" + decoder + ", " + encoder + "," + getTypeConverter(model, type.getTargetJsonType()) + ")";
     } else if (typeKind == LIST || typeKind == SET || typeKind == MAP) {
       ParameterizedTypeInfo type = (ParameterizedTypeInfo) typeInfo;
       TypeInfo containerType = null;

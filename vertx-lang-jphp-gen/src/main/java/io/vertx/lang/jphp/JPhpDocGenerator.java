@@ -11,15 +11,19 @@ import io.vertx.docgen.DocGenerator;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.*;
+import javax.lang.model.util.Elements;
+import javax.lang.model.util.Types;
 
 public class JPhpDocGenerator implements DocGenerator {
   private CodeTranslator translator;
-  private TypeMirrorFactory factory;
+  private Elements elementUtils;
+  private Types typeUtils;
 
   @Override
   public void init(ProcessingEnvironment processingEnv) {
     translator = new CodeTranslator(processingEnv);
-    factory = new TypeMirrorFactory(processingEnv.getElementUtils(), processingEnv.getTypeUtils());
+    elementUtils = processingEnv.getElementUtils();
+    typeUtils = processingEnv.getTypeUtils();
   }
 
   @Override
@@ -40,6 +44,7 @@ public class JPhpDocGenerator implements DocGenerator {
 
   @Override
   public String resolveTypeLink(TypeElement elt, Coordinate coordinate) {
+    TypeMirrorFactory factory = new TypeMirrorFactory(elementUtils, typeUtils, elementUtils.getPackageOf(elt));
     TypeInfo type;
     try {
       type = factory.create(elt.asType());

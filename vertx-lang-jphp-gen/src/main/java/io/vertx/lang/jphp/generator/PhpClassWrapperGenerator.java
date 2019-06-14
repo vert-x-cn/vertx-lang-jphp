@@ -342,12 +342,13 @@ public class PhpClassWrapperGenerator extends AbstractPhpClassGenerator {
       return;
     }
     ClassKind typeKind = typeInfo.getKind();
-    if (typeKind == API || typeKind == DATA_OBJECT) {
+    if (typeKind == API) {
       importClassSet.add(typeInfo.getRaw().translateName(id));
+    } else if (typeKind == DATA_OBJECT){
+      importClassSet.add("io.vertx.lang.jphp.converter.DataObjectConverter");
     } else {
       if (!typeKind.basic) {
         if (typeInfo.getRaw() == null) {
-//          importClassSet.add(typeInfo.getName());
           return;
         }
         String fqn = typeInfo.getRaw().getName();

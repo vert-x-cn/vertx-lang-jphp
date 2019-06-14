@@ -13,8 +13,8 @@ public class PhpGeneratorLoader implements GeneratorLoader {
     return Stream.of(
       new PhpClassGenerator(),
       new PhpClassWrapperGenerator(),
-      new PhpDataObjectGenerator(),
-      new PhpDataObjectWrapperGenerator(),
+//      new PhpDataObjectGenerator(),
+//      new PhpDataObjectWrapperGenerator(),
       new PhpExtensionGenerator(),
       new ServiceLoaderGenerator()/*,
       new PhpMemoryOperationGenerator()*/

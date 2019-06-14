@@ -1,45 +1,38 @@
 package io.vertx.lang.jphp.converter;
 
-import io.vertx.core.json.JsonObject;
-import io.vertx.lang.jphp.function.Function2;
-import io.vertx.lang.jphp.wrapper.DataObjectWrapper;
-import org.develnext.jphp.zend.ext.json.JsonFunctions;
+import io.vertx.core.spi.json.JsonCodec;
+import io.vertx.core.spi.json.JsonDecoder;
+import io.vertx.core.spi.json.JsonEncoder;
 import php.runtime.Memory;
 import php.runtime.env.Environment;
-import php.runtime.lang.StdClass;
-import php.runtime.memory.ArrayMemory;
-import php.runtime.memory.ObjectMemory;
 
-import java.util.function.BiConsumer;
-import java.util.function.Function;
+public class DataObjectConverter<T, J> implements TypeConverter<T> {
+  private final TypeConverter<J> converter;
+  private final JsonDecoder<T, J> decoder;
+  private final JsonEncoder<T, J> encoder;
 
-public class DataObjectConverter<D, B extends DataObjectWrapper<D>> extends WrapperConverter<D, B> {
-  private Function<JsonObject, D> function;
-
-  public DataObjectConverter(Class<D> clazz, Function<JsonObject, D> function, Function2<Environment, D, B> creator) {
-    super(clazz, DataObjectWrapper.class, creator);
-    this.function = function;
+  public DataObjectConverter(JsonDecoder<T, J> decoder, JsonEncoder<T, J> encoder, TypeConverter<J> converter) {
+    this.decoder = decoder;
+    this.encoder = encoder;
+    this.converter = converter;
   }
 
-//    public Memory convReturnNotNull(Environment env, Function2<Environment, D, B> creator, D value) {
-//        return creator.apply(env, value).toMemory();
-//    }
-
-  public static <D, B extends DataObjectWrapper<D>> DataObjectConverter<D, B> create(Class<D> clazz, Function<JsonObject, D> function, Function2<Environment, D, B> creator) {
-    return new DataObjectConverter<>(clazz, function, creator);
+  public static <A, T> void xx(Environment env, Memory value, TypeConverter<T> converter, JsonCodec<A, T> codec) {
+    A a = codec.decode(converter.convParam(env, value));
   }
 
   @Override
   public boolean accept(Environment env, Memory value) {
-    return (function != null && TypeConverter.JSON_OBJECT.accept(env, value)) || super.accept(env, value);
+    return TypeConverter.JSON_OBJECT.accept(env, value);
   }
 
   @Override
-  public D convParamNotNull(Environment env, Memory value) {
-    if (function != null && (value instanceof ArrayMemory || (value instanceof ObjectMemory && ((ObjectMemory) value).value instanceof StdClass))) {
-      String json = JsonFunctions.json_encode(value);
-      return function.apply(new JsonObject(json.equals("[]") ? "{}" : json));
-    }
-    return super.convParamNotNull(env, value);
+  public T convParamNotNull(Environment env, Memory value) {
+    return decoder.decode(converter.convParam(env, value));
+  }
+
+  @Override
+  public Memory convReturnNotNull(Environment env, T value) {
+    return converter.convReturn(env, encoder.encode(value));
   }
 }
