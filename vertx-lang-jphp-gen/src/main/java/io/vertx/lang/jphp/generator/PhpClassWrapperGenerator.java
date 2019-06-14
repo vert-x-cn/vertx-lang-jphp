@@ -209,6 +209,38 @@ public class PhpClassWrapperGenerator extends AbstractPhpClassGenerator {
     super.genMethodBody(model, writer);
   }
 
+  /**
+   * 获取作为泛型的类型
+   * @param typeInfo
+   * @return
+   */
+  private String getErasedNameAsVariable(TypeInfo typeInfo) {
+    ClassKind kind = typeInfo.getKind();
+    if (typeInfo.isVariable()) {
+      TypeVariableInfo type = (TypeVariableInfo) typeInfo;
+      return type.isMethodParam() ? "Object" : type.getName();
+    } else {
+      if (kind == PRIMITIVE) {
+        typeInfo = ((PrimitiveTypeInfo)typeInfo).getBoxed();
+      }
+      if (typeInfo instanceof ParameterizedTypeInfo) {
+        ParameterizedTypeInfo type = (ParameterizedTypeInfo) typeInfo;
+        return typeInfo.getRaw().getName() + type.getArgs().stream().map(this::getErasedNameAsVariable).collect((Collectors.joining(", ", "<", ">")));
+      } else {
+        return typeInfo.getName();
+      }
+    }
+  }
+
+  void genReturnConverter(ClassModel model, MethodInfo method, CodeWriter writer, int methodIndex) {
+    TypeInfo returnType = method.getReturnType();
+    if (!returnType.getName().equals("void") && !method.isFluent()) {
+      String typeConverter = getTypeConverter(model, returnType);
+      writer.format("TypeConverter<%s> returnConverter%d = ", getErasedNameAsVariable(returnType), methodIndex);
+      writer.println(typeConverter + ";");
+    }
+  }
+
   @Override
   void genMethod(ClassModel model, String methodName, CodeWriter writer) {
     List<MethodInfo> methods = model.getMethodMap().get(methodName);
@@ -223,33 +255,46 @@ public class PhpClassWrapperGenerator extends AbstractPhpClassGenerator {
         writer.unindent().println("}");
       } else {
         MethodInfo m = methods.get(0);
-        String returnType;
+        String returnTypeStr;
         if(m.getReturnType().getName().equals("void")) {
-          returnType = "void";
+          returnTypeStr = "void";
         } else {
-          returnType = "Memory";
+          returnTypeStr = "Memory";
         }
-        writer.format("public %s%s %s(Environment __ENV__%s) {", m.isStaticMethod()?"static ":"", returnType, methodName, getParamNames(paramSize)).println();
+        writer.format("public %s%s %s(Environment __ENV__%s) {", m.isStaticMethod()?"static ":"", returnTypeStr, methodName, getParamNames(paramSize)).println();
         writer.indent();
         if (paramSize == 0) {
-          getReturnInfo(model, ms.get(0), writer);
+//          MethodInfo method = ms.get(0);
+//          genReturnConverter(model, method, writer, 0);
+          getReturnInfo(model, ms.get(0), writer, -1);
         } else {
-          for (MethodInfo method : ms) {
-            writer.format("if(%s) {", checkParamType(model, method));
+          for (int methodIndex = 0; methodIndex < ms.size(); methodIndex++) {
+            MethodInfo method = ms.get(methodIndex);
+            List<ParamInfo> params = method.getParams();
+            for (int paramIndex = 0; paramIndex < params.size(); paramIndex++) {
+              ParamInfo param = params.get(paramIndex);
+              TypeInfo paramType = param.getType();
+              String typeConverter = getTypeConverter(model, paramType);
+              writer.format("TypeConverter<%s> method%dParam%dConverter = ", getErasedNameAsVariable(paramType), methodIndex, paramIndex);
+              writer.println(typeConverter + ";");
+            }
+            genReturnConverter(model, method, writer, methodIndex);
+            writer.format("if(%s) {", checkParamType(model, method, methodIndex));
             writer.indent().println("");
-            getReturnInfo(model, method, writer);
-            writer.unindent().print("} else ");
+            getReturnInfo(model, method, writer, methodIndex);
+            if (method.getReturnType().getKind() == ClassKind.VOID) {
+              writer.println("return;");
+            }
+            writer.unindent().println("}");
           }
-          writer.println("{");
-          writer.indent().println("throw new RuntimeException(\"function invoked with invalid arguments\");");
-          writer.unindent().println("}");
+          writer.println("throw new RuntimeException(\"function invoked with invalid arguments\");");
         }
         writer.unindent().println("}");
       }
     }
   }
 
-  private void getReturnInfo(ClassModel model, MethodInfo method, CodeWriter writer){
+  private void getReturnInfo(ClassModel model, MethodInfo method, CodeWriter writer, int methodIndex){
     TypeInfo returnType = method.getReturnType();
     if (!returnType.getName().equals("void") && !method.isFluent()) {
       if (method.isCacheReturn()) {
@@ -259,7 +304,8 @@ public class PhpClassWrapperGenerator extends AbstractPhpClassGenerator {
       } else {
         writer.print("return ");
       }
-      String typeConverter = getTypeConverter(model, returnType);
+//      String typeConverter = getTypeConverter(model, returnType);
+      String typeConverter = methodIndex == -1 ? getTypeConverter(model, returnType) : "returnConverter" + methodIndex;
       writer.format("%s.convReturn(__ENV__, ", typeConverter);
     }
 
@@ -269,13 +315,14 @@ public class PhpClassWrapperGenerator extends AbstractPhpClassGenerator {
       writer.print("this.getWrappedObject()");
     }
     writer.format(".%s(", method.getName());
-    for (int index = 0; index < method.getParams().size(); index++) {
-      if (index != 0) {
+    for (int paramIndex = 0; paramIndex < method.getParams().size(); paramIndex++) {
+      if (paramIndex != 0) {
         writer.print(", ");
       }
-      ParamInfo param = method.getParam(index);
-      String typeConverter = getTypeConverter(model, param.getType());
-      writer.format("%s.convParam(__ENV__, arg%d)", typeConverter, index);
+      ParamInfo param = method.getParam(paramIndex);
+//      String typeConverter = getTypeConverter(model, param.getType());
+      String typeConverter = String.format("method%dParam%dConverter", methodIndex, paramIndex);
+      writer.format("%s.convParam(__ENV__, arg%d)", typeConverter, paramIndex);
     }
     writer.print(")");
     if (!returnType.getName().equals("void") && !method.isFluent()) {
@@ -293,21 +340,22 @@ public class PhpClassWrapperGenerator extends AbstractPhpClassGenerator {
     }
   }
 
-  private String checkParamType(ClassModel model, MethodInfo method){
+  private String checkParamType(ClassModel model, MethodInfo method, int methodIndex){
     StringWriter sw = new StringWriter();
     CodeWriter writer = new CodeWriter(sw);
-    for (int index = 0; index < method.getParams().size(); index++) {
-      ParamInfo param = method.getParam(index);
-      if (index != 0) {
+    for (int paramIndex = 0; paramIndex < method.getParams().size(); paramIndex++) {
+      ParamInfo param = method.getParam(paramIndex);
+      if (paramIndex != 0) {
         writer.print(" && ");
       }
       if (!param.isNullable()) {
-        writer.format("Utils.isNotNull(arg%d) && ", index);
+        writer.format("Utils.isNotNull(arg%d) && ", paramIndex);
       } else {
-        writer.format("(Utils.isNull(arg%d) || ", index);
+        writer.format("(Utils.isNull(arg%d) || ", paramIndex);
       }
-      String typeConverter = getTypeConverter(model, param.getType());
-      writer.format("%s.accept(__ENV__, arg%d)", typeConverter, index);
+//      String typeConverter = getTypeConverter(model, param.getType());
+      String typeConverter = String.format("method%dParam%dConverter", methodIndex, paramIndex);
+      writer.format("%s.accept(__ENV__, arg%d)", typeConverter, paramIndex);
       if (param.isNullable()) {
         writer.print(")");
       }

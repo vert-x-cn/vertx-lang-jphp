@@ -12,7 +12,7 @@ import java.util.*;
 public class ServiceLoaderGenerator extends PhpGenerator<Model> {
 
   public ServiceLoaderGenerator() {
-    this.kinds = new HashSet<>(Arrays.asList("class", "dataObject"));
+    this.kinds = new HashSet<>(Arrays.asList("class"));
     this.incremental = true;
   }
 
