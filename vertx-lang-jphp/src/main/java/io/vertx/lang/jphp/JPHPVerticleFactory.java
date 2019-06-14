@@ -43,7 +43,7 @@ public class JPHPVerticleFactory implements VerticleFactory {
   private static final String VERTX_STOP_FUNCTION = "vertxStop";
   private static final String VERTX_STOP_ASYNC_FUNCTION = "vertxStopAsync";
 
-  private final Method futureCreator;
+  private final Method PromiseCreator;
   private final Method vertxCreator;
   private final Method contextCreator;
   private final Field field;
@@ -51,8 +51,8 @@ public class JPHPVerticleFactory implements VerticleFactory {
   public JPHPVerticleFactory() throws Exception {
     field = JPHPScriptEngine.class.getDeclaredField("environment");
     field.setAccessible(true);
-    Class<?> futureClass = Class.forName("io.vertx.jphp.core.Future");
-    futureCreator = futureClass.getDeclaredMethod("__create", Environment.class, Future.class, TypeConverter.class);
+    Class<?> futureClass = Class.forName("io.vertx.jphp.core.Promise");
+    PromiseCreator = futureClass.getDeclaredMethod("__create", Environment.class, Promise.class, TypeConverter.class);
     Class<?> vertxClass = Class.forName("io.vertx.jphp.core.Vertx");
     vertxCreator = vertxClass.getDeclaredMethod("__create", Environment.class, Vertx.class);
     Class<?> contextClass = io.vertx.jphp.core.Context.class;
@@ -115,17 +115,17 @@ public class JPHPVerticleFactory implements VerticleFactory {
     }
 
     @Override
-    public void start(Future<Void> startFuture) throws ScriptException {
+    public void start(Promise<Void> startFuture) throws ScriptException {
       engine.eval("<?php require '" + verticleName + "';");
       invoke(VERTX_START_FUNCTION, VERTX_START_ASYNC_FUNCTION, startFuture);
     }
 
     @Override
-    public void stop(Future<Void> stopFuture) {
+    public void stop(Promise<Void> stopFuture) {
       invoke(VERTX_STOP_FUNCTION, VERTX_STOP_ASYNC_FUNCTION, stopFuture);
     }
 
-    private void invoke(String syncFunctionName, String asyncFunctionName, Future<Void> future) {
+    private void invoke(String syncFunctionName, String asyncFunctionName, Promise<Void> future) {
       try {
         FunctionEntity function = env.fetchFunction(syncFunctionName);
         if (function != null) {
@@ -134,7 +134,7 @@ public class JPHPVerticleFactory implements VerticleFactory {
         } else {
           function = env.fetchFunction(asyncFunctionName);
           if (function != null) {
-            IMemory result = (IMemory) futureCreator.invoke(null, env, future, TypeConverter.VOID);
+            IMemory result = (IMemory) PromiseCreator.invoke(null, env, future, TypeConverter.VOID);
             function.invoke(env, null, new Memory[]{result.toMemory()});
           } else {
             future.complete();
