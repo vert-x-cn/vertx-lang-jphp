@@ -315,7 +315,7 @@ abstract class PhpGenerator<M extends Model> extends Generator<M> {
         DataObjectAnnotatedInfo dataObjectAnnotatedInfo = type.getDataObjectAnnotatedInfo();
         decoder = dataObjectAnnotatedInfo.isDecodable() ? "new DataObjectJsonDecoder<>(" + type.getName() + "::new)" : "null";
       }
-      return "new DataObjectParamConverter<>(" + decoder + ", " + getTypeConverter(model, type.getTargetJsonType()) + ")";
+      return "new DataObjectParamConverter<>(" + decoder + ", " + getParamConverter(model, type.getTargetJsonType()) + ")";
     } else {
       return getTypeConverter(model, typeInfo);
     }
@@ -333,7 +333,7 @@ abstract class PhpGenerator<M extends Model> extends Generator<M> {
         DataObjectAnnotatedInfo dataObjectAnnotatedInfo = type.getDataObjectAnnotatedInfo();
         encoder = dataObjectAnnotatedInfo.isEncodable() ? "new DataObjectJsonEncoder<>(" + type.getName() + "::toJson)" : "null";
       }
-      return "new DataObjectConverter<>(" + encoder + ", " + getTypeConverter(model, type.getTargetJsonType()) + ")";
+      return "new DataObjectReturnConverter<>(" + encoder + ", " + getReturnConverter(model, type.getTargetJsonType()) + ")";
     } else {
       return getTypeConverter(model, typeInfo);
     }

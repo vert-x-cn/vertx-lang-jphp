@@ -7,10 +7,10 @@ import php.runtime.Memory;
 import php.runtime.env.Environment;
 
 public class DataObjectParamConverter<T, J> implements ParamConverter<T> {
-  private final TypeConverter<J> converter;
+  private final ParamConverter<J> converter;
   private final JsonDecoder<T, J> decoder;
 
-  public DataObjectParamConverter(JsonDecoder<T, J> decoder, TypeConverter<J> converter) {
+  public DataObjectParamConverter(JsonDecoder<T, J> decoder, ParamConverter<J> converter) {
     this.decoder = decoder;
     this.converter = converter;
   }

@@ -151,7 +151,7 @@ public class PhpClassWrapperGenerator extends AbstractPhpClassGenerator {
 //    } else if (kind.json) {
 //      return "JsonFunctions.json_decode(Environment.current(), " + constantInfo + ".encode(), true)";
     } else {
-      return getTypeConverter(model, constant.getType()) + ".convReturn(Environment.current(), " + constantInfo + ")";
+      return getReturnConverter(model, constant.getType()) + ".convReturn(Environment.current(), " + constantInfo + ")";
     }
 //    return "1";
   }
@@ -202,6 +202,7 @@ public class PhpClassWrapperGenerator extends AbstractPhpClassGenerator {
     }
     ApiTypeInfo type = (ApiTypeInfo) model.getType().getRaw();
     if (type.isHandler()) {
+      writer.println("@Override");
       writer.format("public TypeConverter<%s> get__handlerConverter__(){", type.getHandlerArg().getName()).println();
       writer.indent().format("return %s;", getTypeConverter(model, type.getHandlerArg())).println();
       writer.unindent().println("}");
@@ -232,11 +233,11 @@ public class PhpClassWrapperGenerator extends AbstractPhpClassGenerator {
     }
   }
 
-  void genReturnConverter(ClassModel model, MethodInfo method, CodeWriter writer, int methodIndex) {
+  private void genReturnConverter(ClassModel model, MethodInfo method, CodeWriter writer, int methodIndex) {
     TypeInfo returnType = method.getReturnType();
     if (!returnType.getName().equals("void") && !method.isFluent()) {
-      String typeConverter = getTypeConverter(model, returnType);
-      writer.format("TypeConverter<%s> returnConverter%d = ", getErasedNameAsVariable(returnType), methodIndex);
+      String typeConverter = getReturnConverter(model, returnType);
+      writer.format("ReturnConverter<%s> returnConverter%d = ", getErasedNameAsVariable(returnType), methodIndex);
       writer.println(typeConverter + ";");
     }
   }
@@ -305,7 +306,7 @@ public class PhpClassWrapperGenerator extends AbstractPhpClassGenerator {
         writer.print("return ");
       }
 //      String typeConverter = getTypeConverter(model, returnType);
-      String typeConverter = methodIndex == -1 ? getTypeConverter(model, returnType) : "returnConverter" + methodIndex;
+      String typeConverter = methodIndex == -1 ? getReturnConverter(model, returnType) : "returnConverter" + methodIndex;
       writer.format("%s.convReturn(__ENV__, ", typeConverter);
     }
 

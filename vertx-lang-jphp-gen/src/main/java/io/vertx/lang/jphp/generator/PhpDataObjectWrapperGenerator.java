@@ -112,7 +112,7 @@ public class PhpDataObjectWrapperGenerator extends AbstractPhpDataObjectGenerato
       if (basic) {
         valueInfo = property.getName();
       } else {
-        valueInfo = getTypeConverter(model, property.getType()) + ".convParam(__ENV__, " + property.getName() + ")";
+        valueInfo = getParamConverter(model, property.getType()) + ".convParam(__ENV__, " + property.getName() + ")";
       }
       writer.indent().format("this.getWrappedObject().%s(key, %s);", property.getAdderMethod(), valueInfo).println();
       writer.println("return toMemory();");
@@ -123,7 +123,7 @@ public class PhpDataObjectWrapperGenerator extends AbstractPhpDataObjectGenerato
       if (basic) {
         writer.print(property.getName());
       } else {
-        writer.print(getTypeConverter(model, property.getType()));
+        writer.print(getParamConverter(model, property.getType()));
         writer.format(".convParam(__ENV__, %s)", property.getName());
       }
       writer.println(");");
@@ -142,7 +142,7 @@ public class PhpDataObjectWrapperGenerator extends AbstractPhpDataObjectGenerato
     if (basic) {
       writer.format("return this.getWrappedObject().%s();", method).println();
     } else {
-      String typeConverter = getTypeConverter(model, property.getType());
+      String typeConverter = getReturnConverter(model, property.getType());
       switch (property.getKind()) {
         case MAP:
           writer.format("return ContainerConverter.createMapConverter(%s).convReturn(__ENV__, this.getWrappedObject().%s());", typeConverter, method);
@@ -179,7 +179,7 @@ public class PhpDataObjectWrapperGenerator extends AbstractPhpDataObjectGenerato
     if (basic) {
       writer.format("this.getWrappedObject().%s(%s);", method, propertyName).println();
     } else {
-      String typeConverter = getTypeConverter(model, property.getType());
+      String typeConverter = getParamConverter(model, property.getType());
       switch (property.getKind()) {
         case MAP:
           writer.format("this.getWrappedObject().%s(ContainerConverter.createMapConverter(%s).convParam(__ENV__, %s));", method, typeConverter, propertyName);
