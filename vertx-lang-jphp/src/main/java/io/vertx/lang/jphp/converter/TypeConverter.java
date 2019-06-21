@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 @SuppressWarnings("unused")
-public interface TypeConverter<T> {
+public interface TypeConverter<T> extends ParamConverter<T>, ReturnConverter<T> {
   boolean accept(Environment env, Memory value);
 
   default T convParam(Environment env, Memory value) {

@@ -238,8 +238,17 @@ abstract class PhpGenerator<M extends Model> extends Generator<M> {
       DataObjectTypeInfo type = (DataObjectTypeInfo) typeInfo;
 //      String creator = typeInfo.getRaw().getName() + "::new";
 //      return "DataObjectConverter.create(" + typeInfo.getRaw().getName() + ".class, " + creator + ", " + typeInfo.getRaw().getSimpleName() + "::new)";
-      String decoder = type.getJsonDecoderFQCN() == null ? "null" : type.getJsonDecoderFQCN() + ".INSTANCE";
-      String encoder = type.getJsonEncoderFQCN() == null ? "null" : type.getJsonEncoderFQCN() + ".INSTANCE ";
+      String decoder,encoder;
+      if (type.hasJsonCodec()) {
+        JsonCodecInfo jsonCodecInfo = type.getJsonCodecInfo();
+        decoder = jsonCodecInfo.getJsonDecoderFQCN() == null ? "null" : jsonCodecInfo.getJsonDecoderFQCN() + ".INSTANCE";
+        encoder = jsonCodecInfo.getJsonEncoderFQCN() == null ? "null" : jsonCodecInfo.getJsonEncoderFQCN() + ".INSTANCE ";
+      } else {
+        //TODO 这里没法判断是调用自己的toJson还是Converter的toJson，
+        DataObjectAnnotatedInfo dataObjectAnnotatedInfo = type.getDataObjectAnnotatedInfo();
+        decoder = dataObjectAnnotatedInfo.isDecodable() ? "new DataObjectJsonDecoder<>(" + type.getName() + "::new)" : "null";
+        encoder = dataObjectAnnotatedInfo.isEncodable() ? "new DataObjectJsonEncoder<>(" + type.getName() + "::toJson)" : "null";
+      }
       return "new DataObjectConverter<>(" + decoder + ", " + encoder + "," + getTypeConverter(model, type.getTargetJsonType()) + ")";
     } else if (typeKind == LIST || typeKind == SET || typeKind == MAP) {
       ParameterizedTypeInfo type = (ParameterizedTypeInfo) typeInfo;
@@ -291,6 +300,42 @@ abstract class PhpGenerator<M extends Model> extends Generator<M> {
         return "TypeConverter.INSTANT";
       }
       return "TypeConverter.createUnknownType()";
+    }
+  }
+
+  final String getParamConverter(M model, TypeInfo typeInfo) {
+    ClassKind typeKind = typeInfo.getKind();
+    if (typeKind == DATA_OBJECT) {
+      DataObjectTypeInfo type = (DataObjectTypeInfo) typeInfo;
+      String decoder;
+      if (type.hasJsonCodec()) {
+        JsonCodecInfo jsonCodecInfo = type.getJsonCodecInfo();
+        decoder = jsonCodecInfo.getJsonDecoderFQCN() == null ? "null" : jsonCodecInfo.getJsonDecoderFQCN() + ".INSTANCE";
+      } else {
+        DataObjectAnnotatedInfo dataObjectAnnotatedInfo = type.getDataObjectAnnotatedInfo();
+        decoder = dataObjectAnnotatedInfo.isDecodable() ? "new DataObjectJsonDecoder<>(" + type.getName() + "::new)" : "null";
+      }
+      return "new DataObjectParamConverter<>(" + decoder + ", " + getTypeConverter(model, type.getTargetJsonType()) + ")";
+    } else {
+      return getTypeConverter(model, typeInfo);
+    }
+  }
+  final String getReturnConverter(M model, TypeInfo typeInfo) {
+    ClassKind typeKind = typeInfo.getKind();
+    if (typeKind == DATA_OBJECT) {
+      DataObjectTypeInfo type = (DataObjectTypeInfo) typeInfo;
+      String encoder;
+      if (type.hasJsonCodec()) {
+        JsonCodecInfo jsonCodecInfo = type.getJsonCodecInfo();
+        encoder = jsonCodecInfo.getJsonEncoderFQCN() == null ? "null" : jsonCodecInfo.getJsonEncoderFQCN() + ".INSTANCE ";
+      } else {
+        //TODO 这里没法判断是调用自己的toJson还是Converter的toJson，
+        DataObjectAnnotatedInfo dataObjectAnnotatedInfo = type.getDataObjectAnnotatedInfo();
+        encoder = dataObjectAnnotatedInfo.isEncodable() ? "new DataObjectJsonEncoder<>(" + type.getName() + "::toJson)" : "null";
+      }
+      return "new DataObjectConverter<>(" + encoder + ", " + getTypeConverter(model, type.getTargetJsonType()) + ")";
+    } else {
+      return getTypeConverter(model, typeInfo);
     }
   }
 

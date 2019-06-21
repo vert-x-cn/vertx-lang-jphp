@@ -274,8 +274,8 @@ public class PhpClassWrapperGenerator extends AbstractPhpClassGenerator {
             for (int paramIndex = 0; paramIndex < params.size(); paramIndex++) {
               ParamInfo param = params.get(paramIndex);
               TypeInfo paramType = param.getType();
-              String typeConverter = getTypeConverter(model, paramType);
-              writer.format("TypeConverter<%s> method%dParam%dConverter = ", getErasedNameAsVariable(paramType), methodIndex, paramIndex);
+              String typeConverter = getParamConverter(model, paramType);
+              writer.format("ParamConverter<%s> method%dParam%dConverter = ", getErasedNameAsVariable(paramType), methodIndex, paramIndex);
               writer.println(typeConverter + ";");
             }
             genReturnConverter(model, method, writer, methodIndex);
@@ -393,7 +393,11 @@ public class PhpClassWrapperGenerator extends AbstractPhpClassGenerator {
     if (typeKind == API) {
       importClassSet.add(typeInfo.getRaw().translateName(id));
     } else if (typeKind == DATA_OBJECT){
-      importClassSet.add("io.vertx.lang.jphp.converter.DataObjectConverter");
+//      importClassSet.add("io.vertx.lang.jphp.converter.DataObjectConverter");
+      importClassSet.add("io.vertx.lang.jphp.converter.dataobject.DataObjectParamConverter");
+      importClassSet.add("io.vertx.lang.jphp.converter.dataobject.DataObjectReturnConverter");
+      importClassSet.add("io.vertx.lang.jphp.wrapper.extension.DataObjectJsonCodec.DataObjectJsonDecoder");
+      importClassSet.add("io.vertx.lang.jphp.wrapper.extension.DataObjectJsonCodec.DataObjectJsonEncoder");
     } else {
       if (!typeKind.basic) {
         if (typeInfo.getRaw() == null) {
