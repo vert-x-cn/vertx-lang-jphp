@@ -227,72 +227,96 @@ abstract class PhpGenerator<M extends Model> extends Generator<M> {
   }
 
   final String getTypeConverter(M model, TypeInfo typeInfo) {
+    return "TypeConverter.create(" + getParamConverter(model, typeInfo) + ", " + getReturnConverter(model, typeInfo) + ")";
+  }
+
+  final String getParamConverter(M model, TypeInfo typeInfo) {
+    return getConverter(model, typeInfo, true);
+  }
+  private String getConverter(M model, TypeInfo typeInfo, boolean param) {
     ClassKind typeKind = typeInfo.getKind();
-//    String simpleName = typeInfo.getRaw().getSimpleName();
-//    String fqn = typeInfo.getRaw().getName();
     if (typeKind.basic || typeKind.json || typeKind == THROWABLE || typeKind == VOID) {
-      return "TypeConverter." + typeConverterMap.get(typeKind == PRIMITIVE ? typeInfo.getName() : typeInfo.getRaw().getSimpleName());
+      return (param ? "ParamConverter." : "ReturnConverter.") + typeConverterMap.get(typeKind == PRIMITIVE ? typeInfo.getName() : typeInfo.getRaw().getSimpleName());
     } else if (typeKind == ENUM) {
-      return "EnumConverter.create(" + typeInfo.getSimpleName() + ".class)";
+      return param ?
+        ("new EnumParamConverter(" + typeInfo.getSimpleName() + ".class)")
+        :
+        ("ReturnConverter.<" + typeInfo.getRaw().getSimpleName() + ">createEnumReturnConverter()");
     } else if (typeKind == DATA_OBJECT) {
       DataObjectTypeInfo type = (DataObjectTypeInfo) typeInfo;
-//      String creator = typeInfo.getRaw().getName() + "::new";
-//      return "DataObjectConverter.create(" + typeInfo.getRaw().getName() + ".class, " + creator + ", " + typeInfo.getRaw().getSimpleName() + "::new)";
-      String decoder,encoder;
-      if (type.hasJsonCodec()) {
-        JsonCodecInfo jsonCodecInfo = type.getJsonCodecInfo();
-        decoder = jsonCodecInfo.getJsonDecoderFQCN() == null ? "null" : jsonCodecInfo.getJsonDecoderFQCN() + ".INSTANCE";
-        encoder = jsonCodecInfo.getJsonEncoderFQCN() == null ? "null" : jsonCodecInfo.getJsonEncoderFQCN() + ".INSTANCE ";
+      if (param) {
+        String decoder;
+        if (type.hasJsonCodec()) {
+          JsonCodecInfo jsonCodecInfo = type.getJsonCodecInfo();
+          decoder = jsonCodecInfo.getJsonDecoderFQCN() == null ? "null" : jsonCodecInfo.getJsonDecoderFQCN() + ".INSTANCE";
+        } else {
+          DataObjectAnnotatedInfo dataObjectAnnotatedInfo = type.getDataObjectAnnotatedInfo();
+          decoder = dataObjectAnnotatedInfo.isDecodable() ? "new DataObjectJsonDecoder<>(" + type.getName() + "::new)" : "null";
+        }
+        return "new DataObjectParamConverter<>(" + decoder + ", " + getParamConverter(model, type.getTargetJsonType()) + ")";
       } else {
-        //TODO 这里没法判断是调用自己的toJson还是Converter的toJson，
-        DataObjectAnnotatedInfo dataObjectAnnotatedInfo = type.getDataObjectAnnotatedInfo();
-        decoder = dataObjectAnnotatedInfo.isDecodable() ? "new DataObjectJsonDecoder<>(" + type.getName() + "::new)" : "null";
-        encoder = dataObjectAnnotatedInfo.isEncodable() ? "new DataObjectJsonEncoder<>(" + type.getName() + "::toJson)" : "null";
+        String encoder;
+        if (type.hasJsonCodec()) {
+          JsonCodecInfo jsonCodecInfo = type.getJsonCodecInfo();
+          encoder = jsonCodecInfo.getJsonEncoderFQCN() == null ? "null" : jsonCodecInfo.getJsonEncoderFQCN() + ".INSTANCE ";
+        } else {
+          DataObjectAnnotatedInfo dataObjectAnnotatedInfo = type.getDataObjectAnnotatedInfo();
+          encoder = dataObjectAnnotatedInfo.isEncodable() ? "new DataObjectJsonEncoder<>(" + type.getName() + "::toJson)" : "null";
+        }
+        return "new DataObjectReturnConverter<>(" + encoder + ", " + getReturnConverter(model, type.getTargetJsonType()) + ")";
       }
-      return "new DataObjectConverter<>(" + decoder + ", " + encoder + "," + getTypeConverter(model, type.getTargetJsonType()) + ")";
     } else if (typeKind == LIST || typeKind == SET || typeKind == MAP) {
       ParameterizedTypeInfo type = (ParameterizedTypeInfo) typeInfo;
-      TypeInfo containerType = null;
-      String caseStartInfo = "";
-      String caseEndInfo = "";
-      if (typeKind != MAP) {
-        containerType = type.getArg(0);
-        caseStartInfo = "((TypeConverter<" + typeInfo.getRaw().getSimpleName() + "<" + (containerType.isVariable() ? "Object" : containerType.getRaw().getName()) + ">>)";
-        caseEndInfo = ")";
+      if (typeKind == MAP) {
+        return (param ? "ContainerParamConverter.createMapConverter(" : "new MapReturnConverter(") + getConverter(model, type.getArg(1), param) + ")";
+      }
+      if (param) {
+        return "ContainerParamConverter.create" + type.getRaw().getSimpleName() + "Converter(" + getParamConverter(model, type.getArg(0)) + ")";
       } else {
-        containerType = type.getArg(1);
+        return "CollectionReturnConverter.createCollectionConverter(" + getReturnConverter(model, type.getArg(0)) + ")";
       }
-      return caseStartInfo + "ContainerConverter.<" + (containerType.isVariable() ? "Object" : containerType.getRaw().getName()) + ">create" + typeInfo.getRaw().getSimpleName() + "Converter(" + getTypeConverter(model, containerType) + ")" + caseEndInfo;
     } else if (typeKind == API) {
-      List<TypeInfo> args = typeInfo.isParameterized() ? ((ParameterizedTypeInfo) typeInfo).getArgs() : Collections.emptyList();
-      StringBuilder returnInfo = new StringBuilder("VertxGenVariable0Converter.<");
-      String typeParamInfo = getVariable(args);
-      String typeParamInfo2 = (typeParamInfo.equals("")) ? "" : ("<" + typeParamInfo + ">");
-      returnInfo.append(typeInfo.getRaw().getName()).append(typeParamInfo2).append(", ").append(typeInfo.getRaw().getSimpleName()).append(typeParamInfo2);
-      returnInfo.append(typeParamInfo.equals("") ? "" : ", ");
-      returnInfo.append(typeParamInfo);
-      returnInfo.append(">create").append(args.size()).append("(").append(typeInfo.getRaw().getName()).append(".class, ").append(typeInfo.getRaw().getSimpleName()).append("::__create");
-      for (TypeInfo arg : args) {
-        returnInfo.append(", ").append(getTypeConverter(model, arg));
+      if (param) {
+        return "new VertxGenParamConverter(" + typeInfo.getRaw().getName() + ".class)";
+      } else {
+        List<TypeInfo> args = typeInfo.isParameterized() ? ((ParameterizedTypeInfo) typeInfo).getArgs() : Collections.emptyList();
+        StringBuilder returnInfo = new StringBuilder("VertxGenVariable0ReturnConverter.<");
+        String typeParamInfo = getVariable(args);
+        String typeParamInfo2 = (typeParamInfo.equals("")) ? "" : ("<" + typeParamInfo + ">");
+        returnInfo.append(typeInfo.getRaw().getName()).append(typeParamInfo2).append(", ").append(typeInfo.getRaw().getSimpleName()).append(typeParamInfo2);
+        returnInfo.append(typeParamInfo.equals("") ? "" : ", ");
+        returnInfo.append(typeParamInfo);
+        returnInfo.append(">create").append(args.size()).append("(").append(typeInfo.getRaw().getSimpleName()).append("::__create");
+        for (TypeInfo arg : args) {
+          returnInfo.append(", ").append(getTypeConverter(model, arg));
+        }
+        return returnInfo + ")";
       }
-      return returnInfo + ")";
     } else if (typeInfo.isVariable() && ((TypeVariableInfo) typeInfo).getParam().isClass()) {
       return getConverterMethodName(model, "get", typeInfo.getName()) + "()";
     } else if (typeKind == HANDLER){
       //FIXME 测试一下Handler不写泛型时的情况
+      //noinspection ConstantConditions
       ParameterizedTypeInfo type = (ParameterizedTypeInfo) typeInfo;
       TypeInfo arg = type.getArg(0);
       if (arg.getKind() == ASYNC_RESULT) {
         ParameterizedTypeInfo result = (ParameterizedTypeInfo) arg;
-        return "HandlerConverter.createResult(" + getTypeConverter(model, result.getArg(0)) + ")";
+        return param ?
+          ("new AsyncResultHandlerParamConverter<>(" + getReturnConverter(model, result.getArg(0)) + ")")
+          :
+          ("new AsyncResultHandlerReturnConverter<>(" + getTypeConverter(model, result.getArg(0)) + ")");
       } else {
-        return "HandlerConverter.create(" + getTypeConverter(model, arg) + ")";
+        return param ? ("new HandlerParamConverter<>(" + getReturnConverter(model, arg) + ")") : ("new HandlerReturnConverter<>(" + getTypeConverter(model, arg) + ")");
       }
     } else if (typeKind == FUNCTION){
+      if (!param) {
+         throw new UnsupportedOperationException("未支持function的返回");
+      }
+      //noinspection ConstantConditions
       ParameterizedTypeInfo type = (ParameterizedTypeInfo) typeInfo;
       TypeInfo typeT = type.getArg(0);
       TypeInfo typeR = type.getArg(1);
-      return "FunctionConverter.create(" + getTypeConverter(model, typeT) + ", "  + getTypeConverter(model, typeR) + ")";
+      return "new FunctionParamConverter<>(" + getReturnConverter(model, typeT) + ", "  + getParamConverter(model, typeR) + ")";
     } else if (typeKind == CLASS_TYPE){
       return "TypeConverter.CLASS";
     } else {
@@ -302,41 +326,8 @@ abstract class PhpGenerator<M extends Model> extends Generator<M> {
       return "TypeConverter.createUnknownType()";
     }
   }
-
-  final String getParamConverter(M model, TypeInfo typeInfo) {
-    ClassKind typeKind = typeInfo.getKind();
-    if (typeKind == DATA_OBJECT) {
-      DataObjectTypeInfo type = (DataObjectTypeInfo) typeInfo;
-      String decoder;
-      if (type.hasJsonCodec()) {
-        JsonCodecInfo jsonCodecInfo = type.getJsonCodecInfo();
-        decoder = jsonCodecInfo.getJsonDecoderFQCN() == null ? "null" : jsonCodecInfo.getJsonDecoderFQCN() + ".INSTANCE";
-      } else {
-        DataObjectAnnotatedInfo dataObjectAnnotatedInfo = type.getDataObjectAnnotatedInfo();
-        decoder = dataObjectAnnotatedInfo.isDecodable() ? "new DataObjectJsonDecoder<>(" + type.getName() + "::new)" : "null";
-      }
-      return "new DataObjectParamConverter<>(" + decoder + ", " + getParamConverter(model, type.getTargetJsonType()) + ")";
-    } else {
-      return getTypeConverter(model, typeInfo);
-    }
-  }
   final String getReturnConverter(M model, TypeInfo typeInfo) {
-    ClassKind typeKind = typeInfo.getKind();
-    if (typeKind == DATA_OBJECT) {
-      DataObjectTypeInfo type = (DataObjectTypeInfo) typeInfo;
-      String encoder;
-      if (type.hasJsonCodec()) {
-        JsonCodecInfo jsonCodecInfo = type.getJsonCodecInfo();
-        encoder = jsonCodecInfo.getJsonEncoderFQCN() == null ? "null" : jsonCodecInfo.getJsonEncoderFQCN() + ".INSTANCE ";
-      } else {
-        //TODO 这里没法判断是调用自己的toJson还是Converter的toJson，
-        DataObjectAnnotatedInfo dataObjectAnnotatedInfo = type.getDataObjectAnnotatedInfo();
-        encoder = dataObjectAnnotatedInfo.isEncodable() ? "new DataObjectJsonEncoder<>(" + type.getName() + "::toJson)" : "null";
-      }
-      return "new DataObjectReturnConverter<>(" + encoder + ", " + getReturnConverter(model, type.getTargetJsonType()) + ")";
-    } else {
-      return getTypeConverter(model, typeInfo);
-    }
+    return getConverter(model, typeInfo, false);
   }
 
   protected String getConverterMethodName(M model, String methodPrefix, String paramName) {

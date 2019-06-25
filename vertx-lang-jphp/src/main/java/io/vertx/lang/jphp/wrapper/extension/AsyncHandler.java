@@ -2,7 +2,7 @@ package io.vertx.lang.jphp.wrapper.extension;
 
 import io.vertx.core.Future;
 import io.vertx.core.Handler;
-import io.vertx.lang.jphp.Utils;
+import io.vertx.lang.jphp.converter.ParamConverter;
 import io.vertx.lang.jphp.converter.TypeConverter;
 import io.vertx.lang.jphp.wrapper.BaseWrapper;
 import io.vertx.lang.jphp.wrapper.Variable1Wrapper;
@@ -33,11 +33,11 @@ public class AsyncHandler<T> extends BaseWrapper<io.vertx.core.Handler<io.vertx.
   }
   @Signature
   public void handle(Environment __ENV__, Memory result, Memory cause) {
-    if (!Utils.isNotNull(cause) && converter.accept(__ENV__, result)) {
+    if (!ParamConverter.isNotNull(cause) && converter.accept(__ENV__, result)) {
       getWrappedObject().handle(Future.succeededFuture(converter.convParam(__ENV__, result)));
-    } else if (Utils.isNotNull(cause)) {
-      if(Utils.isThrowable(__ENV__, cause)) {
-        getWrappedObject().handle(Future.failedFuture(Utils.convParamThrowable(__ENV__, cause)));
+    } else if (ParamConverter.isNotNull(cause)) {
+      if(ParamConverter.THROWABLE.accept(__ENV__, cause)) {
+        getWrappedObject().handle(Future.failedFuture(ParamConverter.THROWABLE.convParam(__ENV__, cause)));
       } else {
         getWrappedObject().handle(Future.failedFuture(new RuntimeException(cause.toString())));
       }

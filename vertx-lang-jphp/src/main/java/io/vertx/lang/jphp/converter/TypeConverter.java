@@ -5,10 +5,27 @@ import io.vertx.core.json.JsonObject;
 import php.runtime.Memory;
 import php.runtime.env.Environment;
 
-import java.time.Instant;
-
-@SuppressWarnings("unused")
 public interface TypeConverter<T> extends ParamConverter<T>, ReturnConverter<T> {
+
+  TypeConverter<Object> UNKNOWN_TYPE = create(ParamConverter.UNKNOWN_TYPE, ReturnConverter.UNKNOWN_TYPE);
+  TypeConverter<String> STRING = create(ParamConverter.STRING, ReturnConverter.STRING);
+  TypeConverter<Byte> BYTE = create(ParamConverter.BYTE, ReturnConverter.BYTE);
+  TypeConverter<Character> CHARACTER = create(ParamConverter.CHARACTER, ReturnConverter.CHARACTER);
+  TypeConverter<Short> SHORT = create(ParamConverter.SHORT, ReturnConverter.SHORT);
+  TypeConverter<Integer> INTEGER = create(ParamConverter.INTEGER, ReturnConverter.INTEGER);
+  TypeConverter<Long> LONG = create(ParamConverter.LONG, ReturnConverter.LONG);
+  TypeConverter<Double> DOUBLE = create(ParamConverter.DOUBLE, ReturnConverter.DOUBLE);
+  TypeConverter<Float> FLOAT = create(ParamConverter.FLOAT, ReturnConverter.FLOAT);
+  TypeConverter<Boolean> BOOLEAN = create(ParamConverter.BOOLEAN, ReturnConverter.BOOLEAN);
+  TypeConverter<JsonObject> JSON_OBJECT = create(ParamConverter.JSON_OBJECT, ReturnConverter.JSON_OBJECT);
+  TypeConverter<JsonArray> JSON_ARRAY = create(ParamConverter.JSON_ARRAY, ReturnConverter.JSON_ARRAY);
+  TypeConverter<Throwable> THROWABLE = create(ParamConverter.THROWABLE, ReturnConverter.THROWABLE);
+  TypeConverter<Void> VOID = create(ParamConverter.VOID, ReturnConverter.VOID);
+  TypeConverter<Class<Object>> CLASS = create(ParamConverter.CLASS, ReturnConverter.CLASS);
+//  TypeConverter<Memory> MEMORY = create(ParamConverter.MEMORY, ReturnConverter.MEMORY);
+//  TypeConverter<Instant> INSTANT = create(ParamConverter.INSTANT, ReturnConverter.INSTANT);
+
+
   boolean accept(Environment env, Memory value);
 
   default T convParam(Environment env, Memory value) {
@@ -24,53 +41,26 @@ public interface TypeConverter<T> extends ParamConverter<T>, ReturnConverter<T> 
   Memory convReturnNotNull(Environment env, T value);
 
   static <T> TypeConverter<T> createUnknownType() {
-    return new DefaultTypeConverter<>(ParamConverter.createUnknownType(), ReturnConverter.createUnknownType());
+    return create(ParamConverter.createUnknownType(), ReturnConverter.createUnknownType());
   }
-  TypeConverter<Object> UNKNOWN_TYPE = new DefaultTypeConverter<>(ParamConverter.UNKNOWN_TYPE, ReturnConverter.UNKNOWN_TYPE);
 
-  TypeConverter<String> STRING = new DefaultTypeConverter<>(ParamConverter.STRING, ReturnConverter.STRING);
+  static <T> TypeConverter<T> create(ParamConverter<T> paramConverter, ReturnConverter<T> returnConverter) {
+    return new TypeConverter<T>() {
+      @Override
+      public boolean accept(Environment env, Memory value) {
+        return paramConverter.accept(env, value);
+      }
 
-  TypeConverter<Byte> BYTE = new DefaultTypeConverter<>(ParamConverter.BYTE, ReturnConverter.BYTE);
-  TypeConverter<Character> CHARACTER = new DefaultTypeConverter<>(ParamConverter.CHARACTER, ReturnConverter.CHARACTER);
-  TypeConverter<Short> SHORT = new DefaultTypeConverter<>(ParamConverter.SHORT, ReturnConverter.SHORT);
-  TypeConverter<Integer> INTEGER =new DefaultTypeConverter<>(ParamConverter.INTEGER, ReturnConverter.INTEGER);
-  TypeConverter<Long> LONG = new DefaultTypeConverter<>(ParamConverter.LONG, ReturnConverter.LONG);
-  TypeConverter<Double> DOUBLE = new DefaultTypeConverter<>(ParamConverter.DOUBLE, ReturnConverter.DOUBLE);
-  TypeConverter<Float> FLOAT = new DefaultTypeConverter<>(ParamConverter.FLOAT, ReturnConverter.FLOAT);
-  TypeConverter<Boolean> BOOLEAN =new DefaultTypeConverter<>(ParamConverter.BOOLEAN, ReturnConverter.BOOLEAN);
-  TypeConverter<JsonObject> JSON_OBJECT = new DefaultTypeConverter<>(ParamConverter.JSON_OBJECT, ReturnConverter.JSON_OBJECT);
-  TypeConverter<JsonArray> JSON_ARRAY = new DefaultTypeConverter<>(ParamConverter.JSON_ARRAY, ReturnConverter.JSON_ARRAY);
+      @Override
+      public T convParamNotNull(Environment env, Memory value) {
+        return paramConverter.convParamNotNull(env, value);
+      }
 
-  TypeConverter<Throwable> THROWABLE = new DefaultTypeConverter<>(ParamConverter.THROWABLE, ReturnConverter.THROWABLE);
-  TypeConverter<Void> VOID = new DefaultTypeConverter<>(ParamConverter.VOID, ReturnConverter.VOID);
-  TypeConverter<Class<Object>> CLASS = new DefaultTypeConverter<>(ParamConverter.CLASS, ReturnConverter.CLASS);
+      @Override
+      public Memory convReturnNotNull(Environment env, T value) {
+        return returnConverter.convReturnNotNull(env, value);
+      }
 
-  TypeConverter<Memory> MEMORY = new DefaultTypeConverter<>(ParamConverter.MEMORY, ReturnConverter.MEMORY);
-
-  TypeConverter<Instant> INSTANT = new DefaultTypeConverter<>(ParamConverter.INSTANT, ReturnConverter.INSTANT);
-
-
-  class DefaultTypeConverter<T> implements TypeConverter<T> {
-    private ParamConverter<T> paramConverter;
-    private ReturnConverter<T> returnConverter;
-    public DefaultTypeConverter(ParamConverter<T> paramConverter, ReturnConverter<T> returnConverter){
-      this.paramConverter = paramConverter;
-      this.returnConverter = returnConverter;
-    }
-
-    @Override
-    public boolean accept(Environment env, Memory value) {
-      return paramConverter.accept(env, value);
-    }
-
-    @Override
-    public T convParamNotNull(Environment env, Memory value) {
-      return paramConverter.convParamNotNull(env, value);
-    }
-
-    @Override
-    public Memory convReturnNotNull(Environment env, T value) {
-      return returnConverter.convReturnNotNull(env, value);
-    }
+    };
   }
 }

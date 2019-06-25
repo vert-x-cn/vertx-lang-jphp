@@ -71,7 +71,6 @@ public class PhpDataObjectWrapperGenerator extends AbstractPhpDataObjectGenerato
     importClassSet.add("io.vertx.lang.jphp.wrapper.PhpGen");
     importClassSet.add("io.vertx.lang.jphp.wrapper.DataObjectWrapper");
     importClassSet.add("php.runtime.env.Environment");
-    importClassSet.add("io.vertx.lang.jphp.Utils");
     importClassSet.add("php.runtime.annotation.Reflection.Signature");
     importClassSet.add("php.runtime.annotation.Reflection.Name");
     importClassSet.add("php.runtime.annotation.Reflection.Namespace");
@@ -86,7 +85,8 @@ public class PhpDataObjectWrapperGenerator extends AbstractPhpDataObjectGenerato
     for (PropertyInfo property : model.getPropertyMap().values()) {
       addImport(model, importClassSet, property.getType());
       if (!property.getKind().isValue()) {
-        importClassSet.add("io.vertx.lang.jphp.converter.ContainerConverter");
+        importClassSet.add("io.vertx.lang.jphp.converter.container.ContainerParamConverter");
+        importClassSet.add("io.vertx.lang.jphp.converter.container.CollectionReturnConverter");
       }
     }
 

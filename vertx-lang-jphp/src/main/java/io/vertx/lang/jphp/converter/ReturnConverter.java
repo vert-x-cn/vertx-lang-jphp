@@ -2,6 +2,8 @@ package io.vertx.lang.jphp.converter;
 
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
+import io.vertx.lang.jphp.converter.container.CollectionReturnConverter;
+import io.vertx.lang.jphp.converter.container.MapReturnConverter;
 import io.vertx.lang.jphp.wrapper.extension.BaseThrowable;
 import org.develnext.jphp.zend.ext.json.JsonFunctions;
 import php.runtime.Memory;
@@ -35,8 +37,13 @@ public interface ReturnConverter<T> {
   ReturnConverter<Throwable> THROWABLE = (env, value) -> BaseThrowable.of(env, value).toMemory();
   ReturnConverter<Void> VOID = (env, value) -> Memory.NULL;
   ReturnConverter<Class<Object>> CLASS = (env, value) -> StringMemory.valueOf(value.getName());
-  ReturnConverter<Memory> MEMORY = (env, value) -> value;
-  ReturnConverter<Instant> INSTANT = (env, value) -> LongMemory.valueOf(value.toEpochMilli());
+  ReturnConverter<Enum> ENUM = (env, value) -> StringMemory.valueOf(value.name());
+  static <E extends Enum> ReturnConverter<E> createEnumReturnConverter() {
+    //noinspection unchecked
+    return (ReturnConverter<E>)ENUM;
+  }
+//  ReturnConverter<Memory> MEMORY = (env, value) -> value;
+//  ReturnConverter<Instant> INSTANT = (env, value) -> LongMemory.valueOf(value.toEpochMilli());
   ReturnConverter<Object> UNKNOWN_TYPE = new ReturnConverter<Object>() {
     @Override
     public Memory convReturnNotNull(Environment env, Object value) {
@@ -57,16 +64,15 @@ public interface ReturnConverter<T> {
       } else if (value instanceof Boolean) {
         return BOOLEAN.convReturnNotNull(env, (Boolean) value);
       } else if (value instanceof Collection) {
-        return CollectionConverter.convCollectionReturnNotNull(env, (Collection<?>) value, this::convReturnNotNull);
+        return CollectionReturnConverter.convCollectionReturnNotNull(env, (Collection<?>) value, this::convReturnNotNull);
       } else if (value instanceof Map) {
-        return MapConverter.convMapReturnNotNull(env, (Map<?, ?>) value, this::convReturnNotNull);
+        return MapReturnConverter.convMapReturnNotNull(env, (Map<?, ?>) value, this::convReturnNotNull);
       } else if (value instanceof Memory) {
         return (Memory) value;
       } else if (value instanceof Throwable) {
         return THROWABLE.convReturnNotNull(env, (Throwable) value);
       } else if (value instanceof Enum) {
-        //noinspection unchecked
-        return EnumConverter.convReturnNotNull((Enum) value);
+        return ENUM.convReturnNotNull(env, (Enum) value);
       } else if (value instanceof Void) {
         return VOID.convReturnNotNull(env, (Void) value);
       } else if (value instanceof Class) {

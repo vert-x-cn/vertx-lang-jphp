@@ -1,23 +1,22 @@
-package io.vertx.lang.jphp.converter;
+package io.vertx.lang.jphp.converter.container;
 
+import io.vertx.lang.jphp.converter.ParamConverter;
 import php.runtime.Memory;
 import php.runtime.env.Environment;
 import php.runtime.memory.ArrayMemory;
 import php.runtime.memory.ReferenceMemory;
 import php.runtime.memory.support.ArrayMapEntryMemory;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-
-public abstract class ContainerConverter<T, E> implements TypeConverter<T> {
+public abstract class ContainerParamConverter<T, E> implements ParamConverter<T> {
   private boolean map;
-  TypeConverter<E> valueConverter;
+  ParamConverter<E> valueConverter;
 
-  public ContainerConverter(boolean map, TypeConverter<E> valueConverter) {
+  public ContainerParamConverter(boolean map, ParamConverter<E> valueConverter) {
     this.map = map;
     this.valueConverter = valueConverter;
   }
@@ -33,8 +32,6 @@ public abstract class ContainerConverter<T, E> implements TypeConverter<T> {
       if (map) {
         if (referenceMemory instanceof ArrayMapEntryMemory) {
           entry = referenceMemory;
-//        } else if (referenceMemory.getValue() instanceof ArrayMapEntryMemory) {
-//          entry = referenceMemory.getValue();
         } else {
           return false;
         }
@@ -55,15 +52,17 @@ public abstract class ContainerConverter<T, E> implements TypeConverter<T> {
     return true;
   }
 
-  public static <E> CollectionConverter<List<E>, E> createListConverter(TypeConverter<E> converter) {
-    return new CollectionConverter<>(false, converter, Collectors.toList());
+  public static <E> ParamConverter<List<E>> createListConverter(ParamConverter<E> valueConverter) {
+    return new CollectionParamConverter<>(valueConverter, Collectors.toList());
   }
 
-  public static <E> CollectionConverter<Set<E>, E> createSetConverter(TypeConverter<E> converter) {
-    return new CollectionConverter<>(false, converter, Collectors.toSet());
+  public static <E> ParamConverter<Set<E>> createSetConverter(ParamConverter<E> valueConverter) {
+    return new CollectionParamConverter<>(valueConverter, Collectors.toSet());
   }
 
-  public static <E> MapConverter<E> createMapConverter(TypeConverter<E> converter) {
-    return new MapConverter<>(converter);
+  public static <E> ParamConverter<Map<String, E>> createMapConverter(ParamConverter<E> valueConverter) {
+    return new MapParamConverter<>(valueConverter);
   }
+
+
 }

@@ -37,11 +37,10 @@ public class PhpClassWrapperGenerator extends AbstractPhpClassGenerator {
     importClassSet.add("php.runtime.env.Environment");
     importClassSet.add("io.vertx.lang.jphp.wrapper.PhpGen");
     importClassSet.add("io.vertx.lang.jphp.converter.*");
-//    importClassSet.add("io.vertx.lang.jphp.converter.TypeConverter");
-//    importClassSet.add("io.vertx.lang.jphp.converter.VertxGenVariable0Converter");
-//    importClassSet.add("io.vertx.lang.jphp.converter.ContainerConverter");
-//    importClassSet.add("io.vertx.lang.jphp.converter.DataObjectConverter");
-//    importClassSet.add("io.vertx.lang.jphp.converter.EnumConverter");
+    importClassSet.add("io.vertx.lang.jphp.converter.container.*");
+    importClassSet.add("io.vertx.lang.jphp.converter.function.*");
+    importClassSet.add("io.vertx.lang.jphp.converter.api.*");
+    importClassSet.add("io.vertx.lang.jphp.converter.handler.*");
     if (model.getTypeParams().size() > 0) {
       importClassSet.add("io.vertx.lang.jphp.converter.TypeConverter");
     }
@@ -80,9 +79,6 @@ public class PhpClassWrapperGenerator extends AbstractPhpClassGenerator {
       importClassSet.add("java.util.Map");
     }
     importClassSet.add("php.runtime.Memory");
-    if (!noConverter) {
-      importClassSet.add("io.vertx.lang.jphp.Utils");
-    }
 
     importClassSet.add("io.vertx.lang.jphp.wrapper.VertxGenVariable" + model.getTypeParams().size() + "Wrapper");
 
@@ -350,9 +346,9 @@ public class PhpClassWrapperGenerator extends AbstractPhpClassGenerator {
         writer.print(" && ");
       }
       if (!param.isNullable()) {
-        writer.format("Utils.isNotNull(arg%d) && ", paramIndex);
+        writer.format("ParamConverter.isNotNull(arg%d) && ", paramIndex);
       } else {
-        writer.format("(Utils.isNull(arg%d) || ", paramIndex);
+        writer.format("(ParamConverter.isNull(arg%d) || ", paramIndex);
       }
 //      String typeConverter = getTypeConverter(model, param.getType());
       String typeConverter = String.format("method%dParam%dConverter", methodIndex, paramIndex);
@@ -417,70 +413,6 @@ public class PhpClassWrapperGenerator extends AbstractPhpClassGenerator {
       }
     }
   }
-  private void addImport1(ClassModel model, Set<String> importClassSet, TypeInfo typeInfo, boolean isParameterized, boolean isParam) {
-    if (typeInfo.isVariable()) {
-      if (isParameterized) {
-        importClassSet.add("io.vertx.lang.jphp.converter.TypeConverter");
-      }
-      return;
-    }
-    ClassKind typeKind = typeInfo.getKind();
-    if (typeKind == API) {
-      if (!typeInfo.getRaw().getPackageName().equals(model.getIfacePackageName())) {
-        importClassSet.add(typeInfo.getRaw().translatePackageName("jphp") + "." + typeInfo.getRaw().getSimpleName());
-      }
-    } else if (typeKind == DATA_OBJECT) {
-      if (!typeInfo.getRaw().getPackageName().equals(model.getIfacePackageName())) {
-        importClassSet.add(typeInfo.getRaw().translatePackageName("jphp") + "." + typeInfo.getRaw().getSimpleName());
-      }
-    } else if (typeKind == ENUM) {
-      if (!typeInfo.getRaw().getPackageName().equals(model.getIfacePackageName())) {
-        importClassSet.add(typeInfo.getRaw().getName());
-      }
-    } else if (typeKind == JSON_OBJECT) {
-      if (isParameterized && !isParam) {
-        importClassSet.add("io.vertx.core.json.JsonObject");
-      }
-    } else if (typeKind == JSON_ARRAY) {
-      if (isParameterized) {
-        importClassSet.add("io.vertx.core.json.JsonArray");
-      }
-    } else if (!typeKind.basic
-      && !typeKind.collection
-      && typeKind != THROWABLE
-      && typeKind != OBJECT
-      && typeKind != HANDLER
-      && typeKind != ASYNC_RESULT
-      && typeKind != CLASS_TYPE
-      && typeKind != FUNCTION
-      && typeKind != VOID
-      && typeInfo.getRaw() != null) {
-      if (isParam || isParameterized) {
-        importClassSet.add(typeInfo.getRaw().getPackageName() + "." + typeInfo.getRaw().getSimpleName());
-      }
-    }
-    if (isParameterized) {
-      if (typeKind.basic || typeKind.json || typeKind == VOID || typeKind == THROWABLE || typeKind == CLASS_TYPE || typeInfo.isVariable()) {
-        importClassSet.add("io.vertx.lang.jphp.converter.TypeConverter");
-      } else if (typeKind == ENUM) {
-        importClassSet.add("io.vertx.lang.jphp.converter.EnumConverter");
-        importClassSet.add(typeInfo.getRaw().getName());
-      } else if (typeKind == DATA_OBJECT) {
-        importClassSet.add("io.vertx.lang.jphp.converter.DataObjectConverter");
-      } else if (typeKind.collection) {
-        importClassSet.add("io.vertx.lang.jphp.converter.ContainerConverter");
-      } else if (typeKind == API) {
-        importClassSet.add("io.vertx.lang.jphp.converter.VertxGenVariable0Converter");
-      }
-    }
-    if (typeKind != CLASS_TYPE && typeInfo.isParameterized()) {
-      ParameterizedTypeInfo type = (ParameterizedTypeInfo) typeInfo;
-      for (TypeInfo arg : type.getArgs()) {
-        addImport(model, importClassSet, arg, true, isParam);
-      }
-    }
-  }
-
 
   @Override
   String renderLinkToHtml(Tag.Link link) {

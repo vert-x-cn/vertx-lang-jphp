@@ -24,6 +24,14 @@ public interface ParamConverter<T> {
 
   T convParamNotNull(Environment env, Memory value);
 
+  static boolean isNull(Memory value) {
+    return value == null || value.isNull();
+  }
+
+  static boolean isNotNull(Memory value) {
+    return value != null && value.isNotNull();
+  }
+
   ParamConverter<String> STRING = new ParamConverter<String>() {
     @Override
     public boolean accept(Environment env, Memory value) {
@@ -174,28 +182,28 @@ public interface ParamConverter<T> {
       return c;
     }
   };
-  ParamConverter<Memory> MEMORY = new ParamConverter<Memory>() {
-    @Override
-    public boolean accept(Environment env, Memory value) {
-      return true;
-    }
-
-    @Override
-    public Memory convParamNotNull(Environment env, Memory value) {
-      return value;
-    }
-  };
-  ParamConverter<Instant> INSTANT = new ParamConverter<Instant>() {
-    @Override
-    public boolean accept(Environment env, Memory value) {
-      return value.isNumber();
-    }
-
-    @Override
-    public Instant convParamNotNull(Environment env, Memory value) {
-      return Instant.ofEpochMilli(value.toLong());
-    }
-  };
+//  ParamConverter<Memory> MEMORY = new ParamConverter<Memory>() {
+//    @Override
+//    public boolean accept(Environment env, Memory value) {
+//      return true;
+//    }
+//
+//    @Override
+//    public Memory convParamNotNull(Environment env, Memory value) {
+//      return value;
+//    }
+//  };
+//  ParamConverter<Instant> INSTANT = new ParamConverter<Instant>() {
+//    @Override
+//    public boolean accept(Environment env, Memory value) {
+//      return value.isNumber();
+//    }
+//
+//    @Override
+//    public Instant convParamNotNull(Environment env, Memory value) {
+//      return Instant.ofEpochMilli(value.toLong());
+//    }
+//  };
 
   ParamConverter<Object> UNKNOWN_TYPE = new ParamConverter<Object>() {
     @Override
