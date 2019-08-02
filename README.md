@@ -18,14 +18,14 @@ Maven配置 / Maven pom.xml:
 <dependency>
   <groupId>tk.okou</groupId>
   <artifactId>vertx-lang-jphp</artifactId>
-  <version>4.0.0-SNAPSHOT</version>
+  <version>4.0.0-milestone1</version>
 </dependency>
 ```
 
 Gradle配置 / Gradle build.gradle file:
 ```groovy
 dependencies {
-  compile 'tk.okou:vertx-lang-jphp:4.0.0-SNAPSHOT'
+  compile 'tk.okou:vertx-lang-jphp:4.0.0-milestone1'
 }
 ```
 
